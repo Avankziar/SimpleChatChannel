@@ -1,0 +1,13 @@
+name: SimpleChatChannels
+main: main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels
+version: 28
+author: Avankziar
+description: A Chat Plugin
+api-version: 1.15
+softdepend: [Punisher]
+commands:
+  scc:
+    description: A SCC Command
+  clickchat:
+    description: A ClickChat Command
+    aliases: [clch]

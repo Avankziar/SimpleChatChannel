@@ -1,0 +1,5 @@
+name: SimpleChatChannels
+main: main.java.de.avankziar.simplechatchannels.bungee.SimpleChatChannels
+version: 28
+author: Avankziar
+softdepends: [Punisher]
