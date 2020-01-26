@@ -89,6 +89,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			TextComponent msg18 = plugin.getUtility().tc(plugin.getUtility().tl(
     					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18")));
     			msg18.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc changepassword <Password>"));
+    			TextComponent msg19 = plugin.getUtility().tc(plugin.getUtility().tl(
+    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19")));
+    			msg19.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelinfo"));
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
     			player.spigot().sendMessage(msg1);
     			player.spigot().sendMessage(msg2);
@@ -107,6 +110,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			player.spigot().sendMessage(msg16);
     			player.spigot().sendMessage(msg17);
     			player.spigot().sendMessage(msg18);
+    			player.spigot().sendMessage(msg19);
     		} else
     		{
     			TextComponent msg1 = plugin.getUtility().tc(plugin.getUtility().tl(
@@ -145,6 +149,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			TextComponent msg18 = plugin.getUtility().tc(plugin.getUtility().tl(
     					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18")));
     			msg18.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc changepassword <Password>"));
+    			TextComponent msg19 = plugin.getUtility().tc(plugin.getUtility().tl(
+    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19")));
+    			msg19.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelinfo"));
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
     			player.spigot().sendMessage(msg1);
     			player.spigot().sendMessage(msg4);
@@ -158,6 +165,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			player.spigot().sendMessage(msg16);
     			player.spigot().sendMessage(msg17);
     			player.spigot().sendMessage(msg18);
+    			player.spigot().sendMessage(msg19);
     		}
     		return true;
     	} else if("playerlist".equalsIgnoreCase(args[0]) || "pl".equalsIgnoreCase(args[0]) 
@@ -227,8 +235,20 @@ public class CMDSimpleChatChannels implements CommandExecutor
 			ArrayList<String> groups = new ArrayList<>();
 			while(i<=groupamount)
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".prefix."+i));
-				groups.add(plugin.getYamlHandler().getL().getString(language+".suffix."+i));
+				if(plugin.getYamlHandler().getL().getString(language+".prefix."+i).contains("&"))
+				{
+					groups.add(plugin.getYamlHandler().getL().getString(language+".prefix."+i).substring(2));
+				} else
+				{
+					groups.add(plugin.getYamlHandler().getL().getString(language+".prefix."+i));
+				}
+				if(plugin.getYamlHandler().getL().getString(language+".suffix."+i).contains("&"))
+				{
+					groups.add(plugin.getYamlHandler().getL().getString(language+".suffix."+i).substring(2));
+				} else
+				{
+					groups.add(plugin.getYamlHandler().getL().getString(language+".suffix."+i));
+				}
 				i++;
 			}
     		if(args.length==1)

@@ -1,4 +1,6 @@
-- [World] per Config in einstellbar machen, ob [World] oder der Name der Welt kommt
 - afk, spigot und bungee. Ist bungee aktive, wird es in spigot ausgelassen
 - chatformat, naja
-- custom channel
+- +custom channel
+- +subcmd tabbar machen
+- +pre und suffixe channel nur für die einsichtbar
+- +serverzeit einfügbar machen

@@ -4,6 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="H:/Dateien/Dev/BungeeCord.jar"/>
 	<classpathentry kind="lib" path="H:/Dateien/Dev/spigot-1.15.1.jar"/>
+	<classpathentry kind="lib" path="H:/Dateien/Dev/Dev Server 1.15.1/Plugins/afkrecord-1.jar"/>
 	<classpathentry kind="lib" path="H:/Dateien/Dev/Dev Server 1.15.1/Plugins/punisher-16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

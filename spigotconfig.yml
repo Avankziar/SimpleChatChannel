@@ -5,6 +5,9 @@ getlocaleradius: 50
 wordfilter:
 - arschloch
 - asshole
+addingtimeofdays: 'true'
+timeofdaysformat: 'HH:mm'
+timeofdaysoutput: '&7[%time%] '
 mysql:
   status: 'false'
   host: '127.0.0.1'

@@ -3,7 +3,9 @@ package main.java.de.avankziar.simplechatchannels.bungee;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlInterface;
@@ -48,18 +50,28 @@ public class Utility
 		player.sendMessage(tc(tl(path)));
 	}
 	
+	public  String getDate(String format)
+	{
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		String dt = sdf.format(now);
+		return dt;
+	}
+	
 	public List<BaseComponent> getAllTextComponentForChannels(ProxiedPlayer p, String eventmsg,
 			String channelname, String channelsymbol, int substring)
 	{
 		TextComponent channel = tc(tl(plugin.getYamlHandler().getL().getString(language+".channels."+channelname)));
 		channel.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, channelsymbol));
 		channel.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover."+channelname))).create()));
+				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
+						language+".channelextra.hover."+channelname))).create()));
 		
 		List<BaseComponent> prefix = getPrefix(p);
 		
 		TextComponent player = tc(tl(plugin.getYamlHandler().getL().getString(language+".playercolor")+p.getName()));
-		player.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@"+p.getName()+" "));
+		player.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+				plugin.getYamlHandler().getSymbol("pm")+p.getName()+" "));
 		player.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
 						.replaceAll("%player%", p.getName()))).create()));
@@ -110,15 +122,15 @@ public class Utility
 	public String getPreOrSuffix(String preorsuffix)
 	{
 		int a = 1;
-		int b = plugin.getYamlHandler().getL().getInt(language+"prefixsuffixamount");
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
 		while(a<=b)
 		{
-			if(plugin.getYamlHandler().get().getString(language+".prefix."+String.valueOf(a)).substring(2).equals(preorsuffix))
+			if(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a)).substring(2).equals(preorsuffix))
 			{
 				String perm = "scc.prefix."+String.valueOf(a);
 				return perm;
 			}
-			if(plugin.getYamlHandler().get().getString(language+".suffix."+String.valueOf(a)).substring(2).equals(preorsuffix))
+			if(plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a)).substring(2).equals(preorsuffix))
 			{
 				String perm = "scc.suffix."+String.valueOf(a);
 				return perm;
@@ -182,7 +194,7 @@ public class Utility
 	{
 		List<BaseComponent> list = new ArrayList<>();
 		int a = 1;
-		int b = 20;
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
 		while(a<=b)
 		{
 			if(p.hasPermission("scc.prefix."+String.valueOf(a))) 
@@ -197,9 +209,11 @@ public class Utility
 					pors = preorsuffix;
 				}
 				TextComponent prefix = tc(tl(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))+" "));
-				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@*"+pors +" "));
+				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+						plugin.getYamlHandler().getSymbol("group")+pors +" "));
 				prefix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.group"))).create()));
+						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
+								language+".channelextra.hover.group"))).create()));
 				list.add(prefix);
 			}
 			a++;
@@ -215,7 +229,7 @@ public class Utility
 	{
 		List<BaseComponent> list = new ArrayList<>();
 		int a = 1;
-		int b = 20;
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
 		while(a<=b)
 		{
 			if(p.hasPermission("scc.suffix."+String.valueOf(a))) 
@@ -230,9 +244,11 @@ public class Utility
 					pors = preorsuffix;
 				}
 				TextComponent suffix = tc(tl(" "+plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))+" "));
-				suffix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@*"+pors+" "));
+				suffix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+						plugin.getYamlHandler().getSymbol("group")+pors+" "));
 				suffix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.group"))).create()));
+						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
+								language+".channelextra.hover.group"))).create()));
 				list.add(suffix);
 			}
 			a++;
@@ -312,6 +328,7 @@ public class Utility
 		boolean world = (boolean)mi.getDataI(player, "channel_world", "player_uuid");
 		boolean group = (boolean)mi.getDataI(player, "channel_group", "player_uuid");
 		boolean privatemsg = (boolean)mi.getDataI(player, "channel_pm", "player_uuid");
+		boolean custom = (boolean)mi.getDataI(player, "channel_custom", "player_uuid");
 		boolean spy = (boolean)mi.getDataI(player, "spy", "player_uuid");
 		
 		String comma = plugin.getYamlHandler().getL().getString(language+".join.comma");
@@ -329,6 +346,7 @@ public class Utility
 		if(admin) {ac += plugin.getYamlHandler().getL().getString(language+".join.admin")+comma;}
 		if(group) {ac += plugin.getYamlHandler().getL().getString(language+".join.group")+comma;}
 		if(privatemsg) {ac += plugin.getYamlHandler().getL().getString(language+".join.pm")+comma;}
+		if(custom) {ac += plugin.getYamlHandler().getL().getString(language+".join.custom")+comma;}
 		if(spy) {ac += plugin.getYamlHandler().getL().getString(language+".join.spy")+comma;}
 		return ac.substring(0, ac.length()-2);
 	}

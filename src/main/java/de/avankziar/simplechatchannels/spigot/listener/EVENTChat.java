@@ -47,6 +47,7 @@ public class EVENTChat implements Listener
 				plugin.getUtility().sendMessage(player, plugin.getYamlHandler().getL().getString(language+".punisher.msg01"));
 				return;
 			}
+		}
 		if(event.getMessage().startsWith("/"))
 		{
 			return;
@@ -69,6 +70,16 @@ public class EVENTChat implements Listener
 				}
 			}
 		}
+		
+		String channelwithoutsymbol = plugin.getYamlHandler().getL().getString(language+".channelsymbol.withoutsymbol");
+		String channel = plugin.getYamlHandler().getChannel(channelwithoutsymbol, event.getMessage());
+		String symbol = plugin.getYamlHandler().getSymbol(channel);
+		
+		boolean timeofdays = plugin.getYamlHandler().get().getString("addingtimeofdays").equalsIgnoreCase("true");
+		String timeofdaysformat = plugin.getUtility().getDate(plugin.getYamlHandler().get().getString("timeofdaysformat"));
+		String timeofdaysoutput = plugin.getUtility().tl(plugin.getYamlHandler().get().getString("timeofdaysoutput")
+				.replaceAll("%time%", timeofdaysformat));
+		
 		event.setCancelled(true);	
 		String pl = player.getUniqueId().toString();
 		boolean canchat = (boolean) plugin.getMysqlInterface().getDataI(player, "can_chat", "player_uuid");
@@ -88,186 +99,25 @@ public class EVENTChat implements Listener
 			return;
 		}
 		
-		if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("trade"))) //----------------------------------------------------------Trade Channel
-		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_trade"))
-			{
-				return;
-			}
-			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("trade").length()))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			TextComponent MSG = plugin.getUtility().tc("");
-			
-			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "trade", plugin.getYamlHandler().getSymbol("trade"),
-					plugin.getYamlHandler().getSymbol("trade").length()));
-			
-			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
-			
-			if(event.getMessage().substring(1).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			
-			plugin.getUtility().sendAllMessage(player, "channel_trade", MSG);
-			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("support"))) //----------------------------------------------------------Support Channel
-		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_support"))
-			{
-				return;
-			}
-			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("support").length()))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			TextComponent MSG = plugin.getUtility().tc("");
-			
-			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "support", plugin.getYamlHandler().getSymbol("support"),
-					plugin.getYamlHandler().getSymbol("support").length()));
-			
-			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
-			
-			if(event.getMessage().substring(1).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			
-			plugin.getUtility().sendAllMessage(player, "channel_support", MSG);
-			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("auction"))) //----------------------------------------------------------Auction Channel
-		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_auction"))
-			{
-				return;
-			}
-			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("auction").length()))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			TextComponent MSG = plugin.getUtility().tc("");
-			
-			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "auction", plugin.getYamlHandler().getSymbol("auction"), 
-					plugin.getYamlHandler().getSymbol("auction").length()));
-			
-			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
-			
-			if(event.getMessage().substring(1).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			
-			plugin.getUtility().sendAllMessage(player, "channel_auction", MSG);
-			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("team"))) //-------------------------------------Team Channel
-		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_team"))
-			{
-				return;
-			}
-			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("team").length()))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			TextComponent MSG = plugin.getUtility().tc("");
-			
-			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "team", plugin.getYamlHandler().getSymbol("team"),
-					plugin.getYamlHandler().getSymbol("team").length()));
-			
-			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
-			
-			if(event.getMessage().substring(1).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			
-			plugin.getUtility().sendAllMessage(player, "channel_team", MSG);
-			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("admin"))) //----------------------------------------------------------Admin Channel
-		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_admin"))
-			{
-				return;
-			}
-			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("admin").length()))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			TextComponent MSG = plugin.getUtility().tc("");
-			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "admin", plugin.getYamlHandler().getSymbol("admin"),
-					plugin.getYamlHandler().getSymbol("admin").length()));
-			
-			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
-			
-			if(event.getMessage().substring(1).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			
-			plugin.getUtility().sendAllMessage(player, "channel_admin", MSG);
-			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("local"))) //----------------------------------------------------------Local Channel
+		if(channel.equalsIgnoreCase("local")) //----------------------------------------------------------Local Channel
 		{			
 			if(!plugin.getUtility().hasChannelRights(player, "channel_local"))
 			{
 				return;
 			}
 			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("local").length()))) //Wordfilter
+			if(plugin.getUtility().getWordfilter(event.getMessage().substring(
+					symbol.length()))) //Wordfilter
 			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
+				player.spigot().sendMessage(plugin.getUtility().tcl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
 				return;
 			}
 			
 			if(event.getMessage().substring(1).length()<0)
 			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
+				player.spigot().sendMessage(plugin.getUtility().tcl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
 				return;
 			}
 			int blockDistance;
@@ -280,14 +130,16 @@ public class EVENTChat implements Listener
 			}
 			Location pyloc = player.getLocation();
 			
-			TextComponent MSG = plugin.getUtility().tc("");
+			TextComponent MSG = null;
+			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG = plugin.getUtility().tc("");}
+			
 			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "local", plugin.getYamlHandler().getSymbol("local"),
-					plugin.getYamlHandler().getSymbol("local").length()));
+					player, event.getMessage(), "local", symbol, symbol.length()));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
-			plugin.getUtility().spy(MSG);
+			plugin.getUtility().spy(player, MSG);
 			
 			for(Player t : Bukkit.getOnlinePlayers())
 			{
@@ -327,14 +179,17 @@ public class EVENTChat implements Listener
 				return;
 			}
 			
-			TextComponent MSG = plugin.getUtility().tc("");
+			TextComponent MSG = null;
+			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG = plugin.getUtility().tc("");}
+			
 			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
 					player, event.getMessage(), "world", plugin.getYamlHandler().getSymbol("world"),
 					plugin.getYamlHandler().getSymbol("world").length()));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
-			plugin.getUtility().spy(MSG);
+			plugin.getUtility().spy(player, MSG);
 			
 			for(Player t : Bukkit.getOnlinePlayers())
 			{
@@ -352,269 +207,42 @@ public class EVENTChat implements Listener
 			}
 			
 			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("group"))) //----------------------------------------------------------Gruppe Channel
+		} else if(channel.equalsIgnoreCase("global") || channel.equalsIgnoreCase("trade") || channel.equalsIgnoreCase("support") 
+				|| channel.equalsIgnoreCase("auction") || channel.equalsIgnoreCase("team") || channel.equalsIgnoreCase("admin")) 
+			//----------------------------------------------------------Trade Channel
 		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_group"))
-			{
-				return;
-			}			
-			
-			String[] eventmsg = event.getMessage().split(" ");
-			int lenghteventmsg = eventmsg[0].length()+1;
-			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(lenghteventmsg))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			String preorsuffix = eventmsg[0].substring(2);
-			String pors = "";
-			if(preorsuffix.startsWith("&"))
-			{
-				pors = preorsuffix.substring(2);
-			} else
-			{
-				pors = preorsuffix;
-			}
-			
-			String ps = plugin.getUtility().getPreOrSuffix(preorsuffix);
-			
-			if(ps.equals("scc.no_prefix_suffix"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg09")));
-				return;
-			}
-			
-			TextComponent channel = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".channels.group")
-					.replaceAll("%group%", preorsuffix));
-			channel.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("group")+pors+" "));
-			channel.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(
-							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.group"))).create()));
-			
-			List<BaseComponent> prefix = plugin.getUtility().getPrefix(player);
-			
-			TextComponent playertext = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName());
-			playertext.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
-			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(
-							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
-			
-			List<BaseComponent> suffix = plugin.getUtility().getSuffix(player);
-			
-			TextComponent msg = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".chatsplit.group")
-					+plugin.getUtility().MsgLater(lenghteventmsg,"group", event.getMessage()));
-			
-			TextComponent MSG = plugin.getUtility().tc("");
-			
-			MSG.setExtra(plugin.getUtility().getTCinLine(channel, prefix, playertext, suffix, msg));
-			
-			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
-			
-			if(event.getMessage().substring(lenghteventmsg).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			
-			player.spigot().sendMessage(MSG);
-			
-			for(Player all : Bukkit.getOnlinePlayers())
-			{
-				if(all.hasPermission(ps))
-				{ 
-					if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_group", "player_uuid"))
-					{
-						if(!plugin.getUtility().getIgnored(player,all))
-						{
-							all.spigot().sendMessage(MSG);
-						}
-					}
-				}
-			}
-			plugin.getUtility().spy(MSG);
-			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("pm")+"r ")) //----------------------------------------------------------Reply Message
-		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_pm"))
-			{
-				return;
-			}
-			if(!reply.containsKey(pl))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg05")));
-				return;
-			}
-			String target = reply.get(pl);
-			if(Bukkit.getPlayer(UUID.fromString(target)) == null)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg02")));
-				return;
-			}
-			Player tr = Bukkit.getPlayer(UUID.fromString(target));
-			String trl = tr.getUniqueId().toString();
-			
-			TextComponent channel1 = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".channels.message"));
-			channel1.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
-			channel1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
-			
-			TextComponent channel2 = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".channels.message"));
-			channel2.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
-			channel2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(
-							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", tr.getName()))).create()));
-			
-			TextComponent playertext = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName());
-			playertext.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
-			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
-			
-			TextComponent player2 = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".playertoplayer")+tr.getName());
-			player2.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
-			player2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
-			
-			TextComponent msg = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(3,"message", event.getMessage()));
-			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("pm").length()+2))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			TextComponent MSG1 = plugin.getUtility().tc("");
-			TextComponent MSG2 = plugin.getUtility().tc("");
-			
-			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2, msg));
-			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2, msg));
-			
-			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
-			
-			if(event.getMessage().substring(3).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			
-			if(!plugin.getUtility().hasChannelRights(tr, "channel_pm"))
-			{
-				return;
-			}
-			
-			if(plugin.getUtility().getIgnored(player,tr))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03")));
-				plugin.getUtility().spy(MSG1);
-				player.spigot().sendMessage(MSG2);
-				return;
-			}
-			tr.spigot().sendMessage(MSG1);
-			player.spigot().sendMessage(MSG2);
-			plugin.getUtility().spy(MSG1);
-			reply.put(pl, trl);
-			reply.put(trl, pl);
-			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("pm"))) //----------------------------------------------------------Private Message
-		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_pm"))
-			{
-				return;
-			}
-			
-			String[] targets = event.getMessage().split(" ");
-			String target = targets[0].substring(plugin.getYamlHandler().getSymbol("pm").length());
-			if(Bukkit.getPlayer(target) == null)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg02")));
-				return;
-			}
-			Player tr = Bukkit.getPlayer(target);
-			String trl = tr.getUniqueId().toString();
-			
-			TextComponent channel1 = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".channels.message"));
-			channel1.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
-			channel1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
-			
-			TextComponent channel2 = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".channels.message"));
-			channel2.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
-			channel2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", tr.getName()))).create()));
-			
-			TextComponent playertext = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName());
-			playertext.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
-			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
-			
-			TextComponent player2 = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".playertoplayer")+tr.getName());
-			player2.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
-			player2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-					, new ComponentBuilder(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", tr.getName()))).create()));
-			
-			TextComponent msg = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(targets[0].length()+1,"message", event.getMessage()));
-			
-			if(event.getMessage().substring(targets[0].length()+1).length()<0)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
-				return;
-			}
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("pm").length()))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			}
-			
-			TextComponent MSG1 = plugin.getUtility().tc("");
-			TextComponent MSG2 = plugin.getUtility().tc("");
-			
-			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2, msg));
-			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2, msg));
-			
-			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
-			
-			if(!plugin.getUtility().hasChannelRights(tr, "channel_pm"))
+			if(!plugin.getUtility().hasChannelRights(player, "channel_"+channel))
 			{
 				return;
 			}	
-			if(plugin.getUtility().getIgnored(player,tr))
+			
+			if(plugin.getUtility().getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
 			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03")));
-				plugin.getUtility().spy(MSG1);
-				player.spigot().sendMessage(MSG2);
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
 				return;
 			}
-			tr.spigot().sendMessage(MSG1);
-			player.spigot().sendMessage(MSG2);
-			plugin.getUtility().spy(MSG1);
-			reply.put(pl, trl);
-			reply.put(trl, pl);
+			
+			TextComponent MSG = null;
+			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG = plugin.getUtility().tc("");}
+			
+			
+			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
+					player, event.getMessage(), channel, symbol, symbol.length()));
+			
+			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
+			
+			if(event.getMessage().substring(1).length()<0)
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08"))));
+				return;
+			}
+			
+			plugin.getUtility().sendAllMessage(player, "channel_"+channel, MSG);
 			return;
-		} else if(event.getMessage().startsWith(plugin.getYamlHandler().getSymbol("custom"))) //----------------------------------------------------------Support Channel
+		} else if(channel.equals("custom")) //----------------------------------------------------------Support Channel
 		{
 			if(!plugin.getUtility().hasChannelRights(player, "channel_custom"))
 			{
@@ -628,18 +256,22 @@ public class EVENTChat implements Listener
 				return;
 			}
 			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("custom").length()))) //Wordfilter
+			CustomChannel cc = CustomChannel.getCustomChannel(player);
+			
+			if(plugin.getUtility().getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
 			{
 				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
 				return;
 			}
 			
-			TextComponent MSG = plugin.getUtility().tc("");
+			TextComponent MSG = null;
+			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG = plugin.getUtility().tc("");}
+			
 			
 			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "custom", plugin.getYamlHandler().getSymbol("custom"),
-					plugin.getYamlHandler().getSymbol("custom").length()));
+					player, event.getMessage(), "custom", symbol, symbol.length()));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -649,42 +281,344 @@ public class EVENTChat implements Listener
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08"))));
 				return;
 			}
-			plugin.getUtility().spy(MSG);
-			plugin.getUtility().sendAllMessage(player, "channel_custom", MSG);
+			plugin.getUtility().spy(player, MSG);
+			for(Player all : plugin.getServer().getOnlinePlayers())
+			{
+				if(cc.getMembers().contains(all))
+				{
+					if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
+					{
+						if(!plugin.getUtility().getIgnored(player,all))
+						{
+							all.spigot().sendMessage(MSG);
+						}
+					}
+				}
+			}
 			return;
-		} else //----------------------------------------------------------Global Channel
+		} else if(channel.equalsIgnoreCase("group")) //----------------------------------------------------------Gruppe Channel
 		{
-			if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
-			{
-				return;
-			}
-			if(!plugin.getUtility().hasChannelRights(player, "channel_global"))
+			if(!plugin.getUtility().hasChannelRights(player, "channel_group"))
 			{
 				return;
 			}
 			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("global").length()))) //Wordfilter
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
-				return;
-			} 
+			String[] eventmsg = event.getMessage().split(" ");
+			int lenghteventmsg = eventmsg[0].length()+1;
 			
-			TextComponent MSG = plugin.getUtility().tc("");
-			MSG.setExtra(plugin.getUtility().getAllTextComponentForChannels(
-					player, event.getMessage(), "global", plugin.getYamlHandler().getSymbol("global"), 
-					plugin.getYamlHandler().getSymbol("global").length()));
+			if(plugin.getUtility().getWordfilter(event.getMessage().substring(lenghteventmsg))) //Wordfilter
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
+				return;
+			}
+			
+			String preorsuffix = eventmsg[0].substring(symbol.length());
+			String pors = "";
+			if(preorsuffix.startsWith("&"))
+			{
+				pors = preorsuffix.substring(2);
+			} else
+			{
+				pors = preorsuffix;
+			}
+			
+			String ps = plugin.getUtility().getPreOrSuffix(preorsuffix);
+			
+			if(ps.equals("scc.no_prefix_suffix"))
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg09"))));
+				return;
+			}
+			
+			TextComponent channels = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".channels.group")
+					.replaceAll("%group%", preorsuffix)));
+			channels.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					symbol+pors+" "));
+			channels.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.group"))).create()));
+			
+			List<BaseComponent> prefix = plugin.getUtility().getPrefix(player);
+			
+			TextComponent playertext = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName()));
+			playertext.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
+			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", player.getName()))).create()));
+			
+			List<BaseComponent> suffix = plugin.getUtility().getSuffix(player);
+			
+			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".chatsplit.group")
+					+plugin.getUtility().MsgLater(lenghteventmsg,"group", event.getMessage())));
+			
+			TextComponent MSG = null;
+			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG = plugin.getUtility().tc("");}
+			
+			
+			MSG.setExtra(plugin.getUtility().getTCinLine(channels, prefix, playertext, suffix, msg));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
-			if(event.getMessage().substring(0).length()<0)
+			if(event.getMessage().substring(lenghteventmsg).length()<0)
 			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08")));
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08"))));
 				return;
 			}
 			
-			plugin.getUtility().sendAllMessage(player, "channel_global", MSG);
+			player.spigot().sendMessage(MSG);
+			
+			for(Player all : plugin.getServer().getOnlinePlayers())
+			{
+				if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_group", "player_uuid"))
+				{
+					if(!all.equals(player))
+					{
+						if(!plugin.getUtility().getIgnored(player,all))
+						{
+							if(all.hasPermission(ps))
+							{
+								all.spigot().sendMessage(MSG);
+							}
+						}
+					}
+				}
+			}
+			
+			plugin.getUtility().spy(player, MSG);
+			return;
+		} else if(channel.equalsIgnoreCase("pmre")) //Reply Message
+		{
+			if(!plugin.getUtility().hasChannelRights(player, "channel_pm"))
+			{
+				return;
+			}
+			if(!reply.containsKey(pl))
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg05"))));
+				return;
+			}
+			String target = reply.get(pl);
+			if(plugin.getServer().getPlayer(UUID.fromString(target)) == null)
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg02"))));
+				return;
+			}
+			Player tr = plugin.getServer().getPlayer(UUID.fromString(target));
+			String trl = tr.getUniqueId().toString();
+			
+			if(plugin.getAfkRecord().isAfk(tr))
+			{
+				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
+				return;
+			}
+			
+			TextComponent channel1 = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".channels.message")));
+			channel1.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
+			channel1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", player.getName()))).create()));
+			
+			TextComponent channel2 = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".channels.message")));
+			channel2.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
+			channel2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", tr.getName()))).create()));
+			
+			TextComponent playertext = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName()));
+			playertext.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
+			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", player.getName()))).create()));
+			
+			TextComponent player2text = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".playertoplayer")+tr.getName()));
+			player2text.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
+			player2text.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", player.getName()))).create()));
+			
+			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
+					+plugin.getUtility().MsgLater(3,"message", event.getMessage())));
+			
+			if(plugin.getUtility().getWordfilter(event.getMessage().substring(
+					symbol.length()+2))) //Wordfilter
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
+				return;
+			}
+			
+			TextComponent MSG1 = null;
+			if(timeofdays == true) {MSG1 = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG1 = plugin.getUtility().tc("");}
+			
+			TextComponent MSG2 = null;
+			if(timeofdays == true) {MSG2 = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG2 = plugin.getUtility().tc("");}
+			
+			
+			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2text, msg));
+			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2text, msg));
+			
+			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
+			
+			if(event.getMessage().substring(3).length()<0)
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08"))));
+				return;
+			}
+			
+			if(!plugin.getUtility().hasChannelRights(tr, "channel_pm"))
+			{
+				return;
+			}
+			if(plugin.getUtility().getIgnored(player,tr))
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
+				plugin.getUtility().spy(player, MSG1);
+				player.spigot().sendMessage(MSG2);
+				return;
+			}
+			tr.spigot().sendMessage(MSG1);
+			player.spigot().sendMessage(MSG2);
+			plugin.getUtility().spy(player, MSG1);
+			reply.put(pl, trl);
+			reply.put(trl, pl);
+			return;
+		} else if(channel.equalsIgnoreCase("pm")) //Private Message
+		{
+			if(!plugin.getUtility().hasChannelRights(player, "channel_pm"))
+			{
+				return;
+			}
+			
+			String[] targets = event.getMessage().split(" ");
+			String target = targets[0].substring(plugin.getYamlHandler().getSymbol("pm").length());
+			if(plugin.getServer().getPlayer(target) == null)
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg02"))));
+				return;
+			}
+			Player tr = plugin.getServer().getPlayer(target);
+			String trl = tr.getUniqueId().toString();
+			
+			if(plugin.getAfkRecord().isAfk(tr))
+			{
+				player.spigot().sendMessage(plugin.getUtility().tcl(
+						plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
+				return;
+			}
+			
+			TextComponent channel1 = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".channels.message")));
+			channel1.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
+			channel1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", player.getName()))).create()));
+			
+			TextComponent channel2 = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".channels.message")));
+			channel2.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
+			channel2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", tr.getName()))).create()));
+			
+			TextComponent playertext = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName()));
+			playertext.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+player.getName()+" "));
+			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", player.getName()))).create()));
+			
+			TextComponent player2text = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".playertoplayer")+tr.getName()));
+			player2text.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					plugin.getYamlHandler().getSymbol("pm")+tr.getName()+" "));
+			player2text.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+					, new ComponentBuilder(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+							.replaceAll("%player%", tr.getName()))).create()));
+			
+			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
+					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
+					+plugin.getUtility().MsgLater(targets[0].length()+1,"message", event.getMessage())));
+			
+			if(event.getMessage().substring(targets[0].length()+1).length()<0)
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08"))));
+				return;
+			}
+			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("pm").length()))) //Wordfilter
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
+				return;
+			}
+			
+			TextComponent MSG1 = null;
+			if(timeofdays == true) {MSG1 = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG1 = plugin.getUtility().tc("");}
+			
+			TextComponent MSG2 = null;
+			if(timeofdays == true) {MSG2 = plugin.getUtility().tc(timeofdaysoutput);}
+			else {MSG2 = plugin.getUtility().tc("");}
+			
+			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2text, msg));
+			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2text, msg));
+			
+			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
+			
+			if(!plugin.getUtility().hasChannelRights(tr, "channel_pm"))
+			{
+				return;
+			}	
+			if(plugin.getUtility().getIgnored(player,tr))
+			{
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
+				plugin.getUtility().spy(player, MSG1);
+				player.spigot().sendMessage(MSG2);
+				return;
+			}
+			tr.spigot().sendMessage(MSG1);
+			player.spigot().sendMessage(MSG2);
+			plugin.getUtility().spy(player, MSG1);
+			reply.put(pl, trl);
+			reply.put(trl, pl);
 			return;
 		}
-	}
 	}
 }

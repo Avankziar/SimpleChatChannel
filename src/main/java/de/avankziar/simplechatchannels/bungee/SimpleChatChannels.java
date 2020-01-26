@@ -2,6 +2,7 @@ package main.java.de.avankziar.simplechatchannels.bungee;
 
 import java.util.logging.Logger;
 
+import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
 import main.java.de.avankziar.punisher.bungee.PunisherBungee;
 import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDClickChat;
 import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannel;
@@ -9,7 +10,8 @@ import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlInterface;
 import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.de.avankziar.simplechatchannels.bungee.database.YamlHandler;
 import main.java.de.avankziar.simplechatchannels.bungee.listener.EVENTJoinLeave;
-import main.java.de.avankziar.simplechatchannels.bungee.listener.EVENTTabCompleter;
+import main.java.de.avankziar.simplechatchannels.bungee.listener.EVENTTabComplete;
+import main.java.de.avankziar.simplechatchannels.bungee.listener.ServerListener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -23,6 +25,7 @@ public class SimpleChatChannels extends Plugin
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
 	private PunisherBungee punisher;
+	private AfkRecord afkrecord;
 	
 	public void onEnable() 
 	{
@@ -36,9 +39,10 @@ public class SimpleChatChannels extends Plugin
 			databaseHandler = new MysqlSetup(this);
 		} else
 		{
-			log.severe("MySQL is not enabled! SCC wont work correctly!");
+			log.severe("MySQL is not enabled! "+pluginName+" wont work correctly!");
 		}
 		setupPunisher();
+		setupAfkRecord();
 		CommandSetup();
 		ListenerSetup();
 	}
@@ -97,7 +101,8 @@ public class SimpleChatChannels extends Plugin
 		PluginManager pm = getProxy().getPluginManager();
 		pm.registerListener(this, new main.java.de.avankziar.simplechatchannels.bungee.listener.EVENTChat(this));
 		pm.registerListener(this, new EVENTJoinLeave(this));
-		pm.registerListener(this, new EVENTTabCompleter());
+		pm.registerListener(this, new ServerListener(this));
+		pm.registerListener(this, new EVENTTabComplete());
 	}
 	
 	private boolean setupPunisher()
@@ -107,12 +112,28 @@ public class SimpleChatChannels extends Plugin
         	punisher = null;
             return false;
         }
-        punisher = PunisherBungee.plugin;
+        punisher = PunisherBungee.getPlugin();
         return true;
     }
+	
+	private boolean setupAfkRecord()
+	{
+		if(getProxy().getPluginManager().getPlugin("AfkRecord")==null)
+		{
+			punisher = null;
+            return false;
+		}
+		afkrecord = AfkRecord.getPlugin();
+		return true;
+	}
 	
 	public PunisherBungee getPunisher()
 	{
 		return punisher;
+	}
+	
+	public AfkRecord getAfkRecord()
+	{
+		return afkrecord;
 	}
 }

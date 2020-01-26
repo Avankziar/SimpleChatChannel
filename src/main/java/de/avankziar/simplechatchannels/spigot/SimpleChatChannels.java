@@ -7,15 +7,16 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
 import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
 import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
+import main.java.de.avankziar.simplechatchannels.spigot.commands.TABCompleter;
 import main.java.de.avankziar.simplechatchannels.spigot.database.MysqlInterface;
 import main.java.de.avankziar.simplechatchannels.spigot.database.MysqlSetup;
 import main.java.de.avankziar.simplechatchannels.spigot.database.YamlHandler;
 import main.java.de.avankziar.simplechatchannels.spigot.listener.EVENTChat;
 import main.java.de.avankziar.simplechatchannels.spigot.listener.EVENTJoinLeave;
-import main.java.de.avankziar.simplechatchannels.spigot.listener.EVENTTabCompleter;
 import main.java.de.avankziar.simplechatchannels.spigot.listener.ServerListener;
 
 public class SimpleChatChannels extends JavaPlugin
@@ -28,6 +29,7 @@ public class SimpleChatChannels extends JavaPlugin
 	private static BackgroundTask backgroundtask;
 	private static Utility utility;
 	private Punisher punisher;
+	private AfkRecord afkrecord;
 	
 	public void onEnable()
 	{
@@ -45,6 +47,7 @@ public class SimpleChatChannels extends JavaPlugin
 			return;
 		}
 		setupPunisher();
+		setupAfkRecord();
 		CommandSetup();
 		ListenerSetup();
 	}
@@ -94,14 +97,15 @@ public class SimpleChatChannels extends JavaPlugin
 	{
 		getCommand("scc").setExecutor(new CMDSimpleChatChannels(this));
 		getCommand("clickchat").setExecutor(new CMDClickChat(this));
+		getCommand("scc").setTabCompleter(new TABCompleter());
 	}
 	
 	public void ListenerSetup()
 	{
 		PluginManager pm = getServer().getPluginManager();
 		getServer().getMessenger().registerIncomingPluginChannel(this, "simplechatchannels:sccbungee", new ServerListener(this));
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "simplechatchannels:sccbungee");
 		pm.registerEvents(new EVENTChat(this), this);
-		pm.registerEvents(new EVENTTabCompleter(this), this);
 		pm.registerEvents(new EVENTJoinLeave(this), this);
 	}
 	
@@ -110,7 +114,7 @@ public class SimpleChatChannels extends JavaPlugin
 		return punisher;
 	}
 	
-	public boolean setupPunisher()
+	private boolean setupPunisher()
 	{
 		if (getServer().getPluginManager().getPlugin("Punisher") == null) 
         {
@@ -119,5 +123,21 @@ public class SimpleChatChannels extends JavaPlugin
         }
         punisher = Punisher.getPlugin();
         return true;
+	}
+	
+	private boolean setupAfkRecord()
+	{
+		if(getServer().getPluginManager().getPlugin("AfkRecord") == null)
+		{
+			afkrecord = null;
+			return false;
+		}
+		afkrecord = AfkRecord.getPlugin();
+		return true;
+	}
+	
+	public AfkRecord getAfkRecord()
+	{
+		return afkrecord;
 	}
 }

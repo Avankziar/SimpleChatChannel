@@ -103,7 +103,8 @@ public class MysqlSetup
 		}
 	}
 	
-	public Connection getConnection() {
+	public Connection getConnection() 
+	{
 		checkConnection();
 		return conn;
 	}
