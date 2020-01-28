@@ -929,6 +929,7 @@ public class CMDSimpleChatChannel extends Command
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return;
 			}
+    		final String name = cc.getName();
     		cc.removeMembers(player);
     		if(cc.getCreator().getName().equals(player.getName()))
     		{
@@ -940,14 +941,22 @@ public class CMDSimpleChatChannel extends Command
     					newcreator = pp;
     				}
     			}
-    			cc.setCreator(newcreator);
-    			newcreator.sendMessage(plugin.getUtility().tcl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
-    					.replaceAll("%channel%", cc.getName())));
+    			if(newcreator!=null)
+    			{
+    				cc.setCreator(newcreator);
+        			newcreator.sendMessage(plugin.getUtility().tcl(
+        					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg03")
+        					.replaceAll("%channel%", cc.getName())));
+    			} else 
+    			{
+    				CustomChannel.removeCustomChannel(cc);
+    				cc = null;
+    			}
+    			
     		}
     		player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg03")
-					.replaceAll("%channel%", cc.getName())));
+					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
+					.replaceAll("%channel%", name)));
 			return;
     	} else if("channelkick".equalsIgnoreCase(args[0])) 
     	{

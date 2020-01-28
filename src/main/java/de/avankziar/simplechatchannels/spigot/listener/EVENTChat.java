@@ -284,13 +284,16 @@ public class EVENTChat implements Listener
 			plugin.getUtility().spy(player, MSG);
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
-				if(cc.getMembers().contains(all))
+				for(Player members : cc.getMembers())
 				{
-					if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
+					if(members.getName().equals(all.getName()))
 					{
-						if(!plugin.getUtility().getIgnored(player,all))
+						if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
 						{
-							all.spigot().sendMessage(MSG);
+							if(!plugin.getUtility().getIgnored(player,all))
+							{
+								all.spigot().sendMessage(MSG);
+							}
 						}
 					}
 				}
@@ -417,10 +420,14 @@ public class EVENTChat implements Listener
 			Player tr = plugin.getServer().getPlayer(UUID.fromString(target));
 			String trl = tr.getUniqueId().toString();
 			
-			if(plugin.getAfkRecord().isAfk(tr))
+			if(plugin.getAfkRecord()!=null)
 			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
-				return;
+				if(plugin.getAfkRecord().isAfk(tr))
+				{
+					player.spigot().sendMessage(plugin.getUtility().tcl(
+							plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
+					return;
+				}
 			}
 			
 			TextComponent channel1 = plugin.getUtility().tc(plugin.getUtility().tl(
@@ -528,11 +535,14 @@ public class EVENTChat implements Listener
 			Player tr = plugin.getServer().getPlayer(target);
 			String trl = tr.getUniqueId().toString();
 			
-			if(plugin.getAfkRecord().isAfk(tr))
+			if(plugin.getAfkRecord()!=null)
 			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
-				return;
+				if(plugin.getAfkRecord().isAfk(tr))
+				{
+					player.spigot().sendMessage(plugin.getUtility().tcl(
+							plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
+					return;
+				}
 			}
 			
 			TextComponent channel1 = plugin.getUtility().tc(plugin.getUtility().tl(

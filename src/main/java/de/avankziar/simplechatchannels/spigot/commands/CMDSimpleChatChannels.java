@@ -966,6 +966,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return false;
 			}
+    		final String name = cc.getName();
     		cc.removeMembers(player);
     		if(cc.getCreator().getName().equals(player.getName()))
     		{
@@ -977,14 +978,21 @@ public class CMDSimpleChatChannels implements CommandExecutor
     					newcreator = pp;
     				}
     			}
-    			cc.setCreator(newcreator);
-    			newcreator.spigot().sendMessage(plugin.getUtility().tcl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
-    					.replaceAll("%channel%", cc.getName())));
+    			if(newcreator!=null)
+    			{
+    				cc.setCreator(newcreator);
+        			newcreator.spigot().sendMessage(plugin.getUtility().tcl(
+        					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg03")
+        					.replaceAll("%channel%", cc.getName())));
+    			} else 
+    			{
+    				CustomChannel.removeCustomChannel(cc);
+    				cc = null;
+    			}
     		}
     		player.spigot().sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg03")
-					.replaceAll("%channel%", cc.getName())));
+					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
+					.replaceAll("%channel%", name)));
 			return true;
     	} else if("channelkick".equalsIgnoreCase(args[0])) 
     	{

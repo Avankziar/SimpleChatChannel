@@ -189,13 +189,16 @@ public class EVENTChat implements Listener
 			plugin.getUtility().spy(MSG);
 			for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 			{
-				if(cc.getMembers().contains(all))
+				for(ProxiedPlayer members : cc.getMembers())
 				{
-					if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
+					if(members.getName().equals(all.getName()))
 					{
-						if(!plugin.getUtility().getIgnored(player,all))
+						if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
 						{
-							all.sendMessage(MSG);
+							if(!plugin.getUtility().getIgnored(player,all))
+							{
+								all.sendMessage(MSG);
+							}
 						}
 					}
 				}
@@ -320,10 +323,13 @@ public class EVENTChat implements Listener
 			}
 			ProxiedPlayer tr = ProxyServer.getInstance().getPlayer(UUID.fromString(target));
 			
-			if(plugin.getAfkRecord().isAfk(tr))
+			if(plugin.getAfkRecord()!=null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
-				return;
+				if(plugin.getAfkRecord().isAfk(tr))
+				{
+					player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
+					return;
+				}
 			}
 			
 			String trl = tr.getUniqueId().toString();
@@ -432,10 +438,13 @@ public class EVENTChat implements Listener
 			ProxiedPlayer tr = ProxyServer.getInstance().getPlayer(target);
 			String trl = tr.getUniqueId().toString();
 			
-			if(plugin.getAfkRecord().isAfk(tr))
+			if(plugin.getAfkRecord()!=null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
-				return;
+				if(plugin.getAfkRecord().isAfk(tr))
+				{
+					player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".afkrecord.msg01")));
+					return;
+				}
 			}
 			
 			TextComponent channel1 = plugin.getUtility().tc(plugin.getUtility().tl(
