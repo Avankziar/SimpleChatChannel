@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.bungee.interfaces;
+package main.java.me.avankziar.simplechatchannels.bungee.interfaces;
 
 import java.util.ArrayList;
 

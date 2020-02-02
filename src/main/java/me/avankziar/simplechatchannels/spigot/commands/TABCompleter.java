@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot.commands;
+package main.java.me.avankziar.simplechatchannels.spigot.commands;
 
 import java.util.ArrayList;
 import java.util.Collections;

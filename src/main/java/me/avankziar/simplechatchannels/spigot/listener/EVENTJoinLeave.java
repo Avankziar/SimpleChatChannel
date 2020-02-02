@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot.listener;
+package main.java.me.avankziar.simplechatchannels.spigot.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.de.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 
 public class EVENTJoinLeave implements Listener
 {

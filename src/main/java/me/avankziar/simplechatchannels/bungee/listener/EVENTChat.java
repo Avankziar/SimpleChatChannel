@@ -1,11 +1,11 @@
-package main.java.de.avankziar.simplechatchannels.bungee.listener;
+package main.java.me.avankziar.simplechatchannels.bungee.listener;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-import main.java.de.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.de.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

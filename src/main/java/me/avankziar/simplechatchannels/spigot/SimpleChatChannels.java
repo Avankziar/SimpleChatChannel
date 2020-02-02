@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot;
+package main.java.me.avankziar.simplechatchannels.spigot;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -10,16 +10,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
 import main.java.de.avankziar.punisher.main.Punisher;
-import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
-import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannelEditor;
-import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
-import main.java.de.avankziar.simplechatchannels.spigot.commands.TABCompleter;
-import main.java.de.avankziar.simplechatchannels.spigot.database.MysqlInterface;
-import main.java.de.avankziar.simplechatchannels.spigot.database.MysqlSetup;
-import main.java.de.avankziar.simplechatchannels.spigot.database.YamlHandler;
-import main.java.de.avankziar.simplechatchannels.spigot.listener.EVENTChat;
-import main.java.de.avankziar.simplechatchannels.spigot.listener.EVENTJoinLeave;
-import main.java.de.avankziar.simplechatchannels.spigot.listener.ServerListener;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannelEditor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.TABCompleter;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlInterface;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlSetup;
+import main.java.me.avankziar.simplechatchannels.spigot.database.YamlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.listener.EVENTChat;
+import main.java.me.avankziar.simplechatchannels.spigot.listener.EVENTJoinLeave;
+import main.java.me.avankziar.simplechatchannels.spigot.listener.ServerListener;
 
 public class SimpleChatChannels extends JavaPlugin
 {

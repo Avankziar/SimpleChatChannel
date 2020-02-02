@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.bungee;
+package main.java.me.avankziar.simplechatchannels.bungee;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlInterface;
+import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlInterface;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;

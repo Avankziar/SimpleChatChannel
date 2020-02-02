@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.bungee;
+package main.java.me.avankziar.simplechatchannels.bungee;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;

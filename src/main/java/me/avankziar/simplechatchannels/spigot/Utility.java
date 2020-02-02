@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot;
+package main.java.me.avankziar.simplechatchannels.spigot;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -15,7 +15,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
 
-import main.java.de.avankziar.simplechatchannels.spigot.database.MysqlInterface;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlInterface;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

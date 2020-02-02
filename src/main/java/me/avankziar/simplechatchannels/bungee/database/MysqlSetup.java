@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.bungee.database;
+package main.java.me.avankziar.simplechatchannels.bungee.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import main.java.de.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 
 public class MysqlSetup 
 {

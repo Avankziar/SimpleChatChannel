@@ -1,6 +1,6 @@
-package main.java.de.avankziar.simplechatchannels.bungee.commands;
+package main.java.me.avankziar.simplechatchannels.bungee.commands;
 
-import main.java.de.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;

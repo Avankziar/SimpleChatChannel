@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.bungee.listener;
+package main.java.me.avankziar.simplechatchannels.bungee.listener;
 
 import java.util.ArrayList;
 import java.util.Collections;

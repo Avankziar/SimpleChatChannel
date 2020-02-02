@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot.interfaces;
+package main.java.me.avankziar.simplechatchannels.spigot.interfaces;
 
 import java.util.ArrayList;
 

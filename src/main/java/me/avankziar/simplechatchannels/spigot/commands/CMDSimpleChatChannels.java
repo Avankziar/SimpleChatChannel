@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot.commands;
+package main.java.me.avankziar.simplechatchannels.spigot.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.de.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
-import main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;

@@ -1,11 +1,11 @@
-package main.java.de.avankziar.simplechatchannels.bungee.database;
+package main.java.me.avankziar.simplechatchannels.bungee.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import main.java.de.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class MysqlInterface 

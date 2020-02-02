@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot.listener;
+package main.java.me.avankziar.simplechatchannels.spigot.listener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,8 +14,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.de.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;

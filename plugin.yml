@@ -1,5 +1,5 @@
 name: SimpleChatChannels
-main: main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels
+main: main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels
 version: 30
 author: Avankziar
 description: A Chat Plugin

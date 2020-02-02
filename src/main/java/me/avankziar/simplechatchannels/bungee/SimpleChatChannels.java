@@ -1,19 +1,19 @@
-package main.java.de.avankziar.simplechatchannels.bungee;
+package main.java.me.avankziar.simplechatchannels.bungee;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
 import main.java.de.avankziar.punisher.bungee.PunisherBungee;
-import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDClickChat;
-import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannel;
-import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannelEditor;
-import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlInterface;
-import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlSetup;
-import main.java.de.avankziar.simplechatchannels.bungee.database.YamlHandler;
-import main.java.de.avankziar.simplechatchannels.bungee.listener.EVENTJoinLeave;
-import main.java.de.avankziar.simplechatchannels.bungee.listener.EVENTTabComplete;
-import main.java.de.avankziar.simplechatchannels.bungee.listener.ServerListener;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDClickChat;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannelEditor;
+import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlInterface;
+import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
+import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.listener.EVENTJoinLeave;
+import main.java.me.avankziar.simplechatchannels.bungee.listener.EVENTTabComplete;
+import main.java.me.avankziar.simplechatchannels.bungee.listener.ServerListener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -103,7 +103,7 @@ public class SimpleChatChannels extends Plugin
 	{
 		getProxy().registerChannel("simplechatchannels:sccbungee");
 		PluginManager pm = getProxy().getPluginManager();
-		pm.registerListener(this, new main.java.de.avankziar.simplechatchannels.bungee.listener.EVENTChat(this));
+		pm.registerListener(this, new main.java.me.avankziar.simplechatchannels.bungee.listener.EVENTChat(this));
 		pm.registerListener(this, new EVENTJoinLeave(this));
 		pm.registerListener(this, new ServerListener(this));
 		pm.registerListener(this, new EVENTTabComplete());

@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot.listener;
+package main.java.me.avankziar.simplechatchannels.spigot.listener;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
 public class ServerListener  implements PluginMessageListener
 {

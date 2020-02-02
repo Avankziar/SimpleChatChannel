@@ -1,4 +1,4 @@
-package main.java.de.avankziar.simplechatchannels.spigot.database;
+package main.java.me.avankziar.simplechatchannels.spigot.database;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
 public class YamlHandler 
 {
