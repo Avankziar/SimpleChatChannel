@@ -34,6 +34,11 @@ public class EVENTJoinLeave implements Listener
 		player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
 		player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg01")
 				.replaceAll("%player%", player.getName())));
+		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
+		if(globaljoin==false)
+		{
+			return;
+		}
 		for(Player all : Bukkit.getOnlinePlayers())
 		{
 			if(!all.getName().equals(player.getName()))
@@ -51,6 +56,13 @@ public class EVENTJoinLeave implements Listener
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event)
 	{
+		if(plugin.getYamlHandler().get().getString("bungee").equals("false"))
+		{
+			if(SimpleChatChannels.editorplayers.contains(event.getPlayer().getName()))
+			{
+				SimpleChatChannels.editorplayers.remove(event.getPlayer().getName());
+			}
+		}
 		if(plugin.getYamlHandler().get().getString("bungee").equals("true"))
 		{
 			event.setQuitMessage("");
@@ -58,6 +70,7 @@ public class EVENTJoinLeave implements Listener
 		}
 		String scc = ".CMD_SCC.";
 		String language = plugin.getYamlHandler().get().getString("language");
+		
 		CustomChannel cc = CustomChannel.getCustomChannel(event.getPlayer());
 		if(cc!=null)
 		{
@@ -80,6 +93,11 @@ public class EVENTJoinLeave implements Listener
 		}
 		event.setQuitMessage("");
 		Player player = event.getPlayer();
+		Boolean globalleave = plugin.getYamlHandler().get().getString("showleavemessageglobal").equals("true");
+		if(globalleave==false)
+		{
+			return;
+		}
 		for(Player all : Bukkit.getOnlinePlayers())
 		{
 			if((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid"))

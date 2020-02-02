@@ -1,11 +1,13 @@
 package main.java.de.avankziar.simplechatchannels.bungee;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
 import main.java.de.avankziar.punisher.bungee.PunisherBungee;
 import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDClickChat;
 import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannel;
+import main.java.de.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannelEditor;
 import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlInterface;
 import main.java.de.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.de.avankziar.simplechatchannels.bungee.database.YamlHandler;
@@ -26,6 +28,7 @@ public class SimpleChatChannels extends Plugin
 	private static BackgroundTask backgroundtask;
 	private PunisherBungee punisher;
 	private AfkRecord afkrecord;
+	public ArrayList<String> editorplayers = new ArrayList<>();
 	
 	public void onEnable() 
 	{
@@ -92,6 +95,7 @@ public class SimpleChatChannels extends Plugin
 	{
 		PluginManager pm = getProxy().getPluginManager();
 		pm.registerCommand(this, new CMDSimpleChatChannel(this));
+		pm.registerCommand(this, new CMDSimpleChatChannelEditor(this));
 		pm.registerCommand(this, new CMDClickChat(this));
 	}
 	

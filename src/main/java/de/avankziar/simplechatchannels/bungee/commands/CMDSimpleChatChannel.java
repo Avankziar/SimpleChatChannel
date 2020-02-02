@@ -34,7 +34,7 @@ public class CMDSimpleChatChannel extends Command
     	String language = plugin.getYamlHandler().get().getString("language");
     	if(args.length == 0)
     	{
-    		if(player.hasPermission("scc.admin"))
+    		if(player.hasPermission("scc.option.admin"))
     		{
     			TextComponent msg1 = plugin.getUtility().tc(plugin.getUtility().tl(
     					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01")));
@@ -180,7 +180,8 @@ public class CMDSimpleChatChannel extends Command
     			for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
         		{
     				TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
-    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@"+pp.getName()+" "));
+    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+    						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
     				list.add(prefix);
         		}
     			if(list.isEmpty())
@@ -202,7 +203,8 @@ public class CMDSimpleChatChannel extends Command
     				if(pp.getName().contains(s))
     				{
     					TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
-        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@"+pp.getName()+" "));
+        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+        						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
         				list.add(prefix);
     				}
         		}
@@ -256,7 +258,8 @@ public class CMDSimpleChatChannel extends Command
     			for(String g : groups)
         		{
     				TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
-    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@*"+g+" "));
+    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+    						plugin.getYamlHandler().getSymbol("group")+g+" "));
     				list.add(prefix);
         		}
     			if(list.isEmpty())
@@ -278,7 +281,8 @@ public class CMDSimpleChatChannel extends Command
     				if(s.contains(g))
     				{
     					TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
-        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@*"+g+" "));
+        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+        						plugin.getYamlHandler().getSymbol("group")+g+" "));
         				list.add(prefix);	
     				}
         		}
@@ -363,6 +367,29 @@ public class CMDSimpleChatChannel extends Command
 				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
 						.replaceAll("%channel%", "Auction")));
 			}
+		} else if(args[0].equalsIgnoreCase("local") || args[0].equalsIgnoreCase("lokal"))//--------------------------------------------------local
+		{
+			if(!player.hasPermission("scc.channels.local"))
+			{
+				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				return;
+			}
+			if(plugin.getUtility().rightArgs(player,args,1))
+			{
+				return;
+			}
+			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_local", "player_uuid"))
+			{
+				plugin.getMysqlInterface().updateDataI(player, false, "channel_local");
+				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
+						.replaceAll("%channel%", "Local")));
+			} else
+			{
+				plugin.getMysqlInterface().updateDataI(player, true, "channel_local");
+				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
+						.replaceAll("%channel%", "Local")));
+			}
+			return;
 		} else if("support".equalsIgnoreCase(args[0]) || "hilfe".equalsIgnoreCase(args[0]))
 		{
 			if(!player.hasPermission("scc.channels.support"))
@@ -429,6 +456,29 @@ public class CMDSimpleChatChannel extends Command
 				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
 						.replaceAll("%channel%", "Admin")));
 			}
+		} else if(args[0].equalsIgnoreCase("world") || args[0].equalsIgnoreCase("welt"))//--------------------------------------------------world
+		{
+			if(!player.hasPermission("scc.channels.world"))
+			{
+				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				return;
+			}
+			if(plugin.getUtility().rightArgs(player,args,1))
+			{
+				return;
+			}
+			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_world", "player_uuid"))
+			{
+				plugin.getMysqlInterface().updateDataI(player, false, "channel_world");
+				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
+						.replaceAll("%channel%", "World")));
+			} else
+			{
+				plugin.getMysqlInterface().updateDataI(player, true, "channel_world");
+				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
+						.replaceAll("%channel%", "World")));
+			}
+			return;
 		} else if("pm".equalsIgnoreCase(args[0]) || "pn".equalsIgnoreCase(args[0]))
 		{
 			if(!player.hasPermission("scc.channels.pm"))
@@ -497,7 +547,7 @@ public class CMDSimpleChatChannel extends Command
 			}
 		} else if("spy".equalsIgnoreCase(args[0]) || "spitzeln".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.spy"))
+			if(!player.hasPermission("scc.option.spy"))
 			{
 				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
@@ -522,7 +572,7 @@ public class CMDSimpleChatChannel extends Command
 				|| "Eintrittsnachricht".equalsIgnoreCase(args[0]))
 			//--------------------------------------------------joinmessage
 		{
-			if(!player.hasPermission("scc.join"))
+			if(!player.hasPermission("scc.option.join"))
 			{
 				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
@@ -573,7 +623,7 @@ public class CMDSimpleChatChannel extends Command
 			{
 				return;
 			}
-			plugin.getUtility().sendMessage(player.getServer(),"simplechatchannels:scc", "bungeeswitch");
+			plugin.getUtility().sendMessage(player.getServer(),"simplechatchannels:sccbungee", "bungeeswitch");
 		} else if("mute".equalsIgnoreCase(args[0]) || "verstummen".equalsIgnoreCase(args[0]))
 		{
 			if(!player.hasPermission("scc.cmd.mute"))
@@ -739,12 +789,12 @@ public class CMDSimpleChatChannel extends Command
     		}
     		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
     		{
-    			all.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg20")
-    					.replaceAll("%msg%", msg)));
+    			all.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")
+    					.replaceAll("%msg%", plugin.getUtility().MsgLater(player, 0, "global", msg))));
     		}
-    	} else if("channelcreate".equalsIgnoreCase(args[0])) 
+    	} else if("cccreate".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelcreate"))
+    		if(!player.hasPermission("scc.cmd.cc.create"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
@@ -784,9 +834,9 @@ public class CMDSimpleChatChannel extends Command
     			plugin.getUtility().rightArgs(player,args,3);
     		}
 			return;
-    	} else if("channeljoin".equalsIgnoreCase(args[0]) || "join".equalsIgnoreCase(args[0])) 
+    	} else if("ccjoin".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channeljoin"))
+    		if(!player.hasPermission("scc.cmd.cc.join"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
@@ -873,9 +923,9 @@ public class CMDSimpleChatChannel extends Command
     			plugin.getUtility().rightArgs(player,args,3);
     		}
     		return;
-    	} else if("channelinfo".equalsIgnoreCase(args[0])) 
+    	} else if("ccinfo".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelinfo"))
+    		if(!player.hasPermission("scc.cmd.cc.info"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
@@ -911,9 +961,9 @@ public class CMDSimpleChatChannel extends Command
 					plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg05")
 					.replaceAll("%banned%", cc.getBanned().toString())));
 			return;
-    	} else if("channelleave".equalsIgnoreCase(args[0]) || "leave".equalsIgnoreCase(args[0])) 
+    	} else if("ccleave".equalsIgnoreCase(args[0]) || "leave".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelleave"))
+    		if(!player.hasPermission("scc.cmd.cc.leave"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
@@ -958,9 +1008,9 @@ public class CMDSimpleChatChannel extends Command
 					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
 					.replaceAll("%channel%", name)));
 			return;
-    	} else if("channelkick".equalsIgnoreCase(args[0])) 
+    	} else if("cckick".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelkick"))
+    		if(!player.hasPermission("scc.cmd.cc.kick"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
@@ -1009,9 +1059,9 @@ public class CMDSimpleChatChannel extends Command
     					.replaceAll("%player%", args[1])));
     		}
 			return;
-    	} else if("channelban".equalsIgnoreCase(args[0])) 
+    	} else if("ccban".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelban"))
+    		if(!player.hasPermission("scc.cmd.cc.ban"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
@@ -1067,9 +1117,9 @@ public class CMDSimpleChatChannel extends Command
     					.replaceAll("%player%", args[1])));
     		}
 			return;
-    	} else if("channelunban".equalsIgnoreCase(args[0])) 
+    	} else if("ccunban".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelunban"))
+    		if(!player.hasPermission("scc.cmd.cc.unban"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
@@ -1116,9 +1166,9 @@ public class CMDSimpleChatChannel extends Command
     					.replaceAll("%player%", target.getName())));
     		}
 			return;
-    	} else if("changepassword".equalsIgnoreCase(args[0])) 
+    	} else if("ccchangepassword".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.changepassword"))
+    		if(!player.hasPermission("scc.cmd.cc.changepassword"))
     		{
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;

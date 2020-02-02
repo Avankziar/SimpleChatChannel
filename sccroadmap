@@ -4,3 +4,14 @@
 - +subcmd tabbar machen
 - +pre und suffixe channel nur für die einsichtbar
 - +serverzeit einfügbar machen
+
+- +/scceditor einbauen, um jedwede chateingabe zu returnen (nicht canceln)
+- +/scc channelcreate etc. zu /scc cccreate geändert (für alle custom channels commands)
+- +customchannel perms zu scc.cmd.cc.=> geändert
+- +scc.admin/scc.spy/scc.join geändert zu scc.option.=>
+- +in den Config neue Punkt => useprefixforplayercolor: 'true' hinzugefügt. Dieser setzt fest,
+   ob man für die Spieler vom ersten eingesetzten Prefix die Farben für den Spieler übernehmen will
+- +showjoinmessageglobal: 'false' , neu hinzugefügt um global joinnachrichten auszuschalten
+- +showleavemessageglobal: 'false' , neu hinzugefügt um global leavenachrichten auszuschalten
+- +farbig schreiben können, per perm => scc.channels.colorbypass
+- +broadcast soll farbe in der zweiten zeile behalten

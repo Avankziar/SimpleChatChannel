@@ -1,5 +1,6 @@
 package main.java.de.avankziar.simplechatchannels.spigot;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -10,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
 import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
+import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannelEditor;
 import main.java.de.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
 import main.java.de.avankziar.simplechatchannels.spigot.commands.TABCompleter;
 import main.java.de.avankziar.simplechatchannels.spigot.database.MysqlInterface;
@@ -30,10 +32,12 @@ public class SimpleChatChannels extends JavaPlugin
 	private static Utility utility;
 	private Punisher punisher;
 	private AfkRecord afkrecord;
+	public static ArrayList<String> editorplayers;
 	
 	public void onEnable()
 	{
 		log = getLogger();
+		editorplayers = new ArrayList<>();
 		yamlHandler = new YamlHandler(this);
 		utility = new Utility(this);
 		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
@@ -98,6 +102,7 @@ public class SimpleChatChannels extends JavaPlugin
 		getCommand("scc").setExecutor(new CMDSimpleChatChannels(this));
 		getCommand("clickchat").setExecutor(new CMDClickChat(this));
 		getCommand("scc").setTabCompleter(new TABCompleter());
+		getCommand("scceditor").setExecutor(new CMDSimpleChatChannelEditor(this));
 	}
 	
 	public void ListenerSetup()

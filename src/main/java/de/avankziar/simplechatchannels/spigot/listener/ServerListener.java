@@ -21,15 +21,14 @@ public class ServerListener  implements PluginMessageListener
 	public void onPluginMessageReceived(String channel, Player player, byte[] bytes) 
 	{
 		String language = plugin.getYamlHandler().get().getString("language");
-		if(channel.equals("simplechatchannels:scc")) 
+		if(channel.equals("simplechatchannels:sccbungee")) 
 		{
         	ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
             DataInputStream in = new DataInputStream(stream);
             try {
-            	String[] s = in.readUTF().split("μ");
-            	String Category = s[0];
-            	
-            	if(Category.equals("bungeeswitch"))
+            	String[] s = in.readUTF().split("µ");
+            	final String Category = s[0];
+            	if(Category.equalsIgnoreCase("bungeeswitch"))
             	{
             		String boo = plugin.getYamlHandler().get().getString("bungee");
             		if(boo.equals("true"))
@@ -47,6 +46,27 @@ public class ServerListener  implements PluginMessageListener
         						plugin.getYamlHandler().getL().getString(language+".CMD_SCC.serverlistener.msg02")));
         				return;
             		}
+            	} else if(Category.equalsIgnoreCase("editor"))
+            	{
+            		String playername= s[1];
+            		String i = s[2];
+            		if(i.equals("remove"))
+            		{
+            			if(SimpleChatChannels.editorplayers.contains(playername))
+            			{
+            				SimpleChatChannels.editorplayers.remove(playername);
+            			}
+            			return;
+            		} else if(i.equals("add"))
+            		{
+            			SimpleChatChannels.log.info("Bungeemsg: "+playername+" "+SimpleChatChannels.editorplayers.contains(playername));
+            			if(!SimpleChatChannels.editorplayers.contains(playername))
+            			{
+            				SimpleChatChannels.editorplayers.add(playername);
+            			}
+            			return;
+            		}
+            		return;
             	}
             } catch (IOException e) {
     			e.printStackTrace();

@@ -32,6 +32,11 @@ public class EVENTJoinLeave implements Listener
 		player.sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
 		player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(
 				language+".EVENT_JoinLeave.msg01").replaceAll("%player%", pn)));
+		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
+		if(globaljoin==false)
+		{
+			return;
+		}
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
 			if(!all.getName().equals(player.getName()))
@@ -60,6 +65,13 @@ public class EVENTJoinLeave implements Listener
 		String language = plugin.getYamlHandler().get().getString("language");
 		String pn = player.getName();
 		String scc = ".CMD_SCC.";
+		if(plugin.editorplayers.contains(player.getName()))
+		{
+			plugin.editorplayers.remove(player.getName());
+			String µ = "µ";
+			String message = "editor"+µ+player.getName()+µ+"remove";
+			plugin.getUtility().sendSpigotMessage("simplechatchannels:sccbungee", message);
+		}
 		CustomChannel cc = CustomChannel.getCustomChannel(pn);
 		if(cc!=null)
 		{
@@ -83,6 +95,11 @@ public class EVENTJoinLeave implements Listener
 		if(!plugin.getMysqlInterface().hasAccount(player))
 		{
 			plugin.getMysqlInterface().createAccount(player);
+		}
+		Boolean globalleave = plugin.getYamlHandler().get().getString("showleavemessageglobal").equals("true");
+		if(globalleave==false)
+		{
+			return;
 		}
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{

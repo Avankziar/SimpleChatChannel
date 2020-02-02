@@ -38,6 +38,10 @@ public class EVENTChat implements Listener
 		{
 			return;
 		}
+		if(plugin.editorplayers.contains(player.getName()))
+		{
+			return;
+		}
 		if(plugin.getPunisher()!=null)
 		{
 			if(plugin.getPunisher().isJailed(player))
@@ -193,7 +197,7 @@ public class EVENTChat implements Listener
 				{
 					if(members.getName().equals(all.getName()))
 					{
-						if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
+						if((boolean) plugin.getMysqlInterface().getDataI(all, "channel_custom", "player_uuid"))
 						{
 							if(!plugin.getUtility().getIgnored(player,all))
 							{
@@ -223,6 +227,7 @@ public class EVENTChat implements Listener
 			
 			String preorsuffix = eventmsg[0].substring(symbol.length());
 			String pors = "";
+			
 			if(preorsuffix.startsWith("&"))
 			{
 				pors = preorsuffix.substring(2);
@@ -264,7 +269,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".chatsplit.group")
-					+plugin.getUtility().MsgLater(lenghteventmsg,"group", event.getMessage())));
+					+plugin.getUtility().MsgLater(player,lenghteventmsg,"group", event.getMessage())));
 			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
@@ -285,7 +290,7 @@ public class EVENTChat implements Listener
 			
 			for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 			{
-				if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_group", "player_uuid"))
+				if((boolean) plugin.getMysqlInterface().getDataI(all, "channel_group", "player_uuid"))
 				{
 					if(!all.equals(player))
 					{
@@ -372,7 +377,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(3,"message", event.getMessage())));
+					+plugin.getUtility().MsgLater(player,3,"message", event.getMessage())));
 			
 			if(plugin.getUtility().getWordfilter(event.getMessage().substring(
 					symbol.length()+2))) //Wordfilter
@@ -464,7 +469,7 @@ public class EVENTChat implements Listener
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
 							.replaceAll("%player%", tr.getName()))).create()));
-			
+	
 			TextComponent playertext = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName()));
 			playertext.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
@@ -485,7 +490,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(targets[0].length(),"message", event.getMessage())));
+					+plugin.getUtility().MsgLater(player,targets[0].length(),"message", event.getMessage())));
 			
 			if(event.getMessage().substring(targets[0].length()+1).length()<0)
 			{

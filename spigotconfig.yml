@@ -8,6 +8,9 @@ wordfilter:
 addingtimeofdays: 'true'
 timeofdaysformat: 'HH:mm'
 timeofdaysoutput: '&7[%time%] '
+useprefixforplayercolor: 'true'
+showjoinmessageglobal: 'false'
+showleavemessageglobal: 'false'
 mysql:
   status: 'false'
   host: '127.0.0.1'

@@ -36,7 +36,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     	String language = plugin.getYamlHandler().get().getString("language");
     	if(args.length == 0)
     	{
-    		if(player.hasPermission("scc.admin"))
+    		if(player.hasPermission("scc.option.admin"))
     		{
     			TextComponent msg1 = plugin.getUtility().tc(plugin.getUtility().tl(
     					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01")));
@@ -183,7 +183,8 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			for(Player pp : plugin.getServer().getOnlinePlayers())
         		{
     				TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
-    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@"+pp.getName()+" "));
+    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+    						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
     				list.add(prefix);
         		}
     			if(list.isEmpty())
@@ -203,7 +204,8 @@ public class CMDSimpleChatChannels implements CommandExecutor
     				if(pp.getName().contains(s))
     				{
     					TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
-        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@"+pp.getName()+" "));
+        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+        						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
         				list.add(prefix);
     				}
         		}
@@ -256,7 +258,8 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			for(String g : groups)
         		{
     				TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
-    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@*"+g+" "));
+    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+    						plugin.getYamlHandler().getSymbol("group")+g+" "));
     				list.add(prefix);
         		}
     			if(list.isEmpty())
@@ -276,7 +279,8 @@ public class CMDSimpleChatChannels implements CommandExecutor
     				if(s.contains(g))
     				{
     					TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
-        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,"@*"+g+" "));
+        				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+        						plugin.getYamlHandler().getSymbol("group")+g+" "));
         				list.add(prefix);	
     				}
         		}
@@ -549,7 +553,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
 			return true;
 		} else if("spy".equalsIgnoreCase(args[0]) || "spitzeln".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.spy"))
+			if(!player.hasPermission("scc.option.spy"))
 			{
 				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return false;
@@ -575,7 +579,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
 				|| "Eintrittsnachricht".equalsIgnoreCase(args[0]))
 			//--------------------------------------------------joinmessage
 		{
-			if(!player.hasPermission("scc.join"))
+			if(!player.hasPermission("scc.option.join"))
 			{
 				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return false;
@@ -816,12 +820,13 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		}
     		for(Player all : Bukkit.getOnlinePlayers())
     		{
-    			all.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg20").replaceAll("%msg%", msg)));
+    			all.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")
+    					.replaceAll("%msg%", plugin.getUtility().MsgLater(player, 0, "global", msg))));
     		}
     		return true;
-    	} else if("channelcreate".equalsIgnoreCase(args[0])) 
+    	} else if("cccreate".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.createchannel"))
+    		if(!player.hasPermission("scc.cmd.cc.channel"))
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
@@ -830,7 +835,8 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		if(cc!=null)
 			{
 				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-						plugin.getYamlHandler().getL().getString(language+scc+"createchannel.msg01").replaceAll("%channel%", cc.getName()))));
+						plugin.getYamlHandler().getL().getString(language+scc+"createchannel.msg01")
+						.replaceAll("%channel%", cc.getName()))));
 				return false;
 			}
     		if(args.length==2)
@@ -859,9 +865,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			plugin.getUtility().rightArgs(player,args,3);
     		}
 			return true;
-    	} else if("channeljoin".equalsIgnoreCase(args[0]) || "join".equalsIgnoreCase(args[0])) 
+    	} else if("ccjoin".equalsIgnoreCase(args[0]) || "join".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channeljoin"))
+    		if(!player.hasPermission("scc.cmd.cc.join"))
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
@@ -948,9 +954,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			plugin.getUtility().rightArgs(player,args,3);
     		}
     		return true;
-    	} else if("channelleave".equalsIgnoreCase(args[0]) || "leave".equalsIgnoreCase(args[0])) 
+    	} else if("ccleave".equalsIgnoreCase(args[0]) || "leave".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelleave"))
+    		if(!player.hasPermission("scc.cmd.cc.leave"))
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
@@ -994,9 +1000,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
 					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
 					.replaceAll("%channel%", name)));
 			return true;
-    	} else if("channelkick".equalsIgnoreCase(args[0])) 
+    	} else if("cckick".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelkick"))
+    		if(!player.hasPermission("scc.cmd.cc.kick"))
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
@@ -1045,9 +1051,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
     					.replaceAll("%player%", args[1])));
     		}
 			return true;
-    	} else if("channelban".equalsIgnoreCase(args[0])) 
+    	} else if("ccban".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelban"))
+    		if(!player.hasPermission("scc.cmd.cc.ban"))
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
@@ -1103,9 +1109,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
     					.replaceAll("%player%", args[1])));
     		}
 			return true;
-    	} else if("channelunban".equalsIgnoreCase(args[0])) 
+    	} else if("ccunban".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.channelunban"))
+    		if(!player.hasPermission("scc.cmd.cc.unban"))
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
@@ -1152,9 +1158,9 @@ public class CMDSimpleChatChannels implements CommandExecutor
     					.replaceAll("%player%", target.getName())));
     		}
 			return true;
-    	} else if("changepassword".equalsIgnoreCase(args[0])) 
+    	} else if("ccchangepassword".equalsIgnoreCase(args[0])) 
     	{
-    		if(!player.hasPermission("scc.cmd.changepassword"))
+    		if(!player.hasPermission("scc.cmd.cc.changepassword"))
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;

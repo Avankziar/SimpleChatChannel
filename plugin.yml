@@ -1,6 +1,6 @@
 name: SimpleChatChannels
 main: main.java.de.avankziar.simplechatchannels.spigot.SimpleChatChannels
-version: 29
+version: 30
 author: Avankziar
 description: A Chat Plugin
 softdepend: [Punisher,AfkRecord]
@@ -10,3 +10,169 @@ commands:
   clickchat:
     description: A ClickChat Command
     aliases: [clch]
+  scceditor:
+    description: A Scceditor Command
+permissions:
+  scc.channels.global:
+    description: Enable global channel rights, to read and write and use /scc global.
+    default: true
+  scc.channels.trade:
+    description: Enable trade channel rights, to read and write and use /scc trade.
+    default: true
+  scc.channels.auction:
+    description: Enable auction channel rights, to read and write and use /scc auction.
+    default: true
+  scc.channels.local:
+    description: Enable local channel rights, to read and write and use /scc local.
+    default: true
+  scc.channels.world:
+    description: Enable world channel rights, to read and write and use /scc world.
+    default: true
+  scc.channels.support:
+    description: Enable support channel rights, to read and write and use /scc support.
+    default: true
+  scc.channels.team:
+    description: Enable team channel rights, to read and write and use /scc team.
+    default: false
+  scc.channels.admin:
+    description: Enable admin channel rights, to read and write and use /scc admin.
+    default: false
+  scc.channels.custom:
+    description: Enable custom channel rights, to read and write and use /scc custom.
+    default: true
+  scc.channels.group:
+    description: Enable group channel rights, to read and write and use /scc group.
+    default: true
+  scc.channels.pm:
+    description: Enable pm channel rights, to read and write and use /scc pm.
+    default: true
+  scc.cmd.clickchat:
+    description: Gives access to /clch <player> <Outputnumber> <message>.
+    default: false
+  scc.channels.colorbypass:
+    description: Gives access zo bypass standart colorcodes in channels
+    default: false
+  scc.cmd.editor:
+    description: Gives access to /scceditor, a mode which canceled all chat msg for SimpleChatChannels.
+    default: false
+  scc.option.admin:
+    description: Gives access to /scc, which shows all commands. Without, it shows only commands that is important for players.
+    default: false
+  scc.option.spy:
+    description: Gives access to /scc spy, which toggled your spy mode. Shows now all msg, as well private msg.
+    default: false
+  scc.option.join:
+    description: Gives access to /scc join, which toggled whether you see server join messages.
+    default: false
+  scc.cmd.playerlist:
+    description: Gives access to /scc playerlist [Search String], give you a list of onlineplayer (Bungee possible). Click on the name to show the @<player> in the chatline.  
+    default: false
+  scc.cmd.grouplist:
+    description: Gives access to /scc grouplist [Search String], give you a list of all groups/Prefix/Suffix. Click on the name to show the @*<group> in the chatline.
+    default: false
+  scc.cmd.ignore:
+    description: Gives access to /scc ignore <player>, which toggle whether you ignore the player.
+    default: false
+  scc.cmd.ignorelist:
+    description: Gives access to /scc ignorlist, which shows you your list of ignored players.
+    default: false
+  scc.cmd.bungee:
+    description: Gives access to /scc bungee, which switch scc to the bungeecord settings.
+    default: false
+  scc.cmd.mute:
+    description: Gives access to /scc mute <player> [min], mute a player for x minutes.
+    default: false
+  scc.cmd.unmute:
+    description: Gives access to /scc unmute <player>, unmute the player.
+    default: false
+  scc.cmd.wordfilter:
+    description: Gives access to /scc wordfilter <add/remove>, a word from or to the wordfilter list.
+    default: false
+  scc.cmd.broadcast:
+    description: Gives access to /scc broadcast <message>, to send a message to all onlineplayers (bungee/colorcode possible).
+    default: false
+  scc.cmd.cc.create:
+    description: Gives access to /scc cccreate <name of channel> [password], create a custom channel.
+    default: false
+  scc.cmd.cc.join:
+    description: Gives access to /scc ccjoin <name of channel> [passwort], join a custom channel.
+    default: false
+  scc.cmd.cc.info:
+    description: Gives access to /scc ccinfo, gives all information from the custom channel, in which you are in.
+    default: false
+  scc.cmd.cc.leave:
+    description: Gives access to /scc ccleave, leave a custom channel.
+    default: false
+  scc.cmd.cc.kick:
+    description: Gives access to /scc cckick <player>, kick a player from your custom channel.
+    default: false
+  scc.cmd.cc.ban:
+    description: Gives access to /scc ccban <player>, ban a player from your custom channel.
+    default: false
+  scc.cmd.cc.unban:
+    description: Gives access to /scc ccunban <player>, unban a player from your custom channel.
+    default: false
+  scc.cmd.cc.changepassword:
+    description: Gives access to /scc ccchangepassword <password>, change a password for your custom channel.
+    default: false
+  scc.prefix.1:
+    description: Gives access to prefix 1 for the chat.
+    default: false
+  scc.prefix.2:
+    description: Gives access to prefix 2 for the chat.
+    default: false
+  scc.prefix.3:
+    description: Gives access to prefix 3 for the chat.
+    default: false
+  scc.prefix.4:
+    description: Gives access to prefix 4 for the chat.
+    default: false
+  scc.prefix.5:
+    description: Gives access to prefix 5 for the chat.
+    default: false
+  scc.prefix.6:
+    description: Gives access to prefix 6 for the chat.
+    default: false
+  scc.prefix.7:
+    description: Gives access to prefix 7 for the chat.
+    default: false
+  scc.prefix.8:
+    description: Gives access to prefix 8 for the chat.
+    default: false
+  scc.prefix.9:
+    description: Gives access to prefix 9 for the chat.
+    default: false
+  scc.prefix.10:
+    description: Gives access to prefix 10 for the chat.
+    default: false
+  scc.suffix.1:
+    description: Gives access to suffix 1 for the chat.
+    default: false
+  scc.suffix.2:
+    description: Gives access to suffix 2 for the chat.
+    default: false
+  scc.suffix.3:
+    description: Gives access to suffix 3 for the chat.
+    default: false
+  scc.suffix.4:
+    description: Gives access to suffix 4 for the chat.
+    default: false
+  scc.suffix.5:
+    description: Gives access to suffix 5 for the chat.
+    default: false
+  scc.suffix.6:
+    description: Gives access to suffix 6 for the chat.
+    default: false
+  scc.suffix.7:
+    description: Gives access to suffix 7 for the chat.
+    default: false
+  scc.suffix.8:
+    description: Gives access to suffix 8 for the chat.
+    default: false
+  scc.suffix.9:
+    description: Gives access to suffix 9 for the chat.
+    default: false
+  scc.suffix.10:
+    description: Gives access to suffix 10 for the chat.
+    default: false
+  

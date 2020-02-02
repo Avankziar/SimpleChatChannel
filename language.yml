@@ -213,6 +213,9 @@ german:
       msg01: '&eDu hast das Passwort zu &f%password% &egeändert!'
   CMD_ClickChat:
     msg01: '&eKlicke hier um die %number%.te Antwortmöglichkeit zu nehmen!'
+  CMD_SCCEditor:
+    msg01: '&eDu bist nun im Editorbereich. &cAlle Chateingaben sind deaktiviert!'
+    msg02: '&eDu verlässt den Editorbereich. &aAlle Chateingaben sind aktiviert!'
   Spigot_Bungee:
     msg01: '&7Es ist keiner da, der dich hoert!'
   punisher:
@@ -432,6 +435,9 @@ english:
       msg01: '&eYou changed the password to &f%password%&e!'
   CMD_ClickChat:
     msg01: '&eClick here too choose the %number% answer!'
+  CMD_SCCEditor:
+    msg01: '&eYou are now in the editor area. & cAll chat entries are deactivated!'
+    msg02: '&eYou leave the editor area. & aAll chat entries are activated!'
   Spigot_Bungee:
     msg01: '&7There is no one here to hear you!'
   punisher:

@@ -39,6 +39,16 @@ public class EVENTChat implements Listener
 	{
 		Player player = (Player) event.getPlayer();
 		
+		if(event.isCancelled())
+		{
+			return;
+		}
+		
+		if(SimpleChatChannels.editorplayers.contains(player.getName()))
+		{
+			return;
+		}
+		
 		if(plugin.getPunisher()!=null)
 		{
 			if(plugin.getPunisher().isPlayerJailed(player))
@@ -149,7 +159,7 @@ public class EVENTChat implements Listener
 				{
 					if(tl.distance(pyloc) <= blockDistance) 
 					{
-						if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_local", "player_uuid"))
+						if((boolean) plugin.getMysqlInterface().getDataI(t, "channel_local", "player_uuid"))
 						{
 							if(!plugin.getUtility().getIgnored(player,t))
 							{
@@ -196,7 +206,7 @@ public class EVENTChat implements Listener
 				World tw = t.getWorld();
 				if(tw.getName().equals(player.getWorld().getName()))
 				{
-					if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_world", "player_uuid"))
+					if((boolean) plugin.getMysqlInterface().getDataI(t, "channel_world", "player_uuid"))
 					{
 						if(!plugin.getUtility().getIgnored(player,t))
 						{
@@ -288,7 +298,7 @@ public class EVENTChat implements Listener
 				{
 					if(members.getName().equals(all.getName()))
 					{
-						if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
+						if((boolean) plugin.getMysqlInterface().getDataI(all, "channel_custom", "player_uuid"))
 						{
 							if(!plugin.getUtility().getIgnored(player,all))
 							{
@@ -359,7 +369,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".chatsplit.group")
-					+plugin.getUtility().MsgLater(lenghteventmsg,"group", event.getMessage())));
+					+plugin.getUtility().MsgLater(player, lenghteventmsg,"group", event.getMessage())));
 			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
@@ -381,7 +391,7 @@ public class EVENTChat implements Listener
 			
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
-				if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_group", "player_uuid"))
+				if((boolean) plugin.getMysqlInterface().getDataI(all, "channel_group", "player_uuid"))
 				{
 					if(!all.equals(player))
 					{
@@ -468,7 +478,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(3,"message", event.getMessage())));
+					+plugin.getUtility().MsgLater(player, 3,"message", event.getMessage())));
 			
 			if(plugin.getUtility().getWordfilter(event.getMessage().substring(
 					symbol.length()+2))) //Wordfilter
@@ -583,7 +593,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(targets[0].length()+1,"message", event.getMessage())));
+					+plugin.getUtility().MsgLater(player,targets[0].length()+1,"message", event.getMessage())));
 			
 			if(event.getMessage().substring(targets[0].length()+1).length()<0)
 			{

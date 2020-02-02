@@ -16,6 +16,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 
@@ -69,7 +70,7 @@ public class Utility
 		
 		List<BaseComponent> prefix = getPrefix(p);
 		
-		TextComponent player = tc(tl(plugin.getYamlHandler().getL().getString(language+".playercolor")+p.getName()));
+		TextComponent player = tc(tl(getFirstPrefixColor(p)+p.getName()));
 		player.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
 				plugin.getYamlHandler().getSymbol("pm")+p.getName()+" "));
 		player.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
@@ -79,22 +80,58 @@ public class Utility
 		List<BaseComponent> suffix = getSuffix(p);
 		
 		TextComponent msg = tc(tl(plugin.getYamlHandler().getL().getString(language+".chatsplit."+channelname)
-				+MsgLater(substring,channelname, eventmsg)));
+				+MsgLater(p,substring,channelname, eventmsg)));
 		
 		return getTCinLine(channel, prefix, player, suffix, msg);
 	}
 	
-	public String MsgLater(int ss, String channel, String msg)
+	public String MsgLater(ProxiedPlayer player, int ss, String channel, String msg)
 	{
 		String rawmsg = msg.substring(ss);
 		String[] fullmsg = rawmsg.split(" ");
 		String cc = plugin.getYamlHandler().getL().getString(language+".channelcolor."+channel);
 		String msglater = "";
+		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
-			msglater += cc+removeColor(splitmsg)+" ";
+			if(player.hasPermission("scc.channels.colorbypass"))
+			{
+				if(hasColor(splitmsg))
+				{
+					safeColor = splitmsg.substring(0,2);
+					msglater += safeColor+splitmsg+" ";
+				} else
+				{
+					if(safeColor==null)
+					{
+						safeColor = cc;
+					}
+					msglater += safeColor+splitmsg+" ";
+				}
+			} else
+			{
+				msglater += cc+removeColor(splitmsg)+" ";
+			}
+			
 		}
 		return msglater;
+	}
+	
+	private boolean hasColor(String msg)
+	{
+		if(msg.contains("&0")||msg.contains("&1")||msg.contains("&2")||msg.contains("&3")||msg.contains("&4")
+				||msg.contains("&5")||msg.contains("&6")||msg.contains("&7")||msg.contains("&8")||msg.contains("&9")
+				||msg.contains("&a")||msg.contains("&A")||msg.contains("&b")||msg.contains("&B")
+				||msg.contains("&c")||msg.contains("&C")||msg.contains("&d")||msg.contains("&D")
+				||msg.contains("&d")||msg.contains("&D")||msg.contains("&e")||msg.contains("&E")
+				||msg.contains("&f")||msg.contains("&f")||msg.contains("&k")||msg.contains("&K")
+				||msg.contains("&m")||msg.contains("&M")||msg.contains("&n")||msg.contains("&N")
+				||msg.contains("&l")||msg.contains("&L")||msg.contains("&o")||msg.contains("&O")
+				||msg.contains("&r")||msg.contains("&R"))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	private String removeColor(String msg)
@@ -190,6 +227,36 @@ public class Utility
 		return list;
 	}
 	
+	public String getFirstPrefixColor(ProxiedPlayer p)
+	{
+		Boolean useprefixforplayercolor = plugin.getYamlHandler().get().getString("useprefixforplayercolor").equals("true");
+		if(useprefixforplayercolor!=null && useprefixforplayercolor==false)
+		{
+			return plugin.getYamlHandler().getL().getString(language+".playercolor");
+		}
+		String prefix = null;
+		int a = 1;
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
+		while(a<=b)
+		{
+			if(p.hasPermission("scc.prefix."+String.valueOf(a))) 
+			{
+				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a));
+				if(preorsuffix.startsWith("&"))
+				{
+					prefix = preorsuffix.substring(0, 2);
+					break;
+				}
+			}
+			a++;
+		}		
+		if(prefix == null)
+		{
+			prefix = plugin.getYamlHandler().getL().getString(language+".playercolor");
+		}
+		return prefix;
+	}
+	
 	public List<BaseComponent> getPrefix(ProxiedPlayer p)
 	{
 		List<BaseComponent> list = new ArrayList<>();
@@ -276,7 +343,7 @@ public class Utility
 	{
 		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
-			if((boolean) plugin.getMysqlInterface().getDataI(player, mysql_channel, "player_uuid"))
+			if((boolean) plugin.getMysqlInterface().getDataI(all, mysql_channel, "player_uuid"))
 			{
 				if(!getIgnored(player,all))
 				{
@@ -361,5 +428,21 @@ public class Utility
 		{
 			return;
 		}
+	}
+	
+	public void sendSpigotMessage(String tagkey, String message)
+	{
+		ByteArrayOutputStream streamout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(streamout);
+        String msg = message;
+        try {
+			out.writeUTF(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        for(ServerInfo si : plugin.getProxy().getServers().values())
+        {
+        	si.sendData(tagkey, streamout.toByteArray());
+        }
 	}
 }
