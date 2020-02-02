@@ -25,6 +25,7 @@ public class Utility
 	private SimpleChatChannels plugin;
 	private String language;
 	
+	
 	public Utility(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
@@ -79,8 +80,8 @@ public class Utility
 		
 		List<BaseComponent> suffix = getSuffix(p);
 		
-		TextComponent msg = tc(tl(plugin.getYamlHandler().getL().getString(language+".chatsplit."+channelname)
-				+MsgLater(p,substring,channelname, eventmsg)));
+		List<BaseComponent> msg = msgLater(p,substring,channelname, eventmsg);
+		//TextComponent msg = tc(tl(plugin.getYamlHandler().getL().getString(language+".chatsplit."+channelname)+MsgLater(p,substring,channelname, eventmsg)));
 		
 		return getTCinLine(channel, prefix, player, suffix, msg);
 	}
@@ -115,6 +116,57 @@ public class Utility
 			
 		}
 		return msglater;
+	}
+	
+	public List<BaseComponent> msgLater(ProxiedPlayer player, int ss, String channel, String msg)
+	{
+		String channelsplit = plugin.getYamlHandler().getL().getString(language+".chatsplit."+channel);
+		String rawmsg = msg.substring(ss);
+		List<BaseComponent> list = new ArrayList<>();
+		list.add(tc(tl(channelsplit)));
+		String[] fullmsg = rawmsg.split(" ");
+		String cc = plugin.getYamlHandler().getL().getString(language+".channelcolor."+channel);
+		String safeColor = null;
+		for(String splitmsg : fullmsg)
+		{
+			if(player.hasPermission("scc.channels.colorbypass"))
+			{
+				if(hasColor(splitmsg))
+				{
+					safeColor = splitmsg.substring(0,2);
+					//msglater += safeColor+removeColor(splitmsg)+" ";
+				} else
+				{
+					if(safeColor==null)
+					{
+						safeColor = cc;
+					}
+					//msglater += safeColor+removeColor(splitmsg)+" ";
+				}
+			} else
+			{
+				String colorFreeWord = removeColor(splitmsg);
+				TextComponent word = tc(tl(cc+colorFreeWord+" "));
+				if(splitmsg.contains("www.")||splitmsg.contains("http"))
+				{
+					word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
+							colorFreeWord));
+				} else if(splitmsg.contains("<item>"))
+				{
+					
+				} else if(splitmsg.contains("/"))
+				{
+					word = tc(tl(cc+colorFreeWord.replaceAll("_", " ")+" "));
+					word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+							colorFreeWord.replaceAll("_", " ")));
+				}
+				list.add(word);
+				word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+						plugin.getYamlHandler().getSymbol("group")+" "));
+			}
+			
+		}
+		return list;
 	}
 	
 	private boolean hasColor(String msg)
@@ -200,7 +252,7 @@ public class Utility
 	}
 	
 	public List<BaseComponent> getTCinLine(TextComponent channel, List<BaseComponent> prefix, TextComponent player, 
-			List<BaseComponent> suffix, TextComponent msg)
+			List<BaseComponent> suffix, List<BaseComponent> msg)
 	{
 		List<BaseComponent> list = new ArrayList<>();
 		list.add(channel);
@@ -213,7 +265,10 @@ public class Utility
 		{
 			list.add(bcs);
 		}
-		list.add(msg);
+		for(BaseComponent bmsg : msg)
+		{
+			list.add(bmsg);
+		}
 		return list;
 	}
 	

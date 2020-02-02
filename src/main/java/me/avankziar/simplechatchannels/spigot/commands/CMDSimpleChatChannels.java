@@ -7,13 +7,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.minecraft.server.v1_15_R1.NBTTagCompound;
 
 public class CMDSimpleChatChannels implements CommandExecutor
 {
@@ -1188,6 +1191,28 @@ public class CMDSimpleChatChannels implements CommandExecutor
 					plugin.getYamlHandler().getL().getString(language+scc+"changepassword.msg01")
 					.replaceAll("%password%", args[1])));
 			return true;
+    	} else if("debug".equalsIgnoreCase(args[0])) 
+    	{
+    		if(!player.hasPermission("scc.cmd.debug"))
+    		{
+    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			return false;
+    		}
+    		ItemStack is = null;
+    		if(player.getInventory().getItemInMainHand()!=null)
+    		{
+    			is = player.getInventory().getItemInMainHand();
+    		}
+    		if(is==null)
+    		{
+    			player.sendMessage("Kein Item In hand.");
+    		} else
+    		{
+    			player.spigot().sendMessage(new TextComponent(CraftItemStack.asNMSCopy(is).save(new NBTTagCompound()).toString()));
+    			player.sendMessage("------");
+    			player.sendMessage(new TextComponent(CraftItemStack.asNMSCopy(is).save(new NBTTagCompound()).toString()).toString());
+    		}
+    		return false;
     	} else
 		{
 			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(plugin.getYamlHandler().getL().getString(language+scc+"msg01")));

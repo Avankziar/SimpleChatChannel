@@ -152,10 +152,6 @@ public class MysqlSetup
             properties.setProperty("verifyServerCertificate", "false");
             properties.setProperty("useSSL", plugin.getYamlHandler().get().getString("mysql.sslEnabled"));
             properties.setProperty("requireSSL", plugin.getYamlHandler().get().getString("mysql.sslEnabled"));
-            //properties.setProperty("useUnicode", "true");
-            //properties.setProperty("characterEncoding", "utf8");
-            //properties.setProperty("characterSetResults", "utf8");
-            //properties.setProperty("connectionCollation", "utf8mb4_unicode_ci");
             conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().get().getString("mysql.host") + ":" 
             		+ plugin.getYamlHandler().get().getString("mysql.port") + "/" + plugin.getYamlHandler().get().getString("mysql.databaseName"), properties);
 		    end = System.currentTimeMillis();

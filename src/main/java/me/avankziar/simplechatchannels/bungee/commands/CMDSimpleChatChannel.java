@@ -1210,27 +1210,4 @@ public class CMDSimpleChatChannel extends Command
 			return;
 		}
     }
-    
-	/*@Override
-	public Iterable<String> onTabComplete(CommandSender sender, String[] args) 
-	{
-		sender.sendMessage("TabComplete : "+args.toString());
-		if(args.length==0)
-		{
-			if(args[0].startsWith("scc"))
-			{
-				return 
-			}
-		} else if(args.length==1)
-		{
-			return Collections.emptyList();
-		}
-		return Collections.emptyList();
-	}
-	
-	public void initSubCommands()
-	{
-		subCommands.put("global", "scc");
-		subCommands.put("trade", "scc");
-	}*/
 }
