@@ -327,14 +327,7 @@ public class EVENTChat implements Listener
 			}
 			
 			String preorsuffix = eventmsg[0].substring(symbol.length());
-			String pors = "";
-			if(preorsuffix.startsWith("&"))
-			{
-				pors = preorsuffix.substring(2);
-			} else
-			{
-				pors = preorsuffix;
-			}
+			String pors = preorsuffix;
 			
 			String ps = plugin.getUtility().getPreOrSuffix(preorsuffix);
 			
@@ -347,7 +340,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent channels = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".channels.group")
-					.replaceAll("%group%", preorsuffix)));
+					.replaceAll("%group%", preorsuffix))); 
 			channels.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
 					symbol+pors+" "));
 			channels.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
@@ -367,16 +360,12 @@ public class EVENTChat implements Listener
 			
 			List<BaseComponent> suffix = plugin.getUtility().getSuffix(player);
 			
-			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+".chatsplit.group")
-					+plugin.getUtility().MsgLater(player, lenghteventmsg,"group", event.getMessage())));
-			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
 			else {MSG = plugin.getUtility().tc("");}
 			
 			
-			MSG.setExtra(plugin.getUtility().getTCinLine(channels, prefix, playertext, suffix, msg));
+			MSG.setExtra(plugin.getUtility().getTCinLine(channels, prefix, playertext, suffix, plugin.getUtility().msgLater(player, lenghteventmsg,"group", event.getMessage())));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -476,10 +465,6 @@ public class EVENTChat implements Listener
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
 							.replaceAll("%player%", player.getName()))).create()));
 			
-			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(player, 3,"message", event.getMessage())));
-			
 			if(plugin.getUtility().getWordfilter(event.getMessage().substring(
 					symbol.length()+2))) //Wordfilter
 			{
@@ -497,8 +482,8 @@ public class EVENTChat implements Listener
 			else {MSG2 = plugin.getUtility().tc("");}
 			
 			
-			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2text, msg));
-			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2text, msg));
+			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2text, plugin.getUtility().msgLater(player, symbol.length(),"pmre", event.getMessage())));
+			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2text, plugin.getUtility().msgLater(player, symbol.length(),"pmre", event.getMessage())));
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			
@@ -591,10 +576,6 @@ public class EVENTChat implements Listener
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
 							.replaceAll("%player%", tr.getName()))).create()));
 			
-			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+".chatsplit.message")
-					+plugin.getUtility().MsgLater(player,targets[0].length()+1,"message", event.getMessage())));
-			
 			if(event.getMessage().substring(targets[0].length()+1).length()<0)
 			{
 				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
@@ -616,8 +597,8 @@ public class EVENTChat implements Listener
 			if(timeofdays == true) {MSG2 = plugin.getUtility().tc(timeofdaysoutput);}
 			else {MSG2 = plugin.getUtility().tc("");}
 			
-			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2text, msg));
-			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2text, msg));
+			MSG1.setExtra(plugin.getUtility().getTCinLinePN(channel1, playertext, player2text, plugin.getUtility().msgLater(player, targets[0].length(),"pm", event.getMessage())));
+			MSG2.setExtra(plugin.getUtility().getTCinLinePN(channel2, playertext, player2text, plugin.getUtility().msgLater(player, targets[0].length(),"pm", event.getMessage())));
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			

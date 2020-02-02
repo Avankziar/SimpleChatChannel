@@ -787,10 +787,11 @@ public class CMDSimpleChatChannel extends Command
     			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
     			return;
     		}
+    		TextComponent MSG = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")+" ");
+    		MSG.setExtra(plugin.getUtility().msgLater(player, 0, "global", msg));
     		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
     		{
-    			all.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")
-    					.replaceAll("%msg%", plugin.getUtility().MsgLater(player, 0, "global", msg))));
+    			all.sendMessage(MSG);
     		}
     	} else if("cccreate".equalsIgnoreCase(args[0])) 
     	{

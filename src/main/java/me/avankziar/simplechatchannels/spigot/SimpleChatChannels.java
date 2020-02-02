@@ -39,6 +39,7 @@ public class SimpleChatChannels extends JavaPlugin
 		log = getLogger();
 		editorplayers = new ArrayList<>();
 		yamlHandler = new YamlHandler(this);
+		backgroundtask = new BackgroundTask(this);
 		utility = new Utility(this);
 		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
 		{

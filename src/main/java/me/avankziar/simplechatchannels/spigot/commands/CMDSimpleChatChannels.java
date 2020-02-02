@@ -7,16 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.minecraft.server.v1_15_R1.NBTTagCompound;
 
 public class CMDSimpleChatChannels implements CommandExecutor
 {
@@ -821,10 +818,11 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
     			return false;
     		}
-    		for(Player all : Bukkit.getOnlinePlayers())
+    		TextComponent MSG = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")+" ");
+    		MSG.setExtra(plugin.getUtility().msgLater(player, 0, "global", msg));
+    		for(Player all : plugin.getServer().getOnlinePlayers())
     		{
-    			all.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")
-    					.replaceAll("%msg%", plugin.getUtility().MsgLater(player, 0, "global", msg))));
+    			all.spigot().sendMessage(MSG);
     		}
     		return true;
     	} else if("cccreate".equalsIgnoreCase(args[0])) 
@@ -1197,20 +1195,6 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		{
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
-    		}
-    		ItemStack is = null;
-    		if(player.getInventory().getItemInMainHand()!=null)
-    		{
-    			is = player.getInventory().getItemInMainHand();
-    		}
-    		if(is==null)
-    		{
-    			player.sendMessage("Kein Item In hand.");
-    		} else
-    		{
-    			player.spigot().sendMessage(new TextComponent(CraftItemStack.asNMSCopy(is).save(new NBTTagCompound()).toString()));
-    			player.sendMessage("------");
-    			player.sendMessage(new TextComponent(CraftItemStack.asNMSCopy(is).save(new NBTTagCompound()).toString()).toString());
     		}
     		return false;
     	} else

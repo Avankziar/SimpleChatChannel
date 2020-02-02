@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -32,18 +33,18 @@ public class ServerListener implements Listener
 		     try 
 		     {
 		        String[] s = in.readUTF().split("µ");
-		        String Category = s[0];
-		        String PlayerUUID = s[1];
-		        String ToServer = s[2];
-		        String Delivery = s[3];
-				if(plugin.getProxy().getPlayer(UUID.fromString(PlayerUUID)) == null)
+		        String category = s[0];
+		        String playerUUID = s[1];
+				if(plugin.getProxy().getPlayer(UUID.fromString(playerUUID)) == null)
 				{
 					return;
 				}
-				if(Category.equals("spy"))
+				if(category.equals("spy"))
 				{
+					String ToServer = s[2];
+			        String Delivery = s[3];
 					String µ = "µ";
-					String message = Category+µ+PlayerUUID+µ+ToServer+µ+Delivery;
+					String message = category+µ+playerUUID+µ+ToServer+µ+Delivery;
 					ByteArrayOutputStream streamout = new ByteArrayOutputStream();
 			        DataOutputStream out = new DataOutputStream(streamout);
 			        String msg = message;
@@ -60,6 +61,26 @@ public class ServerListener implements Listener
 			        	}
 			        }
 			        return;
+				}
+				if(category.equals("item"))
+				{
+					String itemname = s[2];
+					String item = s[3];
+					if(Utility.item.containsKey(playerUUID))
+					{
+						Utility.item.replace(playerUUID, item);
+					} else
+					{
+						Utility.item.put(playerUUID, item);
+					}
+					if(Utility.itemname.containsKey(playerUUID))
+					{
+						Utility.itemname.replace(playerUUID, itemname);
+					} else
+					{
+						Utility.itemname.put(playerUUID, itemname);
+					}
+					return;
 				}
 			} catch (IOException e) 
 		    {

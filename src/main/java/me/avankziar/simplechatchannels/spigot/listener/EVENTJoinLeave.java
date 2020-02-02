@@ -31,9 +31,12 @@ public class EVENTJoinLeave implements Listener
 		String language = plugin.getYamlHandler().get().getString("language");
 		Player player = event.getPlayer();
 		plugin.getUtility().controlChannelSaves(player);
-		player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
-		player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg01")
-				.replaceAll("%player%", player.getName())));
+		if((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid"))
+		{
+			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
+			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg01")
+					.replaceAll("%player%", player.getName())));
+		}
 		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
 		if(globaljoin==false)
 		{

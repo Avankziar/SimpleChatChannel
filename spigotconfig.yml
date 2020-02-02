@@ -7,7 +7,7 @@ wordfilter:
 - asshole
 addingtimeofdays: 'true'
 timeofdaysformat: 'HH:mm'
-timeofdaysoutput: '&7[%time%] '
+timeofdaysoutput: '&7[%time%] &r'
 useprefixforplayercolor: 'true'
 showjoinmessageglobal: 'false'
 showleavemessageglobal: 'false'

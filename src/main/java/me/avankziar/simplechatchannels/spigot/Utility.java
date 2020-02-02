@@ -3,9 +3,11 @@ package main.java.me.avankziar.simplechatchannels.spigot;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -13,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlInterface;
@@ -27,6 +30,8 @@ public class Utility
 {
 	private SimpleChatChannels plugin;
 	private String language;
+	public static LinkedHashMap<String, String> item = new LinkedHashMap<>(); //Playeruuid, ItemJason
+	public static LinkedHashMap<String, String> itemname = new LinkedHashMap<>(); //Playeruuid, Itemname
 	
 	public Utility(SimpleChatChannels plugin) 
 	{
@@ -131,42 +136,88 @@ public class Utility
 		
 		List<BaseComponent> suffix = getSuffix(p);
 		
-		TextComponent msg = tc(tl(plugin.getYamlHandler().getL().getString(language+".chatsplit."+channelname)
-				+MsgLater(p, substring,channelname, eventmsg)));
+		List<BaseComponent> msg = msgLater(p,substring,channelname, eventmsg);
 		
 		return getTCinLine(channel, prefix, player, suffix, msg);
 	}
 	
-	public String MsgLater(Player player, int ss, String channel, String msg)
+	public List<BaseComponent> msgLater(Player player, int ss, String channel, String msg)
 	{
+		String channelsplit = plugin.getYamlHandler().getL().getString(language+".chatsplit."+channel);
 		String rawmsg = msg.substring(ss);
+		List<BaseComponent> list = new ArrayList<>();
+		list.add(tc(tl(channelsplit)));
 		String[] fullmsg = rawmsg.split(" ");
 		String cc = plugin.getYamlHandler().getL().getString(language+".channelcolor."+channel);
-		String msglater = "";
 		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
-			if(player.hasPermission("scc.channels.colorbypass"))
+			if(player.hasPermission("scc.channels.bypass.color"))
 			{
 				if(hasColor(splitmsg))
 				{
 					safeColor = splitmsg.substring(0,2);
-					msglater += safeColor+splitmsg+" ";
+					String colorFreeWord = removeColor(splitmsg);
+					TextComponent word = tc(tl(colorFreeWord+" "));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
 				} else
 				{
 					if(safeColor==null)
 					{
 						safeColor = cc;
 					}
-					msglater += safeColor+splitmsg+" ";
+					String colorFreeWord = removeColor(splitmsg);
+					TextComponent word = tc(tl(colorFreeWord+" "));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
 				}
 			} else
 			{
-				msglater += cc+removeColor(splitmsg)+" ";
+				String colorFreeWord = removeColor(splitmsg);
+				TextComponent word = tc(tl(colorFreeWord+" "));
+				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 			}
 			
 		}
-		return msglater;
+		return list;
+	}
+	
+	private BaseComponent addFunctions(Player player, String splitmsg, String colorFreeWord, TextComponent word, String cc)
+	{
+		if(splitmsg.contains("www.")||splitmsg.contains("http"))
+		{
+			if(player.hasPermission("scc.channels.bypass.website"))
+			{
+				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.website")));
+				word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
+						colorFreeWord));
+			}
+		} else if(splitmsg.contains("<item>"))
+		{
+			if(player.hasPermission("scc.channels.bypass.item"))
+			{
+				if(Utility.itemname.containsKey(player.getUniqueId().toString())
+						&& Utility.item.containsKey(player.getUniqueId().toString()))
+				{
+					word = tc(tl(removeColor(Utility.itemname.get(player.getUniqueId().toString()))+" "));
+					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.item")));
+					word.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
+							new BaseComponent[]{new TextComponent(Utility.item.get(player.getUniqueId().toString()))}));
+				}
+			}
+		} else if(splitmsg.contains("/"))
+		{
+			if(player.hasPermission("scc.channels.bypass.command"))
+			{
+				word = tc(tl(colorFreeWord.replaceAll("_", " ")+" "));
+				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.command")));
+				word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+						colorFreeWord.replaceAll("_", " ")));
+			}
+		} else
+		{
+			word.setColor(getFristUseColor(cc));
+		}
+		return word;
 	}
 	
 	private boolean hasColor(String msg)
@@ -193,7 +244,13 @@ public class Utility
 				.replaceAll("&a", "").replaceAll("&b", "").replaceAll("&c", "").replaceAll("&d", "").replaceAll("&e", "").replaceAll("&f", "")
 				.replaceAll("&k", "").replaceAll("&l", "").replaceAll("&m", "").replaceAll("&n", "").replaceAll("&o", "").replaceAll("&r", "")
 				.replaceAll("&A", "").replaceAll("&B", "").replaceAll("&C", "").replaceAll("&D", "").replaceAll("&E", "").replaceAll("&F", "")
-				.replaceAll("&K", "").replaceAll("&L", "").replaceAll("&M", "").replaceAll("&N", "").replaceAll("&O", "").replaceAll("&R", "");
+				.replaceAll("&K", "").replaceAll("&L", "").replaceAll("&M", "").replaceAll("&N", "").replaceAll("&O", "").replaceAll("&R", "")
+				.replaceAll("§0", "").replaceAll("§1", "").replaceAll("&2", "").replaceAll("§3", "").replaceAll("§4", "").replaceAll("§5", "")
+				.replaceAll("§6", "").replaceAll("§7", "").replaceAll("§8", "").replaceAll("§9", "")
+				.replaceAll("§a", "").replaceAll("§b", "").replaceAll("§c", "").replaceAll("§d", "").replaceAll("§e", "").replaceAll("§f", "")
+				.replaceAll("§k", "").replaceAll("§l", "").replaceAll("§m", "").replaceAll("§n", "").replaceAll("§o", "").replaceAll("§r", "")
+				.replaceAll("§A", "").replaceAll("§B", "").replaceAll("§C", "").replaceAll("§D", "").replaceAll("§E", "").replaceAll("§F", "")
+				.replaceAll("§K", "").replaceAll("§L", "").replaceAll("§M", "").replaceAll("§N", "").replaceAll("§O", "").replaceAll("§R", "");
 		return a;
 	}
 
@@ -214,6 +271,33 @@ public class Utility
 		}
 	}
 	
+	private ChatColor getFristUseColor(String msg)
+	{
+		if(msg.startsWith("&0")) {return ChatColor.BLACK;}
+		else if(msg.startsWith("&1")) {return ChatColor.DARK_BLUE;}
+		else if(msg.startsWith("&2")) {return ChatColor.DARK_GREEN;}
+		else if(msg.startsWith("&3")) {return ChatColor.DARK_AQUA;}
+		else if(msg.startsWith("&4")) {return ChatColor.DARK_RED;}
+		else if(msg.startsWith("&5")) {return ChatColor.DARK_PURPLE;}
+		else if(msg.startsWith("&6")) {return ChatColor.GOLD;}
+		else if(msg.startsWith("&7")) {return ChatColor.GRAY;}
+		else if(msg.startsWith("&8")) {return ChatColor.DARK_GRAY;}
+		else if(msg.startsWith("&9")) {return ChatColor.BLUE;}
+		else if(msg.startsWith("&a")||msg.startsWith("&A")) {return ChatColor.GREEN;}
+		else if(msg.startsWith("&b")||msg.startsWith("&B")) {return ChatColor.AQUA;}
+		else if(msg.startsWith("&c")||msg.startsWith("&C")) {return ChatColor.RED;}
+		else if(msg.startsWith("&d")||msg.startsWith("&D")) {return ChatColor.LIGHT_PURPLE;}
+		else if(msg.startsWith("&e")||msg.startsWith("&E")) {return ChatColor.YELLOW;}
+		else if(msg.startsWith("&f")||msg.startsWith("&F")) {return ChatColor.WHITE;}
+		else if(msg.startsWith("&k")||msg.startsWith("&K")) {return ChatColor.MAGIC;}
+		else if(msg.startsWith("&l")||msg.startsWith("&L")) {return ChatColor.BOLD;}
+		else if(msg.startsWith("&m")||msg.startsWith("&M")) {return ChatColor.STRIKETHROUGH;}
+		else if(msg.startsWith("&n")||msg.startsWith("&N")) {return ChatColor.UNDERLINE;}
+		else if(msg.startsWith("&o")||msg.startsWith("&O")) {return ChatColor.ITALIC;}
+		else if(msg.startsWith("&r")||msg.startsWith("&R")) {return ChatColor.RESET;}
+		return ChatColor.RESET;
+	}
+	
 	public void sendBungeeSpyMessage(Player p, String server, String msg)  //FIN
 	{
 		String µ = "µ";
@@ -231,21 +315,43 @@ public class Utility
         p.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
     }
 	
+	public void sendBungeeItemMessage(Player p, String itemname, String msg)  //FIN
+	{
+		String µ = "µ";
+		String Category = "item";
+        String PlayerUUID = p.getUniqueId().toString();
+		String message = Category+µ+PlayerUUID+µ+itemname+µ+msg;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(stream);
+        try {
+			out.writeUTF(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        p.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
+    }
+	
 	public String getPreOrSuffix(String preorsuffix)
 	{
 		int a = 1;
 		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
 		while(a<=b)
 		{
-			if(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a)).substring(2).equals(preorsuffix))
+			if(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))!=null)
 			{
-				String perm = "scc.prefix."+String.valueOf(a);
-				return perm;
+				if(removeColor(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
+				{
+					String perm = "scc.prefix."+String.valueOf(a);
+					return perm;
+				}
 			}
-			if(plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a)).substring(2).equals(preorsuffix))
+			if(plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))!=null)
 			{
-				String perm = "scc.suffix."+String.valueOf(a);
-				return perm;
+				if(removeColor(plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
+				{
+					String perm = "scc.suffix."+String.valueOf(a);
+					return perm;
+				}
 			}
 			a++;
 		}
@@ -275,7 +381,7 @@ public class Utility
 	}
 	
 	public List<BaseComponent> getTCinLine(TextComponent channel, List<BaseComponent> prefix, TextComponent player, 
-			List<BaseComponent> suffix, TextComponent msg)
+			List<BaseComponent> suffix, List<BaseComponent> msg)
 	{
 		List<BaseComponent> list = new ArrayList<>();
 		list.add(channel);
@@ -288,17 +394,23 @@ public class Utility
 		{
 			list.add(bcs);
 		}
-		list.add(msg);
+		for(BaseComponent bmsg : msg)
+		{
+			list.add(bmsg);
+		}
 		return list;
 	}
 	
-	public List<BaseComponent> getTCinLinePN(TextComponent channel, TextComponent player, TextComponent player2, TextComponent msg)
+	public List<BaseComponent> getTCinLinePN(TextComponent channel, TextComponent player, TextComponent player2, List<BaseComponent> msg)
 	{
 		List<BaseComponent> list = new ArrayList<>();
 		list.add(channel);
 		list.add(player);
 		list.add(player2);
-		list.add(msg);
+		for(BaseComponent bmsg : msg)
+		{
+			list.add(bmsg);
+		}
 		return list;
 	}
 	
@@ -341,22 +453,18 @@ public class Utility
 		{
 			if(p.hasPermission("scc.prefix."+String.valueOf(a))) 
 			{
-				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a));
-				String pors = "";
-				if(preorsuffix.startsWith("&"))
+				if(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))!=null)
 				{
-					pors = preorsuffix.substring(2);
-				} else
-				{
-					pors = preorsuffix;
+					String preorsuffix = plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a));
+					String pors = removeColor(preorsuffix);
+					TextComponent prefix = tc(tl(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))+" "));
+					prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+							plugin.getYamlHandler().getSymbol("group")+pors +" "));
+					prefix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+							, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
+									language+".channelextra.hover.group"))).create()));
+					list.add(prefix);
 				}
-				TextComponent prefix = tc(tl(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))+" "));
-				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						plugin.getYamlHandler().getSymbol("group")+pors +" "));
-				prefix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
-								language+".channelextra.hover.group"))).create()));
-				list.add(prefix);
 			}
 			a++;
 		}		
@@ -376,22 +484,18 @@ public class Utility
 		{
 			if(p.hasPermission("scc.suffix."+String.valueOf(a))) 
 			{
-				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a));
-				String pors = " ";
-				if(preorsuffix.startsWith("&"))
+				if(plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))!=null)
 				{
-					pors = preorsuffix.substring(2);
-				} else
-				{
-					pors = preorsuffix;
+					String preorsuffix = plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a));
+					String pors = removeColor(preorsuffix);
+					TextComponent suffix = tc(tl(" "+plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))+" "));
+					suffix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+							plugin.getYamlHandler().getSymbol("group")+pors+" "));
+					suffix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+							, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
+									language+".channelextra.hover.group"))).create()));
+					list.add(suffix);
 				}
-				TextComponent suffix = tc(tl(" "+plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))+" "));
-				suffix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						plugin.getYamlHandler().getSymbol("group")+pors+" "));
-				suffix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
-								language+".channelextra.hover.group"))).create()));
-				list.add(suffix);
 			}
 			a++;
 		}		
@@ -490,5 +594,38 @@ public class Utility
 		{
 			return;
 		}
+	}
+	
+	public String convertItemStackToJson(ItemStack itemStack) //FIN
+	{
+		/*
+		 * so baut man das manuell
+		 * ItemStack is = createHoverItem(p, bookpath+".hover.item."+ar[2], bok);
+		 * emptyword.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM,new BaseComponent[]{new TextComponent(convertItemStackToJson((is)))}));
+		 */
+	    // ItemStack methods to get a net.minecraft.server.ItemStack object for serialization
+	    Class<?> craftItemStackClazz = ReflectionUtil.getOBCClass("inventory.CraftItemStack");
+	    Method asNMSCopyMethod = ReflectionUtil.getMethod(craftItemStackClazz, "asNMSCopy", ItemStack.class);
+
+	    // NMS Method to serialize a net.minecraft.server.ItemStack to a valid Json string
+	    Class<?> nmsItemStackClazz = ReflectionUtil.getNMSClass("ItemStack");
+	    Class<?> nbtTagCompoundClazz = ReflectionUtil.getNMSClass("NBTTagCompound");
+	    Method saveNmsItemStackMethod = ReflectionUtil.getMethod(nmsItemStackClazz, "save", nbtTagCompoundClazz);
+
+	    Object nmsNbtTagCompoundObj; // This will just be an empty NBTTagCompound instance to invoke the saveNms method
+	    Object nmsItemStackObj; // This is the net.minecraft.server.ItemStack object received from the asNMSCopy method
+	    Object itemAsJsonObject; // This is the net.minecraft.server.ItemStack after being put through saveNmsItem method
+
+	    try {
+	        nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
+	        nmsItemStackObj = asNMSCopyMethod.invoke(null, itemStack);
+	        itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
+	    } catch (Throwable t) {
+	        t.printStackTrace();
+	        return null;
+	    }
+
+	    // Return a string representation of the serialized object
+	    return itemAsJsonObject.toString();
 	}
 }

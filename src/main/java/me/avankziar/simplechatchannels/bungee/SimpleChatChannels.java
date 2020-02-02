@@ -28,11 +28,12 @@ public class SimpleChatChannels extends Plugin
 	private static BackgroundTask backgroundtask;
 	private PunisherBungee punisher;
 	private AfkRecord afkrecord;
-	public ArrayList<String> editorplayers = new ArrayList<>();
+	public ArrayList<String> editorplayers;
 	
 	public void onEnable() 
 	{
 		log = getLogger();
+		editorplayers = new ArrayList<>();
 		yamlHandler = new YamlHandler(this);
 		utility = new Utility(this);
 		backgroundtask = new BackgroundTask(this);

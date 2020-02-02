@@ -51,6 +51,10 @@ german:
     message: '&e'
     group: '&o'
     custom: '&f'
+  replacercolor:
+    website: '&n'
+    item: '&l'
+    command: '&o'
   channelextra:
     hover:
       trade: '&9Klick hier um im Handels Channel zu schreiben'
@@ -136,14 +140,14 @@ german:
       msg09: '&e/scc bungee &f| &7Zum Spigot-Bungeecord switchen.'
       msg10: '&8----------&6SimpleChatChannelsBungee&8----------'
       msg11: '&e/scc grouplist [Zeichenfolge] &f| Liefert eine Liste aller Pre- oder Suffixe. Optional mit Zeichenfolge Suche.'
-      msg12: '&e/scc channelcreate <Name> [Password] &f| Erstellt einen CustomChannel.'
-      msg13: '&e/scc channeljoin <Name> [Password] &f| Joint einem CustomChannel.'
-      msg14: '&e/scc channelleave &f| Verlässt einen CustomChannel.'
-      msg15: '&e/scc channelkick <Player> &f| Kickt einen Spieler von einem CustomChannel.'
-      msg16: '&e/scc channelban <Player> &f| Bannt einen Spieler von einem CustomChannel.'
-      msg17: '&e/scc channelunban <Player> &f| Unbannt einen Spieler von einem CustomChannel.'
-      msg18: '&e/scc changepassword <Password> &f| Ändert das Passwort von einem CustomChannel.'
-      msg19: '&e/scc channelinfo &f| Zeigt alle Infos zum Customchannel an.'
+      msg12: '&e/scc cccreate <Name> [Password] &f| Erstellt einen CustomChannel.'
+      msg13: '&e/scc ccjoin <Name> [Password] &f| Joint einem CustomChannel.'
+      msg14: '&e/scc ccleave &f| Verlässt einen CustomChannel.'
+      msg15: '&e/scc cckick <Player> &f| Kickt einen Spieler von einem CustomChannel.'
+      msg16: '&e/scc ccban <Player> &f| Bannt einen Spieler von einem CustomChannel.'
+      msg17: '&e/scc ccunban <Player> &f| Unbannt einen Spieler von einem CustomChannel.'
+      msg18: '&e/scc ccchangepassword <Password> &f| Ändert das Passwort von einem CustomChannel.'
+      msg19: '&e/scc ccinfo &f| Zeigt alle Infos zum Customchannel an.'
     channel:
       msg01: '&7Du hast den Channel %channel% &causgeblendet!'
       msg02: '&7Du hast den Channel %channel% &aeingeblendet'
@@ -161,7 +165,7 @@ german:
       msg23: '&7Das Wort befindet sich nicht auf der Wortfilterliste!'
       msg24: '&7Das Word %word% wurde aus dem Wortfilter entfernt!'
     broadcast:
-       msg20: '&7[&cBroadcast&7] %msg%'
+       msg20: '&7[&cBroadcast&7] '
     serverlistener:
       msg01: '&7BungeeCord fuer SCC wurde &7deaktiviert!'
       msg02: '&7BungeeCord fuer SCC wurde &7aktiviert!'

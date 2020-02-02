@@ -49,9 +49,6 @@ permissions:
   scc.cmd.clickchat:
     description: Gives access to /clch <player> <Outputnumber> <message>.
     default: false
-  scc.channels.colorbypass:
-    description: Gives access zo bypass standart colorcodes in channels
-    default: false
   scc.cmd.editor:
     description: Gives access to /scceditor, a mode which canceled all chat msg for SimpleChatChannels.
     default: false
@@ -114,6 +111,18 @@ permissions:
     default: false
   scc.cmd.cc.changepassword:
     description: Gives access to /scc ccchangepassword <password>, change a password for your custom channel.
+    default: false
+  scc.channels.bypass.color:
+    description: Gives access to use Color offside from the ChannelColor.
+    default: false
+  scc.channels.bypass.website:
+    description: Gives access to add clickevent for websites in the chat.
+    default: false
+  scc.channels.bypass.item:
+    description: Gives access to use hoverevent to show a item in the chat for the replacer <item>.
+    default: false
+  scc.channels.bypass.command:
+    description: Gives access to use clickevent for commands in the chat. replacer => /<command>_<args1>_<args2>
     default: false
   scc.prefix.1:
     description: Gives access to prefix 1 for the chat.
