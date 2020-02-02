@@ -267,9 +267,11 @@ public class EVENTChat implements Listener
 			
 			List<BaseComponent> suffix = plugin.getUtility().getSuffix(player);
 			
-			TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
+			List<BaseComponent> msg = plugin.getUtility().msgLater(player, lenghteventmsg, channel, event.getMessage());
+			//TODO
+			/*TextComponent msg = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".chatsplit.group")
-					+plugin.getUtility().MsgLater(player,lenghteventmsg,"group", event.getMessage())));
+					+plugin.getUtility().MsgLater(player,lenghteventmsg,"group", event.getMessage())));*/
 			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = plugin.getUtility().tc(timeofdaysoutput);}
