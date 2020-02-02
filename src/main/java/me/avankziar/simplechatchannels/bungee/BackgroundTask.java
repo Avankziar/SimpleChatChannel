@@ -3,6 +3,7 @@ package main.java.me.avankziar.simplechatchannels.bungee;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BackgroundTask 
