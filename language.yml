@@ -55,6 +55,12 @@ german:
     website: '&n'
     item: '&l'
     command: '&o'
+  replacerblock:
+    item: '<item>'
+    command: 'cmd/'
+    commandchatoutput: 'CMD: /'
+    commandargseperator: '_'
+    commandhover: '&eKlick mich!'
   channelextra:
     hover:
       trade: '&9Klick hier um im Handels Channel zu schreiben'
@@ -277,6 +283,16 @@ english:
     message: '&e'
     group: '&o'
     custom: '&f'
+  replacercolor:
+    website: '&n'
+    item: '&l'
+    command: '&o'
+  replacerblock:
+    item: '<item>'
+    command: 'cmd/'
+    commandchatoutput: 'CMD: /'
+    commandargseperator: '_'
+    commandhover: '&eClick me!'
   channelextra:
     hover:
       trade: '&9Click here to write in the trade channel'

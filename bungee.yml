@@ -1,5 +1,5 @@
 name: SimpleChatChannels
 main: main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels
-version: 30
+version: 31
 author: Avankziar
 softdepends: [Punisher,AfkRecord]

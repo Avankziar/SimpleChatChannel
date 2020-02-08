@@ -36,137 +36,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     	String language = plugin.getYamlHandler().get().getString("language");
     	if(args.length == 0)
     	{
-    		if(player.hasPermission("scc.option.admin"))
-    		{
-    			TextComponent msg1 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01")));
-    			msg1.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc <channel>"));
-    			TextComponent msg2 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg02")));
-    			msg2.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc mute <Player>"));
-    			TextComponent msg3 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg03")));
-    			msg3.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc unmute <Player>"));
-    			TextComponent msg4 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg04")));
-    			msg4.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc ignore <Player>"));
-    			TextComponent msg5 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg05")));
-    			msg5.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc ignorelist"));
-    			TextComponent msg6 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg06")));
-    			msg6.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc wordfilter <add/remove> <Word>"));
-    			TextComponent msg7 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg07")));
-    			msg7.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc broadcast <Message>"));
-    			TextComponent msg8 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg08")));
-    			msg8.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc playerlist [String]"));
-    			TextComponent msg10 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg09")));
-    			msg10.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc bungee"));
-    			TextComponent msg11 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg11")));
-    			msg11.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc grouplist [String]"));
-    			TextComponent msg12 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg12")));
-    			msg12.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelcreate <Name> [Password]"));
-    			TextComponent msg13 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg13")));
-    			msg13.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channeljoin <Name>"));
-    			TextComponent msg14 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg14")));
-    			msg14.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelleave"));
-    			TextComponent msg15 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg15")));
-    			msg15.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelkick <Player>"));
-    			TextComponent msg16 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg16")));
-    			msg16.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelban <Player>"));
-    			TextComponent msg17 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg17")));
-    			msg17.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelunban <Player>"));
-    			TextComponent msg18 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18")));
-    			msg18.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc changepassword <Password>"));
-    			TextComponent msg19 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19")));
-    			msg19.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelinfo"));
-    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
-    			player.spigot().sendMessage(msg1);
-    			player.spigot().sendMessage(msg2);
-    			player.spigot().sendMessage(msg3);
-    			player.spigot().sendMessage(msg4);
-    			player.spigot().sendMessage(msg5);
-    			player.spigot().sendMessage(msg6);
-    			player.spigot().sendMessage(msg7);
-    			player.spigot().sendMessage(msg8);
-    			player.spigot().sendMessage(msg10);
-    			player.spigot().sendMessage(msg11);
-    			player.spigot().sendMessage(msg12);
-    			player.spigot().sendMessage(msg13);
-    			player.spigot().sendMessage(msg14);
-    			player.spigot().sendMessage(msg15);
-    			player.spigot().sendMessage(msg16);
-    			player.spigot().sendMessage(msg17);
-    			player.spigot().sendMessage(msg18);
-    			player.spigot().sendMessage(msg19);
-    		} else
-    		{
-    			TextComponent msg1 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01")));
-    			msg1.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc <channel>"));
-    			TextComponent msg4 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg04")));
-    			msg4.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc ignore <Player>"));
-    			TextComponent msg5 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg05")));
-    			msg5.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc ignorelist"));
-    			TextComponent msg8 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg08")));
-    			msg8.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc playerlist [String]"));
-    			TextComponent msg11 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg11")));
-    			msg11.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc grouplist [String]"));
-    			TextComponent msg12 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg12")));
-    			msg12.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelcreate <Name> [Password]"));
-    			TextComponent msg13 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg13")));
-    			msg13.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channeljoin <Name>"));
-    			TextComponent msg14 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg14")));
-    			msg14.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelleave"));
-    			TextComponent msg15 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg15")));
-    			msg15.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelkick <Player>"));
-    			TextComponent msg16 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg16")));
-    			msg16.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelban <Player>"));
-    			TextComponent msg17 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg17")));
-    			msg17.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelunban <Player>"));
-    			TextComponent msg18 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18")));
-    			msg18.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc changepassword <Password>"));
-    			TextComponent msg19 = plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19")));
-    			msg19.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/scc channelinfo"));
-    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
-    			player.spigot().sendMessage(msg1);
-    			player.spigot().sendMessage(msg4);
-    			player.spigot().sendMessage(msg5);
-    			player.spigot().sendMessage(msg11);
-    			player.spigot().sendMessage(msg11);
-    			player.spigot().sendMessage(msg12);
-    			player.spigot().sendMessage(msg13);
-    			player.spigot().sendMessage(msg14);
-    			player.spigot().sendMessage(msg15);
-    			player.spigot().sendMessage(msg16);
-    			player.spigot().sendMessage(msg17);
-    			player.spigot().sendMessage(msg18);
-    			player.spigot().sendMessage(msg19);
-    		}
+    		plugin.getCommandHandler().info(player, language);
     		return true;
     	} else if("playerlist".equalsIgnoreCase(args[0]) || "pl".equalsIgnoreCase(args[0]) 
     			|| "spielerlist".equalsIgnoreCase(args[0]) || "spielerlist".equalsIgnoreCase(args[0])) 
@@ -176,7 +46,6 @@ public class CMDSimpleChatChannels implements CommandExecutor
 				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return false;
 			}
-			TextComponent MSG = plugin.getUtility().tc("");
 			List<BaseComponent> list = new ArrayList<>();
     		if(args.length==1)
     		{
@@ -187,21 +56,22 @@ public class CMDSimpleChatChannels implements CommandExecutor
     						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
     				list.add(prefix);
         		}
-    			if(list.isEmpty())
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"playerlist.msg02")));
-    				return false;
-    			}
-    			MSG.setExtra(list);
-    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"playerlist.msg01")));
-    			player.spigot().sendMessage(MSG);
     			return true;
     		} else if(args.length==2)
     		{
     			String s = args[1];
+    			String caseCapitalize = "";
+    			if(s.length()>=2)
+    			{
+    				caseCapitalize = s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
+    			} else
+    			{
+    				caseCapitalize = s;
+    			}
     			for(Player pp : plugin.getServer().getOnlinePlayers())
         		{
-    				if(pp.getName().contains(s))
+    				if(pp.getName().startsWith(s) || pp.getName().startsWith(s.toLowerCase()) 
+    						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize))
     				{
     					TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
         				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
@@ -209,19 +79,13 @@ public class CMDSimpleChatChannels implements CommandExecutor
         				list.add(prefix);
     				}
         		}
-    			if(list.isEmpty())
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"playerlist.msg02")));
-    				return false;
-    			}
-    			MSG.setExtra(list);
-    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"playerlist.msg01")));
-    			player.spigot().sendMessage(MSG);
     		} else
     		{
     			plugin.getUtility().rightArgs(player,args,2);
     			return false;
     		}
+    		plugin.getCommandHandler().playergrouplist(player, language, list, "playerlist");
+    		return true;
     	} else if("grouplist".equalsIgnoreCase(args[0]) || "gl".equalsIgnoreCase(args[0])
     			|| "gruppenlist".equalsIgnoreCase(args[0]) || "gruppenliste".equalsIgnoreCase(args[0])) 
     	{
@@ -230,7 +94,6 @@ public class CMDSimpleChatChannels implements CommandExecutor
 				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return false;
 			}
-			TextComponent MSG = plugin.getUtility().tc("");
 			List<BaseComponent> list = new ArrayList<>();
 			int i = 1;
 			int groupamount = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
@@ -267,10 +130,6 @@ public class CMDSimpleChatChannels implements CommandExecutor
     				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"grouplist.msg02")));
     				return false;
     			}
-    			MSG.setExtra(list);
-    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"grouplist.msg01")));
-    			player.spigot().sendMessage(MSG);
-    			return true;
     		} else if(args.length==2)
     		{
     			String s = args[1];
@@ -284,321 +143,67 @@ public class CMDSimpleChatChannels implements CommandExecutor
         				list.add(prefix);	
     				}
         		}
-    			if(list.isEmpty())
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"playerlist.msg02")));
-    				return false;
-    			}
-    			MSG.setExtra(list);
-    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"grouplist.msg01")));
-    			player.spigot().sendMessage(MSG);
-    			return true;
     		} else
     		{
     			plugin.getUtility().rightArgs(player,args,2);
     			return false;
     		}
+    		plugin.getCommandHandler().playergrouplist(player, language, list, "grouplist");
+    		return true;
     	} else if("global".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.global"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_global", "player_uuid"))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_global");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Global")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_global");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Global")));
-			}
+    		plugin.getCommandHandler().channeltoggle(player, args, language, "global", "Global");
 			return true;
 		} else if("trade".equalsIgnoreCase(args[0]) || "handel".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.trade"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_trade", "player_uuid"))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_trade");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Trade")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_trade");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Trade")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "trade", "Trade");
 			return true;
 		} else if("auction".equalsIgnoreCase(args[0]) || "auktion".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.auction"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_auction", "player_uuid"))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_auction");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Auction")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_auction");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Auction")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "auction", "Auction");
 			return true;
 		} else if(args[0].equalsIgnoreCase("local") || args[0].equalsIgnoreCase("lokal"))//--------------------------------------------------local
 		{
-			if(!player.hasPermission("scc.channels.local"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_local", "player_uuid"))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_local");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Local")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_local");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Local")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "local", "Local");
 			return true;
 		} else if("support".equalsIgnoreCase(args[0]) || "hilfe".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.support"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if(((boolean) plugin.getMysqlInterface().getDataI(player, "channel_support", "player_uuid")))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_support");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Support")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_support");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Support")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "support", "Support");
 			return true;
 		} else if("team".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.team"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if(((boolean) plugin.getMysqlInterface().getDataI(player, "channel_team", "player_uuid")))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_team");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Team")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_team");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Team")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "team", "Team");
 			return true;
 		} else if("admin".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.admin"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if(((boolean) plugin.getMysqlInterface().getDataI(player, "channel_admin", "player_uuid")))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_admin");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Admin")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_admin");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Admin")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "admin", "Admin");
 			return true;
 		} else if("pm".equalsIgnoreCase(args[0]) || "pn".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.pm"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if(((boolean) plugin.getMysqlInterface().getDataI(player, "channel_pm", "player_uuid")))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_pm");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Privat Message")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_pm");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Private Message")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "pm", "Private Message");
 			return true;
 		} else if(args[0].equalsIgnoreCase("world") || args[0].equalsIgnoreCase("welt"))//--------------------------------------------------world
 		{
-			if(!player.hasPermission("scc.channels.world"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_world", "player_uuid"))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_world");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "World")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_world");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "World")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "world", "World");
 			return true;
 		} else if("group".equalsIgnoreCase(args[0]) || "gruppe".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.group"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if(((boolean) plugin.getMysqlInterface().getDataI(player, "channel_group", "player_uuid")))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_group");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Group")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_group");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Group")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "group", "Group");
 			return true;
 		} else if("custom".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.channels.custom"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_custom", "player_uuid"))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "channel_custom");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Custom")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "channel_custom");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Custom")));
-			}
+			plugin.getCommandHandler().channeltoggle(player, args, language, "custom", "Custom");
 			return true;
 		} else if("spy".equalsIgnoreCase(args[0]) || "spitzeln".equalsIgnoreCase(args[0]))
 		{
-			if(!player.hasPermission("scc.option.spy"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if(((boolean) plugin.getMysqlInterface().getDataI(player, "spy", "player_uuid")))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "spy");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Spy")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "spy");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Spy")));
-			}
+			plugin.getCommandHandler().optiontoggle(player, args, language, "spy", "spy", "Spy");
 			return true;
 		} else if("join".equalsIgnoreCase(args[0]) 
 				|| "joinmessage".equalsIgnoreCase(args[0])
 				|| "Eintrittsnachricht".equalsIgnoreCase(args[0]))
 			//--------------------------------------------------joinmessage
 		{
-			if(!player.hasPermission("scc.option.join"))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-				return false;
-			}
-			if(plugin.getUtility().rightArgs(player,args,1))
-			{
-				return false;
-			}
-			if(((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid")))
-			{
-				plugin.getMysqlInterface().updateDataI(player, false, "joinmessage");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
-						.replaceAll("%channel%", "Join Message")));
-			} else
-			{
-				plugin.getMysqlInterface().updateDataI(player, true, "joinmessage");
-				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
-						.replaceAll("%channel%", "Join Message")));
-			}
+			plugin.getCommandHandler().optiontoggle(player, args, language, "join", "joinmessage", "Join Message");
 			return true;
 		} else if("ignorelist".equalsIgnoreCase(args[0]) || "ignorierliste".equalsIgnoreCase(args[0]))
 		{
@@ -840,31 +445,21 @@ public class CMDSimpleChatChannels implements CommandExecutor
 						.replaceAll("%channel%", cc.getName()))));
 				return false;
 			}
+    		String name = null;
+			String password = null;
     		if(args.length==2)
     		{
-    			String name = args[1];
-        		ArrayList<Player> members = new ArrayList<Player>();
-        		members.add(player);
-        		cc = new CustomChannel(name, player, members, null, new ArrayList<Player>());
-        		CustomChannel.addCustomChannel(cc);
-        		player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"createchannel.msg02").replaceAll("%channel%", cc.getName()))));
+    			name = args[1];
     		} else if(args.length==3)
     		{
-    			String name = args[1];
-    			String password = args[2];
-        		ArrayList<Player> members = new ArrayList<Player>();
-        		members.add(player);
-        		cc = new CustomChannel(name, player, members, null, new ArrayList<Player>());
-        		CustomChannel.addCustomChannel(cc);
-        		player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"createchannel.msg03")
-    					.replaceAll("%channel%", cc.getName())
-    					.replaceAll("%password%", password))));
+    			name = args[1];
+    			password = args[2];
     		} else
     		{
     			plugin.getUtility().rightArgs(player,args,3);
+    			return false;
     		}
+    		plugin.getCommandHandler().cccreate(player, language, cc, name, password);
 			return true;
     	} else if("ccjoin".equalsIgnoreCase(args[0]) || "join".equalsIgnoreCase(args[0])) 
     	{
@@ -873,87 +468,21 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return false;
     		}
+    		String name = null;
+			String password = null;
     		if(args.length==2)
     		{
-    			String name = args[1];
-    			CustomChannel cc = CustomChannel.getCustomChannel(name);
-    			CustomChannel oldcc = CustomChannel.getCustomChannel(player);
-    			if(oldcc!=null)
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg06")));
-        			return false;
-    			}
-    			if(cc==null)
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg01")
-    						.replaceAll("%name%", name)));
-        			return false;
-    			}
-    			if(cc.getBanned().contains(player))
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg07")));
-        			return false;
-    			}
-    			if(cc.getPassword()!=null)
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg02")));
-        			return false;
-    			}
-    			cc.addMembers(player);
-    			player.spigot().sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg05")
-						.replaceAll("%channel%", cc.getName())));
-    			return true;
+    			name = args[1];
     		} else if(args.length==3)
     		{
-    			String name = args[1];
-    			CustomChannel cc = CustomChannel.getCustomChannel(name);
-    			CustomChannel oldcc = CustomChannel.getCustomChannel(player);
-    			String password = args[2];
-    			if(oldcc!=null)
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg06")));
-        			return false;
-    			}
-    			if(cc==null)
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg01")
-    						.replaceAll("%name%", name)));
-        			return false;
-    			}
-    			if(cc.getBanned().contains(player))
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg07")));
-        			return false;
-    			}
-    			if(cc.getPassword()==null)
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg04")));
-        			return false;
-    			}
-    			if(!cc.getPassword().equals(password))
-    			{
-    				player.spigot().sendMessage(plugin.getUtility().tcl(
-    						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg03")));
-        			return false;
-    			}
-    			cc.addMembers(player);
-    			player.spigot().sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg05")
-						.replaceAll("%channel%", cc.getName())));
-    			return false;
+    			name = args[1];
+    			password = args[2];
     		} else
     		{
     			plugin.getUtility().rightArgs(player,args,3);
+    			return false;
     		}
+    		plugin.getCommandHandler().ccjoin(player, language, name, password);
     		return true;
     	} else if("ccleave".equalsIgnoreCase(args[0]) || "leave".equalsIgnoreCase(args[0])) 
     	{

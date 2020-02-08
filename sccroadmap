@@ -1,10 +1,13 @@
+- +Hover bei Commands in chat
+- +CommandHandler
+- +Item und Command replacerblocks in language.yml änderbar gemacht um missbrauch vorzubeugen
+
 - afk, spigot und bungee. Ist bungee aktive, wird es in spigot ausgelassen
 - chatformat, naja
 - +custom channel
 - +subcmd tabbar machen
 - +pre und suffixe channel nur für die einsichtbar
 - +serverzeit einfügbar machen
-
 - +/scceditor einbauen, um jedwede chateingabe zu returnen (nicht canceln)
 - +/scc channelcreate etc. zu /scc cccreate geändert (für alle custom channels commands)
 - +customchannel perms zu scc.cmd.cc.=> geändert

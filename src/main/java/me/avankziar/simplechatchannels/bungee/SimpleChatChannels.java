@@ -8,6 +8,7 @@ import main.java.de.avankziar.punisher.bungee.PunisherBungee;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDClickChat;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannel;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannelEditor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlInterface;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
@@ -26,6 +27,7 @@ public class SimpleChatChannels extends Plugin
 	private static MysqlInterface mysqlinterface;
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
+	private static CommandHandler commandHandler;
 	private PunisherBungee punisher;
 	private AfkRecord afkrecord;
 	public ArrayList<String> editorplayers;
@@ -36,6 +38,7 @@ public class SimpleChatChannels extends Plugin
 		editorplayers = new ArrayList<>();
 		yamlHandler = new YamlHandler(this);
 		utility = new Utility(this);
+		commandHandler = new CommandHandler(this);
 		backgroundtask = new BackgroundTask(this);
 		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
 		{
@@ -90,6 +93,11 @@ public class SimpleChatChannels extends Plugin
 	public BackgroundTask getBackgroundTask()
 	{
 		return backgroundtask;
+	}
+	
+	public CommandHandler getCommandHandler()
+	{
+		return commandHandler;
 	}
 	
 	public void CommandSetup()

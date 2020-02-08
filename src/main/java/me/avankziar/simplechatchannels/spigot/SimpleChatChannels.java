@@ -13,6 +13,7 @@ import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannelEditor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.TABCompleter;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlInterface;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlSetup;
@@ -29,6 +30,7 @@ public class SimpleChatChannels extends JavaPlugin
 	private static MysqlSetup databaseHandler;
 	private static MysqlInterface mysqlinterface;
 	private static BackgroundTask backgroundtask;
+	private static CommandHandler commandHandler;
 	private static Utility utility;
 	private Punisher punisher;
 	private AfkRecord afkrecord;
@@ -40,6 +42,7 @@ public class SimpleChatChannels extends JavaPlugin
 		editorplayers = new ArrayList<>();
 		yamlHandler = new YamlHandler(this);
 		backgroundtask = new BackgroundTask(this);
+		commandHandler = new CommandHandler(this);
 		utility = new Utility(this);
 		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
 		{
@@ -91,6 +94,11 @@ public class SimpleChatChannels extends JavaPlugin
 	public BackgroundTask getBackgroundTask()
 	{
 		return backgroundtask;
+	}
+	
+	public CommandHandler getCommandHandler()
+	{
+		return commandHandler;
 	}
 	
 	public Utility getUtility()

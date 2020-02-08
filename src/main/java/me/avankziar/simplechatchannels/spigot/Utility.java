@@ -103,6 +103,22 @@ public class Utility
 		return new TextComponent(ChatColor.translateAlternateColorCodes('&', s));
 	}
 	
+	public TextComponent suggestCmdText(String lpath, String cmd)
+	{
+		TextComponent msg = tc(tl(
+				plugin.getYamlHandler().getL().getString(lpath)));
+		msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
+		return msg;
+	}
+	
+	public TextComponent runCmdText(String lpath, String cmd)
+	{
+		TextComponent msg = tc(tl(
+				plugin.getYamlHandler().getL().getString(language+lpath)));
+		msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
+		return msg;
+	}
+	
 	public void sendMessage(Player player, String path)
 	{
 		player.spigot().sendMessage(tc(tl(path)));
@@ -191,7 +207,7 @@ public class Utility
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
 						colorFreeWord));
 			}
-		} else if(splitmsg.contains("<item>"))
+		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".replacerblock.item")))
 		{
 			if(player.hasPermission("scc.channels.bypass.item"))
 			{
@@ -204,14 +220,22 @@ public class Utility
 							new BaseComponent[]{new TextComponent(Utility.item.get(player.getUniqueId().toString()))}));
 				}
 			}
-		} else if(splitmsg.contains("/"))
+		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".replacerblock.command")))
 		{
 			if(player.hasPermission("scc.channels.bypass.command"))
 			{
-				word = tc(tl(colorFreeWord.replaceAll("_", " ")+" "));
+				word = tc(tl(colorFreeWord
+						.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
+						.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), 
+								plugin.getYamlHandler().getL().getString(language+".replacerblock.commandchatoutput"))
+						+" "));
 				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.command")));
-				word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						colorFreeWord.replaceAll("_", " ")));
+				word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, colorFreeWord
+						.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
+						.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), "/")));
+				word.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
+						new ComponentBuilder(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".replacerblock.commandhover"))).create()));
 			}
 		} else
 		{

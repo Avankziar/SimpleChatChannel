@@ -1,6 +1,6 @@
 name: SimpleChatChannels
 main: main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels
-version: 30
+version: 31
 author: Avankziar
 description: A Chat Plugin
 softdepend: [Punisher,AfkRecord]
