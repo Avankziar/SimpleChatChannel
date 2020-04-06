@@ -574,7 +574,7 @@ public class Utility
 		{
 			if((boolean) plugin.getMysqlInterface().getDataI(all, mysql_channel, "player_uuid"))
 			{
-				if(!getIgnored(player,all))
+				if(!getIgnored(all,player))
 				{
 					all.spigot().sendMessage(MSG);
 				}
@@ -646,6 +646,7 @@ public class Utility
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String convertItemStackToJson(ItemStack itemStack) //FIN
 	{
 		/*

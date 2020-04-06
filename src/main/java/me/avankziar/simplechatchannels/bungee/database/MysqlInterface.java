@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class MysqlInterface 
@@ -76,11 +75,6 @@ public class MysqlInterface
 				String sql = "SELECT `player_uuid` FROM `" + tableNameII 
 						+ "` WHERE `player_uuid` = ? AND `ignore_uuid` = ? LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
-		        for(ProxiedPlayer all : plugin.getProxy().getPlayers())
-		        {
-		        	all.sendMessage(new TextComponent("playeruuid = "+player.getUniqueId().toString()
-		        			+" | targetuuid = "+ignoreuuid));
-		        }
 		        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
 		        preparedUpdateStatement.setString(2, ignoreuuid);
 		        
