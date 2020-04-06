@@ -171,7 +171,10 @@ german:
       msg23: '&7Das Wort befindet sich nicht auf der Wortfilterliste!'
       msg24: '&7Das Word %word% wurde aus dem Wortfilter entfernt!'
     broadcast:
-       msg20: '&7[&cBroadcast&7] '
+      msg20: '&7[&cBroadcast&7] '
+    reload:
+      msg01: '&aYaml Datein wurden neugeladen.'
+      msg02: '&cEs wurde ein Fehler gefunden! Siehe Konsole!'
     serverlistener:
       msg01: '&7BungeeCord fuer SCC wurde &7deaktiviert!'
       msg02: '&7BungeeCord fuer SCC wurde &7aktiviert!'
@@ -404,6 +407,9 @@ english:
       msg04: '&7The word %word% has been removed from the word filter!' 
     broadcast:
       msg20: '&7[&cBroadcast&7] %msg%'
+    reload:
+      msg01: '&aYaml file was reloaded.'
+      msg02: '&cError found by reloading the files! See console!'
     serverlistener:
       msg01: '&7BungeeCord for SCC has been deactivated!'
       msg02: '&7BungeeCord for SCC was activated!'

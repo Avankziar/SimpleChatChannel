@@ -52,7 +52,7 @@ public class CMDClickChat implements CommandExecutor
     	msg1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
 				new ComponentBuilder(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(l+".CMD_ClickChat.msg01")
-						.replaceAll("%number%", args[1]))).create()));
+						.replace("%number%", args[1]))).create()));
 		msg1.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, number));
     	t.spigot().sendMessage(msg1);
 		return false;

@@ -33,7 +33,7 @@ public class EVENTJoinLeave implements Listener
 		{
 			player.sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(
-					language+".EVENT_JoinLeave.msg01").replaceAll("%player%", pn)));
+					language+".EVENT_JoinLeave.msg01").replace("%player%", pn)));
 		}
 		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
 		if(globaljoin==false)
@@ -48,12 +48,12 @@ public class EVENTJoinLeave implements Listener
 				{
 					TextComponent msg = plugin.getUtility().tcl(
 							plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg02")
-							.replaceAll("%player%", pn));
+							.replace("%player%", pn));
 					msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" "));
 					msg.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 							, new ComponentBuilder(plugin.getUtility().tl(
 									plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-									.replaceAll("%player%", player.getName()))).create()));
+									.replace("%player%", player.getName()))).create()));
 					all.sendMessage(msg);
 				}
 			}
@@ -92,7 +92,7 @@ public class EVENTJoinLeave implements Listener
     			cc.setCreator(newcreator);
     			newcreator.sendMessage(plugin.getUtility().tcl(
     					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
-    					.replaceAll("%channel%", cc.getName())));
+    					.replace("%channel%", cc.getName())));
 			}
 		}
 		if(!plugin.getMysqlInterface().hasAccount(player))
@@ -109,7 +109,7 @@ public class EVENTJoinLeave implements Listener
 			if((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid"))
 			{
 				String msg = plugin.getYamlHandler().getL().getString(
-						language+".EVENT_JoinLeave.msg03").replaceAll("%player%", pn);
+						language+".EVENT_JoinLeave.msg03").replace("%player%", pn);
 				all.sendMessage(plugin.getUtility().tcl(msg));
 			}
 		}

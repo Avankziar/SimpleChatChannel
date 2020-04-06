@@ -1,7 +1,8 @@
 name: SimpleChatChannels
 main: main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels
-version: 31
+version: 33
 author: Avankziar
+api-version: 1.15
 description: A Chat Plugin
 softdepend: [Punisher,AfkRecord]
 commands:
@@ -87,6 +88,9 @@ permissions:
     default: false
   scc.cmd.broadcast:
     description: Gives access to /scc broadcast <message>, to send a message to all onlineplayers (bungee/colorcode possible).
+    default: false
+  scc.cmd.reload:
+    description: Gives access to /scc reload, to reload all yaml file on spigot level.
     default: false
   scc.cmd.cc.create:
     description: Gives access to /scc cccreate <name of channel> [password], create a custom channel.

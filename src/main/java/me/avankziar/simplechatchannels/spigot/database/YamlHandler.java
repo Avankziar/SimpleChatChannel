@@ -49,6 +49,23 @@ public class YamlHandler
 		symbolcustom = lgg.getString(languages+".channelsymbol.custom");
 	}
 	
+	public void reload()
+	{
+		languages = cfg.getString("language");
+		symbolglobal = lgg.getString(languages+".channelsymbol.global");
+		symboltrade = lgg.getString(languages+".channelsymbol.trade");
+		symbolauction = lgg.getString(languages+".channelsymbol.auction");
+		symbollocal = lgg.getString(languages+".channelsymbol.local");
+		symbolworld = lgg.getString(languages+".channelsymbol.world");
+		symbolsupport = lgg.getString(languages+".channelsymbol.support");
+		symbolteam = lgg.getString(languages+".channelsymbol.team");
+		symboladmin = lgg.getString(languages+".channelsymbol.admin");
+		symbolpm = lgg.getString(languages+".channelsymbol.message");
+		symbolpmre = lgg.getString(languages+".channelsymbol.messagere");
+		symbolgroup = lgg.getString(languages+".channelsymbol.group");
+		symbolcustom = lgg.getString(languages+".channelsymbol.custom");
+	}
+	
 	public YamlConfiguration get()
 	{
 		return cfg;
@@ -59,7 +76,7 @@ public class YamlHandler
 		return lgg;
 	}
 	
-	private void mkdir() 
+	public void mkdir() 
 	{
 		config = new File(plugin.getDataFolder(), "spigotconfig.yml");
 		if(!config.exists()) 
@@ -101,7 +118,7 @@ public class YamlHandler
 	    }
 	}
 	
-	public void loadYamls() 
+	public boolean loadYamls() 
 	{
 		try 
 		{
@@ -110,6 +127,7 @@ public class YamlHandler
 		} catch (IOException | InvalidConfigurationException e) {
 			SimpleChatChannels.log.severe("Could not load the spigotconfig file! You need to regenerate the spigotconfig! Error: " + e.getMessage());
 			e.printStackTrace();
+			return false;
 		}
 		try 
 		{
@@ -118,7 +136,9 @@ public class YamlHandler
 		{
 			SimpleChatChannels.log.severe("Could not load the language file! You need to regenerate the language! Error: " + e.getMessage());
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 	
 	public String getChannel(String channelwithoutsymbol, String msg)

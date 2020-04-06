@@ -216,13 +216,13 @@ public class CMDSimpleChatChannels implements CommandExecutor
 			{
 				return false;
 			}
-			String list = plugin.getMysqlInterface().getIgnoreList(player, "ignore_name", "player_uuid");
+			String list = plugin.getMysqlInterface().getIgnoreList(player, "ignore_uuid", "player_uuid");
 			if(list == null)
 			{
 				list = "None";
 			}
 			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg03")
-					.replaceAll("%il%", list)));
+					.replace("%il%", list)));
 			return true;
 			//--------------------------------------------------bungee Auf Bungee und Spigot Server
 		} else if("bungee".equalsIgnoreCase(args[0]))
@@ -302,7 +302,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			Long mutetime = System.currentTimeMillis()+num*time;
     			plugin.getMysqlInterface().updateDataI(player, mutetime, "mutetime");
     			t.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg02")
-    					.replaceAll("%time%", args[2])));
+    					.replace("%time%", args[2])));
     			return true;
 			} else if(plugin.getUtility().rightArgs(player,args,3))
 			{
@@ -351,13 +351,13 @@ public class CMDSimpleChatChannels implements CommandExecutor
 			{
 				plugin.getMysqlInterface().deleteDataII(player.getUniqueId().toString(), t.getUniqueId().toString(), "player_uuid", "ignore_uuid");
 				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg02")
-						.replaceAll("%player%", target)));
+						.replace("%player%", target)));
 				return true;
 			} else
 			{
 				plugin.getMysqlInterface().createIgnore(player, t);
 				player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg01")
-						.replaceAll("%player%", target)));
+						.replace("%player%", target)));
 				return true;
 			}
 		} else if("wordfilter".equalsIgnoreCase(args[0]) || "wortfilter".equalsIgnoreCase(args[0]))
@@ -385,7 +385,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
 					plugin.getYamlHandler().get().set("wordfilter", wordfilter);
 					plugin.getYamlHandler().saveConfig();
 					player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg02")
-							.replaceAll("%word%", word)));
+							.replace("%word%", word)));
 					return true;
 				}
 			} else if(args[1].equals("remove"))
@@ -398,7 +398,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
 					plugin.getYamlHandler().get().set("wordfilter", wordfilter);
 					plugin.getYamlHandler().saveConfig();
 					player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg04")
-							.replaceAll("%word%", word)));
+							.replace("%word%", word)));
 					return true;
 				} else
 				{
@@ -430,6 +430,28 @@ public class CMDSimpleChatChannels implements CommandExecutor
     			all.spigot().sendMessage(MSG);
     		}
     		return true;
+    	} else if("reload".equals(args[0]))
+    	{
+    		if(!player.hasPermission("scc.cmd.reload"))
+    		{
+    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			return false;
+    		}
+    		if(plugin.getUtility().rightArgs(player,args,1))
+			{
+				return false;
+			}
+    		plugin.getYamlHandler().mkdir();
+    		if(plugin.getYamlHandler().loadYamls())
+    		{
+    			plugin.getYamlHandler().reload();
+    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"reload.msg01")));
+    			return true;
+    		} else
+    		{
+    			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"reload.msg02")));
+    			return false;
+    		}
     	} else if("cccreate".equalsIgnoreCase(args[0])) 
     	{
     		if(!player.hasPermission("scc.cmd.cc.channel"))
@@ -442,7 +464,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
 			{
 				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+scc+"createchannel.msg01")
-						.replaceAll("%channel%", cc.getName()))));
+						.replace("%channel%", cc.getName()))));
 				return false;
 			}
     		String name = null;
@@ -519,7 +541,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     				cc.setCreator(newcreator);
         			newcreator.spigot().sendMessage(plugin.getUtility().tcl(
         					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg03")
-        					.replaceAll("%channel%", cc.getName())));
+        					.replace("%channel%", cc.getName())));
     			} else 
     			{
     				CustomChannel.removeCustomChannel(cc);
@@ -528,7 +550,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		}
     		player.spigot().sendMessage(plugin.getUtility().tcl(
 					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
-					.replaceAll("%channel%", name)));
+					.replace("%channel%", name)));
 			return true;
     	} else if("cckick".equalsIgnoreCase(args[0])) 
     	{
@@ -573,12 +595,12 @@ public class CMDSimpleChatChannels implements CommandExecutor
 					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg03")));
     		player.spigot().sendMessage(plugin.getUtility().tcl(
 					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg04")
-					.replaceAll("%player%", args[1])));
+					.replace("%player%", args[1])));
     		for(Player members : cc.getMembers())
     		{
     			members.spigot().sendMessage(plugin.getUtility().tcl(
     					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg05")
-    					.replaceAll("%player%", args[1])));
+    					.replace("%player%", args[1])));
     		}
 			return true;
     	} else if("ccban".equalsIgnoreCase(args[0])) 
@@ -628,15 +650,15 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		cc.addBanned(target);
     		player.spigot().sendMessage(plugin.getUtility().tcl(
 					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg02")
-					.replaceAll("%player%", args[1])));
+					.replace("%player%", args[1])));
     		target.spigot().sendMessage(plugin.getUtility().tcl(
 					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg03")
-					.replaceAll("%channel%", cc.getName())));
+					.replace("%channel%", cc.getName())));
     		for(Player members : cc.getMembers())
     		{
     			members.spigot().sendMessage(plugin.getUtility().tcl(
     					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg04")
-    					.replaceAll("%player%", args[1])));
+    					.replace("%player%", args[1])));
     		}
 			return true;
     	} else if("ccunban".equalsIgnoreCase(args[0])) 
@@ -680,12 +702,12 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		cc.removeBanned(target);
     		player.spigot().sendMessage(plugin.getUtility().tcl(
 					plugin.getYamlHandler().getL().getString(language+scc+"unbanchannel.msg02")
-					.replaceAll("%player%", target.getName())));
+					.replace("%player%", target.getName())));
     		for(Player members : cc.getMembers())
     		{
     			members.spigot().sendMessage(plugin.getUtility().tcl(
     					plugin.getYamlHandler().getL().getString(language+scc+"unbanchannel.msg03")
-    					.replaceAll("%player%", target.getName())));
+    					.replace("%player%", target.getName())));
     		}
 			return true;
     	} else if("ccchangepassword".equalsIgnoreCase(args[0])) 
@@ -716,7 +738,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		cc.setPassword(args[1]);
     		player.spigot().sendMessage(plugin.getUtility().tcl(
 					plugin.getYamlHandler().getL().getString(language+scc+"changepassword.msg01")
-					.replaceAll("%password%", args[1])));
+					.replace("%password%", args[1])));
 			return true;
     	} else if("debug".equalsIgnoreCase(args[0])) 
     	{

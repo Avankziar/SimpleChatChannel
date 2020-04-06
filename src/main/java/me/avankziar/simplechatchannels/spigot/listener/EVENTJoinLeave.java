@@ -35,7 +35,7 @@ public class EVENTJoinLeave implements Listener
 		{
 			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
 			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg01")
-					.replaceAll("%player%", player.getName())));
+					.replace("%player%", player.getName())));
 		}
 		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
 		if(globaljoin==false)
@@ -49,7 +49,7 @@ public class EVENTJoinLeave implements Listener
 				if((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid"))
 				{
 					all.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg02")
-							.replaceAll("%player%", player.getName())));
+							.replace("%player%", player.getName())));
 				}
 			}
 		}
@@ -91,7 +91,7 @@ public class EVENTJoinLeave implements Listener
     			cc.setCreator(newcreator);
     			newcreator.spigot().sendMessage(plugin.getUtility().tcl(
     					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
-    					.replaceAll("%channel%", cc.getName())));
+    					.replace("%channel%", cc.getName())));
 			}
 		}
 		event.setQuitMessage("");
@@ -107,7 +107,7 @@ public class EVENTJoinLeave implements Listener
 			{
 				all.spigot().sendMessage(plugin.getUtility().tcl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg03")
-						.replaceAll("%player%", player.getName())));
+						.replace("%player%", player.getName())));
 			}
 		}
 		return;

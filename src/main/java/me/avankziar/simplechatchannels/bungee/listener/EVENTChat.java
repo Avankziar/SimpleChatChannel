@@ -74,7 +74,7 @@ public class EVENTChat implements Listener
 		boolean timeofdays = plugin.getYamlHandler().get().getString("addingtimeofdays").equalsIgnoreCase("true");
 		String timeofdaysformat = plugin.getUtility().getDate(plugin.getYamlHandler().get().getString("timeofdaysformat"));
 		String timeofdaysoutput = plugin.getUtility().tl(plugin.getYamlHandler().get().getString("timeofdaysoutput")
-				.replaceAll("%time%", timeofdaysformat));
+				.replace("%time%", timeofdaysformat));
 		
 		if(channel.equalsIgnoreCase("local"))
 		{
@@ -114,7 +114,7 @@ public class EVENTChat implements Listener
 				time = String.valueOf(millitime)+" min";
 			}
 			plugin.getUtility().sendMessage(player, plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg07")
-					.replaceAll("%time%", time));
+					.replace("%time%", time));
 			return;
 		}
 		
@@ -168,7 +168,8 @@ public class EVENTChat implements Listener
 			
 			CustomChannel cc = CustomChannel.getCustomChannel(player);
 			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
+			if(event.getMessage().length()>=symbol.length() 
+					&& plugin.getUtility().getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
 			{
 				player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
@@ -218,7 +219,8 @@ public class EVENTChat implements Listener
 			String[] eventmsg = event.getMessage().split(" ");
 			int lenghteventmsg = eventmsg[0].length()+1;
 			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(lenghteventmsg))) //Wordfilter
+			if(event.getMessage().length()>=lenghteventmsg 
+					&& plugin.getUtility().getWordfilter(event.getMessage().substring(lenghteventmsg))) //Wordfilter
 			{
 				player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
@@ -239,7 +241,7 @@ public class EVENTChat implements Listener
 			
 			TextComponent channels = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".channels.group")
-					.replaceAll("%group%", preorsuffix)));
+					.replace("%group%", preorsuffix)));
 			channels.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
 					symbol+pors+" "));
 			channels.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
@@ -255,7 +257,7 @@ public class EVENTChat implements Listener
 			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
+							.replace("%player%", player.getName()))).create()));
 			
 			List<BaseComponent> suffix = plugin.getUtility().getSuffix(player);
 			
@@ -336,7 +338,7 @@ public class EVENTChat implements Listener
 			channel1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
+							.replace("%player%", player.getName()))).create()));
 			
 			TextComponent channel2 = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".channels.message")));
@@ -345,7 +347,7 @@ public class EVENTChat implements Listener
 			channel2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", tr.getName()))).create()));
+							.replace("%player%", tr.getName()))).create()));
 			
 			TextComponent playertext = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName()));
@@ -354,7 +356,7 @@ public class EVENTChat implements Listener
 			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
+							.replace("%player%", player.getName()))).create()));
 			
 			TextComponent player2text = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".playertoplayer")+tr.getName()));
@@ -363,12 +365,12 @@ public class EVENTChat implements Listener
 			player2text.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
+							.replace("%player%", player.getName()))).create()));
 			
 			
 			
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(
-					symbol.length()+2))) //Wordfilter
+			if(event.getMessage().length()>=symbol.length() && plugin.getUtility().getWordfilter(event.getMessage().substring(
+					symbol.length()))) //Wordfilter
 			{
 				player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));
@@ -447,7 +449,7 @@ public class EVENTChat implements Listener
 			channel1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
+							.replace("%player%", player.getName()))).create()));
 			
 			TextComponent channel2 = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".channels.message")));
@@ -456,7 +458,7 @@ public class EVENTChat implements Listener
 			channel2.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", tr.getName()))).create()));
+							.replace("%player%", tr.getName()))).create()));
 	
 			TextComponent playertext = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".playercolor")+player.getName()));
@@ -465,7 +467,7 @@ public class EVENTChat implements Listener
 			playertext.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", player.getName()))).create()));
+							.replace("%player%", player.getName()))).create()));
 			
 			TextComponent player2text = plugin.getUtility().tc(plugin.getUtility().tl(
 					plugin.getYamlHandler().getL().getString(language+".playertoplayer")+tr.getName()));
@@ -474,7 +476,7 @@ public class EVENTChat implements Listener
 			player2text.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 					, new ComponentBuilder(plugin.getUtility().tl(
 							plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-							.replaceAll("%player%", tr.getName()))).create()));
+							.replace("%player%", tr.getName()))).create()));
 			
 			if(event.getMessage().substring(targets[0].length()+1).length()<0)
 			{
@@ -482,7 +484,8 @@ public class EVENTChat implements Listener
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg08"))));
 				return;
 			}
-			if(plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("pm").length()))) //Wordfilter
+			if(event.getMessage().length()>=plugin.getYamlHandler().getSymbol("pm").length() 
+					&& plugin.getUtility().getWordfilter(event.getMessage().substring(plugin.getYamlHandler().getSymbol("pm").length()))) //Wordfilter
 			{
 				player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06"))));

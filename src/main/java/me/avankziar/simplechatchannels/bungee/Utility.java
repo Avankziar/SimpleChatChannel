@@ -94,7 +94,7 @@ public class Utility
 				plugin.getYamlHandler().getSymbol("pm")+p.getName()+" "));
 		player.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
-						.replaceAll("%player%", p.getName()))).create()));
+						.replace("%player%", p.getName()))).create()));
 		
 		List<BaseComponent> suffix = getSuffix(p);
 		
@@ -118,19 +118,17 @@ public class Utility
 			{
 				if(hasColor(splitmsg))
 				{
-					safeColor = splitmsg.substring(0,2);
-					String colorFreeWord = removeColor(splitmsg);
-					TextComponent word = tc(tl(colorFreeWord+" "));
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
+					safeColor = getSafeColor(splitmsg);
+					TextComponent word = tc(tl(splitmsg+" "));
+					list.add(word);
 				} else
 				{
 					if(safeColor==null)
 					{
 						safeColor = cc;
 					}
-					String colorFreeWord = removeColor(splitmsg);
-					TextComponent word = tc(tl(colorFreeWord+" "));
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
+					TextComponent word = tc(tl(splitmsg+" "));
+					list.add(word);
 				}
 			} else
 			{
@@ -145,13 +143,14 @@ public class Utility
 	
 	private BaseComponent addFunctions(ProxiedPlayer player, String splitmsg, String colorFreeWord, TextComponent word, String cc)
 	{
-		if(splitmsg.contains("www.")||splitmsg.contains("http"))
+		if(splitmsg.contains("http"))
 		{
 			if(player.hasPermission("scc.channels.bypass.website"))
 			{
-				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.website")));
+				word = tc(tl(removeColor(colorFreeWord)));
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
 						colorFreeWord));
+				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.website")));
 			}
 		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".replacerblock.item")))
 		{
@@ -171,14 +170,14 @@ public class Utility
 			if(player.hasPermission("scc.channels.bypass.command"))
 			{
 				word = tc(tl(colorFreeWord
-						.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
-						.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), 
+						.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
+						.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), 
 								plugin.getYamlHandler().getL().getString(language+".replacerblock.commandchatoutput"))
 						+" "));
 				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.command")));
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						colorFreeWord.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
-						.replaceAll(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), "/")));
+						colorFreeWord.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
+						.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), "/")));
 				word.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
 						new ComponentBuilder(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".replacerblock.commandhover"))).create()));
@@ -207,20 +206,47 @@ public class Utility
 		return false;
 	}
 	
+	private String getSafeColor(String s)
+	{
+		String m = "";
+		for(int i = 0; i < s.length(); i++)
+		{
+		   char c = s.charAt(i);
+		   if(c == '&')
+		   {
+			   if(i+1<s.length())
+			   {
+				   char d = s.charAt(i+1);
+				   if(d == '0' || d == '1' || d == '2' || d == '3' || d == '4' || d == '5' || d == '6'
+						   || d == '7' || d == '8' || d == '9' || d == 'a' || d == 'A' || d == 'b' || d == 'B'
+						   || d == 'c' || d == 'C' || d == 'd' || d == 'D' || d == 'e' || d == 'E'
+						   || d == 'f' || d == 'F' || d == 'k' || d == 'K' || d == 'm' || d == 'M'
+						   || d == 'n' || d == 'N' || d == 'l' || d == 'L' || d == 'o' || d == 'O'
+						   || d == 'r' || d == 'R')
+				   {
+					   m = "&"+Character.toString(d);
+					   break;
+				   }
+			   }
+		   }
+		}
+		return m;
+	}
+	
 	private String removeColor(String msg)
 	{
-		String a = msg.replaceAll("&0", "").replaceAll("&1", "").replaceAll("&2", "").replaceAll("&3", "").replaceAll("&4", "").replaceAll("&5", "")
-				.replaceAll("&6", "").replaceAll("&7", "").replaceAll("&8", "").replaceAll("&9", "")
-				.replaceAll("&a", "").replaceAll("&b", "").replaceAll("&c", "").replaceAll("&d", "").replaceAll("&e", "").replaceAll("&f", "")
-				.replaceAll("&k", "").replaceAll("&l", "").replaceAll("&m", "").replaceAll("&n", "").replaceAll("&o", "").replaceAll("&r", "")
-				.replaceAll("&A", "").replaceAll("&B", "").replaceAll("&C", "").replaceAll("&D", "").replaceAll("&E", "").replaceAll("&F", "")
-				.replaceAll("&K", "").replaceAll("&L", "").replaceAll("&M", "").replaceAll("&N", "").replaceAll("&O", "").replaceAll("&R", "")
-				.replaceAll("§0", "").replaceAll("§1", "").replaceAll("&2", "").replaceAll("§3", "").replaceAll("§4", "").replaceAll("§5", "")
-				.replaceAll("§6", "").replaceAll("§7", "").replaceAll("§8", "").replaceAll("§9", "")
-				.replaceAll("§a", "").replaceAll("§b", "").replaceAll("§c", "").replaceAll("§d", "").replaceAll("§e", "").replaceAll("§f", "")
-				.replaceAll("§k", "").replaceAll("§l", "").replaceAll("§m", "").replaceAll("§n", "").replaceAll("§o", "").replaceAll("§r", "")
-				.replaceAll("§A", "").replaceAll("§B", "").replaceAll("§C", "").replaceAll("§D", "").replaceAll("§E", "").replaceAll("§F", "")
-				.replaceAll("§K", "").replaceAll("§L", "").replaceAll("§M", "").replaceAll("§N", "").replaceAll("§O", "").replaceAll("§R", "");
+		String a = msg.replace("&0", "").replace("&1", "").replace("&2", "").replace("&3", "").replace("&4", "").replace("&5", "")
+				.replace("&6", "").replace("&7", "").replace("&8", "").replace("&9", "")
+				.replace("&a", "").replace("&b", "").replace("&c", "").replace("&d", "").replace("&e", "").replace("&f", "")
+				.replace("&k", "").replace("&l", "").replace("&m", "").replace("&n", "").replace("&o", "").replace("&r", "")
+				.replace("&A", "").replace("&B", "").replace("&C", "").replace("&D", "").replace("&E", "").replace("&F", "")
+				.replace("&K", "").replace("&L", "").replace("&M", "").replace("&N", "").replace("&O", "").replace("&R", "")
+				.replace("§0", "").replace("§1", "").replace("&2", "").replace("§3", "").replace("§4", "").replace("§5", "")
+				.replace("§6", "").replace("§7", "").replace("§8", "").replace("§9", "")
+				.replace("§a", "").replace("§b", "").replace("§c", "").replace("§d", "").replace("§e", "").replace("§f", "")
+				.replace("§k", "").replace("§l", "").replace("§m", "").replace("§n", "").replace("§o", "").replace("§r", "")
+				.replace("§A", "").replace("§B", "").replace("§C", "").replace("§D", "").replace("§E", "").replace("§F", "")
+				.replace("§K", "").replace("§L", "").replace("§M", "").replace("§N", "").replace("§O", "").replace("§R", "");
 		return a;
 	}
 	
