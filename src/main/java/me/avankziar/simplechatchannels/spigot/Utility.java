@@ -414,7 +414,7 @@ public class Utility
 		{
 			if(player.hasPermission("scc.cmd.ignorebypass"))
 			{
-				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+				target.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
 				return false;
 			}

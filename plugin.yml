@@ -74,6 +74,9 @@ permissions:
   scc.cmd.ignorelist:
     description: Gives access to /scc ignorlist, which shows you your list of ignored players.
     default: false
+  scc.cmd.ignorebypass:
+    description: Bypass the ignore function
+    default: false
   scc.cmd.bungee:
     description: Gives access to /scc bungee, which switch scc to the bungeecord settings.
     default: false
