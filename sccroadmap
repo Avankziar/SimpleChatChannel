@@ -1,3 +1,10 @@
+- +Ignorelist und Ignore gefixt
+- +BypassPerm für Admins der Ignore | scc.cmd.ignorebypass
+- Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
+- Tab correct umsetzten siehe votereborn
+- Commands neu aufsetzten siehe votereborn
+- ignore_name aktualisierungsmethode einfügen
+
 - +Hover bei Commands in chat
 - +CommandHandler
 - +Item und Command replacerblocks in language.yml änderbar gemacht um missbrauch vorzubeugen

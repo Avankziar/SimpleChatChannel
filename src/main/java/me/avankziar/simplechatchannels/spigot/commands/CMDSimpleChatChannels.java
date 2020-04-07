@@ -216,7 +216,7 @@ public class CMDSimpleChatChannels implements CommandExecutor
 			{
 				return false;
 			}
-			String list = plugin.getMysqlInterface().getIgnoreList(player, "ignore_uuid", "player_uuid");
+			String list = plugin.getMysqlInterface().getIgnoreList(player, "ignore_name", "player_uuid");
 			if(list == null)
 			{
 				list = "None";

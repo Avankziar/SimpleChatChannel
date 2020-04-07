@@ -313,6 +313,12 @@ public class Utility
 	{
 		if(plugin.getMysqlInterface().existIgnore(player, target.getUniqueId().toString()))
 		{
+			if(player.hasPermission("scc.cmd.ignorebypass"))
+			{
+				player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
+				return false;
+			}
 			return true;
 		}
 		return false;

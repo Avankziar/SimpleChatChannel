@@ -399,6 +399,10 @@ public class MysqlInterface
 		        {
 		        	list += result.getString(selectcolumn)+", ";
 		        }
+		        if(list.length()<=2)
+		        {
+		        	return null;
+		        }
 		        return list.substring(0,list.length()-2);
 		    } catch (SQLException e) 
 			{

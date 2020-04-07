@@ -164,7 +164,7 @@ public class EVENTChat implements Listener
 					{
 						if((boolean) plugin.getMysqlInterface().getDataI(t, "channel_local", "player_uuid"))
 						{
-							if(!plugin.getUtility().getIgnored(player,t))
+							if(!plugin.getUtility().getIgnored(t,player))
 							{
 								t.spigot().sendMessage(MSG);
 							}
@@ -212,7 +212,7 @@ public class EVENTChat implements Listener
 				{
 					if((boolean) plugin.getMysqlInterface().getDataI(t, "channel_world", "player_uuid"))
 					{
-						if(!plugin.getUtility().getIgnored(player,t))
+						if(!plugin.getUtility().getIgnored(t,player))
 						{
 							t.spigot().sendMessage(MSG);
 						}
@@ -306,7 +306,7 @@ public class EVENTChat implements Listener
 					{
 						if((boolean) plugin.getMysqlInterface().getDataI(all, "channel_custom", "player_uuid"))
 						{
-							if(!plugin.getUtility().getIgnored(player,all))
+							if(!plugin.getUtility().getIgnored(all,player))
 							{
 								all.spigot().sendMessage(MSG);
 							}
@@ -391,7 +391,7 @@ public class EVENTChat implements Listener
 				{
 					if(!all.equals(player))
 					{
-						if(!plugin.getUtility().getIgnored(player,all))
+						if(!plugin.getUtility().getIgnored(all,player))
 						{
 							if(all.hasPermission(ps))
 							{
@@ -506,7 +506,7 @@ public class EVENTChat implements Listener
 			{
 				return;
 			}
-			if(plugin.getUtility().getIgnored(player,tr))
+			if(plugin.getUtility().getIgnored(tr,player))
 			{
 				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
@@ -615,7 +615,7 @@ public class EVENTChat implements Listener
 			{
 				return;
 			}	
-			if(plugin.getUtility().getIgnored(player,tr))
+			if(plugin.getUtility().getIgnored(tr,player))
 			{
 				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
