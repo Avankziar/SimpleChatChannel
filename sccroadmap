@@ -1,15 +1,20 @@
 - Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
 - Tab correct umsetzten siehe votereborn
 - Commands neu aufsetzten siehe votereborn
-- ignore_name aktualisierungsmethode einfügen
+- Prefix in config.yml einbauen
 
+Build 33
 - +Ignorelist und Ignore gefixt
 - +BypassPerm für Admins der Ignore | scc.cmd.ignorebypass
+- +Änderungen in der language.yml bei Chatsplit
+- +ignore_name aktualisierungsmethode einfügen
 
+Build 31
 - +Hover bei Commands in chat
 - +CommandHandler
 - +Item und Command replacerblocks in language.yml änderbar gemacht um missbrauch vorzubeugen
 
+Build 30
 - afk, spigot und bungee. Ist bungee aktive, wird es in spigot ausgelassen
 - chatformat, naja
 - +custom channel

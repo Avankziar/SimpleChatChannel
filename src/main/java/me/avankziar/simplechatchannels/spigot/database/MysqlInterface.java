@@ -214,7 +214,7 @@ public class MysqlInterface
 		return false;
 	}
 	
-	public boolean updateDataI(Player player, Object object, String wherecolumn) 
+	public boolean updateDataI(Player player, Object object, String setcolumn) 
 	{
 		if (!hasAccount(player)) 
 		{
@@ -227,11 +227,10 @@ public class MysqlInterface
 			try 
 			{
 				String data = "UPDATE `" + tableNameI 
-						+ "` " + "SET `player_name` = ?" + ", `" + wherecolumn + "` = ?" + " WHERE `player_uuid` = ?";
+						+ "` " + "SET `" + setcolumn + "` = ?" + " WHERE `player_uuid` = ?";
 				preparedUpdateStatement = conn.prepareStatement(data);
-				preparedUpdateStatement.setString(1, player.getName());
-				preparedUpdateStatement.setObject(2, object);
-				preparedUpdateStatement.setString(3, player.getUniqueId().toString());
+				preparedUpdateStatement.setObject(1, object);
+				preparedUpdateStatement.setString(2, player.getUniqueId().toString());
 				
 				preparedUpdateStatement.executeUpdate();
 				return true;
@@ -251,12 +250,8 @@ public class MysqlInterface
         return false;
 	}
 	
-	public boolean updateDataII(Player player, Object object, String wherecolumn) 
+	public boolean updateDataII(Player player, Object object, String setcolumn, String wherecolumn) 
 	{
-		if (!hasAccount(player)) 
-		{
-			createAccount(player);
-		}
 		PreparedStatement preparedUpdateStatement = null;
 		Connection conn = plugin.getDatabaseHandler().getConnection();
 		if (conn != null) 
@@ -264,11 +259,10 @@ public class MysqlInterface
 			try 
 			{
 				String data = "UPDATE `" + tableNameII 
-						+ "` " + "SET `player_name` = ?" + ", `" + wherecolumn + "` = ?" + " WHERE `player_uuid` = ?";
+						+ "` " + "SET `" + setcolumn + "` = ?" + " WHERE `" + wherecolumn + "` = ?";
 				preparedUpdateStatement = conn.prepareStatement(data);
-				preparedUpdateStatement.setString(1, player.getName());
-				preparedUpdateStatement.setObject(2, object);
-				preparedUpdateStatement.setString(3, player.getUniqueId().toString());
+				preparedUpdateStatement.setObject(1, object);
+				preparedUpdateStatement.setString(2, player.getUniqueId().toString());
 				
 				preparedUpdateStatement.executeUpdate();
 				return true;

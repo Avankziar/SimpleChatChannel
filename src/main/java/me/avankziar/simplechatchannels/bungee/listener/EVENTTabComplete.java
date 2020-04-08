@@ -24,22 +24,62 @@ public class EVENTTabComplete implements Listener
 	public void onTab(TabCompleteEvent event)
 	{
 		String c = event.getCursor();
-		if(c.equalsIgnoreCase("/scc wordfilter "))
+		String[] cc = null;
+		String command = "";
+		if(c.contains(" "))
 		{
-			event.getSuggestions().clear();
-			event.getSuggestions().addAll(wordfilter);
-		} else if(c.equalsIgnoreCase("/scc "))
+			cc = c.split(" ");
+			command = cc[0];
+		} else
 		{
-			event.getSuggestions().clear();
-			ProxiedPlayer pp = (ProxiedPlayer) event.getSender();
-			if(pp.hasPermission("scc.admin"))
+			command = c;
+		}
+		if (command.equalsIgnoreCase("scc")) 
+		{
+			if (event.getSender() instanceof ProxiedPlayer) 
 			{
-				event.getSuggestions().addAll(admin);
-			} else
-			{
-				event.getSuggestions().addAll(player);
+				if (cc.length == 1) 
+				{
+					ProxiedPlayer player = (ProxiedPlayer) event.getSender();
+					List<String> commandList = new ArrayList<>();
+					commandList.add("reload");
+					commandList.add("addtoken");
+					commandList.add("settoken");
+					commandList.add("gettoken");
+					commandList.add("addserie");
+					commandList.add("setserie");
+					commandList.add("getserie");
+					commandList.add("getitemserie");
+					List<String> list = new ArrayList<String>();
+					if (!cc[1].equals("")) 
+					{
+						for (String commandString : commandList) 
+						{
+							if (player.hasPermission("scvoting.cmd." + commandString)) 
+							{
+								if (commandString.startsWith(cc[1].toLowerCase())) 
+								{
+									list.add(commandString);
+								}
+							}
+						}
+					} else 
+					{
+						for (String commandString : commandList) 
+						{
+							if (player.hasPermission("scvoting.cmd." + commandString)) 
+							{
+								list.add(commandString);
+							}
+						}
+					}
+					Collections.sort(list);
+					//return list;
+				}
 			}
 		}
+		//return null;
+
 	}
 	
 	public void init()

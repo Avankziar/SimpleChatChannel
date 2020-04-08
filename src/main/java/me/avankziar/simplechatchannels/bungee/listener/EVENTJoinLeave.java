@@ -35,6 +35,7 @@ public class EVENTJoinLeave implements Listener
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(
 					language+".EVENT_JoinLeave.msg01").replace("%player%", pn)));
 		}
+		plugin.getMysqlInterface().updateDataII(player, player.getName(), "ignore_name", "ignore_uuid");
 		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
 		if(globaljoin==false)
 		{

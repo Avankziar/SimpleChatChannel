@@ -1,14 +1,17 @@
 package main.java.me.avankziar.simplechatchannels.bungee;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
 import main.java.de.avankziar.punisher.bungee.PunisherBungee;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDClickChat;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannel;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CMDSimpleChatChannelEditor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutorClickChat;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutorSimpleChatChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs.ARGGrouplist;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs.ARGPlayerlist;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandFactory;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlInterface;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
@@ -27,18 +30,23 @@ public class SimpleChatChannels extends Plugin
 	private static MysqlInterface mysqlinterface;
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
-	private static CommandHandler commandHandler;
+	private static CommandFactory commandHandler;
 	private PunisherBungee punisher;
 	private AfkRecord afkrecord;
+	
 	public ArrayList<String> editorplayers;
+	public static HashMap<String, CommandHandler> sccarguments;
+	public static HashMap<String, CommandHandler> clcharguments;
+	public static HashMap<String, CommandHandler> scceditorarguments;
 	
 	public void onEnable() 
 	{
 		log = getLogger();
 		editorplayers = new ArrayList<>();
+		sccarguments = new HashMap<String, CommandHandler>();
 		yamlHandler = new YamlHandler(this);
 		utility = new Utility(this);
-		commandHandler = new CommandHandler(this);
+		commandHandler = new CommandFactory(this);
 		backgroundtask = new BackgroundTask(this);
 		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
 		{
@@ -95,7 +103,7 @@ public class SimpleChatChannels extends Plugin
 		return backgroundtask;
 	}
 	
-	public CommandHandler getCommandHandler()
+	public CommandFactory getCommandFactory()
 	{
 		return commandHandler;
 	}
@@ -103,9 +111,17 @@ public class SimpleChatChannels extends Plugin
 	public void CommandSetup()
 	{
 		PluginManager pm = getProxy().getPluginManager();
-		pm.registerCommand(this, new CMDSimpleChatChannel(this));
+		
+		//CMD /scc
+		//new ARGPlayerlist(this);
+		//new ARGGrouplist(this);
+		
+		pm.registerCommand(this, new CommandExecutorSimpleChatChannel(this));
+		pm.registerCommand(this, new CommandExecutorClickChat(this));
+		
+		/*pm.registerCommand(this, new CMDSimpleChatChannel(this));
 		pm.registerCommand(this, new CMDSimpleChatChannelEditor(this));
-		pm.registerCommand(this, new CMDClickChat(this));
+		pm.registerCommand(this, new CMDClickChat(this));*/
 	}
 	
 	public void ListenerSetup()

@@ -115,7 +115,7 @@ public class Utility
 	{
 		TextComponent msg = tc(tl(
 				plugin.getYamlHandler().getL().getString(language+lpath)));
-		msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
+		msg.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
 		return msg;
 	}
 	
@@ -412,7 +412,7 @@ public class Utility
 	{
 		if(plugin.getMysqlInterface().existIgnore(player, target.getUniqueId().toString()))
 		{
-			if(player.hasPermission("scc.cmd.ignorebypass"))
+			if(target.hasPermission("scc.cmd.ignorebypass"))
 			{
 				target.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));

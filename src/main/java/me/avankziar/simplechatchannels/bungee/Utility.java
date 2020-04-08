@@ -24,14 +24,41 @@ import net.md_5.bungee.api.connection.Server;
 public class Utility 
 {
 	private SimpleChatChannels plugin;
-	private String language;
 	public static LinkedHashMap<String, String> item = new LinkedHashMap<>(); //Playeruuid, ItemJason
 	public static LinkedHashMap<String, String> itemname = new LinkedHashMap<>(); //Playeruuid, Itemname
+	
+	private String prefix;
+	private String language;
+	
+	final public static String 
+	PERM = "", 
+	PERM_ = "";
 	
 	public Utility(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
-		language = plugin.getYamlHandler().get().getString("language");
+		setPrefix(plugin.getYamlHandler().get().getString("prefix"));
+		setLanguage(plugin.getYamlHandler().get().getString("language"));
+	}
+	
+	public String getPrefix()
+	{
+		return prefix;
+	}
+
+	public void setPrefix(String prefix)
+	{
+		this.prefix = prefix;
+	}
+
+	public String getLanguage()
+	{
+		return language;
+	}
+
+	public void setLanguage(String language)
+	{
+		this.language = language;
 	}
 	
 	public String tl(String path)
@@ -49,6 +76,13 @@ public class Utility
 		return new TextComponent(ChatColor.translateAlternateColorCodes('&', s));
 	}
 	
+	public TextComponent TextWithExtra(String s, List<BaseComponent> list)
+	{
+		TextComponent tc = tcl(s);
+		tc.setExtra(list);
+		return tc;
+	}
+	
 	public TextComponent suggestCmdText(String lpath, String cmd)
 	{
 		TextComponent msg = tc(tl(
@@ -57,11 +91,25 @@ public class Utility
 		return msg;
 	}
 	
+	public TextComponent suggestCmd(String text, String cmd)
+	{
+		TextComponent msg = tc(tl(text));
+		msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
+		return msg;
+	}
+	
 	public TextComponent runCmdText(String lpath, String cmd)
 	{
 		TextComponent msg = tc(tl(
 				plugin.getYamlHandler().getL().getString(language+lpath)));
-		msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
+		msg.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
+		return msg;
+	}
+	
+	public TextComponent runCmd(String text, String cmd)
+	{
+		TextComponent msg = tc(tl(text));
+		msg.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
 		return msg;
 	}
 	
@@ -313,7 +361,7 @@ public class Utility
 	{
 		if(plugin.getMysqlInterface().existIgnore(player, target.getUniqueId().toString()))
 		{
-			if(player.hasPermission("scc.cmd.ignorebypass"))
+			if(target.hasPermission("scc.cmd.ignorebypass"))
 			{
 				target.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
