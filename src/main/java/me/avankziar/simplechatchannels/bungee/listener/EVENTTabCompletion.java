@@ -2,20 +2,22 @@ package main.java.me.avankziar.simplechatchannels.bungee.listener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-public class EVENTTabComplete implements Listener
+public class EVENTTabCompletion implements Listener
 {
 	private List<String> admin = new ArrayList<>(); //alle
 	private List<String> player = new ArrayList<>(); //nur die für spieler
 	private List<String> wordfilter = new ArrayList<>();
 	
-	public EVENTTabComplete()
+	public EVENTTabCompletion()
 	{
 		init();
 	}
@@ -38,24 +40,17 @@ public class EVENTTabComplete implements Listener
 		{
 			if (event.getSender() instanceof ProxiedPlayer) 
 			{
-				if (cc.length == 1) 
+				if (cc.length == 2) 
 				{
 					ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-					List<String> commandList = new ArrayList<>();
-					commandList.add("reload");
-					commandList.add("addtoken");
-					commandList.add("settoken");
-					commandList.add("gettoken");
-					commandList.add("addserie");
-					commandList.add("setserie");
-					commandList.add("getserie");
-					commandList.add("getitemserie");
+					HashMap<String, CommandModule> commandList = new HashMap<>();
 					List<String> list = new ArrayList<String>();
 					if (!cc[1].equals("")) 
 					{
-						for (String commandString : commandList) 
+						for (String commandString : commandList.keySet()) 
 						{
-							if (player.hasPermission("scvoting.cmd." + commandString)) 
+							CommandModule mod = commandList.get(commandString);
+							if (player.hasPermission(mod.permission))
 							{
 								if (commandString.startsWith(cc[1].toLowerCase())) 
 								{
@@ -65,9 +60,10 @@ public class EVENTTabComplete implements Listener
 						}
 					} else 
 					{
-						for (String commandString : commandList) 
+						for (String commandString : commandList.keySet()) 
 						{
-							if (player.hasPermission("scvoting.cmd." + commandString)) 
+							CommandModule mod = commandList.get(commandString);
+							if (player.hasPermission(mod.permission)) 
 							{
 								list.add(commandString);
 							}

@@ -9,12 +9,12 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class CommandFactory
+public class CommandHelper
 {
 	private SimpleChatChannels plugin;
 	private String scc = ".CMD_SCC.";
 	
-	public CommandFactory(SimpleChatChannels plugin)
+	public CommandHelper(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 	}

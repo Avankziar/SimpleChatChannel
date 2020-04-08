@@ -10,13 +10,13 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutor
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutorSimpleChatChannel;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs.ARGGrouplist;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs.ARGPlayerlist;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandHandler;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandFactory;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandHelper;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlInterface;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EVENTJoinLeave;
-import main.java.me.avankziar.simplechatchannels.bungee.listener.EVENTTabComplete;
+import main.java.me.avankziar.simplechatchannels.bungee.listener.EVENTTabCompletion;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.ServerListener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
@@ -30,23 +30,23 @@ public class SimpleChatChannels extends Plugin
 	private static MysqlInterface mysqlinterface;
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
-	private static CommandFactory commandHandler;
+	private static CommandHelper commandHandler;
 	private PunisherBungee punisher;
 	private AfkRecord afkrecord;
 	
 	public ArrayList<String> editorplayers;
-	public static HashMap<String, CommandHandler> sccarguments;
-	public static HashMap<String, CommandHandler> clcharguments;
-	public static HashMap<String, CommandHandler> scceditorarguments;
+	public static HashMap<String, CommandModule> sccarguments;
+	public static HashMap<String, CommandModule> clcharguments;
+	public static HashMap<String, CommandModule> scceditorarguments;
 	
 	public void onEnable() 
 	{
 		log = getLogger();
 		editorplayers = new ArrayList<>();
-		sccarguments = new HashMap<String, CommandHandler>();
+		sccarguments = new HashMap<String, CommandModule>();
 		yamlHandler = new YamlHandler(this);
 		utility = new Utility(this);
-		commandHandler = new CommandFactory(this);
+		commandHandler = new CommandHelper(this);
 		backgroundtask = new BackgroundTask(this);
 		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
 		{
@@ -103,7 +103,7 @@ public class SimpleChatChannels extends Plugin
 		return backgroundtask;
 	}
 	
-	public CommandFactory getCommandFactory()
+	public CommandHelper getCommandFactory()
 	{
 		return commandHandler;
 	}
@@ -131,7 +131,7 @@ public class SimpleChatChannels extends Plugin
 		pm.registerListener(this, new main.java.me.avankziar.simplechatchannels.bungee.listener.EVENTChat(this));
 		pm.registerListener(this, new EVENTJoinLeave(this));
 		pm.registerListener(this, new ServerListener(this));
-		pm.registerListener(this, new EVENTTabComplete());
+		pm.registerListener(this, new EVENTTabCompletion());
 	}
 	
 	private boolean setupPunisher()

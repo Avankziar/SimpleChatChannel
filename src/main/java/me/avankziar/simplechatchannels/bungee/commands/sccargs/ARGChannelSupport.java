@@ -1,11 +1,11 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGChannelSupport extends CommandHandler
+public class ARGChannelSupport extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	

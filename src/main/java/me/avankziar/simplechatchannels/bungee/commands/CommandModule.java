@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import net.md_5.bungee.api.CommandSender;
 
-public abstract class CommandHandler
+public abstract class CommandModule
 {
 	public String lable;
 	public String permission;
@@ -12,7 +12,7 @@ public abstract class CommandHandler
     public int maxArgs;
     public String[] aliases;
 
-    public CommandHandler(String lable, String permission, HashMap<String, CommandHandler> map, 
+    public CommandModule(String lable, String permission, HashMap<String, CommandModule> map, 
     		int minArgs, int maxArgs, String... aliases)
     {
         this.lable = lable;
