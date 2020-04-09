@@ -21,7 +21,7 @@ public class ARGCustomChannelJoin extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		String name = null;
 		String password = null;
 		if(args.length==2)
@@ -41,20 +41,20 @@ public class ARGCustomChannelJoin extends CommandModule
 		if(oldcc!=null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg06")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg06")));
 			return;
 		}
 		if(cc==null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg01")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg01")
 					.replace("%name%", name)));
 			return;
 		}
 		if(cc.getBanned().contains(player))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg07")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg07")));
 			return;
 		}
 		if(password==null)
@@ -62,7 +62,7 @@ public class ARGCustomChannelJoin extends CommandModule
 			if(cc.getPassword()!=null)
 			{
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg02")));
+						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg02")));
 				return;
 			}
 		} else
@@ -70,19 +70,19 @@ public class ARGCustomChannelJoin extends CommandModule
 			if(cc.getPassword()==null)
 			{
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg04")));
+						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg04")));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg03")));
+						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg03")));
 				return;
 			}
 		}
 		cc.addMembers(player);
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg05")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg05")
 				.replace("%channel%", cc.getName())));
 		return;
 	}

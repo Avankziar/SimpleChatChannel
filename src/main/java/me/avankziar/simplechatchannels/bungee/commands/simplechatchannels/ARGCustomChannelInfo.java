@@ -21,32 +21,32 @@ public class ARGCustomChannelInfo extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
 			return;
 		}
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg01")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg01")
 				.replace("%channel%", cc.getName())));
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg02")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg02")
 				.replace("%creator%", cc.getCreator().getName())));
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg03")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg03")
 				.replace("%members%", cc.getMembers().toString())));
 		if(cc.getPassword()!=null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg04")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg04")
 					.replace("%password%", cc.getPassword())));
 		}
 		
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg05")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg05")
 				.replace("%banned%", cc.getBanned().toString())));
 		return;
 	}

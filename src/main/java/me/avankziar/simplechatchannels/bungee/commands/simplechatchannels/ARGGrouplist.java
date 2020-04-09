@@ -30,23 +30,23 @@ public class ARGGrouplist extends CommandModule
 		String language = plugin.getUtility().getLanguage();
 		List<BaseComponent> list = new ArrayList<>();
 		int i = 1;
-		int groupamount = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
+		int groupamount = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
 		ArrayList<String> groups = new ArrayList<>();
 		while(i<=groupamount)
 		{
-			if(plugin.getYamlHandler().getL().getString(language+".prefix."+i).contains("&"))
+			if(plugin.getYamlHandler().getL().getString(language+".Prefix."+i).contains("&"))
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".prefix."+i).substring(2));
+				groups.add(plugin.getYamlHandler().getL().getString(language+".Prefix."+i).substring(2));
 			} else
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".prefix."+i));
+				groups.add(plugin.getYamlHandler().getL().getString(language+".Prefix."+i));
 			}
-			if(plugin.getYamlHandler().getL().getString(language+".suffix."+i).contains("&"))
+			if(plugin.getYamlHandler().getL().getString(language+".Suffix"+i).contains("&"))
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".suffix."+i).substring(2));
+				groups.add(plugin.getYamlHandler().getL().getString(language+".Suffix"+i).substring(2));
 			} else
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".suffix."+i));
+				groups.add(plugin.getYamlHandler().getL().getString(language+".Suffix"+i));
 			}
 			i++;
 		}

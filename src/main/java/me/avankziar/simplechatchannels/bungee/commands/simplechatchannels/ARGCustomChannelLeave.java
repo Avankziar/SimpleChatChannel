@@ -21,12 +21,12 @@ public class ARGCustomChannelLeave extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
 			return;
 		}
 		final String name = cc.getName();
@@ -45,7 +45,7 @@ public class ARGCustomChannelLeave extends CommandModule
 			{
 				cc.setCreator(newcreator);
     			newcreator.sendMessage(plugin.getUtility().tcl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg03")
+    					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg03")
     					.replace("%channel%", cc.getName())));
 			} else 
 			{
@@ -55,7 +55,7 @@ public class ARGCustomChannelLeave extends CommandModule
 			
 		}
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg02")
 				.replace("%channel%", name)));
 		return;
 	}

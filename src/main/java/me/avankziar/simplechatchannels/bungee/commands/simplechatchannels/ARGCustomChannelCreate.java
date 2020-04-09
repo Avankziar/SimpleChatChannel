@@ -23,12 +23,12 @@ public class ARGCustomChannelCreate extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc!=null)
 		{
 			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+scc+"channelcreate.msg01")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelCreate.msg01")
 					.replace("%channel%", cc.getName()))));
 			return;
 		}
@@ -49,12 +49,12 @@ public class ARGCustomChannelCreate extends CommandModule
 		if(password==null)
 		{
 			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+scc+"channelcreate.msg02")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelCreate.msg02")
 					.replace("%channel%", cc.getName()))));
 		} else
 		{
 			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+scc+"channelcreate.msg03")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelCreate.msg03")
 					.replace("%channel%", cc.getName())
 					.replace("%password%", password))));
 		}

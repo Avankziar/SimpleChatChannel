@@ -21,24 +21,24 @@ public class ARGCustomChannelChangePassword extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg01")));
 			return;
 		}
 		cc.setPassword(args[1]);
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"changepassword.msg01")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelChangepassword.msg01")
 				.replace("%password%", args[1])));
 		return;
 	}

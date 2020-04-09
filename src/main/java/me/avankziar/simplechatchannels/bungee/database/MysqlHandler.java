@@ -17,8 +17,8 @@ public class MysqlHandler
 	public MysqlHandler(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
-		tableNameI = plugin.getYamlHandler().get().getString("mysql.tableNameI");
-		tableNameII = plugin.getYamlHandler().get().getString("mysql.tableNameII");
+		tableNameI = plugin.getYamlHandler().get().getString("Mysql.TableNameI");
+		tableNameII = plugin.getYamlHandler().get().getString("Mysql.TableNameII");
 	}
 	
 	public boolean hasAccount(ProxiedPlayer player) 

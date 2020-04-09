@@ -21,7 +21,7 @@ public class ARGChannelCustom extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandHelper().channeltoggle(player, args, language, "trade", "Trade");
+		plugin.getCommandHelper().channeltoggle(player, args, language, "custom", "Custom");
 		return;
 	}
 }

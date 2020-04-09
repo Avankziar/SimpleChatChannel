@@ -22,7 +22,6 @@ public class EventChat implements Listener
 {
 	private SimpleChatChannels plugin;
 	HashMap<String,String> reply = new HashMap<String, String>();
-	private String language = plugin.getUtility().getLanguage();
 	
 	public EventChat(SimpleChatChannels plugin)
 	{
@@ -33,6 +32,7 @@ public class EventChat implements Listener
 	public void onChat(ChatEvent event) //Kein Local und World enthalten, siehe dazu CMD_SCCS
 	{
 		ProxiedPlayer player = (ProxiedPlayer) event.getSender();
+		String language = plugin.getUtility().getLanguage();
 		if(event.isCancelled())
 		{
 			return;

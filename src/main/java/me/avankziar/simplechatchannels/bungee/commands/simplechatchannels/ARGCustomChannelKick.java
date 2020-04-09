@@ -21,44 +21,44 @@ public class ARGCustomChannelKick extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg01")));
 			return;
 		}
 		if(plugin.getProxy().getPlayer(args[1])!=null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg02")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg02")));
 			return;
 		}
 		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
 		if(target.getName().equals(player.getName()))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg06")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg06")));
 			return;
 		}
 		cc.removeMembers(target);
 		target.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg03")));
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg03")));
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg04")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg04")
 				.replace("%player%", args[1])));
 		for(ProxiedPlayer members : cc.getMembers())
 		{
 			members.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg05")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg05")
 					.replace("%player%", args[1])));
 		}
 		return;

@@ -21,51 +21,51 @@ public class ARGCustomChannelBan extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg01")));
 			return;
 		}
 		if(plugin.getProxy().getPlayer(args[1])!=null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg02")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg02")));
 			return;
 		}
 		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]);
 		if(target.getName().equals(player.getName()))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg04")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg04")));
 			return;
 		}
 		if(cc.getBanned().contains(target))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg01")));
 			return;
 		}
 		cc.addBanned(target);
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg02")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg02")
 				.replace("%player%", args[1])));
 		target.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg03")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg03")
 				.replace("%channel%", cc.getName())));
 		for(ProxiedPlayer members : cc.getMembers())
 		{
 			members.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg04")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg04")
 					.replace("%player%", args[1])));
 		}
 		return;

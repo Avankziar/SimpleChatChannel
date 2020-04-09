@@ -7,6 +7,7 @@ import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -28,7 +29,39 @@ public class EventTabCompletion implements Listener
 		if (event.getSender() instanceof ProxiedPlayer) 
 		{
 			ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-			if (c.length()>=1) 
+			if(event.getCursor().startsWith("@*") && event.getCursor().length()==2) 
+			{
+				return;
+			} else if(event.getCursor().startsWith("@") && event.getCursor().length()==1)
+			{
+				List<ProxiedPlayer> players = (List<ProxiedPlayer>) BungeeCord.getInstance().getPlayers();
+				List<String> list = new ArrayList<String>();
+				if(cc[0].length() == 1)
+				{
+					for(ProxiedPlayer p : players)
+					{
+						list.add("@"+p.getName());
+					}
+					Collections.sort(list);
+					event.getSuggestions().clear();
+					event.getSuggestions().addAll(list);
+					return;
+				} else
+				{
+					String s = cc[0].substring(1);
+					for(ProxiedPlayer p : players)
+					{
+						if(p.getName().startsWith(s.toLowerCase()) || p.getName().startsWith(s.toUpperCase()))
+						{
+							list.add("@"+p.getName());
+						}
+					}
+					Collections.sort(list);
+					event.getSuggestions().clear();
+					event.getSuggestions().addAll(list);
+					return;
+				}
+			} else if (c.length()>=1) 
 			{
 				if(cc[0].equalsIgnoreCase("/scc") || cc[0].equalsIgnoreCase("/simplechatchannels"))
 				{
