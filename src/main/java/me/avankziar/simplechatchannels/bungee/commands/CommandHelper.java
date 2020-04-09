@@ -13,7 +13,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class CommandHelper
 {
 	private SimpleChatChannels plugin;
-	private String scc = ".CMD_SCC.";
+	private String scc = ".CMDSCC.";
 	
 	public CommandHelper(SimpleChatChannels plugin)
 	{
@@ -24,102 +24,102 @@ public class CommandHelper
 	{
 		if(player.hasPermission("scc.option.admin"))
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Info.msg10")));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg01"),
 					ClickEvent.Action.SUGGEST_COMMAND, "/scc <channel>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg02"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg02"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc mute <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg03"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg03"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc unmute <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg04"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg04"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignore <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg05"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg05"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignorelist"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg06"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg06"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc wordfilter <add/remove> <Word>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg07"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg07"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc broadcast <Message>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg08"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg08"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc playerlist [String]"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg09"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg09"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc bungee"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg11"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg11"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg12"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg12"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg13"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg13"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg14"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg14"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg15"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg15"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg16"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg16"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg17"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg17"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg18"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg19"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo"));
 		} else
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Info.msg10")));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg01"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc <channel>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg04"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg04"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignore <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg05"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg05"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignorelist"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg08"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg08"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc playerlist [String]"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg11"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg11"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg12"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg12"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg13"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg13"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg14"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg14"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg15"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg15"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg16"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg16"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg17"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg17"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg18"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>"));
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19"),
+					plugin.getYamlHandler().getL().getString(language+scc+"Info.msg19"),
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo"));
 		}
 	}
@@ -148,12 +148,12 @@ public class CommandHelper
 		if((boolean) plugin.getMysqlHandler().getDataI(player, "channel_"+channel, "player_uuid"))
 		{
 			plugin.getMysqlHandler().updateDataI(player, false, "channel_"+channel);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg01")
 					.replace("%channel%", replacer)));
 		} else
 		{
 			plugin.getMysqlHandler().updateDataI(player, true, "channel_"+channel);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg02")
 					.replace("%channel%", replacer)));
 		}
 		return;
@@ -174,12 +174,12 @@ public class CommandHelper
 		if(((boolean) plugin.getMysqlHandler().getDataI(player, option, "player_uuid")))
 		{
 			plugin.getMysqlHandler().updateDataI(player, false, option);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg01")
 					.replace("%channel%", replacer)));
 		} else
 		{
 			plugin.getMysqlHandler().updateDataI(player, true, option);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg02")
 					.replace("%channel%", replacer)));
 		}
 	}
@@ -194,12 +194,12 @@ public class CommandHelper
 		if(password==null)
 		{
 			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+scc+"channelcreate.msg02")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelCreate.msg02")
 					.replace("%channel%", cc.getName()))));
 		} else
 		{
 			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+scc+"channelcreate.msg03")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelCreate.msg03")
 					.replace("%channel%", cc.getName())
 					.replace("%password%", password))));
 		}
@@ -213,20 +213,20 @@ public class CommandHelper
 		if(oldcc!=null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg06")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg06")));
 			return;
 		}
 		if(cc==null)
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg01")
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg01")
 					.replace("%name%", name)));
 			return;
 		}
 		if(cc.getBanned().contains(player))
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg07")));
+					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg07")));
 			return;
 		}
 		if(password==null)
@@ -234,7 +234,7 @@ public class CommandHelper
 			if(cc.getPassword()!=null)
 			{
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg02")));
+						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg02")));
 				return;
 			}
 		} else
@@ -242,19 +242,19 @@ public class CommandHelper
 			if(cc.getPassword()==null)
 			{
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg04")));
+						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg04")));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg03")));
+						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg03")));
 				return;
 			}
 		}
 		cc.addMembers(player);
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"joinchannel.msg05")
+				plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg05")
 				.replace("%channel%", cc.getName())));
 		return;
 	}

@@ -40,8 +40,8 @@ public class Utility
 	public Utility(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
-		setPrefix(plugin.getYamlHandler().get().getString("prefix"));
-		setLanguage(plugin.getYamlHandler().get().getString("language"));
+		setPrefix(plugin.getYamlHandler().get().getString("Prefix"));
+		setLanguage(plugin.getYamlHandler().get().getString("Language"));
 	}
 	
 	public String getPrefix()
@@ -144,7 +144,7 @@ public class Utility
 	public List<BaseComponent> getAllTextComponentForChannels(ProxiedPlayer p, String eventmsg,
 			String channelname, String channelsymbol, int substring)
 	{
-		TextComponent channel = tc(tl(plugin.getYamlHandler().getL().getString(language+".channels."+channelname)));
+		TextComponent channel = tc(tl(plugin.getYamlHandler().getL().getString(language+".Channels."+channelname)));
 		channel.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, channelsymbol));
 		channel.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
@@ -156,7 +156,7 @@ public class Utility
 		player.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
 				plugin.getYamlHandler().getSymbol("pm")+p.getName()+" "));
 		player.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".Channelextra.Hover.PrivateMessage")
 						.replace("%player%", p.getName()))).create()));
 		
 		List<BaseComponent> suffix = getSuffix(p);
@@ -168,12 +168,12 @@ public class Utility
 	
 	public List<BaseComponent> msgLater(ProxiedPlayer player, int ss, String channel, String msg)
 	{
-		String channelsplit = plugin.getYamlHandler().getL().getString(language+".chatsplit."+channel);
+		String channelsplit = plugin.getYamlHandler().getL().getString(language+".Chatsplit."+channel);
 		String rawmsg = msg.substring(ss);
 		List<BaseComponent> list = new ArrayList<>();
 		list.add(tc(tl(channelsplit)));
 		String[] fullmsg = rawmsg.split(" ");
-		String cc = plugin.getYamlHandler().getL().getString(language+".channelcolor."+channel);
+		String cc = plugin.getYamlHandler().getL().getString(language+".ChannelColor."+channel);
 		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
@@ -213,9 +213,9 @@ public class Utility
 				word = tc(tl(removeColor(colorFreeWord)));
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
 						colorFreeWord));
-				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.website")));
+				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Website")));
 			}
-		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".replacerblock.item")))
+		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Item")))
 		{
 			if(player.hasPermission("scc.channels.bypass.item"))
 			{
@@ -223,27 +223,27 @@ public class Utility
 						&& Utility.item.containsKey(player.getUniqueId().toString()))
 				{
 					word = tc(tl(removeColor(Utility.itemname.get(player.getUniqueId().toString()))+" "));
-					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.item")));
+					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Item")));
 					word.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
 							new BaseComponent[]{new TextComponent(Utility.item.get(player.getUniqueId().toString()))}));
 				}
 			}
-		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".replacerblock.command")))
+		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Command")))
 		{
 			if(player.hasPermission("scc.channels.bypass.command"))
 			{
 				word = tc(tl(colorFreeWord
-						.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
-						.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), 
-								plugin.getYamlHandler().getL().getString(language+".replacerblock.commandchatoutput"))
+						.replace(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.CommandArgSeperator"), " ")
+						.replace(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Command"), 
+								plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.CommandChatOutput"))
 						+" "));
-				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".replacercolor.command")));
+				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Command")));
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						colorFreeWord.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.commandargseperator"), " ")
-						.replace(plugin.getYamlHandler().getL().getString(language+".replacerblock.command"), "/")));
+						colorFreeWord.replace(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.CommandArgSeperator"), " ")
+						.replace(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Command"), "/")));
 				word.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
 						new ComponentBuilder(plugin.getUtility().tl(
-						plugin.getYamlHandler().getL().getString(language+".replacerblock.commandhover"))).create()));
+						plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.CommandHover"))).create()));
 			}
 		} else
 		{
@@ -354,15 +354,15 @@ public class Utility
 	public String getPreOrSuffix(String preorsuffix)
 	{
 		int a = 1;
-		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
 		while(a<=b)
 		{
-			if(removeColor(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
+			if(removeColor(plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
 			{
 				String perm = "scc.prefix."+String.valueOf(a);
 				return perm;
 			}
-			if(removeColor(plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
+			if(removeColor(plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
 			{
 				String perm = "scc.suffix."+String.valueOf(a);
 				return perm;
@@ -379,7 +379,7 @@ public class Utility
 			if(target.hasPermission("scc.cmd.ignorebypass"))
 			{
 				target.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-						plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg03"))));
+						plugin.getYamlHandler().getL().getString(language+".EVENTChat.msg03"))));
 				return false;
 			}
 			return true;
@@ -389,7 +389,7 @@ public class Utility
 	
 	public boolean getWordfilter(String msg)
 	{
-		List<String> wordfilter = plugin.getYamlHandler().get().getStringList("wordfilter");
+		List<String> wordfilter = plugin.getYamlHandler().get().getStringList("WordFilter");
 		for(String wf : wordfilter)
 		{
 			if(msg.contains(wf))
@@ -436,19 +436,19 @@ public class Utility
 	
 	public String getFirstPrefixColor(ProxiedPlayer p)
 	{
-		Boolean useprefixforplayercolor = plugin.getYamlHandler().get().getString("useprefixforplayercolor").equals("true");
+		Boolean useprefixforplayercolor = plugin.getYamlHandler().get().getString("UsePrefixForPlayerColor").equals("true");
 		if(useprefixforplayercolor!=null && useprefixforplayercolor==false)
 		{
-			return plugin.getYamlHandler().getL().getString(language+".playercolor");
+			return plugin.getYamlHandler().getL().getString(language+".PlayerColor");
 		}
 		String prefix = null;
 		int a = 1;
-		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
 		while(a<=b)
 		{
 			if(p.hasPermission("scc.prefix."+String.valueOf(a))) 
 			{
-				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a));
+				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a));
 				if(preorsuffix.startsWith("&"))
 				{
 					prefix = preorsuffix.substring(0, 2);
@@ -459,7 +459,7 @@ public class Utility
 		}		
 		if(prefix == null)
 		{
-			prefix = plugin.getYamlHandler().getL().getString(language+".playercolor");
+			prefix = plugin.getYamlHandler().getL().getString(language+".PlayerColor");
 		}
 		return prefix;
 	}
@@ -468,19 +468,19 @@ public class Utility
 	{
 		List<BaseComponent> list = new ArrayList<>();
 		int a = 1;
-		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
 		while(a<=b)
 		{
 			if(p.hasPermission("scc.prefix."+String.valueOf(a))) 
 			{
-				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a));
+				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a));
 				String pors = removeColor(preorsuffix);
-				TextComponent prefix = tc(tl(plugin.getYamlHandler().getL().getString(language+".prefix."+String.valueOf(a))+" "));
+				TextComponent prefix = tc(tl(plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))+" "));
 				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
 						plugin.getYamlHandler().getSymbol("group")+pors +" "));
 				prefix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
-								language+".channelextra.hover.group"))).create()));
+								language+".ChannelExtra.Hover.Group"))).create()));
 				list.add(prefix);
 			}
 			a++;
@@ -496,19 +496,19 @@ public class Utility
 	{
 		List<BaseComponent> list = new ArrayList<>();
 		int a = 1;
-		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".prefixsuffixamount"));
+		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
 		while(a<=b)
 		{
 			if(p.hasPermission("scc.suffix."+String.valueOf(a))) 
 			{
-				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a));
+				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a));
 				String pors = removeColor(preorsuffix);
-				TextComponent suffix = tc(tl(" "+plugin.getYamlHandler().getL().getString(language+".suffix."+String.valueOf(a))+" "));
+				TextComponent suffix = tc(tl(" "+plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))+" "));
 				suffix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
 						plugin.getYamlHandler().getSymbol("group")+pors+" "));
 				suffix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
-								language+".channelextra.hover.group"))).create()));
+								language+".ChannelExtra.Hover.Group"))).create()));
 				list.add(suffix);
 			}
 			a++;
@@ -524,7 +524,7 @@ public class Utility
 	{
 		if(!(boolean) plugin.getMysqlHandler().getDataI(player, mysql_channel, "player_uuid"))
 		{
-			sendMessage(player,plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg01"));
+			sendMessage(player,plugin.getYamlHandler().getL().getString(language+".EVENTChat.msg01"));
 			return false;
 		} else
 		{
@@ -551,7 +551,7 @@ public class Utility
     	if(args.length!=i)
     	{
     		
-			p.sendMessage(clickEvent(plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01"),
+			p.sendMessage(clickEvent(plugin.getYamlHandler().getL().getString(language+".CMDSCC.msg01"),
 					ClickEvent.Action.RUN_COMMAND, "/scc"));
 			return true;
     	} else

@@ -46,7 +46,7 @@ public class CommandExecutorClickChat extends Command
     	TextComponent msg1 = plugin.getUtility().tcl(msg);
 		msg1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
 				new ComponentBuilder(plugin.getUtility().tl(
-						plugin.getYamlHandler().getL().getString(language+".CMD_ClickChat.msg01")
+						plugin.getYamlHandler().getL().getString(language+".CMDClickChat.msg01")
 						.replace("%number%", args[1]))).create()));
 		msg1.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND,args[1]));
     	t.sendMessage(msg1);

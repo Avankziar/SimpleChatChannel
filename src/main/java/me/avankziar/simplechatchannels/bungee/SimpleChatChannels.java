@@ -75,7 +75,7 @@ public class SimpleChatChannels extends Plugin
 		utility = new Utility(this);
 		commandHelper = new CommandHelper(this);
 		backgroundtask = new BackgroundTask(this);
-		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
+		if(yamlHandler.get().getBoolean("Mysql.Status", false))
 		{
 			mysqlHandler = new MysqlHandler(this);
 			mysqlSetup = new MysqlSetup(this);
@@ -93,7 +93,7 @@ public class SimpleChatChannels extends Plugin
 	{
 		getProxy().getScheduler().cancel(this);
 		//HandlerList.unregisterAll();
-		if(yamlHandler.get().getString("Mysql.Status").equalsIgnoreCase("true"))
+		if(yamlHandler.get().getBoolean("Mysql.Status", false))
 		{
 			if (mysqlSetup.getConnection() != null) 
 			{
@@ -110,7 +110,7 @@ public class SimpleChatChannels extends Plugin
 		return yamlHandler;
 	}
 	
-	public MysqlSetup getmysqlSetup() 
+	public MysqlSetup getMysqlSetup() 
 	{
 		return mysqlSetup;
 	}

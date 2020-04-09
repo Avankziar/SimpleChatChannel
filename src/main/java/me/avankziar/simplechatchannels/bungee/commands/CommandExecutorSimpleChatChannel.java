@@ -46,7 +46,7 @@ public class CommandExecutorSimpleChatChannel extends Command
 				{
 					///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
 					player.sendMessage(plugin.getUtility().clickEvent(
-							plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01"),
+							plugin.getYamlHandler().getL().getString(language+".CMDSCC.msg01"),
 							ClickEvent.Action.RUN_COMMAND, "/scc"));
 					return;
 				}
@@ -54,14 +54,14 @@ public class CommandExecutorSimpleChatChannel extends Command
 			{
 				///Du hast dafür keine Rechte!
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg02")));
+						plugin.getYamlHandler().getL().getString(language+".CMDSCC.msg02")));
 				return;
 			}
 		} else 
 		{
 			///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
 			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01"),
+					plugin.getYamlHandler().getL().getString(language+".CMDSCC.msg01"),
 					ClickEvent.Action.RUN_COMMAND, "/scc"));
 			return;
 		}

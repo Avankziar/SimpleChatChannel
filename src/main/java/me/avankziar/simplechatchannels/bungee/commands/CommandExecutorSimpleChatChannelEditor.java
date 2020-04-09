@@ -8,7 +8,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class CommandExecutorSimpleChatChannelEditor extends Command
 {
 	private SimpleChatChannels plugin;
-	private String scc = ".CMD_SCCEditor.";
+	private String scc = ".CMDSCCEditor.";
 	
 	public CommandExecutorSimpleChatChannelEditor(SimpleChatChannels plugin)
 	{
@@ -24,10 +24,10 @@ public class CommandExecutorSimpleChatChannelEditor extends Command
     	}
     	ProxiedPlayer player = (ProxiedPlayer) sender;
     	String µ = "µ";
-    	String language = plugin.getYamlHandler().get().getString("language");
+    	String language = plugin.getUtility().getLanguage();
     	if(!player.hasPermission("scc.cmd.editor"))
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg02")));
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".CMDSCC.msg02")));
 			return;
 		}
     	if(args.length == 0)

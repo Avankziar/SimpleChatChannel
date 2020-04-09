@@ -22,7 +22,7 @@ public class ARGBroadcast extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String scc = ".CMDSCC.";
 		String msg = "";
 		for (int i = 1; i < args.length; i++) 
         {
@@ -30,10 +30,10 @@ public class ARGBroadcast extends CommandModule
         }
 		if(plugin.getUtility().getWordfilter(msg))
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EventChat.msg06")));
 			return;
 		}
-		TextComponent MSG = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")+" ");
+		TextComponent MSG = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Broadcast.msg20")+" ");
 		MSG.setExtra(plugin.getUtility().msgLater(player, 0, "global", msg));
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{

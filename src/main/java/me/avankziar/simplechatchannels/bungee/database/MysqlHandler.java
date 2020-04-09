@@ -25,7 +25,7 @@ public class MysqlHandler
 	{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -67,7 +67,7 @@ public class MysqlHandler
 	{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -122,7 +122,7 @@ public class MysqlHandler
 		Boolean pmn = player.hasPermission("scc.channels.pm");
 		Boolean custom = player.hasPermission("scc.channels.custom");
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) {
 			try 
 			{
@@ -180,7 +180,7 @@ public class MysqlHandler
 	public boolean createIgnore(ProxiedPlayer player, ProxiedPlayer ignore) 
 	{
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) {
 			try 
 			{
@@ -221,7 +221,7 @@ public class MysqlHandler
 			createAccount(player);
 		}
 		PreparedStatement preparedUpdateStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -253,7 +253,7 @@ public class MysqlHandler
 	public boolean updateDataII(ProxiedPlayer player, Object object, String setcolumn, String wherecolumn) 
 	{
 		PreparedStatement preparedUpdateStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -290,7 +290,7 @@ public class MysqlHandler
 		}
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -336,7 +336,7 @@ public class MysqlHandler
 		}
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -378,7 +378,7 @@ public class MysqlHandler
 	{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		String list = "";
 		if (conn != null) 
 		{
@@ -425,7 +425,7 @@ public class MysqlHandler
 	public void deleteDataI(Object object, String wherecolumn)
 	{
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		try 
 		{
 			String sql = "DELETE FROM `" + tableNameI + "` WHERE `" + wherecolumn + "` = ?";
@@ -451,7 +451,7 @@ public class MysqlHandler
 	public void deleteDataII(Object objectI, Object objectII, String wherecolumnI, String wherecolumnII)
 	{
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		try 
 		{
 			String sql = "DELETE FROM `" + tableNameII + "` WHERE `" + wherecolumnI + "` = ? AND `" + wherecolumnII + "` = ?";
