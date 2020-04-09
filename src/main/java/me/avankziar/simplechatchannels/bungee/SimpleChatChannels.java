@@ -8,8 +8,11 @@ import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
 import main.java.de.avankziar.punisher.bungee.PunisherBungee;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutorClickChat;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutorSimpleChatChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutorSimpleChatChannelEditor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandHelper;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGBroadcast;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGBungee;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelAdmin;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelAuction;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelCustom;
@@ -21,8 +24,23 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchann
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelTeam;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelTrade;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelWorld;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelBan;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelChangePassword;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelCreate;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelInfo;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelJoin;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelKick;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelLeave;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGCustomChannelUnban;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGGrouplist;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGIgnore;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGIgnoreList;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGMute;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOptionJoin;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOptionSpy;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPlayerlist;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGUnmute;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGWordfilter;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
@@ -37,7 +55,7 @@ public class SimpleChatChannels extends Plugin
 	public static Logger log;
 	public static String pluginName = "SimpleChatChannels";
 	private static YamlHandler yamlHandler;
-	private static MysqlSetup databaseHandler;
+	private static MysqlSetup mysqlSetup;
 	private static MysqlHandler mysqlHandler;
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
@@ -47,8 +65,6 @@ public class SimpleChatChannels extends Plugin
 	
 	public ArrayList<String> editorplayers;
 	public static HashMap<String, CommandModule> sccarguments;
-	public static HashMap<String, CommandModule> clcharguments;
-	public static HashMap<String, CommandModule> scceditorarguments;
 	
 	public void onEnable() 
 	{
@@ -62,7 +78,7 @@ public class SimpleChatChannels extends Plugin
 		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
 		{
 			mysqlHandler = new MysqlHandler(this);
-			databaseHandler = new MysqlSetup(this);
+			mysqlSetup = new MysqlSetup(this);
 		} else
 		{
 			log.severe("MySQL is not enabled! "+pluginName+" wont work correctly!");
@@ -79,10 +95,10 @@ public class SimpleChatChannels extends Plugin
 		//HandlerList.unregisterAll();
 		if(yamlHandler.get().getString("Mysql.Status").equalsIgnoreCase("true"))
 		{
-			if (databaseHandler.getConnection() != null) 
+			if (mysqlSetup.getConnection() != null) 
 			{
 				//backgroundtask.onShutDownDataSave();
-				databaseHandler.closeConnection();
+				mysqlSetup.closeConnection();
 			}
 		}
 		
@@ -94,9 +110,9 @@ public class SimpleChatChannels extends Plugin
 		return yamlHandler;
 	}
 	
-	public MysqlSetup getDatabaseHandler() 
+	public MysqlSetup getmysqlSetup() 
 	{
-		return databaseHandler;
+		return mysqlSetup;
 	}
 	
 	public MysqlHandler getMysqlHandler()
@@ -124,6 +140,8 @@ public class SimpleChatChannels extends Plugin
 		PluginManager pm = getProxy().getPluginManager();
 		
 		//CMD /scc
+		new ARGBroadcast(this);
+		new ARGBungee(this);
 		new ARGChannelAdmin(this);
 		new ARGChannelAuction(this);
 		new ARGChannelCustom(this);
@@ -135,16 +153,30 @@ public class SimpleChatChannels extends Plugin
 		new ARGChannelTeam(this);
 		new ARGChannelTrade(this);
 		new ARGChannelWorld(this);
+		new ARGCustomChannelBan(this);
+		new ARGCustomChannelChangePassword(this);
+		new ARGCustomChannelCreate(this);
+		new ARGCustomChannelInfo(this);
+		new ARGCustomChannelJoin(this);
+		new ARGCustomChannelKick(this);
+		new ARGCustomChannelLeave(this);
+		new ARGCustomChannelUnban(this);
 		new ARGGrouplist(this);
+		new ARGIgnore(this);
+		new ARGIgnoreList(this);
+		new ARGMute(this);
+		new ARGOptionJoin(this);
+		new ARGOptionSpy(this);
 		new ARGPlayerlist(this);
+		new ARGUnmute(this);
+		new ARGWordfilter(this);
 		pm.registerCommand(this, new CommandExecutorSimpleChatChannel(this));
 		
-		
+		//CMD /clch
 		pm.registerCommand(this, new CommandExecutorClickChat(this));
 		
-		/*pm.registerCommand(this, new CMDSimpleChatChannel(this));
-		pm.registerCommand(this, new CMDSimpleChatChannelEditor(this));
-		pm.registerCommand(this, new CMDClickChat(this));*/
+		//CMD /scceditor
+		pm.registerCommand(this, new CommandExecutorSimpleChatChannelEditor(this));
 	}
 	
 	public void ListenerSetup()
