@@ -113,6 +113,15 @@ public class Utility
 		return msg;
 	}
 	
+	public TextComponent hoverText(String lpath, String hover)
+	{
+		TextComponent msg = tc(tl(lpath));
+		msg.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
+				, new ComponentBuilder(tl(
+						plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message"))).create()));
+		return msg;
+	}
+	
 	public void sendMessage(ProxiedPlayer player, String path)
 	{
 		player.sendMessage(tc(tl(path)));
