@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
@@ -83,42 +86,45 @@ public class Utility
 		return tc;
 	}
 	
-	public TextComponent suggestCmdText(String lpath, String cmd)
-	{
-		TextComponent msg = tc(tl(
-				plugin.getYamlHandler().getL().getString(lpath)));
-		msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
-		return msg;
-	}
-	
-	public TextComponent suggestCmd(String text, String cmd)
+	public TextComponent clickEvent(String text, @Nonnull ClickEvent.Action caction, String cmd)
 	{
 		TextComponent msg = tc(tl(text));
-		msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, cmd));
+		msg.setClickEvent( new ClickEvent(caction, cmd));
 		return msg;
 	}
 	
-	public TextComponent runCmdText(String lpath, String cmd)
-	{
-		TextComponent msg = tc(tl(
-				plugin.getYamlHandler().getL().getString(language+lpath)));
-		msg.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
-		return msg;
-	}
-	
-	public TextComponent runCmd(String text, String cmd)
+	public TextComponent hoverEvent(String text, @Nonnull HoverEvent.Action haction, String hover)
 	{
 		TextComponent msg = tc(tl(text));
-		msg.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
+		msg.setHoverEvent( new HoverEvent(haction, new ComponentBuilder(tl(hover)).create()));
 		return msg;
 	}
 	
-	public TextComponent hoverText(String lpath, String hover)
+	public TextComponent apichat(String text, ClickEvent.Action caction, String cmd,
+			HoverEvent.Action haction, String hover)
 	{
-		TextComponent msg = tc(tl(lpath));
-		msg.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-				, new ComponentBuilder(tl(
-						plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message"))).create()));
+		TextComponent msg = tc(tl(text));
+		if(caction != null)
+		{
+			msg.setClickEvent( new ClickEvent(caction, cmd));
+		}
+		msg.setHoverEvent( new HoverEvent(haction, new ComponentBuilder(tl(hover)).create()));
+		return msg;
+	}
+	
+	/*
+	 * itemStringFromReflection see {@link RefectionUtil}
+	 */
+	public TextComponent apiChatItem(@Nonnull String text, @Nullable ClickEvent.Action caction, @Nullable String cmd,
+			@Nonnull String itemStringFromReflection)
+	{
+		TextComponent msg = tc(tl(text));
+		if(caction != null && cmd != null)
+		{
+			msg.setClickEvent( new ClickEvent(caction, cmd));
+		}
+		msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
+				new BaseComponent[]{new TextComponent(itemStringFromReflection)}));
 		return msg;
 	}
 	
@@ -544,7 +550,9 @@ public class Utility
     {
     	if(args.length!=i)
     	{
-			p.sendMessage(plugin.getUtility().runCmdText(language+".CMD_SCC.msg01", "/scc"));
+    		
+			p.sendMessage(clickEvent(plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01"),
+					ClickEvent.Action.RUN_COMMAND, "/scc"));
 			return true;
     	} else
     	{

@@ -6,6 +6,7 @@ import java.util.List;
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -24,40 +25,102 @@ public class CommandHelper
 		if(player.hasPermission("scc.option.admin"))
 		{
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg01", "/scc <channel>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg02", "/scc mute <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg03", "/scc unmute <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg04", "/scc ignore <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg05", "/scc ignorelist"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg06", "/scc wordfilter <add/remove> <Word>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg07", "/scc broadcast <Message>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg08", "/scc playerlist [String]"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg09", "/scc bungee"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg11", "/scc grouplist [String]"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg12", "/scc cccreate <Name> [Password]"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg13", "/scc ccjoin <Name>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg14", "/scc ccleave"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg15", "/scc cckick <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg16", "/scc ccban <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg17", "/scc ccunban <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg18", "/scc changepassword <Password>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg19", "/scc channelinfo"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01"),
+					ClickEvent.Action.SUGGEST_COMMAND, "/scc <channel>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg02"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc mute <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg03"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc unmute <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg04"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignore <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg05"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignorelist"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg06"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc wordfilter <add/remove> <Word>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg07"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc broadcast <Message>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg08"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc playerlist [String]"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg09"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc bungee"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg11"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg12"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg13"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg14"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg15"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg16"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg17"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo"));
 		} else
 		{
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"info.msg10")));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg01", "/scc <channel>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg04", "/scc ignore <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg05", "/scc ignorelist"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg08", "/scc playerlist [String]"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg11", "/scc grouplist [String]"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg12", "/scc cccreate <Name> [Password]"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg13", "/scc ccjoin <Name>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg14", "/scc ccleave"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg15", "/scc cckick <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg16", "/scc ccban <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg17", "/scc ccunban <Player>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg18", "/scc changepassword <Password>"));
-			player.sendMessage(plugin.getUtility().suggestCmdText(language+scc+"info.msg19", "/scc channelinfo"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg01"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc <channel>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg04"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignore <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg05"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ignorelist"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg08"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc playerlist [String]"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg11"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg12"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg13"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg14"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg15"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg16"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg17"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg18"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+scc+"info.msg19"),
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo"));
 		}
 	}
 	

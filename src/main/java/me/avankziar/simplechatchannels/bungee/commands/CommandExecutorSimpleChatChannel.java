@@ -2,6 +2,7 @@ package main.java.me.avankziar.simplechatchannels.bungee.commands;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -44,7 +45,9 @@ public class CommandExecutorSimpleChatChannel extends Command
 				} else
 				{
 					///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-					player.sendMessage(plugin.getUtility().runCmdText(language+".CMD_SCC.msg01", "/scc"));
+					player.sendMessage(plugin.getUtility().clickEvent(
+							plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01"),
+							ClickEvent.Action.RUN_COMMAND, "/scc"));
 					return;
 				}
 			} else 
@@ -57,7 +60,9 @@ public class CommandExecutorSimpleChatChannel extends Command
 		} else 
 		{
 			///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-			player.sendMessage(plugin.getUtility().runCmdText(language+".CMD_SCC.msg01", "/scc"));
+			player.sendMessage(plugin.getUtility().clickEvent(
+					plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01"),
+					ClickEvent.Action.RUN_COMMAND, "/scc"));
 			return;
 		}
 	}
