@@ -87,7 +87,7 @@ permissions:
     description: Gives access to /scc unmute <player>, unmute the player.
     default: false
   scc.cmd.wordfilter:
-    description: Gives access to /scc wordfilter <add/remove>, a word from or to the wordfilter list.
+    description: Gives access to /scc wordfilter <word>, a word from or to the wordfilter list.
     default: false
   scc.cmd.broadcast:
     description: Gives access to /scc broadcast <message>, to send a message to all onlineplayers (bungee/colorcode possible).

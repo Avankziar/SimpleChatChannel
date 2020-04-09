@@ -1,4 +1,4 @@
-package main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs;
+package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -21,7 +21,7 @@ public class ARGOptionSpy extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandFactory().optiontoggle(player, args, language, "spy", "spy", "Spy");
+		plugin.getCommandHelper().optiontoggle(player, args, language, "spy", "spy", "Spy");
 		return;
 	}
 }

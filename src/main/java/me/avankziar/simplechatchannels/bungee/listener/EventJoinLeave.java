@@ -13,11 +13,11 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-public class EVENTJoinLeave implements Listener
+public class EventJoinLeave implements Listener
 {
 	private SimpleChatChannels plugin;
 	
-	public EVENTJoinLeave(SimpleChatChannels plugin)
+	public EventJoinLeave(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -29,13 +29,13 @@ public class EVENTJoinLeave implements Listener
 		String language = plugin.getYamlHandler().get().getString("language");
 		String pn = player.getName();
 		plugin.getUtility().controlChannelSaves(player);
-		if((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid"))
+		if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 		{
 			player.sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(
 					language+".EVENT_JoinLeave.msg01").replace("%player%", pn)));
 		}
-		plugin.getMysqlInterface().updateDataII(player, player.getName(), "ignore_name", "ignore_uuid");
+		plugin.getMysqlHandler().updateDataII(player, player.getName(), "ignore_name", "ignore_uuid");
 		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
 		if(globaljoin==false)
 		{
@@ -45,7 +45,7 @@ public class EVENTJoinLeave implements Listener
 		{
 			if(!all.getName().equals(player.getName()))
 			{
-				if((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid"))
+				if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 				{
 					TextComponent msg = plugin.getUtility().tcl(
 							plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg02")
@@ -96,9 +96,9 @@ public class EVENTJoinLeave implements Listener
     					.replace("%channel%", cc.getName())));
 			}
 		}
-		if(!plugin.getMysqlInterface().hasAccount(player))
+		if(!plugin.getMysqlHandler().hasAccount(player))
 		{
-			plugin.getMysqlInterface().createAccount(player);
+			plugin.getMysqlHandler().createAccount(player);
 		}
 		Boolean globalleave = plugin.getYamlHandler().get().getString("showleavemessageglobal").equals("true");
 		if(globalleave==false)
@@ -107,7 +107,7 @@ public class EVENTJoinLeave implements Listener
 		}
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "joinmessage", "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 			{
 				String msg = plugin.getYamlHandler().getL().getString(
 						language+".EVENT_JoinLeave.msg03").replace("%player%", pn);

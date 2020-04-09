@@ -8,6 +8,9 @@ Build 33
 - +BypassPerm für Admins der Ignore | scc.cmd.ignorebypass
 - +Änderungen in der language.yml bei Chatsplit
 - +ignore_name aktualisierungsmethode einfügen
+- Namen von configs neu benennen nach der neuen Konform
+- +/scc wordfiler <add/remove> <word> => /scc wordfilter <word>
+- +/scc broadcast, hat aliase bekommen "ausstrahlen, übertragen"
 
 Build 31
 - +Hover bei Commands in chat

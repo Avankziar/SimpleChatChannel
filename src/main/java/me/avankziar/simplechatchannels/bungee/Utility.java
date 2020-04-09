@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlInterface;
+import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -329,7 +329,7 @@ public class Utility
 	{
 		for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers())
 		{
-			if((boolean) plugin.getMysqlInterface().getDataI(player, "spy", "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(player, "spy", "player_uuid"))
 			{
 				player.sendMessage(msg);
 			}
@@ -359,7 +359,7 @@ public class Utility
 	
 	public boolean getIgnored(ProxiedPlayer player, ProxiedPlayer target)
 	{
-		if(plugin.getMysqlInterface().existIgnore(player, target.getUniqueId().toString()))
+		if(plugin.getMysqlHandler().existIgnore(player, target.getUniqueId().toString()))
 		{
 			if(target.hasPermission("scc.cmd.ignorebypass"))
 			{
@@ -507,7 +507,7 @@ public class Utility
 	
 	public boolean hasChannelRights(ProxiedPlayer player, String mysql_channel)
 	{
-		if(!(boolean) plugin.getMysqlInterface().getDataI(player, mysql_channel, "player_uuid"))
+		if(!(boolean) plugin.getMysqlHandler().getDataI(player, mysql_channel, "player_uuid"))
 		{
 			sendMessage(player,plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg01"));
 			return false;
@@ -521,7 +521,7 @@ public class Utility
 	{
 		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
-			if((boolean) plugin.getMysqlInterface().getDataI(all, mysql_channel, "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(all, mysql_channel, "player_uuid"))
 			{
 				if(!getIgnored(all,player))
 				{
@@ -535,9 +535,7 @@ public class Utility
     {
     	if(args.length!=i)
     	{
-    		TextComponent msg = tc(tl(plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01")));
-			msg.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/scc"));
-			p.sendMessage(msg);
+			p.sendMessage(plugin.getUtility().runCmdText(language+".CMD_SCC.msg01", "/scc"));
 			return true;
     	} else
     	{
@@ -561,7 +559,7 @@ public class Utility
 	public String getActiveChannels(ProxiedPlayer player)
 	{
 		String language = plugin.getYamlHandler().get().getString("language");
-		MysqlInterface mi = plugin.getMysqlInterface();
+		MysqlHandler mi = plugin.getMysqlHandler();
 		boolean canchat = (boolean)mi.getDataI(player, "can_chat", "player_uuid");
 		boolean global = (boolean)mi.getDataI(player, "channel_global", "player_uuid");
 		boolean local = (boolean)mi.getDataI(player, "channel_local", "player_uuid");
@@ -598,9 +596,9 @@ public class Utility
 	
 	public void controlChannelSaves(ProxiedPlayer player)
 	{
-		if(!plugin.getMysqlInterface().hasAccount(player))
+		if(!plugin.getMysqlHandler().hasAccount(player))
 		{
-			plugin.getMysqlInterface().createAccount(player);
+			plugin.getMysqlHandler().createAccount(player);
 			return;
 		} else
 		{

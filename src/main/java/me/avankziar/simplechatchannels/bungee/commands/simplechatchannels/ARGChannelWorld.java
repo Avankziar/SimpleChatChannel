@@ -1,18 +1,18 @@
-package main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs;
+package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGChannelLocal extends CommandModule
+public class ARGChannelWorld extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGChannelLocal(SimpleChatChannels plugin)
+	public ARGChannelWorld(SimpleChatChannels plugin)
 	{
-		super("local",
-				"scc.channels.local",SimpleChatChannels.sccarguments,1,1,"lokal");
+		super("world",
+				"scc.channels.world",SimpleChatChannels.sccarguments,1,1,"welt");
 		this.plugin = plugin;
 	}
 
@@ -21,7 +21,7 @@ public class ARGChannelLocal extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandFactory().channeltoggle(player, args, language, "local", "Local");
+		plugin.getCommandHelper().channeltoggle(player, args, language, "world", "World");
 		return;
 	}
 }

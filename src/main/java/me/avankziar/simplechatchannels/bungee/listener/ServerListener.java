@@ -55,7 +55,7 @@ public class ServerListener implements Listener
 					}
 			        for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
 			        {
-			        	if((boolean) plugin.getMysqlInterface().getDataI(pp, "spy", "player_uuid"))
+			        	if((boolean) plugin.getMysqlHandler().getDataI(pp, "spy", "player_uuid"))
 			        	{
 			        		pp.sendMessage(plugin.getUtility().tcl(Delivery));
 			        	}

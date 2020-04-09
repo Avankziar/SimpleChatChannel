@@ -20,44 +20,46 @@ public class CommandExecutorSimpleChatChannel extends Command
 	{
 		String language = plugin.getUtility().getLanguage();
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		player.sendMessage(plugin.getUtility().tc(this.getName()));
-		return;
-		// Checks if the label is one of yours.
-		/*if (this.getName().equalsIgnoreCase("scc") 
-				|| this.getName().equalsIgnoreCase("simplechatchannel")) 
+		
+		if (!(player instanceof ProxiedPlayer)) 
 		{
-			if (!(player instanceof ProxiedPlayer)) 
+			SimpleChatChannels.log.info("/scc is only for Player!");
+			return;
+		}
+		if (args.length == 0) 
+		{
+			plugin.getCommandHelper().scc(player, language); //Info Command
+			return;
+		}
+		if (SimpleChatChannels.sccarguments.containsKey(args[0])) 
+		{
+			CommandModule mod = SimpleChatChannels.sccarguments.get(args[0]);
+			//Abfrage ob der Spieler die Permission hat
+			if (player.hasPermission(mod.permission)) 
 			{
-				SimpleChatChannels.log.info("/scc is only for Player!");
-				return;
-			}
-			if (args.length == 0) 
-			{
-				plugin.getCommandFactory().scc(player, language); //Info Command
-				return;
-			}
-			if (SimpleChatChannels.sccarguments.containsKey(args[0])) 
-			{
-				CommandHandler mod = SimpleChatChannels.sccarguments.get(args[0]);
-				if (player.hasPermission(mod.permission)) 
+				//Abfrage, ob der Spieler in den min und max Argumenten Bereich ist.
+				if(args.length >= mod.minArgs && args.length <= mod.maxArgs)
 				{
 					mod.run(sender, args);
-				} else 
+				} else
 				{
-					//Du hast dafür keine Rechte!
-					player.sendMessage(plugin.getUtility().tcl(
-							plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg02")));
+					///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
+					player.sendMessage(plugin.getUtility().runCmdText(language+".CMD_SCC.msg01", "/scc"));
 					return;
 				}
 			} else 
 			{
-				//Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-				player.sendMessage(plugin.getUtility().runCmdText(
-						plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg01"), "/scc"));
+				///Du hast dafür keine Rechte!
+				player.sendMessage(plugin.getUtility().tcl(
+						plugin.getYamlHandler().getL().getString(language+".CMD_SCC.msg02")));
 				return;
 			}
+		} else 
+		{
+			///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
+			player.sendMessage(plugin.getUtility().runCmdText(language+".CMD_SCC.msg01", "/scc"));
+			return;
 		}
-		return;*/
 	}
 }
 

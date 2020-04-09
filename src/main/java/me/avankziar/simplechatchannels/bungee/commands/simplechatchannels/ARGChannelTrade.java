@@ -1,18 +1,18 @@
-package main.java.me.avankziar.simplechatchannels.bungee.commands.sccargs;
+package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGChannelAdmin extends CommandModule
+public class ARGChannelTrade extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGChannelAdmin(SimpleChatChannels plugin)
+	public ARGChannelTrade(SimpleChatChannels plugin)
 	{
-		super("admin",
-				"scc.channels.admin",SimpleChatChannels.sccarguments,1,1);
+		super("trade",
+				"scc.channels.trade",SimpleChatChannels.sccarguments,1,1,"handel");
 		this.plugin = plugin;
 	}
 
@@ -21,7 +21,7 @@ public class ARGChannelAdmin extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandFactory().channeltoggle(player, args, language, "admin", "Admin");
+		plugin.getCommandHelper().channeltoggle(player, args, language, "trade", "Trade");
 		return;
 	}
 }

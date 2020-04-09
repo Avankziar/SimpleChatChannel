@@ -18,13 +18,13 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
 
-public class EVENTChat implements Listener 
+public class EventChat implements Listener 
 {
 	private SimpleChatChannels plugin;
 	HashMap<String,String> reply = new HashMap<String, String>();
 	private String language;
 	
-	public EVENTChat(SimpleChatChannels plugin)
+	public EventChat(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 		language = plugin.getYamlHandler().get().getString("language");
@@ -100,10 +100,10 @@ public class EVENTChat implements Listener
 		}
 		event.setCancelled(true);
 		String pl = player.getUniqueId().toString();
-		boolean canchat = (boolean) plugin.getMysqlInterface().getDataI(player, "can_chat", "player_uuid");
+		boolean canchat = (boolean) plugin.getMysqlHandler().getDataI(player, "can_chat", "player_uuid");
 		if(!canchat)
 		{
-			long millitime = (long) plugin.getMysqlInterface().getDataI(player, "mutetime", "player_uuid");
+			long millitime = (long) plugin.getMysqlHandler().getDataI(player, "mutetime", "player_uuid");
 			String time = "";
 			if(millitime==0)
 			{
@@ -198,7 +198,7 @@ public class EVENTChat implements Listener
 				{
 					if(members.getName().equals(all.getName()))
 					{
-						if((boolean) plugin.getMysqlInterface().getDataI(all, "channel_custom", "player_uuid"))
+						if((boolean) plugin.getMysqlHandler().getDataI(all, "channel_custom", "player_uuid"))
 						{
 							if(!plugin.getUtility().getIgnored(all,player))
 							{
@@ -282,7 +282,7 @@ public class EVENTChat implements Listener
 			
 			for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 			{
-				if((boolean) plugin.getMysqlInterface().getDataI(all, "channel_group", "player_uuid"))
+				if((boolean) plugin.getMysqlHandler().getDataI(all, "channel_group", "player_uuid"))
 				{
 					if(!all.equals(player))
 					{

@@ -34,7 +34,7 @@ public class CMDSimpleChatChannel extends Command
     	String language = plugin.getYamlHandler().get().getString("language");
     	if(args.length == 0)
     	{
-    		plugin.getCommandFactory().scc(player, language);
+    		plugin.getCommandHelper().scc(player, language);
     		return;
     	} else if("playerlist".equalsIgnoreCase(args[0]) || "pl".equalsIgnoreCase(args[0]) 
     			|| "spielerlist".equalsIgnoreCase(args[0])) 
@@ -82,7 +82,7 @@ public class CMDSimpleChatChannel extends Command
     			plugin.getUtility().rightArgs(player,args,2);
     			return;
     		}
-    		plugin.getCommandFactory().playergrouplist(player, language, list, "playerlist");
+    		plugin.getCommandHelper().playergrouplist(player, language, list, "playerlist");
 			return;
     	} else if("grouplist".equalsIgnoreCase(args[0]) || "gl".equalsIgnoreCase(args[0])) 
     	{
@@ -140,61 +140,61 @@ public class CMDSimpleChatChannel extends Command
     			plugin.getUtility().rightArgs(player,args,2);
     			return;
     		}
-    		plugin.getCommandFactory().playergrouplist(player, language, list, "grouplist");
+    		plugin.getCommandHelper().playergrouplist(player, language, list, "grouplist");
     		return;
     	} else if("global".equalsIgnoreCase(args[0]))
 		{
-    		plugin.getCommandFactory().channeltoggle(player, args, language, "global", "Global");
+    		plugin.getCommandHelper().channeltoggle(player, args, language, "global", "Global");
 			return;
 		} else if("trade".equalsIgnoreCase(args[0]) || "handel".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "trade", "Trade");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "trade", "Trade");
 			return;
 		} else if("auction".equalsIgnoreCase(args[0]) || "auktion".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "auction", "Auction");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "auction", "Auction");
 			return;
 		} else if(args[0].equalsIgnoreCase("local") || args[0].equalsIgnoreCase("lokal"))//--------------------------------------------------local
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "local", "Local");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "local", "Local");
 			return;
 		} else if("support".equalsIgnoreCase(args[0]) || "hilfe".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "support", "Support");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "support", "Support");
 			return;
 		} else if("team".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "team", "Team");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "team", "Team");
 			return;
 		} else if("admin".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "admin", "Admin");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "admin", "Admin");
 			return;
 		} else if(args[0].equalsIgnoreCase("world") || args[0].equalsIgnoreCase("welt"))//--------------------------------------------------world
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "world", "World");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "world", "World");
 			return;
 		} else if("pm".equalsIgnoreCase(args[0]) || "pn".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "pm", "Private Message");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "pm", "Private Message");
 			return;
 		} else if("group".equalsIgnoreCase(args[0]) || "gruppe".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "group", "Group");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "group", "Group");
 			return;
 		} else if("custom".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().channeltoggle(player, args, language, "custom", "Custom");
+			plugin.getCommandHelper().channeltoggle(player, args, language, "custom", "Custom");
 			return;
 		} else if("spy".equalsIgnoreCase(args[0]) || "spitzeln".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().optiontoggle(player, args, language, "spy", "spy", "Spy");
+			plugin.getCommandHelper().optiontoggle(player, args, language, "spy", "spy", "Spy");
 			return;
 		} else if("join".equalsIgnoreCase(args[0]) 
 				|| "joinmessage".equalsIgnoreCase(args[0])
 				|| "Eintrittsnachricht".equalsIgnoreCase(args[0]))
 		{
-			plugin.getCommandFactory().optiontoggle(player, args, language, "join", "joinmessage", "Join Message");
+			plugin.getCommandHelper().optiontoggle(player, args, language, "join", "joinmessage", "Join Message");
 			return;
 		} else if("ignorelist".equalsIgnoreCase(args[0]) || "ignorierliste".equalsIgnoreCase(args[0]))
 		{
@@ -207,7 +207,7 @@ public class CMDSimpleChatChannel extends Command
 			{
 				return;
 			}
-			String list = plugin.getMysqlInterface().getIgnoreList(player, "ignore_name", "player_uuid");
+			String list = plugin.getMysqlHandler().getIgnoreList(player, "ignore_name", "player_uuid");
 			if(list == null)
 			{
 				list = "None";
@@ -244,8 +244,8 @@ public class CMDSimpleChatChannel extends Command
 			ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
 			if(args.length == 2)
 			{
-    			plugin.getMysqlInterface().updateDataI(player, false, "can_chat");
-    			plugin.getMysqlInterface().updateDataI(player, 0L, "mutetime");
+    			plugin.getMysqlHandler().updateDataI(player, false, "can_chat");
+    			plugin.getMysqlHandler().updateDataI(player, 0L, "mutetime");
     			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg01")));
 			} else if(args.length == 3)
 			{
@@ -261,8 +261,8 @@ public class CMDSimpleChatChannel extends Command
     			}
     			Long time = 60L*1000;
     			Long mutetime = System.currentTimeMillis()+num*time;
-    			plugin.getMysqlInterface().updateDataI(player, false, "can_chat");
-    			plugin.getMysqlInterface().updateDataI(player, mutetime, "mutetime");
+    			plugin.getMysqlHandler().updateDataI(player, false, "can_chat");
+    			plugin.getMysqlHandler().updateDataI(player, mutetime, "mutetime");
     			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg02")
     					.replace("%time%", args[2])));
 			} else if(plugin.getUtility().rightArgs(player,args,3))
@@ -287,8 +287,8 @@ public class CMDSimpleChatChannel extends Command
 				return;
 			}
 			ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
-			plugin.getMysqlInterface().updateDataI(player, true, "can_chat");
-			plugin.getMysqlInterface().updateDataI(player, 0L, "mutetime");
+			plugin.getMysqlHandler().updateDataI(player, true, "can_chat");
+			plugin.getMysqlHandler().updateDataI(player, 0L, "mutetime");
 			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg03")));
 			return;
 		} else if("ignore".equalsIgnoreCase(args[0]) || "ignorieren".equalsIgnoreCase(args[0]))
@@ -309,16 +309,16 @@ public class CMDSimpleChatChannel extends Command
 				return;
 			}
 			ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
-			if(plugin.getMysqlInterface().existIgnore(player, t.getUniqueId().toString()))
+			if(plugin.getMysqlHandler().existIgnore(player, t.getUniqueId().toString()))
 			{
-				plugin.getMysqlInterface().deleteDataII(
+				plugin.getMysqlHandler().deleteDataII(
 						player.getUniqueId().toString(), t.getUniqueId().toString(), "player_uuid", "ignore_uuid");
 				player.sendMessage(plugin.getUtility().tcl(
 						plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg02")
 						.replace("%player%", target)));
 			} else
 			{
-				plugin.getMysqlInterface().createIgnore(player, t);
+				plugin.getMysqlHandler().createIgnore(player, t);
 				player.sendMessage(plugin.getUtility().tcl(
 						plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg01")
 						.replace("%player%", target)));
@@ -425,7 +425,7 @@ public class CMDSimpleChatChannel extends Command
     			plugin.getUtility().rightArgs(player,args,3);
     			return;
     		}
-    		plugin.getCommandFactory().cccreate(player, language, cc, name, password);
+    		plugin.getCommandHelper().cccreate(player, language, cc, name, password);
 			return;
     	} else if("ccjoin".equalsIgnoreCase(args[0])) 
     	{
@@ -448,7 +448,7 @@ public class CMDSimpleChatChannel extends Command
     			plugin.getUtility().rightArgs(player,args,3);
     			return;
     		}
-    		plugin.getCommandFactory().ccjoin(player, language, name, password);
+    		plugin.getCommandHelper().ccjoin(player, language, name, password);
     		return;
     	} else if("ccinfo".equalsIgnoreCase(args[0])) 
     	{

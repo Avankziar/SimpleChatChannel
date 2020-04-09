@@ -8,13 +8,13 @@ import java.sql.SQLException;
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class MysqlInterface 
+public class MysqlHandler 
 {
 	private SimpleChatChannels plugin;
 	public String tableNameI;
 	public String tableNameII;
 	
-	public MysqlInterface(SimpleChatChannels plugin)
+	public MysqlHandler(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 		tableNameI = plugin.getYamlHandler().get().getString("mysql.tableNameI");

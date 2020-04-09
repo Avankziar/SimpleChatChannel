@@ -61,7 +61,6 @@ public class CommandHelper
 		}
 	}
 	
-	//Obsolete
 	public void playergrouplist(ProxiedPlayer player, String language, List<BaseComponent> list, String path)
 	{
 		TextComponent MSG = plugin.getUtility().tc("");
@@ -83,14 +82,14 @@ public class CommandHelper
 		{
 			return;
 		}
-		if((boolean) plugin.getMysqlInterface().getDataI(player, "channel_"+channel, "player_uuid"))
+		if((boolean) plugin.getMysqlHandler().getDataI(player, "channel_"+channel, "player_uuid"))
 		{
-			plugin.getMysqlInterface().updateDataI(player, false, "channel_"+channel);
+			plugin.getMysqlHandler().updateDataI(player, false, "channel_"+channel);
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
 					.replace("%channel%", replacer)));
 		} else
 		{
-			plugin.getMysqlInterface().updateDataI(player, true, "channel_"+channel);
+			plugin.getMysqlHandler().updateDataI(player, true, "channel_"+channel);
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
 					.replace("%channel%", replacer)));
 		}
@@ -109,19 +108,20 @@ public class CommandHelper
 		{
 			return;
 		}
-		if(((boolean) plugin.getMysqlInterface().getDataI(player, option, "player_uuid")))
+		if(((boolean) plugin.getMysqlHandler().getDataI(player, option, "player_uuid")))
 		{
-			plugin.getMysqlInterface().updateDataI(player, false, option);
+			plugin.getMysqlHandler().updateDataI(player, false, option);
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg01")
 					.replace("%channel%", replacer)));
 		} else
 		{
-			plugin.getMysqlInterface().updateDataI(player, true, option);
+			plugin.getMysqlHandler().updateDataI(player, true, option);
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"channel.msg02")
 					.replace("%channel%", replacer)));
 		}
 	}
 	
+	//Obsolete
 	public void cccreate(ProxiedPlayer player, String language, CustomChannel cc, String name, String password)
 	{
 		ArrayList<ProxiedPlayer> members = new ArrayList<ProxiedPlayer>();
@@ -142,6 +142,7 @@ public class CommandHelper
 		}
 	}
 	
+	//Obsolete
 	public void ccjoin(ProxiedPlayer player, String language, String name, String password)
 	{
 		CustomChannel cc = CustomChannel.getCustomChannel(name);
