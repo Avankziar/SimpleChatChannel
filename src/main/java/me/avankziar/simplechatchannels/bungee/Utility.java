@@ -108,7 +108,10 @@ public class Utility
 		{
 			msg.setClickEvent( new ClickEvent(caction, cmd));
 		}
-		msg.setHoverEvent( new HoverEvent(haction, new ComponentBuilder(tl(hover)).create()));
+		if(haction != null)
+		{
+			msg.setHoverEvent( new HoverEvent(haction, new ComponentBuilder(tl(hover)).create()));
+		}
 		return msg;
 	}
 	

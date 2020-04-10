@@ -13,7 +13,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public class CommandHelper
 {
 	private SimpleChatChannels plugin;
-	private String scc = ".CMDSCC.";
+	private String scc = ".CmdScc.";
 	
 	public CommandHelper(SimpleChatChannels plugin)
 	{
@@ -130,12 +130,12 @@ public class CommandHelper
 		if(list.isEmpty())
 		{
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+path+".msg02")));
+					plugin.getYamlHandler().getL().getString(language+scc+path+".WrongInput")));
 			return;
 		}
 		MSG.setExtra(list);
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+path+".msg01")));
+				plugin.getYamlHandler().getL().getString(language+scc+path+".Headline")));
 		player.sendMessage(MSG);
 	}
 	
@@ -147,13 +147,15 @@ public class CommandHelper
 		}
 		if((boolean) plugin.getMysqlHandler().getDataI(player, "channel_"+channel, "player_uuid"))
 		{
+			///Du hast den Channel %channel% &causgeblendet!
 			plugin.getMysqlHandler().updateDataI(player, false, "channel_"+channel);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg01")
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.Off")
 					.replace("%channel%", replacer)));
 		} else
 		{
+			///Du hast den Channel %channel% &aeingeblendet!
 			plugin.getMysqlHandler().updateDataI(player, true, "channel_"+channel);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg02")
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.On")
 					.replace("%channel%", replacer)));
 		}
 		return;

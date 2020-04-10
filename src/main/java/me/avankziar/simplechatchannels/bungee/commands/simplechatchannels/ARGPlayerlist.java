@@ -65,7 +65,7 @@ public class ARGPlayerlist extends CommandModule
 			plugin.getUtility().rightArgs(player,args,2);
 			return;
 		}
-		plugin.getCommandHelper().playergrouplist(player, language, list, "playerlist");
+		plugin.getCommandHelper().playergrouplist(player, language, list, "PlayerList");
 		return;
 	}
 

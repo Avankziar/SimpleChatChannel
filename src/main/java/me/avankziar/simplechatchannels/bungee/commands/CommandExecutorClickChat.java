@@ -4,9 +4,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -43,13 +41,9 @@ public class CommandExecutorClickChat extends Command
     	{
     		msg += args[i]+" "; 
     	}
-    	TextComponent msg1 = plugin.getUtility().tcl(msg);
-		msg1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
-				new ComponentBuilder(plugin.getUtility().tl(
-						plugin.getYamlHandler().getL().getString(language+".CMDClickChat.msg01")
-						.replace("%number%", args[1]))).create()));
-		msg1.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND,args[1]));
-    	t.sendMessage(msg1);
+    	///Klicke hier um die %number%.te Antwortmöglichkeit zu nehmen!
+		t.sendMessage(plugin.getUtility().apichat(msg, ClickEvent.Action.RUN_COMMAND, args[1],
+				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(language+".CmdClickChat.ClickAnswer")));
     	return;
 	}
 

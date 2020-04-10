@@ -118,7 +118,7 @@ German:
     msg03: '&cDer Spieler ignoriert dich!'
     msg04: '&cDer Spieler hat private Nachrichten &cdeaktiviert!'
     msg05: '&cDu hast mit keinem Spieler dich &cprivat unterhalten!'
-    msg06: '&cEiner deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdruecke!'
+    Wordfiltermsg06: '&cEiner deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!'
     msg07: '&cDu bist fuer &c%time% gemutet!'
     msg08: '&cDie Nachricht ist nicht lang genug!'
     msg09: '&cWarnung, die Prefixe oder Suffixe duerfen keine Leerzeichen &cbeinhalten!'
@@ -130,8 +130,8 @@ German:
     msg03: '&f%player% &4hat den Server verlassen!'
     msg04: '&cDu hast zurzeit kein Recht im Chat zu schreiben!'
   CmdScc:
-    msg01: '&cDeine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!'
-    msg02: '&cDu hast dafür keine Rechte!'
+    InputIsWrong: '&cDeine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!'
+    NoPermission: '&cDu hast dafür keine Rechte!'
     msg03: '&cDer Spieler ist nicht online oder existiert nicht!'
     msg04: '&cDas Argument %arg% muss eine ganze Zahl sein.'
     Info:
@@ -140,7 +140,7 @@ German:
       msg03: '&e/scc unmute <Spieler> &f| Zum Aufheben des Mutes.'
       msg04: '&e/scc ignore <Spieler> &f| Zum einsetzten oder Aufheben des Ignores für den Spieler'
       msg05: '&e/scc ignorelist &f| Zum anzeigen aller Spieler auf deiner Ignoreliste.'
-      msg06: '&e/scc wordfilter <add/remove> <word> &f| Zum hinzufuegen oder entfernen von Wörter auf die Liste des Wortfilters.'
+      msg06: '&e/scc wordfilter <word> &f| Zum hinzufuegen oder entfernen von Wörter auf die Liste des Wortfilters.'
       msg07: '&e/scc broadcast <Nachricht> &f| Zum senden einer Broadcast Nachricht.'
       msg08: '&e/scc playerlist [Zeichenfolge] &f| Liefert eine Liste aller Spieler. Optional mit Zeichenfolge Suche.'
       msg09: '&e/scc bungee &f| &7Zum Spigot-Bungeecord switchen.'
@@ -154,36 +154,11 @@ German:
       msg17: '&e/scc ccunban <Player> &f| Unbannt einen Spieler von einem CustomChannel.'
       msg18: '&e/scc ccchangepassword <Password> &f| Ändert das Passwort von einem CustomChannel.'
       msg19: '&e/scc ccinfo &f| Zeigt alle Infos zum Customchannel an.'
-    Channel:
-      msg01: '&7Du hast den Channel %channel% &causgeblendet!'
-      msg02: '&7Du hast den Channel %channel% &aeingeblendet'
-    Mute:
-      msg01: '&7Du wurdest &cpermanent gemutet&7!'
-      msg01: '&7Du wurdest fuer &c%time% gemutet&7!'
-      msg03: '&7Du wurdest entmutet!'
-    Ignore:
-      msg01: '&cDer Spieler %player% wird von dir ignoriert!'
-      msg02: '&7Du hast den Spieler %player% von deiner Ignoreliste &7genommen!'
-      msg03: '&7Deine Ignoreliste: %il%'
-    Wordfilter:
-      msg21: '&7Das Wort befindet sich schon auf der Wortfilterliste!'
-      msg22: '&7Das Word %word% wurde dem Wortfilter hinzugefuegt!'
-      msg23: '&7Das Wort befindet sich nicht auf der Wortfilterliste!'
-      msg24: '&7Das Word %word% wurde aus dem Wortfilter entfernt!'
     Broadcast:
-      msg20: '&7[&cBroadcast&7] '
-    Reload:
-      msg01: '&aYaml Datein wurden neugeladen.'
-      msg02: '&cEs wurde ein Fehler gefunden! Siehe Konsole!'
-    ServerListener:
-      msg01: '&7BungeeCord fuer SCC wurde &7deaktiviert!'
-      msg02: '&7BungeeCord fuer SCC wurde &7aktiviert!'
-    PlayerList:
-      msg01: '&7=====&eMsg SpielerListe&7====='
-      msg02: '&cEs passt kein Spieler auf die &cBeschreibung.'
-    GroupList:
-      msg01: '&7=====&eMsg GroupListe&7====='
-      msg02: '&cEs passt kein Prefix oder Suffix auf die &cBeschreibung.'
+      Prefix: '&7[&cBroadcast&7] '
+    Channel:
+      Off: '&7Du hast den Channel %channel% &causgeblendet!'
+      On: '&7Du hast den Channel %channel% &aeingeblendet!'
     CustomChannelGeneral:
       NotInAChannel: '&cDu bist in keinem CustomChannel!'
       NotTheCreator: '&cDu bist nicht der Ersteller des CustomChannel!'
@@ -226,9 +201,34 @@ German:
       PlayerNotBanned: '&cDer Spieler ist nicht auf der Bannliste!'
       YouUnbanPlayer: '&eDu hast &f%player% &efür den CustomChannel entbannt!'
       CreatorUnbanPlayer: '&eDer Spieler &f%player% &ewurde für den CustomChannel entbannt.'
-  CMDClickChat:
-    msg01: '&eKlicke hier um die %number%.te Antwortmöglichkeit zu nehmen!'
-  CMDSCCEditor:
+    GroupList:
+      Headline: '&7=====&eMsg GroupListe&7====='
+      WrongInput: '&cEs passt kein Prefix oder Suffix auf die &cBeschreibung.'
+    Ignore:
+      msg01: '&cDer Spieler %player% wird von dir ignoriert!'
+      msg02: '&7Du hast den Spieler %player% von deiner Ignoreliste &7genommen!'
+      msg03: '&7Deine Ignoreliste: %il%'
+    Mute:
+      msg01: '&7Du wurdest &cpermanent gemutet&7!'
+      msg01: '&7Du wurdest fuer &c%time% gemutet&7!'
+      msg03: '&7Du wurdest entmutet!'
+    PlayerList:
+      Headline: '&7=====&eMsg SpielerListe&7====='
+      WrongInput: '&cEs passt kein Spieler auf die &cBeschreibung.'
+    Reload:
+      msg01: '&aYaml Datein wurden neugeladen.'
+      msg02: '&cEs wurde ein Fehler gefunden! Siehe Konsole!'
+    ServerListener:
+      msg01: '&7BungeeCord fuer SCC wurde &7deaktiviert!'
+      msg02: '&7BungeeCord fuer SCC wurde &7aktiviert!'
+    Wordfilter:
+      msg21: '&7Das Wort befindet sich schon auf der Wortfilterliste!'
+      msg22: '&7Das Word %word% wurde dem Wortfilter hinzugefuegt!'
+      msg23: '&7Das Wort befindet sich nicht auf der Wortfilterliste!'
+      msg24: '&7Das Word %word% wurde aus dem Wortfilter entfernt!'
+  CmdClickChat:
+    ClickAnswer: '&eKlicke hier um die %number%.te Antwortmöglichkeit zu nehmen!'
+  CmdSccEditor:
     msg01: '&eDu bist nun im Editorbereich. &cAlle Chateingaben sind deaktiviert!'
     msg02: '&eDu verlässt den Editorbereich. &aAlle Chateingaben sind aktiviert!'
   SpigotBungee:
@@ -357,7 +357,7 @@ English:
     msg03: '&cThe player ignores you!'
     msg04: '&cThe player has private messages &Cdisabled!'
     msg05: '&cYou have not talked to any player in &cprivat!'
-    msg06: '&cOne of your written words &c is contained in the word filter, &cplease refrain from &csuch expressions!'
+    Wordfilter: '&cOne of your written words &c is contained in the word filter, &cplease refrain from &csuch expressions!'
     msg07: '&cYou are mute for &c%time%!'
     msg08: '&cThe message is not long enough!'
     msg09: '&cWarning, the prefixes or suffixes may &Cnot contain spaces!'
@@ -369,8 +369,8 @@ English:
     msg03: '&f%player% &4has left the server!'
     msg04: '&cYou currently have no right to chat!'
   CmdScc:
-    msg01: '&cYour input is incorrect, click &chere on the text to &cget more information!'
-    msg02: '&cYou have no rights for this!'
+    InputIsWrong: '&cYour input is incorrect, click &chere on the text to &cget more information!'
+    NoPermission: '&cYou have no rights for this!'
     msg03: '&cThe player is not online or does not exist!'
     msg04: '&cThe argument %arg% must be an integer.'
     Info:
@@ -393,36 +393,11 @@ English:
       msg17: '&e/scc channelunban <Player> &f| Unbans a player from a custom channel.'
       msg18: '&e/scc changepassword <Password> &f| Changes the password from a CustomChannel.'
       msg19: '&e/scc channelinfo &f| Shows all info from the Customchannel.'
-    Channel:
-      msg07: '&7You have the channel% channel% &causgeblendet!'
-      msg08: '&7You have the channel% channel% &adisplayed'
-    Mute:
-      msg01: '&7You have been permanently muted &7!'
-      msg02: '&7You were for &c%time% muted&7!'
-      msg03: '&7You were demuted!'
-    Ignore:
-      msg01: '&cThe player %player% is ignored by you!'
-      msg02: '&7You have removed the player %player% from your ignore list!'
-      msg03: '&7Your Ignorelist: %il%'
-    Wordfilter:
-      msg01: '&7The word is already on the word filter list!'
-      msg02: '&7Word %word% has been added to the word filter!'
-      msg03: '&7The word is not on the word filter list!'
-      msg04: '&7The word %word% has been removed from the word filter!' 
     Broadcast:
-      msg20: '&7[&cBroadcast&7] %msg%'
-    Reload:
-      msg01: '&aYaml file was reloaded.'
-      msg02: '&cError found by reloading the files! See console!'
-    Serverlistener:
-      msg01: '&7BungeeCord for SCC has been deactivated!'
-      msg02: '&7BungeeCord for SCC was activated!'
-    Playerlist:
-      msg01: '&7=====&eMsg PlayerList&7====='
-      msg02: '&cNo player fits the &cdescription.'
-    Grouplist:
-      msg01: '&7=====&eChannel GroupList&7====='
-      msg02: '&cNo prefix or suffix fits on the &cdescription.'
+      Prefix: '&7[&cBroadcast&7] %msg%'
+    Channel:
+      Off: '&7You have the channel% channel% &chidden!'
+      On: '&7You have the channel% channel% &adisplayed!'
     CustomChannelGeneral:
       NotInAChannel: '&cYou are not in a custom channel!'
       NotTheCreator: '&cYou are not the creator of the CustomChannel!'
@@ -465,9 +440,34 @@ English:
       PlayerNotBanned: '&cThe player is not on the ban list!'
       YouUnbanPlayer: '&eYou have unbanned &f%player% &efor the Custom Channel!'
       CreatorUnbanPlayer: '&eThe player &f%player% &ewas unbanned for the Custom Channel.'
-  CMD_ClickChat:
-    msg01: '&eClick here too choose the %number% answer!'
-  CMD_SCCEditor:
+    Grouplist:
+      Headline: '&7=====&eChannel GroupList&7====='
+      WrongInput: '&cNo prefix or suffix fits on the &cdescription.'
+    Ignore:
+      msg01: '&cThe player %player% is ignored by you!'
+      msg02: '&7You have removed the player %player% from your ignore list!'
+      msg03: '&7Your Ignorelist: %il%'
+    Mute:
+      msg01: '&7You have been permanently muted &7!'
+      msg02: '&7You were for &c%time% muted&7!'
+      msg03: '&7You were demuted!'
+    Playerlist:
+      Headline: '&7=====&eMsg PlayerList&7====='
+      WrongInput: '&cNo player fits the &cdescription.'
+    Reload:
+      msg01: '&aYaml file was reloaded.'
+      msg02: '&cError found by reloading the files! See console!'
+    Serverlistener:
+      msg01: '&7BungeeCord for SCC has been deactivated!'
+      msg02: '&7BungeeCord for SCC was activated!'
+    Wordfilter:
+      msg01: '&7The word is already on the word filter list!'
+      msg02: '&7Word %word% has been added to the word filter!'
+      msg03: '&7The word is not on the word filter list!'
+      msg04: '&7The word %word% has been removed from the word filter!' 
+  CmdClickChat:
+    ClickAnswer: '&eClick here too choose the %number% answer!'
+  CmdSccEditor:
     msg01: '&eYou are now in the editor area. & cAll chat entries are deactivated!'
     msg02: '&eYou leave the editor area. & aAll chat entries are activated!'
   Spigot_Bungee:
