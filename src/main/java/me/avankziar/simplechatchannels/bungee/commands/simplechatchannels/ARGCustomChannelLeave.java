@@ -20,13 +20,13 @@ public class ARGCustomChannelLeave extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMDSCC.";
+		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
+			///Du bist in keinem CustomChannel!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
+					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotInAChannel")));
 			return;
 		}
 		final String name = cc.getName();
@@ -44,8 +44,9 @@ public class ARGCustomChannelLeave extends CommandModule
 			if(newcreator!=null)
 			{
 				cc.setCreator(newcreator);
+				///Du wurdest der neue Erstelle der CustomChannels &f%channel%
     			newcreator.sendMessage(plugin.getUtility().tcl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg03")
+    					plugin.getYamlHandler().getL().getString(language+"ChannelLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			} else 
 			{
@@ -54,8 +55,9 @@ public class ARGCustomChannelLeave extends CommandModule
 			}
 			
 		}
+		///Du hast den CustomChannel &f%channel% &everlassen!
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg02")
+				plugin.getYamlHandler().getL().getString(language+"ChannelLeave.YouLeft")
 				.replace("%channel%", name)));
 		return;
 	}

@@ -129,7 +129,7 @@ German:
     msg02: '&f%player% &6hat den Server betreten!'
     msg03: '&f%player% &4hat den Server verlassen!'
     msg04: '&cDu hast zurzeit kein Recht im Chat zu schreiben!'
-  CMDSCC:
+  CmdScc:
     msg01: '&cDeine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!'
     msg02: '&cDu hast dafür keine Rechte!'
     msg03: '&cDer Spieler ist nicht online oder existiert nicht!'
@@ -184,46 +184,48 @@ German:
     GroupList:
       msg01: '&7=====&eMsg GroupListe&7====='
       msg02: '&cEs passt kein Prefix oder Suffix auf die &cBeschreibung.'
-    ChannelCreate:
-      msg01: '&cDu bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.'
-      msg02: '&eDu hast den Custom Channel &f%channel% &eerstellt!'
-      msg03: '&eDu hast den Custom Channel &f%channel% &emit dem Passwort &f%password% &eerstellt!'
-    Channelinfo:
-      msg01: '&e=====&5[&fCustomChannel &6%channel%&5]&e====='
-      msg02: '&eChannel Ersteller: &f%creator%'
-      msg03: '&eChannel Mitglieder: &f%members%'
-      msg04: '&eChannel Passwort: &f%password%'
-      msg05: '&eChannel Gebannte Spieler: &f%banned%'
-    ChannelJoin:
-      msg01: '&cEs gibt keinen CustomChannel mit dem Namen &f%name%&c!'
-      msg02: '&cDer CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!'
-      msg03: '&cDas angegebene Passwort ist nicht korrekt!'
-      msg04: '&cEs ist kein Passwort angegeben, du kannst so joinen!'
-      msg05: '&eDu bist dem CustomChannel &f%channel% &agejoint!'
-      msg06: '&cDu bist schon in einem anderen Channel gejoint, verlasse erst diesen!'
-      msg07: '&cDu bist in diesem CustomChannel gebannt und darfst nicht joinen!'
-    ChannelLeave:
-      msg01: '&cDu bist in keinem CustomChannel!'
-      msg02: '&eDu hast den CustomChannel &f%channel% &everlassen!'
-      msg03: '&eDu wurdest der neue Erstelle der CustomChannels &f%channel%'
-    ChannelKick:
-      msg01: '&cDu bist nicht der Ersteller des CustomChannel!'
-      msg02: '&cDer angegebene Spieler ist nicht Mitglied im CustomChannel!'
-      msg03: '&cDu wurdest aus dem CustomChannel gekickt!'
-      msg04: '&eDu hast &f%player% &eaus dem Channel gekickt!'
-      msg05: '&eDer Spieler &f%player% &ewurde aus dem Channel gekickt!'
-      msg06: '&cDu als Ersteller kannst dich nicht kicken!'
-    ChannelBan:
-      msg01: '&cDer Spieler ist schon auf der Bannliste!'
-      msg02: '&eDu hast den Spieler &f%player% &eaus dem CustomChannel gebannt.'
-      msg03: '&cDu wurdest vom CustomChannel %channel% gebannt!'
-      msg04: '&cDu als Ersteller kannst dich nicht selber bannen!'
-    ChannelUnban:
-      msg01: '&cDer Spieler ist nicht auf der Bannliste!'
-      msg02: '&eDu hast &f%player% &efür den CustomChannel entbannt!'
-      msg03: '&eDer Spieler &f%player% &ewurde für den CustomChannel entbannt.'
-    ChannelChangepassword:
-      msg01: '&eDu hast das Passwort zu &f%password% &egeändert!'
+    CustomChannelGeneral:
+      NotInAChannel: '&cDu bist in keinem CustomChannel!'
+      NotTheCreator: '&cDu bist nicht der Ersteller des CustomChannel!'
+      NotChannelMember: '&cDer angegebene Spieler ist nicht Mitglied im CustomChannel!'
+    CCBan:
+      AlreadyBanned: '&cDer Spieler ist schon auf der Bannliste!'
+      YouHasBanned: '&eDu hast den Spieler &f%player% &eaus dem CustomChannel gebannt.'
+      YourWereBanned: '&cDu wurdest vom CustomChannel %channel% gebannt!'
+      CreatorCannotSelfBan: '&cDu als Ersteller kannst dich nicht selber bannen!'
+      CreatorHasBanned: '&eDer Spieler &f%player% &ewurde aus dem CustomChannel verbannt.'
+    CCChangepassword:
+      PasswordChange: '&eDu hast das Passwort zu &f%password% &egeändert!'
+    CCCreate:
+      AlreadyInAChannel: '&cDu bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.'
+      ChannelCreateWithoutPassword: '&eDu hast den Custom Channel &f%channel% &eerstellt!'
+      ChannelCreateWithPassword: '&eDu hast den Custom Channel &f%channel% &emit dem Passwort &f%password% &eerstellt!'
+    CCinfo:
+      Headline: '&e=====&5[&fCustomChannel &6%channel%&5]&e====='
+      Creator: '&eChannel Ersteller: &f%creator%'
+      Members: '&eChannel Mitglieder: &f%members%'
+      Password: '&eChannel Passwort: &f%password%'
+      Banned: '&eChannel Gebannte Spieler: &f%banned%'
+    CCJoin:
+      UnknowChannel: '&cEs gibt keinen CustomChannel mit dem Namen &f%name%&c!'
+      ChannelHasPassword: '&cDer CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!'
+      PasswordIncorrect: '&cDas angegebene Passwort ist nicht korrekt!'
+      ChannelHasNoPassword: '&cEs ist kein Passwort angegeben, du kannst so joinen!'
+      ChannelJoined: '&eDu bist dem CustomChannel &f%channel% &agejoint!'
+      AlreadyInAChannel: '&cDu bist schon in einem anderen Channel gejoint, verlasse erst diesen!'
+      Banned: '&cDu bist in diesem CustomChannel gebannt und darfst nicht joinen!'
+    CCKick:
+      YouWereKicked: '&cDu wurdest aus dem CustomChannel gekickt!'
+      YouKicked: '&eDu hast &f%player% &eaus dem Channel gekickt!'
+      CreatorKickedSomeone: '&eDer Spieler &f%player% &ewurde aus dem Channel gekickt!'
+      CreatorCannotSelfKick: '&cDu als Ersteller kannst dich nicht kicken!'
+    CCLeave:
+      YouLeft: '&eDu hast den CustomChannel &f%channel% &everlassen!'
+      NewCreator: '&eDu wurdest der neue Erstelle der CustomChannels &f%channel%'
+    CCUnban:
+      PlayerNotBanned: '&cDer Spieler ist nicht auf der Bannliste!'
+      YouUnbanPlayer: '&eDu hast &f%player% &efür den CustomChannel entbannt!'
+      CreatorUnbanPlayer: '&eDer Spieler &f%player% &ewurde für den CustomChannel entbannt.'
   CMDClickChat:
     msg01: '&eKlicke hier um die %number%.te Antwortmöglichkeit zu nehmen!'
   CMDSCCEditor:
@@ -311,7 +313,7 @@ English:
       Team: '&aClick here to write in the team channel'
       Trade: '&9Click here to write in the trade channel'
       World: '&fClick here to write in the world channel'
-  join:
+  Join:
     Admin: '&6Admin'
     Auction: '&7Auction'
     Comma: '&b, '
@@ -326,8 +328,8 @@ English:
     Team: '&3Team'
     Trade: '&9Trade'
     World: '&fWorld'
-  prefixsuffixamount: '20'
-  prefix:
+  Prefixsuffixamount: '20'
+  Prefix:
     '1': '&1Prefix_1'
     '2': '&2Prefix_2'
     '3': '&3Prefix_3'
@@ -338,7 +340,7 @@ English:
     '8': '&8Prefix_8'
     '9': '&9Prefix_9'
     '10': '&aPrefix_10'
-  suffix:
+  Suffix:
     '1': '&1Suffix_1'
     '2': '&2Suffix_2'
     '3': '&3Suffix_3'
@@ -349,7 +351,7 @@ English:
     '8': '&8Suffix_8'
     '9': '&9Suffix_9'
     '10': '&aSuffix_10'
-  EVENT_Chat:
+  EVENTChat:
     msg01: '&7You have turned off this channel. &7Please turn it on again with &c/scc <channel> &7.'
     msg02: '&cThis player is not online!'
     msg03: '&cThe player ignores you!'
@@ -361,17 +363,17 @@ English:
     msg09: '&cWarning, the prefixes or suffixes may &Cnot contain spaces!'
     msg10: '&cThe channels Local and World are &cblocked by the config! &cUnlock by /scc spigot'
     msg11: '&cYou are not in a custom channel!'
-  EVENT_JoinLeave:
+  EVENTJoinLeave:
     msg01: '&6Welcome back &f%player% &6on our server &b[Please insert servername]'
     msg02: '&f%player% &6has entered the server!'
     msg03: '&f%player% &4has left the server!'
     msg04: '&cYou currently have no right to chat!'
-  CMD_SCCB:
+  CmdScc:
     msg01: '&cYour input is incorrect, click &chere on the text to &cget more information!'
     msg02: '&cYou have no rights for this!'
     msg03: '&cThe player is not online or does not exist!'
     msg04: '&cThe argument %arg% must be an integer.'
-    info:
+    Info:
       msg01: '&e/scc &e<global/trade/local/auction/support/team/admin/world/custom/pm/group/spy/join> &f| To turn on & off the Channels.'
       msg02: '&e/scc mute <Player> [minutes] &f| To remove the >Can_Writte-Right<'
       msg03: '&e/scc unmute <Player> &f| To lift the mute.'
@@ -391,76 +393,78 @@ English:
       msg17: '&e/scc channelunban <Player> &f| Unbans a player from a custom channel.'
       msg18: '&e/scc changepassword <Password> &f| Changes the password from a CustomChannel.'
       msg19: '&e/scc channelinfo &f| Shows all info from the Customchannel.'
-    channel:
+    Channel:
       msg07: '&7You have the channel% channel% &causgeblendet!'
       msg08: '&7You have the channel% channel% &adisplayed'
-    mute:
+    Mute:
       msg01: '&7You have been permanently muted &7!'
       msg02: '&7You were for &c%time% muted&7!'
       msg03: '&7You were demuted!'
-    ignore:
+    Ignore:
       msg01: '&cThe player %player% is ignored by you!'
       msg02: '&7You have removed the player %player% from your ignore list!'
       msg03: '&7Your Ignorelist: %il%'
-    wordfilter:
+    Wordfilter:
       msg01: '&7The word is already on the word filter list!'
       msg02: '&7Word %word% has been added to the word filter!'
       msg03: '&7The word is not on the word filter list!'
       msg04: '&7The word %word% has been removed from the word filter!' 
-    broadcast:
+    Broadcast:
       msg20: '&7[&cBroadcast&7] %msg%'
-    reload:
+    Reload:
       msg01: '&aYaml file was reloaded.'
       msg02: '&cError found by reloading the files! See console!'
-    serverlistener:
+    Serverlistener:
       msg01: '&7BungeeCord for SCC has been deactivated!'
       msg02: '&7BungeeCord for SCC was activated!'
-    playerlist:
+    Playerlist:
       msg01: '&7=====&eMsg PlayerList&7====='
       msg02: '&cNo player fits the &cdescription.'
-    grouplist:
+    Grouplist:
       msg01: '&7=====&eChannel GroupList&7====='
       msg02: '&cNo prefix or suffix fits on the &cdescription.'
-    channelcreate:
-      msg01: '&cYou are already on the channel &f%channel%&c! To open a new channel, you first have to close the previous one.'
-      msg02: '&eYou have created the custom channel &f%channel%&e!'
-      msg03: '&eYou have created the custom channel &f%channel% &ewith the password &f%password%&e!'
-    channelinfo:
-      msg01: '&e=====&5[&fCustomChannel &6%channel%&5]&e====='
-      msg02: '&eChannel Creator: &f%creator%'
-      msg03: '&eChannel Members: &f%members%'
-      msg04: '&eChannel Password: &f%password%'
-      msg05: '&eChannel Banned Players: &f%banned%'
-    joinchannel:
-      msg01: '&cThere is no CustomChannel with the name &f%name%&c!'
-      msg02: '&cThe CustomChannel has a password, please enter it when you join!'
-      msg03: '&cThe specified password is incorrect!'
-      msg04: '&cNo password is given, so you can join!'
-      msg05: '&eYou have joined the CustomChannel &f%channel%!'
-      msg06: '&cYou have already joined another channel, leave it first!'
-      msg07: '&cYou are banned in this CustomChannel and may not join!'
-    leavechannel:
-      msg01: '&cYou are not in a custom channel!'
-      msg02: '&eYou have left the CustomChannel &f%channel%!'
-      msg03: '&eYou became the new creation of CustomChannels &f%channel%'
-    kickchannel:
-      msg01: '&cYou are not the creator of the CustomChannel!'
-      msg02: '&cThe specified player is not a member of CustomChannel!'
-      msg03: '&cYou were kicked out of the Custom Channel!'
-      msg04: '&eYou kicked &f%player% &efrom the channel!'
-      msg05: '&ePlayer &f%player% &ewas kicked out of the channel!'
-      msg06: '&cYou as the creator cannot kick yourself!'
-    banchannel:
-      msg01: '&cThe player is already on the ban list!'
-      msg02: '&eYou have banned the player &f%player% &efrom the Custom Channel.'
-      msg03: '&cYou were banned from CustomChannel %channel%!'
-      msg04: '&cYou, as the creator, cannot ban yourself!'
-    unbanchannel:
-      msg01: '&cThe player is not on the ban list!'
-      msg02: '&eYou have unbanned &f%player% &efor the Custom Channel!'
-      msg03: '&eThe player &f%player% &ewas unbanned for the Custom Channel.'
-    changepassword:
-      msg01: '&eYou changed the password to &f%password%&e!'
+    CustomChannelGeneral:
+      NotInAChannel: '&cYou are not in a custom channel!'
+      NotTheCreator: '&cYou are not the creator of the CustomChannel!'
+      NotChannelMember: '&cThe specified player is not a member of CustomChannel!'
+    CCBan:
+      AlreadyBanned: '&cThe player is already on the ban list!'
+      YouHasBanned: '&eYou have banned the player &f%player% &efrom the Custom Channel.'
+      YourWereBanned: '&cYou were banned from CustomChannel %channel%!'
+      CreatorCannotSelfBan: '&cYou, as the creator, cannot ban yourself!'
+      CreatorHasBanned: '&eThe player &f%player% &ehas been banned from the CustomChannel.'
+    CCChangepassword:
+      PasswordChange: '&eYou changed the password to &f%password%&e!'
+    CCCreate:
+      AlreadyInAChannel: '&cYou are already on the channel &f%channel%&c! To open a new channel, you first have to close the previous one.'
+      ChannelCreateWithoutPassword: '&eYou have created the custom channel &f%channel%&e!'
+      ChannelCreateWithPassword: '&eYou have created the custom channel &f%channel% &ewith the password &f%password%&e!'
+    CCInfo:
+      Headline: '&e=====&5[&fCustomChannel &6%channel%&5]&e====='
+      Creator: '&eChannel Creator: &f%creator%'
+      Members: '&eChannel Members: &f%members%'
+      Password: '&eChannel Password: &f%password%'
+      Banned: '&eChannel Banned Players: &f%banned%'
+    CCJoin:
+      UnknowChannel: '&cThere is no CustomChannel with the name &f%name%&c!'
+      ChannelHasPassword: '&cThe CustomChannel has a password, please enter it when you join!'
+      PasswordIncorrect: '&cThe specified password is incorrect!'
+      ChannelHasNoPassword: '&cNo password is given, so you can join!'
+      ChannelJoined: '&eYou have joined the CustomChannel &f%channel%!'
+      AlreadyInAChannel: '&cYou have already joined another channel, leave it first!'
+      Banned: '&cYou are banned in this CustomChannel and may not join!'
+    CCKick:
+      YouWereKicked: '&cYou were kicked out of the Custom Channel!'
+      YouKicked: '&eYou kicked &f%player% &efrom the channel!'
+      CreatorKickedSomeone: '&ePlayer &f%player% &ewas kicked out of the channel!'
+      CreatorCannotSelfKick: '&cYou as the creator cannot kick yourself!'
+    CCLeave:
+      YouLeft: '&eYou have left the CustomChannel &f%channel%!'
+      NewCreator: '&eYou became the new creation of CustomChannels &f%channel%'
+    CCUnban:
+      PlayerNotBanned: '&cThe player is not on the ban list!'
+      YouUnbanPlayer: '&eYou have unbanned &f%player% &efor the Custom Channel!'
+      CreatorUnbanPlayer: '&eThe player &f%player% &ewas unbanned for the Custom Channel.'
   CMD_ClickChat:
     msg01: '&eClick here too choose the %number% answer!'
   CMD_SCCEditor:

@@ -20,8 +20,7 @@ public class ARGCustomChannelJoin extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMDSCC.";
+		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
 		String name = null;
 		String password = null;
 		if(args.length==2)
@@ -40,49 +39,56 @@ public class ARGCustomChannelJoin extends CommandModule
 		CustomChannel oldcc = CustomChannel.getCustomChannel(player);
 		if(oldcc!=null)
 		{
+			///Du bist schon in einem anderen Channel gejoint, verlasse erst diesen!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg06")));
+					plugin.getYamlHandler().getL().getString(language+"CCJoin.AlreadyInAChannel")));
 			return;
 		}
 		if(cc==null)
 		{
+			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg01")
+					plugin.getYamlHandler().getL().getString(language+"CCJoin.UnknowChannel")
 					.replace("%name%", name)));
 			return;
 		}
 		if(cc.getBanned().contains(player))
 		{
+			///Du bist in diesem CustomChannel gebannt und darfst nicht joinen!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg07")));
+					plugin.getYamlHandler().getL().getString(language+"CCJoin.Banned")));
 			return;
 		}
 		if(password==null)
 		{
 			if(cc.getPassword()!=null)
 			{
+				///Der CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg02")));
+						plugin.getYamlHandler().getL().getString(language+"CCJoin.ChannelHasPassword")));
 				return;
 			}
 		} else
 		{
 			if(cc.getPassword()==null)
 			{
+				///Es ist kein Passwort angegeben, du kannst so joinen!
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg04")));
+						plugin.getYamlHandler().getL().getString(language+"CCJoin.ChannelHasNoPassword")));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
+				///Das angegebene Passwort ist nicht korrekt!
 				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg03")));
+						plugin.getYamlHandler().getL().getString(language+"CCJoin.PasswordIncorrect")));
 				return;
 			}
 		}
 		cc.addMembers(player);
+		///Du bist dem CustomChannel &f%channel% &agejoint!
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg05")
+				plugin.getYamlHandler().getL().getString(language+"CCJoin.ChannelJoined")
 				.replace("%channel%", cc.getName())));
 		return;
 	}

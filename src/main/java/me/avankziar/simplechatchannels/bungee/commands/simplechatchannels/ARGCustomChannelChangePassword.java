@@ -25,20 +25,23 @@ public class ARGCustomChannelChangePassword extends CommandModule
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
+			///Du bist in keinem CustomChannel!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"CustomChannelGeneral.NotInAChannel")));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
+			///Du bist nicht der Ersteller des CustomChannel!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"CustomChannelGeneral.NotTheCreator")));
 			return;
 		}
 		cc.setPassword(args[1]);
+		///Du hast das Passwort zu &f%password% &egeändert!
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelChangepassword.msg01")
+				plugin.getYamlHandler().getL().getString(language+scc+"CCChangepassword.PasswordChange")
 				.replace("%password%", args[1])));
 		return;
 	}

@@ -20,52 +20,59 @@ public class ARGCustomChannelBan extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMDSCC.";
+		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
+			///Du bist in keinem CustomChannel!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
+					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotInAChannel")));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
+			///Du bist nicht der Ersteller des CustomChannel!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg01")));
+					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotTheCreator")));
 			return;
 		}
 		if(plugin.getProxy().getPlayer(args[1])!=null)
 		{
+			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelKick.msg02")));
+					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotChannelMember")));
 			return;
 		}
 		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]);
 		if(target.getName().equals(player.getName()))
 		{
+			///Du als Ersteller kannst dich nicht selber bannen!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg04")));
+					plugin.getYamlHandler().getL().getString(language+"CCBan.CreatorCannotSelfBan")));
 			return;
 		}
 		if(cc.getBanned().contains(target))
 		{
+			//Der Spieler ist schon auf der Bannliste!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg01")));
+					plugin.getYamlHandler().getL().getString(language+"CCBan.AlreadyBanned")));
 			return;
 		}
 		cc.addBanned(target);
+		///Du hast den Spieler &f%player% &eaus dem CustomChannel gebannt.
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg02")
+				plugin.getYamlHandler().getL().getString(language+"CCBan.YouHasBanned")
 				.replace("%player%", args[1])));
+		///Du wurdest vom CustomChannel %channel% gebannt!
 		target.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg03")
+				plugin.getYamlHandler().getL().getString(language+"CCBan.YourWereBanned")
 				.replace("%channel%", cc.getName())));
 		for(ProxiedPlayer members : cc.getMembers())
 		{
+			///Der Spieler &f%player% &ewurde aus dem CustomChannel verbannt.
 			members.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelBan.msg04")
+					plugin.getYamlHandler().getL().getString(language+"CCBan.CreatorHasBanned")
 					.replace("%player%", args[1])));
 		}
 		return;

@@ -25,28 +25,33 @@ public class ARGCustomChannelInfo extends CommandModule
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
+			///Du bist in keinem CustomChannel!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelLeave.msg01")));
+					plugin.getYamlHandler().getL().getString(language+scc+"CustomChannelGeneral.NotInAChannel")));
 			return;
 		}
+		///&e=====&5[&fCustomChannel &6%channel%&5]&e=====
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg01")
+				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Headline")
 				.replace("%channel%", cc.getName())));
+		///Channel Ersteller: &f%creator%
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg02")
+				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Creator")
 				.replace("%creator%", cc.getCreator().getName())));
+		///Channel Mitglieder: &f%members%
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg03")
+				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Members")
 				.replace("%members%", cc.getMembers().toString())));
 		if(cc.getPassword()!=null)
 		{
+			///Channel Passwort: &f%password%
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg04")
+					plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Password")
 					.replace("%password%", cc.getPassword())));
 		}
-		
+		///Channel Gebannte Spieler: &f%banned%
 		player.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelInfo.msg05")
+				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Banned")
 				.replace("%banned%", cc.getBanned().toString())));
 		return;
 	}
