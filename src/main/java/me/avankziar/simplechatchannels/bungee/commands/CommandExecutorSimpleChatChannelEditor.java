@@ -8,7 +8,7 @@ import net.md_5.bungee.api.plugin.Command;
 public class CommandExecutorSimpleChatChannelEditor extends Command
 {
 	private SimpleChatChannels plugin;
-	private String scc = ".CMDSCCEditor.";
+	private String scc = ".CmdSccEditor.";
 	
 	public CommandExecutorSimpleChatChannelEditor(SimpleChatChannels plugin)
 	{
@@ -27,7 +27,7 @@ public class CommandExecutorSimpleChatChannelEditor extends Command
     	String language = plugin.getUtility().getLanguage();
     	if(!player.hasPermission("scc.cmd.editor"))
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".CMDSCC.msg02")));
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".CmdScc.NoPermission")));
 			return;
 		}
     	if(args.length == 0)
@@ -36,14 +36,14 @@ public class CommandExecutorSimpleChatChannelEditor extends Command
     		{
     			plugin.editorplayers.remove(player.getName());
     			player.sendMessage(plugin.getUtility().tcl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    					plugin.getYamlHandler().getL().getString(language+scc+"Out")));
     			String message = "editor"+µ+player.getName()+µ+"remove";
     			plugin.getUtility().sendSpigotMessage("simplechatchannels:sccbungee", message);
     		} else
     		{
     			plugin.editorplayers.add(player.getName());
     			player.sendMessage(plugin.getUtility().tcl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"msg01")));
+    					plugin.getYamlHandler().getL().getString(language+scc+"In")));
     			String message = "editor"+µ+player.getName()+µ+"add";
     			plugin.getUtility().sendSpigotMessage("simplechatchannels:sccbungee", message);
     		}

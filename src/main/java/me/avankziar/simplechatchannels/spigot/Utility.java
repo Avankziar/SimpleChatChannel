@@ -131,14 +131,19 @@ public class Utility
 		return new TextComponent(s);
 	}
 	
-	public TextComponent tcl(String s)
+	public TextComponent tctl(String s)
 	{
 		return new TextComponent(ChatColor.translateAlternateColorCodes('&', s));
 	}
 	
+	public TextComponent tctlYaml(String path)
+	{
+		return new TextComponent(ChatColor.translateAlternateColorCodes('&', plugin.getYamlHandler().getL().getString(path)));
+	}
+	
 	public TextComponent TextWithExtra(String s, List<BaseComponent> list)
 	{
-		TextComponent tc = tcl(s);
+		TextComponent tc = tctl(s);
 		tc.setExtra(list);
 		return tc;
 	}

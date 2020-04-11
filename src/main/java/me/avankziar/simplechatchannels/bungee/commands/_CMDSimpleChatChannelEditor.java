@@ -5,12 +5,12 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class CMDSimpleChatChannelEditor extends Command
+public class _CMDSimpleChatChannelEditor extends Command
 {
 	private SimpleChatChannels plugin;
 	private String scc = ".CMD_SCCEditor.";
 	
-	public CMDSimpleChatChannelEditor(SimpleChatChannels plugin)
+	public _CMDSimpleChatChannelEditor(SimpleChatChannels plugin)
 	{
         super("scceditor",null,"simplechatchanneleditor");
         this.plugin = plugin;

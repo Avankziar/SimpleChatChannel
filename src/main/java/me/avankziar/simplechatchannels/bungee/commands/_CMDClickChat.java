@@ -10,11 +10,11 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class CMDClickChat extends Command
+public class _CMDClickChat extends Command
 {
 	private SimpleChatChannels plugin;
 	
-	public CMDClickChat(SimpleChatChannels plugin)
+	public _CMDClickChat(SimpleChatChannels plugin)
 	{
 		super("clch","scc.cmd.clickchat","clickchat");
 		this.plugin = plugin;

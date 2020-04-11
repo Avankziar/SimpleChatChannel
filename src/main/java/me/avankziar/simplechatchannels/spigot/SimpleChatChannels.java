@@ -11,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
 import main.java.de.avankziar.punisher.main.Punisher;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannelEditor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
@@ -37,13 +37,13 @@ public class SimpleChatChannels extends JavaPlugin
 	private Punisher punisher;
 	private AfkRecord afkrecord;
 	public static ArrayList<String> editorplayers;
-	public static HashMap<String, CommandModule> arguments;
+	public static HashMap<String, CommandModule> sccarguments;
 	
 	public void onEnable()
 	{
 		log = getLogger();
 		editorplayers = new ArrayList<>();
-		arguments = new HashMap<String, CommandModule>();
+		sccarguments = new HashMap<String, CommandModule>();
 		yamlHandler = new YamlHandler(this);
 		backgroundtask = new BackgroundTask(this);
 		commandHelper = new CommandHelper(this);

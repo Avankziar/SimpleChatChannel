@@ -10,7 +10,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 public class CMDSimpleChatChannelEditor implements CommandExecutor 
 {
 	private SimpleChatChannels plugin;
-	private String scc = ".CMD_SCCEditor.";
+	private String scc = ".CmdSccEditor.";
 	
 	public CMDSimpleChatChannelEditor(SimpleChatChannels plugin)
 	{
@@ -28,7 +28,7 @@ public class CMDSimpleChatChannelEditor implements CommandExecutor
     	String language = plugin.getYamlHandler().get().getString("language");
     	if(!player.hasPermission("scc.cmd.editor"))
 		{
-			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".CmdScc.NoPermission")));
 			return false;
 		}
     	if(args.length == 0)

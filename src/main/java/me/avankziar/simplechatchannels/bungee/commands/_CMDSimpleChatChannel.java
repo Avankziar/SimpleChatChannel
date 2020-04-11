@@ -13,12 +13,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-public class CMDSimpleChatChannel extends Command
+public class _CMDSimpleChatChannel extends Command
 {
 	private SimpleChatChannels plugin;
 	private String scc = ".CMD_SCC.";
 	
-	public CMDSimpleChatChannel(SimpleChatChannels plugin)
+	public _CMDSimpleChatChannel(SimpleChatChannels plugin)
 	{
         super("scc",null,"simplechatchannel");
         this.plugin = plugin;

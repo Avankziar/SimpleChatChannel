@@ -1,9 +1,10 @@
-package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
+package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 
 public class ARGChannelGlobal extends CommandModule
 {
@@ -19,7 +20,7 @@ public class ARGChannelGlobal extends CommandModule
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		Player player = (Player) sender;
 		String language = plugin.getUtility().getLanguage();
 		plugin.getCommandHelper().channeltoggle(player, args, language, "global", "Global");
 		return;

@@ -154,7 +154,7 @@ German:
       msg18: '&e/scc ccchangepassword <Password> &f| Ändert das Passwort von einem CustomChannel.'
       msg19: '&e/scc ccinfo &f| Zeigt alle Infos zum Customchannel an.'
     Broadcast:
-      Prefix: '&7[&cBroadcast&7] '
+      Prefix: '&7[&cBroadcast&7] &c'
     Channel:
       Off: '&7Du hast den Channel %channel% &causgeblendet!'
       On: '&7Du hast den Channel %channel% &aeingeblendet!'
@@ -215,19 +215,19 @@ German:
       Headline: '&7=====&eMsg SpielerListe&7====='
       WrongInput: '&cEs passt kein Spieler auf die &cBeschreibung.'
     Reload:
-      msg01: '&aYaml Datein wurden neugeladen.'
-      msg02: '&cEs wurde ein Fehler gefunden! Siehe Konsole!'
+      Success: '&aYaml Datein wurden neugeladen.'
+      Error: '&cEs wurde ein Fehler gefunden! Siehe Konsole!'
     ServerListener:
-      msg01: '&7BungeeCord fuer SCC wurde &7deaktiviert!'
-      msg02: '&7BungeeCord fuer SCC wurde &7aktiviert!'
+      BungeeOff: '&7BungeeCord für SCC wurde &7deaktiviert!'
+      BungeeOn: '&7BungeeCord für SCC wurde &7aktiviert!'
     Wordfilter:
       Added: '&7Das Word %word% wurde dem Wortfilter hinzugefügt!'
       Removed: '&7Das Word %word% wurde aus dem Wortfilter entfernt!'
   CmdClickChat:
     ClickAnswer: '&eKlicke hier um die %number%.te Antwortmöglichkeit zu nehmen!'
   CmdSccEditor:
-    msg01: '&eDu bist nun im Editorbereich. &cAlle Chateingaben sind deaktiviert!'
-    msg02: '&eDu verlässt den Editorbereich. &aAlle Chateingaben sind aktiviert!'
+    In: '&eDu bist nun im Editorbereich. &cAlle Chateingaben sind deaktiviert!'
+    Out: '&eDu verlässt den Editorbereich. &aAlle Chateingaben sind aktiviert!'
   SpigotBungee:
     msg01: '&7Es ist keiner da, der dich hoert!'
   Punisher:
@@ -390,7 +390,7 @@ English:
       msg18: '&e/scc changepassword <Password> &f| Changes the password from a CustomChannel.'
       msg19: '&e/scc channelinfo &f| Shows all info from the Customchannel.'
     Broadcast:
-      Prefix: '&7[&cBroadcast&7] %msg%'
+      Prefix: '&7[&cBroadcast&7] &c'
     Channel:
       Off: '&7You have the channel% channel% &chidden!'
       On: '&7You have the channel% channel% &adisplayed!'
@@ -454,8 +454,8 @@ English:
       msg01: '&aYaml file was reloaded.'
       msg02: '&cError found by reloading the files! See console!'
     Serverlistener:
-      msg01: '&7BungeeCord for SCC has been deactivated!'
-      msg02: '&7BungeeCord for SCC was activated!'
+      BungeeOff: '&7BungeeCord for SCC has been deactivated!'
+      BungeeOn: '&7BungeeCord for SCC was activated!'
     Wordfilter:
       Added: '&7Word %word% has been added to the word filter!'
       Removed: '&7The word %word% has been removed from the word filter!' 
