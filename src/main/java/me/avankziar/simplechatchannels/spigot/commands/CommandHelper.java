@@ -10,12 +10,12 @@ import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class CommandHandler
+public class CommandHelper
 {
 	private SimpleChatChannels plugin;
 	private String scc = ".CMD_SCC.";
 	
-	public CommandHandler(SimpleChatChannels plugin)
+	public CommandHelper(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 	}

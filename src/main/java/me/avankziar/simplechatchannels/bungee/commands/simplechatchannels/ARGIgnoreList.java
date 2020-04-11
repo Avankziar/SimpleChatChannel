@@ -19,8 +19,7 @@ public class ARGIgnoreList extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
 		if(plugin.getUtility().rightArgs(player,args,1))
 		{
 			return;
@@ -30,7 +29,7 @@ public class ARGIgnoreList extends CommandModule
 		{
 			list = "None";
 		}
-		player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg03")
+		player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"Ignore.List")
 				.replace("%il%", list)));
 		return;
 	}

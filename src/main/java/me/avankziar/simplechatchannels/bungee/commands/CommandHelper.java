@@ -141,10 +141,6 @@ public class CommandHelper
 	
 	public void channeltoggle(ProxiedPlayer player, String[] args, String language, String channel, String replacer)
 	{
-		if(plugin.getUtility().rightArgs(player,args,1))
-		{
-			return;
-		}
 		if((boolean) plugin.getMysqlHandler().getDataI(player, "channel_"+channel, "player_uuid"))
 		{
 			///Du hast den Channel %channel% &causgeblendet!
@@ -164,24 +160,17 @@ public class CommandHelper
 	public void optiontoggle(ProxiedPlayer player, String[] args, String language, String optionperm,
 			String option, String replacer)
 	{
-		if(!player.hasPermission("scc.option."+optionperm))
-		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-			return;
-		}
-		if(plugin.getUtility().rightArgs(player,args,1))
-		{
-			return;
-		}
 		if(((boolean) plugin.getMysqlHandler().getDataI(player, option, "player_uuid")))
 		{
 			plugin.getMysqlHandler().updateDataI(player, false, option);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg01")
+			///Du hast den Channel %channel% &causgeblendet!
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.Off")
 					.replace("%channel%", replacer)));
 		} else
 		{
 			plugin.getMysqlHandler().updateDataI(player, true, option);
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.msg02")
+			///Du hast den Channel %channel% &aeingeblendet!
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.On")
 					.replace("%channel%", replacer)));
 		}
 	}

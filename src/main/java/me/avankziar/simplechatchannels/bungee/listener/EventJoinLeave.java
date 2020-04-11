@@ -32,11 +32,12 @@ public class EventJoinLeave implements Listener
 		if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 		{
 			player.sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
+			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
 			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(
-					language+".EVENT_JoinLeave.msg01").replace("%player%", pn)));
+					language+".EventJoinLeave.Welcome").replace("%player%", pn)));
 		}
 		plugin.getMysqlHandler().updateDataII(player, player.getName(), "ignore_name", "ignore_uuid");
-		Boolean globaljoin = plugin.getYamlHandler().get().getString("showjoinmessageglobal").equals("true");
+		Boolean globaljoin = plugin.getYamlHandler().get().getString("ShowjoinmessageGlobal").equals("true");
 		if(globaljoin==false)
 		{
 			return;
@@ -47,13 +48,14 @@ public class EventJoinLeave implements Listener
 			{
 				if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 				{
+					///%player% &6hat den Server betreten!
 					TextComponent msg = plugin.getUtility().tcl(
-							plugin.getYamlHandler().getL().getString(language+".EVENT_JoinLeave.msg02")
+							plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.PlayerEnter")
 							.replace("%player%", pn));
 					msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" "));
 					msg.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
 							, new ComponentBuilder(plugin.getUtility().tl(
-									plugin.getYamlHandler().getL().getString(language+".channelextra.hover.message")
+									plugin.getYamlHandler().getL().getString(language+".ChannelExtra.Hover.Message")
 									.replace("%player%", player.getName()))).create()));
 					all.sendMessage(msg);
 				}
@@ -66,9 +68,9 @@ public class EventJoinLeave implements Listener
 	public void onLeave(PlayerDisconnectEvent event)
 	{
 		ProxiedPlayer player = event.getPlayer();
-		String language = plugin.getYamlHandler().get().getString("language");
+		String language = plugin.getUtility().getLanguage();
 		String pn = player.getName();
-		String scc = ".CMD_SCC.";
+		String scc = ".CmdScc.";
 		if(plugin.editorplayers.contains(player.getName()))
 		{
 			plugin.editorplayers.remove(player.getName());
@@ -91,8 +93,9 @@ public class EventJoinLeave implements Listener
     				}
     			}
     			cc.setCreator(newcreator);
+    			///Du wurdest der neue Ersteller der CustomChannels %channel%
     			newcreator.sendMessage(plugin.getUtility().tcl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
+    					plugin.getYamlHandler().getL().getString(language+scc+"CCLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			}
 		}
@@ -100,7 +103,7 @@ public class EventJoinLeave implements Listener
 		{
 			plugin.getMysqlHandler().createAccount(player);
 		}
-		Boolean globalleave = plugin.getYamlHandler().get().getString("showleavemessageglobal").equals("true");
+		Boolean globalleave = plugin.getYamlHandler().get().getBoolean("ShowleavemessageGlobal", false);
 		if(globalleave==false)
 		{
 			return;
@@ -109,8 +112,9 @@ public class EventJoinLeave implements Listener
 		{
 			if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 			{
+				///%player% &4hat den Server verlassen!
 				String msg = plugin.getYamlHandler().getL().getString(
-						language+".EVENT_JoinLeave.msg03").replace("%player%", pn);
+						language+".EventJoinLeave.PlayerQuit").replace("%player%", pn);
 				all.sendMessage(plugin.getUtility().tcl(msg));
 			}
 		}

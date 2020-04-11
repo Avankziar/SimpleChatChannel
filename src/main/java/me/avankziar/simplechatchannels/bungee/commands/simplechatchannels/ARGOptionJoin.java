@@ -12,7 +12,7 @@ public class ARGOptionJoin extends CommandModule
 	public ARGOptionJoin(SimpleChatChannels plugin)
 	{
 		super("join",
-				"scc.option.spy", SimpleChatChannels.sccarguments,1,1,"joinmessage","eintrittsnachricht");
+				"scc.option.join", SimpleChatChannels.sccarguments,1,1,"joinmessage","eintrittsnachricht");
 		this.plugin = plugin;
 	}
 

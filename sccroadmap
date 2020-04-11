@@ -5,7 +5,7 @@
 
 Build 33
 - +Ignorelist und Ignore gefixt
-- +BypassPerm für Admins der Ignore | scc.cmd.ignorebypass
+- +BypassPerm für Admins der Ignore | scc.channels.bypass.ignore
 - +Änderungen in der language.yml bei Chatsplit
 - +ignore_name aktualisierungsmethode einfügen
 - Namen von configs & language neu benennen nach der neuen Konform

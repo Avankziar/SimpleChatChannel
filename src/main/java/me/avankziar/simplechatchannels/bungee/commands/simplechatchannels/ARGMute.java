@@ -20,12 +20,12 @@ public class ARGMute extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
+
 		String target = args[1];
 		if(ProxyServer.getInstance().getPlayer(target)== null)
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
 			return;
 		}
 		ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
@@ -33,7 +33,7 @@ public class ARGMute extends CommandModule
 		{
 			plugin.getMysqlHandler().updateDataI(player, false, "can_chat");
 			plugin.getMysqlHandler().updateDataI(player, 0L, "mutetime");
-			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg01")));
+			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"Mute.PermaMute")));
 		} else if(args.length == 3)
 		{
 			int num = 0;
@@ -42,7 +42,7 @@ public class ARGMute extends CommandModule
 				  num = Integer.parseInt(args[2]);
 			} catch (NumberFormatException e) 
 			{
-				  player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg04")
+				  player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"NoNumber")
 						  .replace("%arg%", args[2])));
 				  return;
 			}
@@ -50,7 +50,7 @@ public class ARGMute extends CommandModule
 			Long mutetime = System.currentTimeMillis()+num*time;
 			plugin.getMysqlHandler().updateDataI(player, false, "can_chat");
 			plugin.getMysqlHandler().updateDataI(player, mutetime, "mutetime");
-			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg02")
+			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"Mute.TempMute")
 					.replace("%time%", args[2])));
 		} else if(plugin.getUtility().rightArgs(player,args,3))
 		{

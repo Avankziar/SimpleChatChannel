@@ -21,18 +21,7 @@ public class ARGWordfilter extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
-		if(!player.hasPermission("scc.cmd.wordfilter"))
-		{
-			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
-			return;
-		}
-		if(plugin.getUtility().rightArgs(player,args,3))
-		{
-			return;
-		}
+		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
 		List<String> wordfilter= plugin.getYamlHandler().get().getStringList("wordfilter");
 		String word = args[2];
 		if(wordfilter.contains(word))
@@ -40,16 +29,18 @@ public class ARGWordfilter extends CommandModule
 			wordfilter.remove(word);
 			plugin.getYamlHandler().get().set("wordfilter", wordfilter);
 			plugin.getYamlHandler().saveConfig();
+			///Das Word %word% wurde aus dem Wortfilter entfernt!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg04")
+					plugin.getYamlHandler().getL().getString(language+"Wordfilter.Removed")
 					.replace("%word%", word)));
 		} else
 		{
 			wordfilter.add(word);
 			plugin.getYamlHandler().get().set("wordfilter", wordfilter);
 			plugin.getYamlHandler().saveConfig();
+			///Das Word %word% wurde dem Wortfilter hinzugefügt!
 			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg02")
+					plugin.getYamlHandler().getL().getString(language+"Wordfilter.Added")
 					.replace("%word%", word)));
 		}
 		return;

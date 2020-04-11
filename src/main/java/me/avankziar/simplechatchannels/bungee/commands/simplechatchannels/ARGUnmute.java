@@ -20,18 +20,17 @@ public class ARGUnmute extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
-		String scc = ".CMD_SCC.";
+		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
 		String target = args[1];
 		if(ProxyServer.getInstance().getPlayer(target)== null)
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
+			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
 			return;
 		}
 		ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
 		plugin.getMysqlHandler().updateDataI(player, true, "can_chat");
 		plugin.getMysqlHandler().updateDataI(player, 0L, "mutetime");
-		t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg03")));
+		t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"Mute.Unmute")));
 		return;
 	}
 }

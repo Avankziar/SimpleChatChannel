@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.spigot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -10,12 +11,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
 import main.java.de.avankziar.punisher.main.Punisher;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannelEditor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandHelper;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.TABCompleter;
-import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlInterface;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.spigot.database.YamlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.listener.EVENTChat;
@@ -27,27 +29,29 @@ public class SimpleChatChannels extends JavaPlugin
 	public static Logger log;
 	public static String pluginName = "SimpleChatChannels";
 	private static YamlHandler yamlHandler;
-	private static MysqlSetup databaseHandler;
-	private static MysqlInterface mysqlinterface;
+	private static MysqlSetup mysqlSetup;
+	private static MysqlHandler mysqlHandler;
 	private static BackgroundTask backgroundtask;
-	private static CommandHandler commandHandler;
+	private static CommandHelper commandHelper;
 	private static Utility utility;
 	private Punisher punisher;
 	private AfkRecord afkrecord;
 	public static ArrayList<String> editorplayers;
+	public static HashMap<String, CommandModule> arguments;
 	
 	public void onEnable()
 	{
 		log = getLogger();
 		editorplayers = new ArrayList<>();
+		arguments = new HashMap<String, CommandModule>();
 		yamlHandler = new YamlHandler(this);
 		backgroundtask = new BackgroundTask(this);
-		commandHandler = new CommandHandler(this);
+		commandHelper = new CommandHelper(this);
 		utility = new Utility(this);
-		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
+		if(yamlHandler.get().getBoolean("Mysql.Status", false))
 		{
-			mysqlinterface = new MysqlInterface(this);
-			databaseHandler = new MysqlSetup(this);
+			mysqlHandler = new MysqlHandler(this);
+			mysqlSetup = new MysqlSetup(this);
 		} else
 		{
 			log.severe("MySQL is not set in the Plugin "+pluginName+"!");
@@ -64,12 +68,12 @@ public class SimpleChatChannels extends JavaPlugin
 	{
 		Bukkit.getScheduler().cancelTasks(this);
 		HandlerList.unregisterAll(this);
-		if(yamlHandler.get().getString("mysql.status").equalsIgnoreCase("true"))
+		if(yamlHandler.get().getBoolean("Mysql.Status", false))
 		{
-			if (databaseHandler.getConnection() != null) 
+			if (mysqlSetup.getConnection() != null) 
 			{
 				//backgroundtask.onShutDownDataSave();
-				databaseHandler.closeConnection();
+				mysqlSetup.closeConnection();
 			}
 		}
 		
@@ -81,14 +85,14 @@ public class SimpleChatChannels extends JavaPlugin
 		return yamlHandler;
 	}
 	
-	public MysqlSetup getDatabaseHandler() 
+	public MysqlSetup getMysqlSetup() 
 	{
-		return databaseHandler;
+		return mysqlSetup;
 	}
 	
-	public MysqlInterface getMysqlInterface()
+	public MysqlHandler getMysqlHandler()
 	{
-		return mysqlinterface;
+		return mysqlHandler;
 	}
 	
 	public BackgroundTask getBackgroundTask()
@@ -96,9 +100,9 @@ public class SimpleChatChannels extends JavaPlugin
 		return backgroundtask;
 	}
 	
-	public CommandHandler getCommandHandler()
+	public CommandHelper getCommandHelper()
 	{
-		return commandHandler;
+		return commandHelper;
 	}
 	
 	public Utility getUtility()

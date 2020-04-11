@@ -9,24 +9,24 @@ import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
-public class MysqlInterface 
+public class MysqlHandler 
 {
 	private SimpleChatChannels plugin;
 	public String tableNameI;
 	public String tableNameII;
 	
-	public MysqlInterface(SimpleChatChannels plugin) 
+	public MysqlHandler(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
-		tableNameI = plugin.getYamlHandler().get().getString("mysql.tableNameI");
-		tableNameII = plugin.getYamlHandler().get().getString("mysql.tableNameII");
+		tableNameI = plugin.getYamlHandler().get().getString("Mysql.TableNameI");
+		tableNameII = plugin.getYamlHandler().get().getString("Mysql.TableNameII");
 	}
 	
 	public boolean hasAccount(Player player) 
 	{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -68,7 +68,7 @@ public class MysqlInterface
 	{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -122,7 +122,7 @@ public class MysqlInterface
 		Boolean pmn = player.hasPermission("scc.channels.pm");
 		Boolean custom = player.hasPermission("scc.channels.custom");
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) {
 			try 
 			{
@@ -180,7 +180,7 @@ public class MysqlInterface
 	public boolean createIgnore(Player player, Player ignore) 
 	{
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) {
 			try 
 			{
@@ -221,7 +221,7 @@ public class MysqlInterface
 			createAccount(player);
 		}
 		PreparedStatement preparedUpdateStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -253,7 +253,7 @@ public class MysqlInterface
 	public boolean updateDataII(Player player, Object object, String setcolumn, String wherecolumn) 
 	{
 		PreparedStatement preparedUpdateStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -290,7 +290,7 @@ public class MysqlInterface
 		}
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -336,7 +336,7 @@ public class MysqlInterface
 		}
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
 		{
 			try 
@@ -378,7 +378,7 @@ public class MysqlInterface
 	{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		String list = null;
 		if (conn != null) 
 		{
@@ -425,7 +425,7 @@ public class MysqlInterface
 	public void deleteDataI(Object object, String wherecolumn)
 	{
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		try 
 		{
 			String sql = "DELETE FROM `" + tableNameI + "` WHERE `" + wherecolumn + "` = ?";
@@ -451,7 +451,7 @@ public class MysqlInterface
 	public void deleteDataII(Object objectI, Object objectII, String wherecolumnI, String wherecolumnII)
 	{
 		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getDatabaseHandler().getConnection();
+		Connection conn = plugin.getMysqlSetup().getConnection();
 		try 
 		{
 			String sql = "DELETE FROM `" + tableNameII + "` WHERE `" + wherecolumnI + "` = ? AND `" + wherecolumnII + "` = ?";
