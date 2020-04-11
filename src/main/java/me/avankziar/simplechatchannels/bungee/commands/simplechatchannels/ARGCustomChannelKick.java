@@ -25,45 +25,40 @@ public class ARGCustomChannelKick extends CommandModule
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotInAChannel")));
+			player.sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotInAChannel"));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotTheCreator")));
+			player.sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotTheCreator"));
 			return;
 		}
 		if(plugin.getProxy().getPlayer(args[1])!=null)
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotChannelMember")));
+			player.sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotChannelMember"));
 			return;
 		}
 		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
 		if(target.getName().equals(creator.getName()))
 		{
 			///Du als Ersteller kannst dich nicht kicken!
-			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+"ChannelKick.CreatorCannotSelfKick")));
+			player.sendMessage(plugin.getUtility().tctlYaml(language+"ChannelKick.CreatorCannotSelfKick"));
 			return;
 		}
 		cc.removeMembers(target);
 		///Du wurdest aus dem CustomChannel gekickt!
-		target.sendMessage(plugin.getUtility().tcl(
-				plugin.getYamlHandler().getL().getString(language+"ChannelKick.YouWereKicked")));
+		target.sendMessage(plugin.getUtility().tctlYaml(language+"ChannelKick.YouWereKicked"));
 		///Du hast &f%player% &eaus dem Channel gekickt!
-		player.sendMessage(plugin.getUtility().tcl(
+		player.sendMessage(plugin.getUtility().tctl(
 				plugin.getYamlHandler().getL().getString(language+"ChannelKick.YouKicked")
 				.replace("%player%", args[1])));
 		for(ProxiedPlayer members : cc.getMembers())
 		{
 			///Der Spieler &f%player% &ewurde aus dem Channel gekickt!
-			members.sendMessage(plugin.getUtility().tcl(
+			members.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"ChannelKick.CreatorKickedSomeone")
 					.replace("%player%", args[1])));
 		}

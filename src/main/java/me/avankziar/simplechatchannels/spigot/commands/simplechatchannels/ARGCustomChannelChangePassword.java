@@ -1,10 +1,11 @@
-package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
+package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 
 public class ARGCustomChannelChangePassword extends CommandModule
 {
@@ -19,26 +20,26 @@ public class ARGCustomChannelChangePassword extends CommandModule
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		Player player = (Player) sender;
 		String language = plugin.getUtility().getLanguage();
 		String scc = ".CmdScc.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+scc+"CustomChannelGeneral.NotInAChannel"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"CustomChannelGeneral.NotInAChannel"));
 			return;
 		}
-		ProxiedPlayer creator = cc.getCreator();
+		Player creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+scc+"CustomChannelGeneral.NotTheCreator"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"CustomChannelGeneral.NotTheCreator"));
 			return;
 		}
 		cc.setPassword(args[1]);
 		///Du hast das Passwort zu &f%password% &egeändert!
-		player.sendMessage(plugin.getUtility().tctl(
+		player.spigot().sendMessage(plugin.getUtility().tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"CCChangepassword.PasswordChange")
 				.replace("%password%", args[1])));
 		return;

@@ -1,10 +1,12 @@
-package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
+package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 
 public class ARGCustomChannelBan extends CommandModule
 {
@@ -19,54 +21,54 @@ public class ARGCustomChannelBan extends CommandModule
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		Player player = (Player) sender;
 		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotInAChannel"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotInAChannel"));
 			return;
 		}
-		ProxiedPlayer creator = cc.getCreator();
+		Player creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotTheCreator"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotTheCreator"));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[1])!=null)
+		if(Bukkit.getPlayer(args[1])!=null)
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotChannelMember"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CustomChannelGeneral.NotChannelMember"));
 			return;
 		}
-		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]);
+		Player target = Bukkit.getPlayer(args[1]);
 		if(target.getName().equals(player.getName()))
 		{
 			///Du als Ersteller kannst dich nicht selber bannen!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+"CCBan.CreatorCannotSelfBan"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CCBan.CreatorCannotSelfBan"));
 			return;
 		}
 		if(cc.getBanned().contains(target))
 		{
 			//Der Spieler ist schon auf der Bannliste!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+"CCBan.AlreadyBanned"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CCBan.AlreadyBanned"));
 			return;
 		}
 		cc.addBanned(target);
 		///Du hast den Spieler &f%player% &eaus dem CustomChannel gebannt.
-		player.sendMessage(plugin.getUtility().tctl(
+		player.spigot().sendMessage(plugin.getUtility().tctl(
 				plugin.getYamlHandler().getL().getString(language+"CCBan.YouHasBanned")
 				.replace("%player%", args[1])));
 		///Du wurdest vom CustomChannel %channel% gebannt!
-		target.sendMessage(plugin.getUtility().tctl(
+		target.spigot().sendMessage(plugin.getUtility().tctl(
 				plugin.getYamlHandler().getL().getString(language+"CCBan.YourWereBanned")
 				.replace("%channel%", cc.getName())));
-		for(ProxiedPlayer members : cc.getMembers())
+		for(Player members : cc.getMembers())
 		{
 			///Der Spieler &f%player% &ewurde aus dem CustomChannel verbannt.
-			members.sendMessage(plugin.getUtility().tctl(
+			members.spigot().sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"CCBan.CreatorHasBanned")
 					.replace("%player%", args[1])));
 		}

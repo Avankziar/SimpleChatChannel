@@ -43,6 +43,7 @@ public class Utility
 	PERMBYPASSCOMMAND = "scc.channels.bypass.command",
 	PERMBYPASSIGNORE = "scc.channels.bypass.ignore",
 	PERMBYPASSITEM = "scc.channels.bypass.item",
+	PERMBYPASSPRIVACY = "scc.channel.bypass.privacy",
 	PERMBYPASSWEBSITE = "scc.channels.bypass.website";
 	
 	public Utility(SimpleChatChannels plugin) 
@@ -204,7 +205,7 @@ public class Utility
 	public TextComponent apiChatItem(@Nonnull String text, @Nullable ClickEvent.Action caction, @Nullable String cmd,
 			@Nonnull String itemStringFromReflection)
 	{
-		TextComponent msg = tc(tl(text));
+		TextComponent msg = tctl(text);
 		if(caction != null && cmd != null)
 		{
 			msg.setClickEvent( new ClickEvent(caction, cmd));
@@ -216,7 +217,7 @@ public class Utility
 	
 	public void sendMessage(Player player, String path)
 	{
-		player.spigot().sendMessage(tc(tl(path)));
+		player.spigot().sendMessage(tctl(path));
 	}
 	
 	public String getDate(String format)
@@ -230,20 +231,17 @@ public class Utility
 	public List<BaseComponent> getAllTextComponentForChannels(Player p, String eventmsg,
 			String channelname, String channelsymbol, int substring)
 	{
-		TextComponent channel = tc(tl(plugin.getYamlHandler().getL().getString(language+".Channels."+channelname)));
-		channel.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, channelsymbol));
-		channel.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
-						language+".ChannelExtra.Hover."+channelname))).create()));
+		TextComponent channel = apichat(language+".Channels."+channelname, 
+				ClickEvent.Action.SUGGEST_COMMAND, channelsymbol, 
+				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(
+						language+".ChannelExtra.Hover."+channelname), true);
 		
 		List<BaseComponent> prefix = getPrefix(p);
 		
-		TextComponent player = tc(tl(getFirstPrefixColor(p)+p.getName()));
-		player.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
-				plugin.getYamlHandler().getSymbol("PrivateMessage")+p.getName()+" "));
-		player.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-				, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(language+".Channelextra.Hover.PrivateMessage")
-						.replace("%player%", p.getName()))).create()));
+		TextComponent player = apichat(getFirstPrefixColor(p)+p.getName(), 
+				ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+p.getName()+" ", 
+				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(language+".Channelextra.Hover.PrivateMessage")
+				.replace("%player%", p.getName()), false);
 		
 		List<BaseComponent> suffix = getSuffix(p);
 		
@@ -254,10 +252,10 @@ public class Utility
 	
 	public List<BaseComponent> msgLater(Player player, int ss, String channel, String msg)
 	{
-		String channelsplit = plugin.getYamlHandler().getL().getString(language+".Chatsplit."+channel);
+		String channelsplit = plugin.getYamlHandler().getL().getString(language+".ChatSplit."+channel);
 		String rawmsg = msg.substring(ss);
 		List<BaseComponent> list = new ArrayList<>();
-		list.add(tc(tl(channelsplit)));
+		list.add(tctl(channelsplit));
 		String[] fullmsg = rawmsg.split(" ");
 		String cc = plugin.getYamlHandler().getL().getString(language+".ChannelColor."+channel);
 		String safeColor = null;
@@ -296,7 +294,7 @@ public class Utility
 		{
 			if(player.hasPermission(PERMBYPASSWEBSITE))
 			{
-				word = tc(tl(removeColor(colorFreeWord)));
+				word = tctl(removeColor(colorFreeWord));
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
 						colorFreeWord));
 				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Website")));
@@ -308,7 +306,7 @@ public class Utility
 				if(Utility.itemname.containsKey(player.getUniqueId().toString())
 						&& Utility.item.containsKey(player.getUniqueId().toString()))
 				{
-					word = tc(tl(removeColor(Utility.itemname.get(player.getUniqueId().toString()))+" "));
+					word = tctl(removeColor(Utility.itemname.get(player.getUniqueId().toString()))+" ");
 					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Item")));
 					word.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
 							new BaseComponent[]{new TextComponent(Utility.item.get(player.getUniqueId().toString()))}));
@@ -318,11 +316,11 @@ public class Utility
 		{
 			if(player.hasPermission(PERMBYPASSCOMMAND))
 			{
-				word = tc(tl(colorFreeWord
+				word = tctl(colorFreeWord
 						.replace(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.CommandArgSeperator"), " ")
 						.replace(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Command"), 
 								plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.CommandChatOutput"))
-						+" "));
+						+" ");
 				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Command")));
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
 						colorFreeWord.replace(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.CommandArgSeperator"), " ")
@@ -482,12 +480,14 @@ public class Utility
 		int b = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
 		while(a<=b)
 		{
-			if(removeColor(plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
+			if(removeColor(
+					plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
 			{
 				String perm = "scc.prefix."+String.valueOf(a);
 				return perm;
 			}
-			if(removeColor(plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
+			if(removeColor(
+					plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))).equals(removeColor(preorsuffix)))
 			{
 				String perm = "scc.suffix."+String.valueOf(a);
 				return perm;
@@ -561,7 +561,7 @@ public class Utility
 	
 	public String getFirstPrefixColor(Player p)
 	{
-		Boolean useprefixforplayercolor = plugin.getYamlHandler().get().getString("UsePrefixForPlayerColor").equals("true");
+		Boolean useprefixforplayercolor = plugin.getYamlHandler().get().getBoolean("UsePrefixForPlayerColor", true);
 		if(useprefixforplayercolor!=null && useprefixforplayercolor==false)
 		{
 			return plugin.getYamlHandler().getL().getString(language+".PlayerColor");
@@ -600,12 +600,10 @@ public class Utility
 			{
 				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a));
 				String pors = removeColor(preorsuffix);
-				TextComponent prefix = tc(tl(plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))+" "));
-				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						plugin.getYamlHandler().getSymbol("Group")+pors +" "));
-				prefix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
-								language+".ChannelExtra.Hover.Group"))).create()));
+				TextComponent prefix = apichat(plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))+" ", 
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+pors+" ", 
+						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(
+								language+".ChannelExtra.Hover.Group"), false);
 				list.add(prefix);
 			}
 			a++;
@@ -628,12 +626,10 @@ public class Utility
 			{
 				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a));
 				String pors = removeColor(preorsuffix);
-				TextComponent suffix = tc(tl(" "+plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))+" "));
-				suffix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						plugin.getYamlHandler().getSymbol("Group")+pors+" "));
-				suffix.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-						, new ComponentBuilder(tl(plugin.getYamlHandler().getL().getString(
-								language+".ChannelExtra.Hover.Group"))).create()));
+				TextComponent suffix = apichat(" "+plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))+" ", 
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+pors+" ", 
+						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(
+								language+".ChannelExtra.Hover.Group"), false);
 				list.add(suffix);
 			}
 			a++;
