@@ -13,9 +13,9 @@ import org.bukkit.entity.Player;
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 
-public class TABCompleter implements TabCompleter
+public class TABCompletion implements TabCompleter
 {	
-	public TABCompleter()
+	public TABCompletion()
 	{
 		
 	}

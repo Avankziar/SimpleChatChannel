@@ -41,7 +41,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.playerlist"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
 			
@@ -50,7 +50,7 @@ public class _CMDSimpleChatChannel extends Command
     		{
     			for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
         		{
-    				TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
+    				TextComponent prefix = plugin.getUtility().tctl("&e"+pp.getName()+" ");
     				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
     						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
     				list.add(prefix);
@@ -71,7 +71,7 @@ public class _CMDSimpleChatChannel extends Command
     				if(pp.getName().startsWith(s) || pp.getName().startsWith(s.toLowerCase()) 
     						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize))
     				{
-    					TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
+    					TextComponent prefix = plugin.getUtility().tctl("&e"+pp.getName()+" ");
         				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
         						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
         				list.add(prefix);
@@ -88,7 +88,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.grouplist"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
 			List<BaseComponent> list = new ArrayList<>();
@@ -117,7 +117,7 @@ public class _CMDSimpleChatChannel extends Command
     		{
     			for(String g : groups)
         		{
-    				TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
+    				TextComponent prefix = plugin.getUtility().tctl("&6"+g+" ");
     				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
     						plugin.getYamlHandler().getSymbol("group")+g+" "));
     				list.add(prefix);
@@ -129,7 +129,7 @@ public class _CMDSimpleChatChannel extends Command
         		{
     				if(s.startsWith(g))
     				{
-    					TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
+    					TextComponent prefix = plugin.getUtility().tctl("&6"+g+" ");
         				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
         						plugin.getYamlHandler().getSymbol("group")+g+" "));
         				list.add(prefix);	
@@ -200,7 +200,7 @@ public class _CMDSimpleChatChannel extends Command
 		{
 			if(!player.hasPermission("scc.cmd.ignorelist"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
 			if(plugin.getUtility().rightArgs(player,args,1))
@@ -212,14 +212,14 @@ public class _CMDSimpleChatChannel extends Command
 			{
 				list = "None";
 			}
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg03")
+			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg03")
 					.replace("%il%", list)));
 			return;
 		} else if("bungee".equalsIgnoreCase(args[0]))
 		{
 			if(!player.hasPermission("scc.cmd.bungee"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
 			if(plugin.getUtility().rightArgs(player,args,1))
@@ -232,13 +232,13 @@ public class _CMDSimpleChatChannel extends Command
 		{
 			if(!player.hasPermission("scc.cmd.mute"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
 			String target = args[1];
 			if(ProxyServer.getInstance().getPlayer(target)== null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
 				return;
 			}
 			ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
@@ -246,7 +246,7 @@ public class _CMDSimpleChatChannel extends Command
 			{
     			plugin.getMysqlHandler().updateDataI(player, false, "can_chat");
     			plugin.getMysqlHandler().updateDataI(player, 0L, "mutetime");
-    			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg01")));
+    			t.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg01")));
 			} else if(args.length == 3)
 			{
     			int num = 0;
@@ -255,7 +255,7 @@ public class _CMDSimpleChatChannel extends Command
     				  num = Integer.parseInt(args[2]);
     			} catch (NumberFormatException e) 
     			{
-    				  player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg04")
+    				  player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg04")
     						  .replace("%arg%", args[2])));
     				  return;
     			}
@@ -263,7 +263,7 @@ public class _CMDSimpleChatChannel extends Command
     			Long mutetime = System.currentTimeMillis()+num*time;
     			plugin.getMysqlHandler().updateDataI(player, false, "can_chat");
     			plugin.getMysqlHandler().updateDataI(player, mutetime, "mutetime");
-    			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg02")
+    			t.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg02")
     					.replace("%time%", args[2])));
 			} else if(plugin.getUtility().rightArgs(player,args,3))
 			{
@@ -273,7 +273,7 @@ public class _CMDSimpleChatChannel extends Command
 		{
 			if(!player.hasPermission("scc.cmd.unmute"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
 			if(plugin.getUtility().rightArgs(player,args,2))
@@ -283,19 +283,19 @@ public class _CMDSimpleChatChannel extends Command
 			String target = args[1];
 			if(ProxyServer.getInstance().getPlayer(target)== null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
 				return;
 			}
 			ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
 			plugin.getMysqlHandler().updateDataI(player, true, "can_chat");
 			plugin.getMysqlHandler().updateDataI(player, 0L, "mutetime");
-			t.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg03")));
+			t.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"mute.msg03")));
 			return;
 		} else if("ignore".equalsIgnoreCase(args[0]) || "ignorieren".equalsIgnoreCase(args[0]))
 		{
 			if(!player.hasPermission("scc.cmd.ignore"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
 			if(plugin.getUtility().rightArgs(player,args,2))
@@ -305,7 +305,7 @@ public class _CMDSimpleChatChannel extends Command
 			String target = args[1];
 			if(ProxyServer.getInstance().getPlayer(target) == null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
+				player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg03")));
 				return;
 			}
 			ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
@@ -313,13 +313,13 @@ public class _CMDSimpleChatChannel extends Command
 			{
 				plugin.getMysqlHandler().deleteDataII(
 						player.getUniqueId().toString(), t.getUniqueId().toString(), "player_uuid", "ignore_uuid");
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg02")
 						.replace("%player%", target)));
 			} else
 			{
 				plugin.getMysqlHandler().createIgnore(player, t);
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"ignore.msg01")
 						.replace("%player%", target)));
 			}
@@ -328,7 +328,7 @@ public class _CMDSimpleChatChannel extends Command
 		{
 			if(!player.hasPermission("scc.cmd.wordfilter"))
 			{
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
 				return;
 			}
@@ -342,14 +342,14 @@ public class _CMDSimpleChatChannel extends Command
 				String word = args[2];
 				if(wordfilter.contains(word))
 				{
-					player.sendMessage(plugin.getUtility().tcl(
+					player.sendMessage(plugin.getUtility().tctl(
 							plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg01")));
 				} else
 				{
 					wordfilter.add(word);
 					plugin.getYamlHandler().get().set("wordfilter", wordfilter);
 					plugin.getYamlHandler().saveConfig();
-					player.sendMessage(plugin.getUtility().tcl(
+					player.sendMessage(plugin.getUtility().tctl(
 							plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg02")
 							.replace("%word%", word)));
 				}
@@ -362,12 +362,12 @@ public class _CMDSimpleChatChannel extends Command
 					wordfilter.remove(word);
 					plugin.getYamlHandler().get().set("wordfilter", wordfilter);
 					plugin.getYamlHandler().saveConfig();
-					player.sendMessage(plugin.getUtility().tcl(
+					player.sendMessage(plugin.getUtility().tctl(
 							plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg04")
 							.replace("%word%", word)));
 				} else
 				{
-					player.sendMessage(plugin.getUtility().tcl(
+					player.sendMessage(plugin.getUtility().tctl(
 							plugin.getYamlHandler().getL().getString(language+scc+"wordfilter.msg03")));
 				}
 			}
@@ -376,7 +376,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.broadcast"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		String msg = "";
@@ -386,10 +386,10 @@ public class _CMDSimpleChatChannel extends Command
 	        }
     		if(plugin.getUtility().getWordfilter(msg))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".EVENT_Chat.msg06")));
     			return;
     		}
-    		TextComponent MSG = plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")+" ");
+    		TextComponent MSG = plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"broadcast.msg20")+" ");
     		MSG.setExtra(plugin.getUtility().msgLater(player, 0, "global", msg));
     		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
     		{
@@ -400,7 +400,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.create"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		CustomChannel cc = CustomChannel.getCustomChannel(player);
@@ -431,7 +431,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.join"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		String name = null;
@@ -454,7 +454,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.info"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		if(plugin.getUtility().rightArgs(player,args,1))
@@ -464,27 +464,27 @@ public class _CMDSimpleChatChannel extends Command
     		CustomChannel cc = CustomChannel.getCustomChannel(player);
     		if(cc==null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return;
 			}
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg01")
 					.replace("%channel%", cc.getName())));
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg02")
 					.replace("%creator%", cc.getCreator().getName())));
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg03")
 					.replace("%members%", cc.getMembers().toString())));
     		if(cc.getPassword()!=null)
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg04")
     					.replace("%password%", cc.getPassword())));
     		}
     		
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"channelinfo.msg05")
 					.replace("%banned%", cc.getBanned().toString())));
 			return;
@@ -492,7 +492,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.leave"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		if(plugin.getUtility().rightArgs(player,args,1))
@@ -502,7 +502,7 @@ public class _CMDSimpleChatChannel extends Command
     		CustomChannel cc = CustomChannel.getCustomChannel(player);
     		if(cc==null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return;
 			}
@@ -521,7 +521,7 @@ public class _CMDSimpleChatChannel extends Command
     			if(newcreator!=null)
     			{
     				cc.setCreator(newcreator);
-        			newcreator.sendMessage(plugin.getUtility().tcl(
+        			newcreator.sendMessage(plugin.getUtility().tctl(
         					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg03")
         					.replace("%channel%", cc.getName())));
     			} else 
@@ -531,7 +531,7 @@ public class _CMDSimpleChatChannel extends Command
     			}
     			
     		}
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg02")
 					.replace("%channel%", name)));
 			return;
@@ -539,7 +539,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.kick"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		if(plugin.getUtility().rightArgs(player,args,2))
@@ -549,39 +549,39 @@ public class _CMDSimpleChatChannel extends Command
     		CustomChannel cc = CustomChannel.getCustomChannel(player);
     		if(cc==null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return;
 			}
     		ProxiedPlayer creator = cc.getCreator();
     		if(!creator.getName().equals(player.getName()))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg01")));
     			return;
     		}
     		if(plugin.getProxy().getPlayer(args[1])!=null)
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg02")));
     			return;
     		}
     		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
     		if(target.getName().equals(player.getName()))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg06")));
     			return;
     		}
     		cc.removeMembers(target);
-    		target.sendMessage(plugin.getUtility().tcl(
+    		target.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg03")));
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg04")
 					.replace("%player%", args[1])));
     		for(ProxiedPlayer members : cc.getMembers())
     		{
-    			members.sendMessage(plugin.getUtility().tcl(
+    			members.sendMessage(plugin.getUtility().tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg05")
     					.replace("%player%", args[1])));
     		}
@@ -590,7 +590,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.ban"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		if(plugin.getUtility().rightArgs(player,args,2))
@@ -600,46 +600,46 @@ public class _CMDSimpleChatChannel extends Command
     		CustomChannel cc = CustomChannel.getCustomChannel(player);
     		if(cc==null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return;
 			}
     		ProxiedPlayer creator = cc.getCreator();
     		if(!creator.getName().equals(player.getName()))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg01")));
     			return;
     		}
     		if(plugin.getProxy().getPlayer(args[1])!=null)
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg02")));
     			return;
     		}
     		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]);
     		if(target.getName().equals(player.getName()))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg04")));
     			return;
     		}
     		if(cc.getBanned().contains(target))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg01")));
     			return;
     		}
     		cc.addBanned(target);
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg02")
 					.replace("%player%", args[1])));
-    		target.sendMessage(plugin.getUtility().tcl(
+    		target.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg03")
 					.replace("%channel%", cc.getName())));
     		for(ProxiedPlayer members : cc.getMembers())
     		{
-    			members.sendMessage(plugin.getUtility().tcl(
+    			members.sendMessage(plugin.getUtility().tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"banchannel.msg04")
     					.replace("%player%", args[1])));
     		}
@@ -648,7 +648,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.unban"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		if(plugin.getUtility().rightArgs(player,args,2))
@@ -658,37 +658,37 @@ public class _CMDSimpleChatChannel extends Command
     		CustomChannel cc = CustomChannel.getCustomChannel(player);
     		if(cc==null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return;
 			}
     		ProxiedPlayer creator = cc.getCreator();
     		if(!creator.getName().equals(player.getName()))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg01")));
     			return;
     		}
     		if(plugin.getProxy().getPlayer(args[1])!=null)
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg02")));
     			return;
     		}
     		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
     		if(!cc.getBanned().contains(target))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"unbanchannel.msg01")));
     			return;
     		}
     		cc.removeBanned(target);
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"unbanchannel.msg02")
 					.replace("%player%", target.getName())));
     		for(ProxiedPlayer members : cc.getMembers())
     		{
-    			members.sendMessage(plugin.getUtility().tcl(
+    			members.sendMessage(plugin.getUtility().tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"unbanchannel.msg03")
     					.replace("%player%", target.getName())));
     		}
@@ -697,7 +697,7 @@ public class _CMDSimpleChatChannel extends Command
     	{
     		if(!player.hasPermission("scc.cmd.cc.changepassword"))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
+    			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     			return;
     		}
     		if(plugin.getUtility().rightArgs(player,args,2))
@@ -707,19 +707,19 @@ public class _CMDSimpleChatChannel extends Command
     		CustomChannel cc = CustomChannel.getCustomChannel(player);
     		if(cc==null)
 			{
-				player.sendMessage(plugin.getUtility().tcl(
+				player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"leavechannel.msg01")));
     			return;
 			}
     		ProxiedPlayer creator = cc.getCreator();
     		if(!creator.getName().equals(player.getName()))
     		{
-    			player.sendMessage(plugin.getUtility().tcl(
+    			player.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"kickchannel.msg01")));
     			return;
     		}
     		cc.setPassword(args[1]);
-    		player.sendMessage(plugin.getUtility().tcl(
+    		player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+scc+"changepassword.msg01")
 					.replace("%password%", args[1])));
 			return;

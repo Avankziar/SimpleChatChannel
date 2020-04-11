@@ -42,7 +42,7 @@ public class _CMDClickChat extends Command
     	{
     		msg += args[i]+" "; 
     	}
-    	TextComponent msg1 = plugin.getUtility().tcl(msg);
+    	TextComponent msg1 = plugin.getUtility().tctl(msg);
 		msg1.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
 				new ComponentBuilder(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(l+".CMD_ClickChat.msg01")

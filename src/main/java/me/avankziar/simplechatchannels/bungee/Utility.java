@@ -95,24 +95,45 @@ public class Utility
 		return tc;
 	}
 	
-	public TextComponent clickEvent(String text, @Nonnull ClickEvent.Action caction, String cmd)
+	public TextComponent clickEvent(String text, @Nonnull ClickEvent.Action caction, String cmd, boolean yaml)
 	{
-		TextComponent msg = tc(tl(text));
+		TextComponent msg = null;
+		if(yaml)
+		{
+			msg = tctl(plugin.getYamlHandler().getL().getString(text));
+		} else
+		{
+			msg = tctl(text);
+		}
 		msg.setClickEvent( new ClickEvent(caction, cmd));
 		return msg;
 	}
 	
-	public TextComponent hoverEvent(String text, @Nonnull HoverEvent.Action haction, String hover)
+	public TextComponent hoverEvent(String text, @Nonnull HoverEvent.Action haction, String hover, boolean yaml)
 	{
-		TextComponent msg = tc(tl(text));
+		TextComponent msg = null;
+		if(yaml)
+		{
+			msg = tctl(plugin.getYamlHandler().getL().getString(text));
+		} else
+		{
+			msg = tctl(text);
+		}
 		msg.setHoverEvent( new HoverEvent(haction, new ComponentBuilder(tl(hover)).create()));
 		return msg;
 	}
 	
 	public TextComponent apichat(String text, ClickEvent.Action caction, String cmd,
-			HoverEvent.Action haction, String hover)
+			HoverEvent.Action haction, String hover, boolean yaml)
 	{
-		TextComponent msg = tc(tl(text));
+		TextComponent msg = null;
+		if(yaml)
+		{
+			msg = tctl(plugin.getYamlHandler().getL().getString(text));
+		} else
+		{
+			msg = tctl(text);
+		}
 		if(caction != null)
 		{
 			msg.setClickEvent( new ClickEvent(caction, cmd));
@@ -564,8 +585,8 @@ public class Utility
     	if(args.length!=i)
     	{
     		///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-			p.sendMessage(clickEvent(plugin.getYamlHandler().getL().getString(language+".CmdScc.InputIsWrong"),
-					ClickEvent.Action.RUN_COMMAND, "/scc"));
+			p.sendMessage(clickEvent(language+".CmdScc.InputIsWrong",
+					ClickEvent.Action.RUN_COMMAND, "/scc", true));
 			return true;
     	} else
     	{

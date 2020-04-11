@@ -10,11 +10,11 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 
-public class MulipleCommandExecutor implements CommandExecutor 
+public class MultipleCommandExecutor implements CommandExecutor 
 {
 	private SimpleChatChannels plugin;
 	
-	public MulipleCommandExecutor(SimpleChatChannels plugin)
+	public MultipleCommandExecutor(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -49,24 +49,21 @@ public class MulipleCommandExecutor implements CommandExecutor
 					} else
 					{
 						///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-						player.spigot().sendMessage(plugin.getUtility().clickEvent(
-								plugin.getYamlHandler().getL().getString(language+".CmdScc.InputIsWrong"),
-								ClickEvent.Action.RUN_COMMAND, "/scc"));
+						player.spigot().sendMessage(plugin.getUtility().clickEvent(language+".CmdScc.InputIsWrong",
+								ClickEvent.Action.RUN_COMMAND, "/scc", true));
 						return false;
 					}
 				} else 
 				{
 					///Du hast dafür keine Rechte!
-					player.spigot().sendMessage(plugin.getUtility().tcl(
-							plugin.getYamlHandler().getL().getString(language+".CmdScc.NoPermission")));
+					player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+".CmdScc.NoPermission"));
 					return false;
 				}
 			} else 
 			{
 				///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-				player.spigot().sendMessage(plugin.getUtility().clickEvent(
-						plugin.getYamlHandler().getL().getString(language+".CmdScc.InputIsWrong"),
-						ClickEvent.Action.RUN_COMMAND, "/scc"));
+				player.spigot().sendMessage(plugin.getUtility().clickEvent(language+".CmdScc.InputIsWrong",
+						ClickEvent.Action.RUN_COMMAND, "/scc", true));
 				return false;
 			}
 		} else if(cmd.getName().equalsIgnoreCase("clch") || cmd.getName().equalsIgnoreCase("clickchat"))
@@ -92,7 +89,7 @@ public class MulipleCommandExecutor implements CommandExecutor
 	    	}
 	    	///Klicke hier um die %number%.te Antwortmöglichkeit zu nehmen!
 			t.spigot().sendMessage(plugin.getUtility().apichat(msg, ClickEvent.Action.RUN_COMMAND, args[1],
-					HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(language+".CmdClickChat.ClickAnswer")));
+					HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(language+".CmdClickChat.ClickAnswer"), false));
 	    	return true;
 		} else if(cmd.getName().equalsIgnoreCase("scceditor"))
 		{
@@ -105,7 +102,7 @@ public class MulipleCommandExecutor implements CommandExecutor
 	    	String scc = ".CmdSccEditor.";
 	    	if(!player.hasPermission("scc.cmd.editor"))
 			{
-				player.spigot().sendMessage(plugin.getUtility().tcl(
+				player.spigot().sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+".CmdScc.NoPermission")));
 				return false;
 			}
@@ -114,13 +111,11 @@ public class MulipleCommandExecutor implements CommandExecutor
 	    		if(SimpleChatChannels.editorplayers.contains(player.getName()))
 	    		{
 	    			SimpleChatChannels.editorplayers.remove(player.getName());
-	    			player.spigot().sendMessage(plugin.getUtility().tcl(
-	    					plugin.getYamlHandler().getL().getString(language+scc+"Out")));
+	    			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"Out"));
 	    		} else
 	    		{
 	    			SimpleChatChannels.editorplayers.add(player.getName());
-	    			player.spigot().sendMessage(plugin.getUtility().tcl(
-	    					plugin.getYamlHandler().getL().getString(language+scc+"In")));
+	    			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"In"));
 	    		}
 	    	} else
 	    	{

@@ -28,7 +28,7 @@ public class CMDSimpleChatChannelEditor implements CommandExecutor
     	String language = plugin.getYamlHandler().get().getString("language");
     	if(!player.hasPermission("scc.cmd.editor"))
 		{
-			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+".CmdScc.NoPermission")));
+			player.spigot().sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".CmdScc.NoPermission")));
 			return false;
 		}
     	if(args.length == 0)
@@ -36,12 +36,12 @@ public class CMDSimpleChatChannelEditor implements CommandExecutor
     		if(SimpleChatChannels.editorplayers.contains(player.getName()))
     		{
     			SimpleChatChannels.editorplayers.remove(player.getName());
-    			player.spigot().sendMessage(plugin.getUtility().tcl(
+    			player.spigot().sendMessage(plugin.getUtility().tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"msg02")));
     		} else
     		{
     			SimpleChatChannels.editorplayers.add(player.getName());
-    			player.spigot().sendMessage(plugin.getUtility().tcl(
+    			player.spigot().sendMessage(plugin.getUtility().tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"msg01")));
     		}
     	} else

@@ -12,11 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
 import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDClickChat;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannelEditor;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CMDSimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.MultipleCommandExecutor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandHelper;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.TABCompleter;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.TABCompletion;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.spigot.database.YamlHandler;
@@ -112,10 +110,10 @@ public class SimpleChatChannels extends JavaPlugin
 	
 	public void CommandSetup()
 	{
-		getCommand("scc").setExecutor(new CMDSimpleChatChannels(this));
-		getCommand("clickchat").setExecutor(new CMDClickChat(this));
-		getCommand("scc").setTabCompleter(new TABCompleter());
-		getCommand("scceditor").setExecutor(new CMDSimpleChatChannelEditor(this));
+		getCommand("scc").setExecutor(new MultipleCommandExecutor(this));
+		getCommand("clickchat").setExecutor(new MultipleCommandExecutor(this));
+		getCommand("scc").setTabCompleter(new TABCompletion());
+		getCommand("scceditor").setExecutor(new MultipleCommandExecutor(this));
 	}
 	
 	public void ListenerSetup()

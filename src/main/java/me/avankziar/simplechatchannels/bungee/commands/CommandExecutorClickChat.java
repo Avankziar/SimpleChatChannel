@@ -43,7 +43,7 @@ public class CommandExecutorClickChat extends Command
     	}
     	///Klicke hier um die %number%.te Antwortmöglichkeit zu nehmen!
 		t.sendMessage(plugin.getUtility().apichat(msg, ClickEvent.Action.RUN_COMMAND, args[1],
-				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(language+".CmdClickChat.ClickAnswer")));
+				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(language+".CmdClickChat.ClickAnswer"), false));
     	return;
 	}
 

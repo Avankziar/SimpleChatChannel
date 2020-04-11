@@ -45,24 +45,21 @@ public class CommandExecutorSimpleChatChannel extends Command
 				} else
 				{
 					///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-					player.sendMessage(plugin.getUtility().clickEvent(
-							plugin.getYamlHandler().getL().getString(language+".CmdScc.InputIsWrong"),
-							ClickEvent.Action.RUN_COMMAND, "/scc"));
+					player.sendMessage(plugin.getUtility().clickEvent(language+".CmdScc.InputIsWrong",
+							ClickEvent.Action.RUN_COMMAND, "/scc", true));
 					return;
 				}
 			} else 
 			{
 				///Du hast dafür keine Rechte!
-				player.sendMessage(plugin.getUtility().tcl(
-						plugin.getYamlHandler().getL().getString(language+".CmdScc.NoPermission")));
+				player.sendMessage(plugin.getUtility().tctlYaml(language+".CmdScc.NoPermission"));
 				return;
 			}
 		} else 
 		{
 			///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-			player.sendMessage(plugin.getUtility().clickEvent(
-					plugin.getYamlHandler().getL().getString(language+".CmdScc.InputIsWrong"),
-					ClickEvent.Action.RUN_COMMAND, "/scc"));
+			player.sendMessage(plugin.getUtility().clickEvent(language+".CmdScc.InputIsWrong",
+					ClickEvent.Action.RUN_COMMAND, "/scc", true));
 			return;
 		}
 	}
