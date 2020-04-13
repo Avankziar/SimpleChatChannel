@@ -1,27 +1,27 @@
-Language: 'german'
-Bungee: 'false'
-Denizen_Active: 'false'
+Language: 'German'
+Bungee: false
+Denizen_Active: false
 GetLocaleRadius: 50
 WordFilter:
 - arschloch
 - asshole
-AddingTimeOfDays: 'true'
+AddingTimeOfDays: true
 TimeOfDaysFormat: 'HH:mm'
 TimeOfDaysOutput: '&7[%time%] &r'
-UsePrefixForPlayerColor: 'true'
-ShowJoinMessageGlobal: 'false'
-ShowLeaveMessageGlobal: 'false'
+UsePrefixForPlayerColor: true
+ShowJoinMessageGlobal: false
+ShowLeaveMessageGlobal: false
 Mysql:
-  Status: 'false'
+  Status: false
   Host: '127.0.0.1'
-  Port: '3306'
+  Port: 3306
   DatabaseName: 'mydatabase'
-  SSLEnabled: 'false'
-  AutoReconnect: 'true'
-  VerifyServerCertificate: 'false'
+  SSLEnabled: false
+  AutoReconnect: true
+  VerifyServerCertificate: false
   User: 'admin'
   Password: 'not_0123456789'
   TableNameI: 'simplechatchannelsPlayerData'
   TableNameII: 'simplechatchannelsIgnorelist'
 General:
-  WorldNameReplaceInChannel: 'true'
+  WorldNameReplaceInChannel: true

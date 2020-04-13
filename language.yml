@@ -114,7 +114,6 @@ German:
     '10': '&aGamma'
   EventChat:
     ChannelIsOff: '&7Du hast diesen Channel ausgeschaltet. Bitte schalte ihn &7mit &c/scc <channel> &7wieder an.'
-    _msg02: '&cDieser Spieler ist nicht online!'
     PlayerIgnoreYou: '&cDer Spieler ignoriert dich!'
     PlayerNoPrivateMessage: '&cDer Spieler hat private Nachrichten &cdeaktiviert!'
     NoRePlayer: '&cDu hast mit keinem Spieler dich &cprivat unterhalten!'
@@ -127,7 +126,7 @@ German:
     Welcome: '&6Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]'
     PlayerEnter: '&f%player% &6hat den Server betreten!'
     PlayerQuit: '&f%player% &4hat den Server verlassen!'
-    msg04: '&cDu hast zurzeit kein Recht im Chat zu schreiben!'
+    NoRight: '&cDu hast zurzeit kein Recht im Chat zu schreiben!'
   CmdScc:
     InputIsWrong: '&cDeine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!'
     NoPermission: '&cDu hast dafür keine Rechte!'
@@ -229,7 +228,7 @@ German:
     In: '&eDu bist nun im Editorbereich. &cAlle Chateingaben sind deaktiviert!'
     Out: '&eDu verlässt den Editorbereich. &aAlle Chateingaben sind aktiviert!'
   SpigotBungee:
-    msg01: '&7Es ist keiner da, der dich hoert!'
+    msg01: '&7Es ist keiner da, der dich hört!'
   Punisher:
     Jail: '&cDu bist im Gefängnis! Du kannst nichts schreiben und auch keine Befehle nutzten!'
   AfkRecord:
@@ -350,7 +349,6 @@ English:
     '10': '&aSuffix_10'
   EVENTChat:
     ChannelIsOff: '&7You have turned off this channel. &7Please turn it on again with &c/scc <channel> &7.'
-    _msg02: '&cThis player is not online!'
     PlayerIgnoreYou: '&cThe player ignores you!'
     PlayerNoPrivateMessage: '&cThe player has private messages &Cdisabled!'
     NoRePlayer: '&cYou have not talked to any player in &cprivat!'
@@ -358,12 +356,11 @@ English:
     Muted: '&cYou are mute for &c%time%!'
     MessageToShort: '&cThe message is not long enough!'
     NoSpace: '&cWarning, the prefixes or suffixes may &Cnot contain spaces!'
-    msg10: '&cThe channels Local and World are &cblocked by the config! &cUnlock by /scc spigot'
   EVENTJoinLeave:
     Welcome: '&6Welcome back &f%player% &6on our server &b[Please insert servername]'
     PlayerEnter: '&f%player% &6has entered the server!'
     PlayerQuit: '&f%player% &4has left the server!'
-    msg04: '&cYou currently have no right to chat!'
+    NoRight: '&cYou currently have no right to chat!'
   CmdScc:
     InputIsWrong: '&cYour input is incorrect, click &chere on the text to &cget more information!'
     NoPermission: '&cYou have no rights for this!'
@@ -462,9 +459,9 @@ English:
   CmdClickChat:
     ClickAnswer: '&eClick here too choose the %number% answer!'
   CmdSccEditor:
-    msg01: '&eYou are now in the editor area. & cAll chat entries are deactivated!'
-    msg02: '&eYou leave the editor area. & aAll chat entries are activated!'
-  Spigot_Bungee:
+    In: '&eYou are now in the editor area. & cAll chat entries are deactivated!'
+    Out: '&eYou leave the editor area. & aAll chat entries are activated!'
+  SpigotBungee:
     msg01: '&7There is no one here to hear you!'
   Punisher:
     Jail: '&cYou are in jail! You can not write anything or use commands!'

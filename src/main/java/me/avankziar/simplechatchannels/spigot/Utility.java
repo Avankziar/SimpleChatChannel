@@ -684,7 +684,7 @@ public class Utility
 	
 	public String getActiveChannels(Player player)
 	{
-		String language = plugin.getYamlHandler().get().getString("language");
+		String language = plugin.getUtility().getLanguage();
 		MysqlHandler mi = plugin.getMysqlHandler();
 		boolean canchat = (boolean)mi.getDataI(player, "can_chat", "player_uuid");
 		boolean global = (boolean)mi.getDataI(player, "channel_global", "player_uuid");
@@ -704,7 +704,7 @@ public class Utility
 		
 		String ac = "";
 		///Du hast zurzeit kein Recht im Chat zu schreiben!
-		if(!canchat) {ac = plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.msg04"); return ac;}
+		if(!canchat) {ac = plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.NoRight"); return ac;}
 		ac += plugin.getYamlHandler().getL().getString(language+".Join.Info");
 		if(global) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Global")+comma;}
 		if(local) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Local")+comma;}
