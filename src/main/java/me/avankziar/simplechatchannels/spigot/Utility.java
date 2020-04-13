@@ -38,6 +38,10 @@ public class Utility
 	private String prefix;
 	private String language;
 	
+	public static boolean 
+	AFKRECORDSOFTSAVE,
+	AFKRECORDISAFK;
+	
 	final public static String 
 	PERMBYPASSCOLOR = "scc.channels.bypass.color",
 	PERMBYPASSCOMMAND = "scc.channels.bypass.command",
@@ -771,5 +775,43 @@ public class Utility
 
 	    // Return a string representation of the serialized object
 	    return itemAsJsonObject.toString();
+	}
+	
+	public void existMethod(Class<?> externclass, String method, boolean methodboolean)
+	{
+	    try 
+	    {
+	    	externclass.getMethod(method);
+	    	methodboolean = true;
+	    } catch (Exception e) 
+	    {
+	      methodboolean = false;
+	    }
+	}
+	
+	public void isAfk(Player player, Player targed)
+	{
+		if(plugin.getAfkRecord() != null)
+		{
+			if(AFKRECORDISAFK)
+			{
+				if(plugin.getAfkRecord().isAfk(targed))
+				{
+					///Der Spieler ist afk!
+					player.spigot().sendMessage(tctlYaml(language+".AfkRecord.IsAfk"));	
+				}
+			}
+		}
+	}
+	
+	public void saveAfkTimes(Player player)
+	{
+		if(plugin.getAfkRecord() != null)
+		{
+			if(AFKRECORDSOFTSAVE)
+			{
+				plugin.getAfkRecord().softSave(player);
+			}
+		}
 	}
 }

@@ -33,6 +33,10 @@ public class Utility
 	private String prefix;
 	private String language;
 	
+	public static boolean 
+	AFKRECORDSOFTSAVE, 
+	AFKRECORDISAFK;
+	
 	final public static String 
 	PERMBYPASSCOLOR = "scc.channels.bypass.color",
 	PERMBYPASSCOMMAND = "scc.channels.bypass.command",
@@ -674,5 +678,43 @@ public class Utility
         {
         	si.sendData(tagkey, streamout.toByteArray());
         }
+	}
+	
+	public void existMethod(Class<?> externclass, String method, boolean methodboolean)
+	{
+	    try 
+	    {
+	    	externclass.getMethod(method);
+	    	methodboolean = true;
+	    } catch (Exception e) 
+	    {
+	      methodboolean = false;
+	    }
+	}
+	
+	public void isAfk(ProxiedPlayer player, ProxiedPlayer targed)
+	{
+		if(plugin.getAfkRecord() != null)
+		{
+			if(AFKRECORDISAFK)
+			{
+				if(plugin.getAfkRecord().isAfk(targed))
+				{
+					///Der Spieler ist afk!
+					player.sendMessage(tctlYaml(language+".AfkRecord.IsAfk"));	
+				}
+			}
+		}
+	}
+	
+	public void saveAfkTimes(ProxiedPlayer player)
+	{
+		if(plugin.getAfkRecord() != null)
+		{
+			if(AFKRECORDSOFTSAVE)
+			{
+				plugin.getAfkRecord().softSave(player);
+			}
+		}
 	}
 }

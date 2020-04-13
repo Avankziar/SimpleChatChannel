@@ -49,6 +49,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.listener.EventChat;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventJoinLeave;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventTabCompletion;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.ServerListener;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 
@@ -239,6 +240,8 @@ public class SimpleChatChannels extends Plugin
             return false;
 		}
 		afkrecord = AfkRecord.getPlugin();
+		utility.existMethod(afkrecord.getClass(), "isAfk", Utility.AFKRECORDISAFK);
+		utility.existMethod(afkrecord.getClass(), "softSave", Utility.AFKRECORDSOFTSAVE);
 		return true;
 	}
 	

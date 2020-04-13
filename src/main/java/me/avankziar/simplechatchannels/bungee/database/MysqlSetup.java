@@ -16,7 +16,7 @@ public class MysqlSetup
 	public MysqlSetup(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
-		
+		loadMysqlSetup();
 	}
 	
 	public boolean loadMysqlSetup()

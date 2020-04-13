@@ -74,9 +74,6 @@ permissions:
   scc.cmd.ignorelist:
     description: Gives access to /scc ignorlist, which shows you your list of ignored players.
     default: false
-  scc.cmd.ignorebypass:
-    description: Bypass the ignore function
-    default: false
   scc.cmd.bungee:
     description: Gives access to /scc bungee, which switch scc to the bungeecord settings.
     default: false
@@ -122,14 +119,20 @@ permissions:
   scc.channels.bypass.color:
     description: Gives access to use Color offside from the ChannelColor.
     default: false
-  scc.channels.bypass.website:
-    description: Gives access to add clickevent for websites in the chat.
+  scc.channels.bypass.command:
+    description: Gives access to use clickevent for commands in the chat. replacer => /<command>_<args1>_<args2>
+    default: false
+  scc.channels.bypass.ignore:
+    description: Gives access to bypass the ignoring from a player.
     default: false
   scc.channels.bypass.item:
     description: Gives access to use hoverevent to show a item in the chat for the replacer <item>.
     default: false
-  scc.channels.bypass.command:
-    description: Gives access to use clickevent for commands in the chat. replacer => /<command>_<args1>_<args2>
+  scc.channels.bypass.privacy:
+    description: Gives access to bypass, if the targeted player has the private message channel off.
+    default: false
+  scc.channels.bypass.website:
+    description: Gives access to add clickevent for websites in the chat.
     default: false
   scc.prefix.1:
     description: Gives access to prefix 1 for the chat.

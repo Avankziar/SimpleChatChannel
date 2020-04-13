@@ -121,7 +121,6 @@ German:
     Muted: '&cDu bist für &c%time% gemutet!'
     MessageToShort: '&cDie Nachricht ist nicht lang genug!'
     NoSpace: '&cWarnung, die Prefixe oder Suffixe dürfen keine Leerzeichen &cbeinhalten!'
-    msg10: '&cDie Channels Lokal und World sind durch die Config gesperrt! &cEntsperren durch /scc spigot'
   EventJoinLeave:
     Welcome: '&6Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]'
     PlayerEnter: '&f%player% &6hat den Server betreten!'
@@ -322,7 +321,7 @@ English:
     Team: '&3Team'
     Trade: '&9Trade'
     World: '&fWorld'
-  Prefixsuffixamount: '20'
+  Prefixsuffixamount: '10'
   Prefix:
     '1': '&1Prefix_1'
     '2': '&2Prefix_2'
@@ -431,7 +430,7 @@ English:
       PlayerNotBanned: '&cThe player is not on the ban list!'
       YouUnbanPlayer: '&eYou have unbanned &f%player% &efor the Custom Channel!'
       CreatorUnbanPlayer: '&eThe player &f%player% &ewas unbanned for the Custom Channel.'
-    Grouplist:
+    GroupList:
       Headline: '&7=====&eChannel GroupList&7====='
       WrongInput: '&cNo prefix or suffix fits on the &cdescription.'
     Ignore:
@@ -442,7 +441,7 @@ English:
       PermaMute: '&7You have been permanently muted &7!'
       TempMute: '&7You were for &c%time% muted&7!'
       Unmute: '&7You were demuted!'
-    Playerlist:
+    PlayerList:
       Headline: '&7=====&eMsg PlayerList&7====='
       WrongInput: '&cNo player fits the &cdescription.'
     Reload:

@@ -40,6 +40,7 @@ public class EventChat implements Listener
 		{
 			return;
 		}
+		
 		if(plugin.editorplayers.contains(player.getName()))
 		{
 			return;
@@ -53,6 +54,7 @@ public class EventChat implements Listener
 				return;
 			}
 		}
+		
 		if(event.getMessage().startsWith("/"))
 		{
 			return;
@@ -155,6 +157,8 @@ public class EventChat implements Listener
 				return;
 			}
 			
+			plugin.getUtility().saveAfkTimes(player);
+			
 			utility.sendAllMessage(player, "channel_"+channel, MSG);
 			return;
 		} else if(channel.equals("Custom")) //----------------------------------------------------------Support Channel
@@ -197,6 +201,9 @@ public class EventChat implements Listener
 				return;
 			}
 			utility.spy(MSG);
+			
+			plugin.getUtility().saveAfkTimes(player);
+			
 			for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 			{
 				for(ProxiedPlayer members : cc.getMembers())
@@ -277,6 +284,8 @@ public class EventChat implements Listener
 			
 			player.sendMessage(MSG);
 			
+			plugin.getUtility().saveAfkTimes(player);
+			
 			for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 			{
 				if((boolean) mysqlHandler.getDataI(all, "channel_group", "player_uuid"))
@@ -317,14 +326,7 @@ public class EventChat implements Listener
 			}
 			ProxiedPlayer tr = ProxyServer.getInstance().getPlayer(UUID.fromString(target));
 			
-			if(plugin.getAfkRecord()!=null)
-			{
-				if(plugin.getAfkRecord().isAfk(tr))
-				{
-					///Der Spieler ist afk!
-					player.sendMessage(utility.tctlYaml(language+".AfkRecord.IsAfk"));
-				}
-			}
+			utility.isAfk(player, tr);
 			
 			String trl = tr.getUniqueId().toString();
 			
@@ -386,7 +388,9 @@ public class EventChat implements Listener
 				{
 					return;
 				}
-			}	
+			}
+			
+			plugin.getUtility().saveAfkTimes(player);
 			
 			if(utility.getIgnored(tr, player))
 			{
@@ -396,6 +400,7 @@ public class EventChat implements Listener
 				player.sendMessage(MSG2);
 				return;
 			}
+			
 			tr.sendMessage(MSG1);
 			player.sendMessage(MSG2);
 			utility.spy(MSG1);
@@ -420,14 +425,7 @@ public class EventChat implements Listener
 			ProxiedPlayer tr = ProxyServer.getInstance().getPlayer(target);
 			String trl = tr.getUniqueId().toString();
 			
-			if(plugin.getAfkRecord()!=null)
-			{
-				if(plugin.getAfkRecord().isAfk(tr))
-				{
-					///Der Spieler ist &cafk&e!
-					player.sendMessage(utility.tctlYaml(language+".AfkRecord.IsAfk"));
-				}
-			}
+			utility.isAfk(player, tr);
 			
 			TextComponent channel1 = utility.apichat(language+".Channels.PrivateMessage", 
 					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
@@ -489,6 +487,8 @@ public class EventChat implements Listener
 				}
 			}	
 			
+			plugin.getUtility().saveAfkTimes(player);
+			
 			if(utility.getIgnored(tr, player))
 			{
 				///Der Spieler ignoriert dich!
@@ -497,6 +497,7 @@ public class EventChat implements Listener
 				player.sendMessage(MSG2);
 				return;
 			}
+			
 			tr.sendMessage(MSG1);
 			player.sendMessage(MSG2);
 			utility.spy(MSG1);

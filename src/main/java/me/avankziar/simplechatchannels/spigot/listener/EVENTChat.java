@@ -159,6 +159,8 @@ public class EVENTChat implements Listener
 			
 			utility.spy(player, MSG);
 			
+			utility.saveAfkTimes(player);
+			
 			for(Player t : Bukkit.getOnlinePlayers())
 			{
 				World tw = t.getWorld();
@@ -212,6 +214,8 @@ public class EVENTChat implements Listener
 			
 			utility.spy(player, MSG);
 			
+			utility.saveAfkTimes(player);
+			
 			for(Player t : Bukkit.getOnlinePlayers())
 			{
 				World tw = t.getWorld();
@@ -262,6 +266,8 @@ public class EVENTChat implements Listener
 				return;
 			}
 			
+			utility.saveAfkTimes(player);
+			
 			utility.sendAllMessage(player, "channel_"+channel, MSG);
 			return;
 		} else if(channel.equals("Custom")) //----------------------------------------------------------Support Channel
@@ -304,7 +310,11 @@ public class EVENTChat implements Listener
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
 				return;
 			}
+			
+			utility.saveAfkTimes(player);
+			
 			utility.spy(player, MSG);
+			
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
 				for(Player members : cc.getMembers())
@@ -386,6 +396,8 @@ public class EVENTChat implements Listener
 			
 			player.spigot().sendMessage(MSG);
 			
+			utility.saveAfkTimes(player);
+			
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
 				if((boolean) mysqlHandler.getDataI(all, "channel_group", "player_uuid"))
@@ -427,14 +439,7 @@ public class EVENTChat implements Listener
 			Player tr = plugin.getServer().getPlayer(UUID.fromString(target));
 			String trl = tr.getUniqueId().toString();
 			
-			if(plugin.getAfkRecord()!=null)
-			{
-				if(plugin.getAfkRecord().isAfk(tr))
-				{
-					///Der Spieler ist afk!
-					player.spigot().sendMessage(utility.tctlYaml(language+".AfkRecord.IsAfk"));
-				}
-			}
+			utility.isAfk(player, tr);
 			
 			TextComponent channel1 = utility.apichat(language+".Channels.PrivateMessage", 
 					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
@@ -498,6 +503,8 @@ public class EVENTChat implements Listener
 				}
 			}
 			
+			utility.saveAfkTimes(player);
+			
 			if(utility.getIgnored(tr,player))
 			{
 				///Der Spieler ignoriert dich!
@@ -506,6 +513,7 @@ public class EVENTChat implements Listener
 				player.spigot().sendMessage(MSG2);
 				return;
 			}
+			
 			tr.spigot().sendMessage(MSG1);
 			player.spigot().sendMessage(MSG2);
 			utility.spy(player, MSG1);
@@ -530,15 +538,7 @@ public class EVENTChat implements Listener
 			Player tr = plugin.getServer().getPlayer(target);
 			String trl = tr.getUniqueId().toString();
 			
-			if(plugin.getAfkRecord()!=null)
-			{
-				if(plugin.getAfkRecord().isAfk(tr))
-				{
-					///Der Spieler ist afk!
-					player.spigot().sendMessage(utility.tctlYaml(language+".AfkRecord.IsAfk"));
-					return;
-				}
-			}
+			utility.isAfk(player, tr);
 			
 			TextComponent channel1 = utility.apichat(language+".Channels.PrivateMessage", 
 					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
@@ -601,6 +601,8 @@ public class EVENTChat implements Listener
 				}
 			}
 			
+			utility.saveAfkTimes(player);
+			
 			if(utility.getIgnored(tr,player))
 			{
 				///Der Spieler ignoriert dich!
@@ -609,6 +611,7 @@ public class EVENTChat implements Listener
 				player.spigot().sendMessage(MSG2);
 				return;
 			}
+			
 			tr.spigot().sendMessage(MSG1);
 			player.spigot().sendMessage(MSG2);
 			utility.spy(player, MSG1);

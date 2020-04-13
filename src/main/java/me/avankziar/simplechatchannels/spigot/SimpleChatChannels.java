@@ -239,6 +239,8 @@ public class SimpleChatChannels extends JavaPlugin
 			return false;
 		}
 		afkrecord = AfkRecord.getPlugin();
+		utility.existMethod(afkrecord.getClass(), "isAfk", Utility.AFKRECORDISAFK);
+		utility.existMethod(afkrecord.getClass(), "softSave", Utility.AFKRECORDSOFTSAVE);
 		return true;
 	}
 	

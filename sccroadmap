@@ -3,10 +3,10 @@
 Build 33
 - +Ignorelist und Ignore gefixt
 - +BypassPerm für Admins der Ignore | scc.channels.bypass.ignore
-- +BypassPerm für Admins um jemanden anzuschreiben, der Pm Channel aus hat.
+- +BypassPerm für Admins um jemanden anzuschreiben, der Pm Channel aus hat. | scc.channel.bypass.privacy
 - +Änderungen in der language.yml bei Chatsplit
 - +ignore_name aktualisierungsmethode einfügen
-- Namen von configs & language neu benennen nach der neuen Konform
+- +Namen von configs & language neu benennen nach der neuen Konform
 - +/scc wordfiler <add/remove> <word> => /scc wordfilter <word>
 - +/scc broadcast, hat aliase bekommen "ausstrahlen, übertragen"
 - +Spieler die Afk sind, bekommen trotzdem die PrivateNachricht
@@ -14,6 +14,7 @@ Build 33
 - +Tab correct umsetzten siehe votereborn
 - +Commands neu aufsetzten siehe votereborn
 - +Prefix in config.yml einbauen
+- +AfkRecord bekommt nun ab Build 6(!!) bei jedem ChatEvent einen SoftSave(Zeiten des Spielers werden im RAM gespeichert)
 
 Build 31
 - +Hover bei Commands in chat
