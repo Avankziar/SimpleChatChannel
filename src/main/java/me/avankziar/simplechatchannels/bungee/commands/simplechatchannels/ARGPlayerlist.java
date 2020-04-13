@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -27,15 +28,15 @@ public class ARGPlayerlist extends CommandModule
 	{
 		//All needed vars
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage();
 		List<BaseComponent> list = new ArrayList<>();
 		if(args.length==1)
 		{
 			for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
     		{
-				TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
-				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
+				TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" ", false);
 				list.add(prefix);
     		}
 		} else if(args.length==2)
@@ -54,15 +55,14 @@ public class ARGPlayerlist extends CommandModule
 				if(pp.getName().startsWith(s) || pp.getName().startsWith(s.toLowerCase()) 
 						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize))
 				{
-					TextComponent prefix = plugin.getUtility().tcl("&e"+pp.getName()+" ");
-    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-    						plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" "));
+					TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" ", false);
     				list.add(prefix);
 				}
     		}
 		} else
 		{
-			plugin.getUtility().rightArgs(player,args,2);
+			utility.rightArgs(player,args,2);
 			return;
 		}
 		plugin.getCommandHelper().playergrouplist(player, language, list, "PlayerList");

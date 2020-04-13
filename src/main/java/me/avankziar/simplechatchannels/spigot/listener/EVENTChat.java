@@ -492,16 +492,10 @@ public class EVENTChat implements Listener
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
-				if(player.hasPermission(Utility.PERMBYPASSPRIVACY))
+				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
-					tr.spigot().sendMessage(MSG1);
-					player.spigot().sendMessage(MSG2);
-					utility.spy(player,MSG1);
-					reply.put(pl, trl);
-					reply.put(trl, pl);
 					return;
 				}
-				return;
 			}
 			
 			if(utility.getIgnored(tr,player))
@@ -601,16 +595,10 @@ public class EVENTChat implements Listener
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
-				if(player.hasPermission(Utility.PERMBYPASSPRIVACY))
+				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
-					tr.spigot().sendMessage(MSG1);
-					player.spigot().sendMessage(MSG2);
-					utility.spy(player,MSG1);
-					reply.put(pl, trl);
-					reply.put(trl, pl);
 					return;
 				}
-				return;
 			}
 			
 			if(utility.getIgnored(tr,player))

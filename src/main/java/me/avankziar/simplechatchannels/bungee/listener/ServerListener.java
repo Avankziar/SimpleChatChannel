@@ -57,7 +57,7 @@ public class ServerListener implements Listener
 			        {
 			        	if((boolean) plugin.getMysqlHandler().getDataI(pp, "spy", "player_uuid"))
 			        	{
-			        		pp.sendMessage(plugin.getUtility().tcl(Delivery));
+			        		pp.sendMessage(plugin.getUtility().tctl(Delivery));
 			        	}
 			        }
 			        return;

@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -19,8 +20,9 @@ public class ARGIgnoreList extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
-		if(plugin.getUtility().rightArgs(player,args,1))
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage() + ".CmdScc.";
+		if(utility.rightArgs(player,args,1))
 		{
 			return;
 		}
@@ -29,7 +31,7 @@ public class ARGIgnoreList extends CommandModule
 		{
 			list = "None";
 		}
-		player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"Ignore.List")
+		player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"Ignore.List")
 				.replace("%il%", list)));
 		return;
 	}

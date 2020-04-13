@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
 import net.md_5.bungee.api.CommandSender;
@@ -20,13 +21,13 @@ public class ARGCustomChannelLeave extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage() + ".CmdScc.";
 		CustomChannel cc = CustomChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(plugin.getUtility().tcl(
-					plugin.getYamlHandler().getL().getString(language+"CustomChannelGeneral.NotInAChannel")));
+			player.sendMessage(utility.tctlYaml(language+"CustomChannelGeneral.NotInAChannel"));
 			return;
 		}
 		final String name = cc.getName();
@@ -45,7 +46,7 @@ public class ARGCustomChannelLeave extends CommandModule
 			{
 				cc.setCreator(newcreator);
 				///Du wurdest der neue Erstelle der CustomChannels &f%channel%
-    			newcreator.sendMessage(plugin.getUtility().tcl(
+    			newcreator.sendMessage(utility.tctl(
     					plugin.getYamlHandler().getL().getString(language+"ChannelLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			} else 
@@ -56,7 +57,7 @@ public class ARGCustomChannelLeave extends CommandModule
 			
 		}
 		///Du hast den CustomChannel &f%channel% &everlassen!
-		player.sendMessage(plugin.getUtility().tcl(
+		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"ChannelLeave.YouLeft")
 				.replace("%channel%", name)));
 		return;

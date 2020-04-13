@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -20,12 +21,13 @@ public class ARGIgnore extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage() + ".CmdScc.";
 		String target = args[1];
 		if(ProxyServer.getInstance().getPlayer(target) == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
 		ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
@@ -34,14 +36,14 @@ public class ARGIgnore extends CommandModule
 			plugin.getMysqlHandler().deleteDataII(
 					player.getUniqueId().toString(), t.getUniqueId().toString(), "player_uuid", "ignore_uuid");
 			///Du hast den Spieler %player% von deiner Ignoreliste &7genommen!
-			player.sendMessage(plugin.getUtility().tcl(
+			player.sendMessage(utility.tctl(
 					plugin.getYamlHandler().getL().getString(language+"Ignore.DontIgnore")
 					.replace("%player%", target)));
 		} else
 		{
 			plugin.getMysqlHandler().createIgnore(player, t);
 			///Der Spieler %player% wird von dir ignoriert!
-			player.sendMessage(plugin.getUtility().tcl(
+			player.sendMessage(utility.tctl(
 					plugin.getYamlHandler().getL().getString(language+"Ignore.DoIgnore")
 					.replace("%player%", target)));
 		}

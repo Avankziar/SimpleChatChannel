@@ -382,16 +382,10 @@ public class EventChat implements Listener
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
-				if(player.hasPermission(Utility.PERMBYPASSPRIVACY))
+				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
-					tr.sendMessage(MSG1);
-					player.sendMessage(MSG2);
-					utility.spy(MSG1);
-					reply.put(pl, trl);
-					reply.put(trl, pl);
 					return;
 				}
-				return;
 			}	
 			
 			if(utility.getIgnored(tr, player))
@@ -489,16 +483,10 @@ public class EventChat implements Listener
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
-				if(player.hasPermission(Utility.PERMBYPASSPRIVACY))
+				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
-					tr.sendMessage(MSG1);
-					player.sendMessage(MSG2);
-					utility.spy(MSG1);
-					reply.put(pl, trl);
-					reply.put(trl, pl);
 					return;
 				}
-				return;
 			}	
 			
 			if(utility.getIgnored(tr, player))

@@ -1,10 +1,10 @@
 package main.java.me.avankziar.simplechatchannels.bungee.listener;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -26,37 +26,36 @@ public class EventJoinLeave implements Listener
 	public void inJoin(PostLoginEvent event)
 	{
 		ProxiedPlayer player = event.getPlayer();
-		String language = plugin.getYamlHandler().get().getString("language");
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage();
 		String pn = player.getName();
-		plugin.getUtility().controlChannelSaves(player);
+		utility.controlChannelSaves(player);
 		if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 		{
-			player.sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
+			player.sendMessage(utility.tctl(utility.getActiveChannels(player)));
 			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
-			player.sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(
 					language+".EventJoinLeave.Welcome").replace("%player%", pn)));
 		}
-		plugin.getMysqlHandler().updateDataII(player, player.getName(), "ignore_name", "ignore_uuid");
-		Boolean globaljoin = plugin.getYamlHandler().get().getString("ShowjoinmessageGlobal").equals("true");
+		plugin.getMysqlHandler().updateDataII(player, pn, "ignore_name", "ignore_uuid");
+		Boolean globaljoin = plugin.getYamlHandler().get().getBoolean("ShowJoinMessageGlobal", true);
 		if(globaljoin==false)
 		{
 			return;
 		}
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
-			if(!all.getName().equals(player.getName()))
+			if(!all.getName().equals(pn))
 			{
 				if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 				{
 					///%player% &6hat den Server betreten!
-					TextComponent msg = plugin.getUtility().tcl(
-							plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.PlayerEnter")
-							.replace("%player%", pn));
-					msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" "));
-					msg.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-							, new ComponentBuilder(plugin.getUtility().tl(
-									plugin.getYamlHandler().getL().getString(language+".ChannelExtra.Hover.Message")
-									.replace("%player%", player.getName()))).create()));
+					TextComponent msg = utility.apichat(
+							plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.PlayerEnter").replace("%player%", pn), 
+							ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" ", 
+							HoverEvent.Action.SHOW_TEXT, 
+							plugin.getYamlHandler().getL().getString(language+".ChannelExtra.Hover.Message").replace("%player%", pn), 
+							false);
 					all.sendMessage(msg);
 				}
 			}
@@ -68,15 +67,16 @@ public class EventJoinLeave implements Listener
 	public void onLeave(PlayerDisconnectEvent event)
 	{
 		ProxiedPlayer player = event.getPlayer();
-		String language = plugin.getUtility().getLanguage();
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage();
 		String pn = player.getName();
 		String scc = ".CmdScc.";
-		if(plugin.editorplayers.contains(player.getName()))
+		if(plugin.editorplayers.contains(pn))
 		{
-			plugin.editorplayers.remove(player.getName());
+			plugin.editorplayers.remove(pn);
 			String µ = "µ";
-			String message = "editor"+µ+player.getName()+µ+"remove";
-			plugin.getUtility().sendSpigotMessage("simplechatchannels:sccbungee", message);
+			String message = "editor"+µ+pn+µ+"remove";
+			utility.sendSpigotMessage("simplechatchannels:sccbungee", message);
 		}
 		CustomChannel cc = CustomChannel.getCustomChannel(pn);
 		if(cc!=null)
@@ -94,7 +94,7 @@ public class EventJoinLeave implements Listener
     			}
     			cc.setCreator(newcreator);
     			///Du wurdest der neue Ersteller der CustomChannels %channel%
-    			newcreator.sendMessage(plugin.getUtility().tcl(
+    			newcreator.sendMessage(utility.tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"CCLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			}
@@ -103,7 +103,7 @@ public class EventJoinLeave implements Listener
 		{
 			plugin.getMysqlHandler().createAccount(player);
 		}
-		Boolean globalleave = plugin.getYamlHandler().get().getBoolean("ShowleavemessageGlobal", false);
+		Boolean globalleave = plugin.getYamlHandler().get().getBoolean("ShowLeaveMessageGlobal", false);
 		if(globalleave==false)
 		{
 			return;
@@ -115,7 +115,7 @@ public class EventJoinLeave implements Listener
 				///%player% &4hat den Server verlassen!
 				String msg = plugin.getYamlHandler().getL().getString(
 						language+".EventJoinLeave.PlayerQuit").replace("%player%", pn);
-				all.sendMessage(plugin.getUtility().tcl(msg));
+				all.sendMessage(utility.tctl(msg));
 			}
 		}
 		return;

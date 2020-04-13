@@ -27,9 +27,9 @@ public class ARGCustomChannelCreate extends CommandModule
 		if(cc!=null)
 		{
 			///Du bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.
-			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+			player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"CCCreate.AlreadyInAChannel")
-					.replace("%channel%", cc.getName()))));
+					.replace("%channel%", cc.getName())));
 			return;
 		}
 		String name = null;
@@ -49,16 +49,16 @@ public class ARGCustomChannelCreate extends CommandModule
 		if(password==null)
 		{
 			///Du hast den Custom Channel &f%channel% &eerstellt!
-			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+			player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"CCCreate.ChannelCreateWithoutPassword")
-					.replace("%channel%", cc.getName()))));
+					.replace("%channel%", cc.getName())));
 		} else
 		{
 			///Du hast den Custom Channel &f%channel% &emit dem Passwort &f%password% &eerstellt!
-			player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+			player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"CCCreate.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getName())
-					.replace("%password%", password))));
+					.replace("%password%", password)));
 		}
 		return;
 	}

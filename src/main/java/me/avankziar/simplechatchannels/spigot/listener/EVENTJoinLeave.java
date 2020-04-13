@@ -9,9 +9,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -32,19 +32,20 @@ public class EVENTJoinLeave implements Listener
 			return;
 		}
 		event.setJoinMessage("");
-		String language = plugin.getUtility().getLanguage();
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage();
 		Player player = event.getPlayer();
 		String pn = player.getName();
-		plugin.getUtility().controlChannelSaves(player);
+		utility.controlChannelSaves(player);
 		if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 		{
-			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getUtility().getActiveChannels(player)));
+			player.spigot().sendMessage(utility.tctl(utility.getActiveChannels(player)));
 			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
-			player.spigot().sendMessage(plugin.getUtility().tcl(plugin.getYamlHandler().getL().getString(
+			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(
 					language+".EventJoinLeave.Welcome").replace("%player%", pn)));
 		}
-		plugin.getMysqlHandler().updateDataII(player, player.getName(), "ignore_name", "ignore_uuid");
-		Boolean globaljoin = plugin.getYamlHandler().get().getBoolean("ShowJoinMessageGlobal", false);
+		plugin.getMysqlHandler().updateDataII(player, pn, "ignore_name", "ignore_uuid");
+		Boolean globaljoin = plugin.getYamlHandler().get().getBoolean("ShowJoinMessageGlobal", true);
 		if(globaljoin==false)
 		{
 			return;
@@ -56,14 +57,12 @@ public class EVENTJoinLeave implements Listener
 				if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
 				{
 					///%player% &6hat den Server betreten!
-					TextComponent msg = plugin.getUtility().tcl(
-							plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.PlayerEnter")
-							.replace("%player%", pn));
-					msg.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" "));
-					msg.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT
-							, new ComponentBuilder(plugin.getUtility().tl(
-									plugin.getYamlHandler().getL().getString(language+".ChannelExtra.Hover.Message")
-									.replace("%player%", player.getName()))).create()));
+					TextComponent msg = utility.apichat(
+							plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.PlayerEnter").replace("%player%", pn), 
+							ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" ", 
+							HoverEvent.Action.SHOW_TEXT, 
+							plugin.getYamlHandler().getL().getString(language+".ChannelExtra.Hover.Message").replace("%player%", pn), 
+							false);
 					all.spigot().sendMessage(msg);
 				}
 			}
@@ -86,8 +85,9 @@ public class EVENTJoinLeave implements Listener
 			event.setQuitMessage("");
 			return;
 		}
+		Utility utility = plugin.getUtility();
 		String scc = ".CmdScc.";
-		String language = plugin.getUtility().getLanguage();
+		String language = utility.getLanguage();
 		
 		CustomChannel cc = CustomChannel.getCustomChannel(event.getPlayer());
 		if(cc!=null)
@@ -105,7 +105,7 @@ public class EVENTJoinLeave implements Listener
     			}
     			cc.setCreator(newcreator);
     			///Du wurdest der neue Ersteller der CustomChannels %channel%
-    			newcreator.spigot().sendMessage(plugin.getUtility().tcl(
+    			newcreator.spigot().sendMessage(utility.tctl(
     					plugin.getYamlHandler().getL().getString(language+scc+"CCLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			}
@@ -113,7 +113,7 @@ public class EVENTJoinLeave implements Listener
 		event.setQuitMessage("");
 		Player player = event.getPlayer();
 		String pn = player.getName();
-		Boolean globalleave = plugin.getYamlHandler().get().getBoolean("ShowleavemessageGlobal", false);
+		Boolean globalleave = plugin.getYamlHandler().get().getBoolean("ShowLeaveMessageGlobal", false);
 		if(globalleave==false)
 		{
 			return;
@@ -125,7 +125,7 @@ public class EVENTJoinLeave implements Listener
 				///%player% &4hat den Server verlassen!
 				String msg = plugin.getYamlHandler().getL().getString(
 						language+".EventJoinLeave.PlayerQuit").replace("%player%", pn);
-				all.spigot().sendMessage(plugin.getUtility().tcl(msg));
+				all.spigot().sendMessage(utility.tctl(msg));
 			}
 		}
 		return;

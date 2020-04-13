@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -27,7 +28,8 @@ public class ARGGrouplist extends CommandModule
 	{
 		//All needed vars
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage();
 		List<BaseComponent> list = new ArrayList<>();
 		int i = 1;
 		int groupamount = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
@@ -54,9 +56,8 @@ public class ARGGrouplist extends CommandModule
 		{
 			for(String g : groups)
     		{
-				TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
-				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-						plugin.getYamlHandler().getSymbol("group")+g+" "));
+				TextComponent prefix = utility.clickEvent("&6"+g+" ", 
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("group")+g+" ", false);
 				list.add(prefix);
     		}
 		} else if(args.length==2)
@@ -66,9 +67,8 @@ public class ARGGrouplist extends CommandModule
     		{
 				if(s.startsWith(g))
 				{
-					TextComponent prefix = plugin.getUtility().tcl("&6"+g+" ");
-    				prefix.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
-    						plugin.getYamlHandler().getSymbol("group")+g+" "));
+					TextComponent prefix = utility.clickEvent("&6"+g+" ", 
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("group")+g+" ", false);
     				list.add(prefix);	
 				}
     		}

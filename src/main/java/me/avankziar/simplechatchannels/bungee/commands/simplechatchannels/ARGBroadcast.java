@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -21,20 +22,21 @@ public class ARGBroadcast extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage();
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage();
 		String msg = "";
 		for (int i = 1; i < args.length; i++) 
         {
 			msg += args[i] + " ";
         }
-		if(plugin.getUtility().getWordfilter(msg))
+		if(utility.getWordfilter(msg))
 		{
 			///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+".EventChat.Wordfilter"));
+			player.sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
 			return;
 		}
-		TextComponent MSG = plugin.getUtility().tctlYaml(language+".CmdScc.Broadcast.Prefix");
-		MSG.setExtra(plugin.getUtility().msgLater(player, 0, "global", msg));
+		TextComponent MSG = utility.tctlYaml(language+".CmdScc.Broadcast.Prefix");
+		MSG.setExtra(utility.msgLater(player, 0, "global", msg));
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
 			all.sendMessage(MSG);

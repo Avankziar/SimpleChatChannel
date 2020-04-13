@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
 import net.md_5.bungee.api.CommandSender;
@@ -20,7 +21,8 @@ public class ARGCustomChannelJoin extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage() + ".CmdScc.";
 		String name = null;
 		String password = null;
 		if(args.length==2)
@@ -32,7 +34,7 @@ public class ARGCustomChannelJoin extends CommandModule
 			password = args[2];
 		} else
 		{
-			plugin.getUtility().rightArgs(player,args,3);
+			utility.rightArgs(player,args,3);
 			return;
 		}
 		CustomChannel cc = CustomChannel.getCustomChannel(name);
@@ -40,13 +42,13 @@ public class ARGCustomChannelJoin extends CommandModule
 		if(oldcc!=null)
 		{
 			///Du bist schon in einem anderen Channel gejoint, verlasse erst diesen!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.AlreadyInAChannel"));
+			player.sendMessage(utility.tctlYaml(language+"CCJoin.AlreadyInAChannel"));
 			return;
 		}
 		if(cc==null)
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
-			player.sendMessage(plugin.getUtility().tctl(
+			player.sendMessage(utility.tctl(
 					plugin.getYamlHandler().getL().getString(language+"CCJoin.UnknowChannel")
 					.replace("%name%", name)));
 			return;
@@ -54,7 +56,7 @@ public class ARGCustomChannelJoin extends CommandModule
 		if(cc.getBanned().contains(player))
 		{
 			///Du bist in diesem CustomChannel gebannt und darfst nicht joinen!
-			player.sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.Banned"));
+			player.sendMessage(utility.tctlYaml(language+"CCJoin.Banned"));
 			return;
 		}
 		if(password==null)
@@ -62,7 +64,7 @@ public class ARGCustomChannelJoin extends CommandModule
 			if(cc.getPassword()!=null)
 			{
 				///Der CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!
-				player.sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.ChannelHasPassword"));
+				player.sendMessage(utility.tctlYaml(language+"CCJoin.ChannelHasPassword"));
 				return;
 			}
 		} else
@@ -70,19 +72,19 @@ public class ARGCustomChannelJoin extends CommandModule
 			if(cc.getPassword()==null)
 			{
 				///Es ist kein Passwort angegeben, du kannst so joinen!
-				player.sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.ChannelHasNoPassword"));
+				player.sendMessage(utility.tctlYaml(language+"CCJoin.ChannelHasNoPassword"));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
 				///Das angegebene Passwort ist nicht korrekt!
-				player.sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.PasswordIncorrect"));
+				player.sendMessage(utility.tctlYaml(language+"CCJoin.PasswordIncorrect"));
 				return;
 			}
 		}
 		cc.addMembers(player);
 		///Du bist dem CustomChannel &f%channel% &agejoint!
-		player.sendMessage(plugin.getUtility().tctl(
+		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"CCJoin.ChannelJoined")
 				.replace("%channel%", cc.getName())));
 		return;

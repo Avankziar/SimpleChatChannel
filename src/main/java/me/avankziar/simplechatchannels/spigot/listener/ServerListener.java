@@ -20,7 +20,7 @@ public class ServerListener  implements PluginMessageListener
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] bytes) 
 	{
-		String language = plugin.getYamlHandler().get().getString("language");
+		String language = plugin.getUtility().getLanguage();
 		if(channel.equals("simplechatchannels:sccbungee")) 
 		{
         	ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
@@ -30,20 +30,20 @@ public class ServerListener  implements PluginMessageListener
             	final String Category = s[0];
             	if(Category.equalsIgnoreCase("bungeeswitch"))
             	{
-            		String boo = plugin.getYamlHandler().get().getString("bungee");
-            		if(boo.equals("true"))
+            		boolean boo = plugin.getYamlHandler().get().getBoolean("bungee", false);
+            		if(boo)
             		{
-            			plugin.getYamlHandler().get().set("bungee", "false");
+            			plugin.getYamlHandler().get().set("bungee", false);
             			plugin.getYamlHandler().saveConfig();
-        				player.spigot().sendMessage(plugin.getUtility().tcl(
-        						plugin.getYamlHandler().getL().getString(language+".CMD_SCC.serverlistener.msg01")));
+        				player.spigot().sendMessage(plugin.getUtility().tctl(
+        						plugin.getYamlHandler().getL().getString(language+".CmdScc.ServerListener.BungeeOff")));
         				return;
-            		} else if(boo.equals("false"))
+            		} else
             		{
-            			plugin.getYamlHandler().get().set("bungee", "true");
+            			plugin.getYamlHandler().get().set("bungee", true);
             			plugin.getYamlHandler().saveConfig();
-        				player.spigot().sendMessage(plugin.getUtility().tcl(
-        						plugin.getYamlHandler().getL().getString(language+".CMD_SCC.serverlistener.msg02")));
+        				player.spigot().sendMessage(plugin.getUtility().tctl(
+        						plugin.getYamlHandler().getL().getString(language+".CmdScc.Serverlistener.BungeeOn")));
         				return;
             		}
             	} else if(Category.equalsIgnoreCase("editor"))
