@@ -15,12 +15,12 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class CMDSimpleChatChannels implements CommandExecutor
+public class _CMDSimpleChatChannels implements CommandExecutor
 {
 	private SimpleChatChannels plugin;
 	private String scc = ".CMD_SCC.";
 	
-	public CMDSimpleChatChannels(SimpleChatChannels plugin)
+	public _CMDSimpleChatChannels(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 	}

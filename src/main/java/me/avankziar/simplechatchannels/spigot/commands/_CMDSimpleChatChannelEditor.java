@@ -7,12 +7,12 @@ import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
-public class CMDSimpleChatChannelEditor implements CommandExecutor 
+public class _CMDSimpleChatChannelEditor implements CommandExecutor 
 {
 	private SimpleChatChannels plugin;
 	private String scc = ".CmdSccEditor.";
 	
-	public CMDSimpleChatChannelEditor(SimpleChatChannels plugin)
+	public _CMDSimpleChatChannelEditor(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 	}

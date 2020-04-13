@@ -12,11 +12,11 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class CMDClickChat implements CommandExecutor
+public class _CMDClickChat implements CommandExecutor
 {
 	private SimpleChatChannels plugin;
 	
-	public CMDClickChat(SimpleChatChannels plugin)
+	public _CMDClickChat(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 	}
