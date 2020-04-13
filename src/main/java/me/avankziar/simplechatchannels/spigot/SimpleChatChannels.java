@@ -13,6 +13,37 @@ import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
 import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.MultipleCommandExecutor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGBroadcast;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGBungee;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelAdmin;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelAuction;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelCustom;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelGlobal;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelGroup;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelLocal;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelPrivateMessage;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelSupport;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelTeam;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelTrade;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelWorld;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelBan;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelChangePassword;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelCreate;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelInfo;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelJoin;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelKick;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelLeave;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGCustomChannelUnban;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGGrouplist;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGIgnore;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGIgnoreList;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGMute;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGOptionJoin;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGOptionSpy;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGPlayerlist;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGReload;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGUnmute;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGWordfilter;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandHelper;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.TABCompletion;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
@@ -110,10 +141,69 @@ public class SimpleChatChannels extends JavaPlugin
 	
 	public void CommandSetup()
 	{
+		new ARGBroadcast(this);
+		new ARGBungee(this);
+		new ARGChannelAdmin(this);
+		new ARGChannelAuction(this);
+		new ARGChannelCustom(this);
+		new ARGChannelGlobal(this);
+		new ARGChannelGroup(this);
+		new ARGChannelLocal(this);
+		new ARGChannelPrivateMessage(this);
+		new ARGChannelSupport(this);
+		new ARGChannelTeam(this);
+		new ARGChannelTrade(this);
+		new ARGChannelWorld(this);
+		new ARGCustomChannelBan(this);
+		new ARGCustomChannelChangePassword(this);
+		new ARGCustomChannelCreate(this);
+		new ARGCustomChannelInfo(this);
+		new ARGCustomChannelJoin(this);
+		new ARGCustomChannelKick(this);
+		new ARGCustomChannelLeave(this);
+		new ARGCustomChannelUnban(this);
+		new ARGGrouplist(this);
+		new ARGIgnore(this);
+		new ARGIgnoreList(this);
+		new ARGMute(this);
+		new ARGOptionJoin(this);
+		new ARGOptionSpy(this);
+		new ARGPlayerlist(this);
+		new ARGReload(this);
+		new ARGUnmute(this);
+		new ARGWordfilter(this);
 		getCommand("scc").setExecutor(new MultipleCommandExecutor(this));
 		getCommand("clickchat").setExecutor(new MultipleCommandExecutor(this));
 		getCommand("scc").setTabCompleter(new TABCompletion());
 		getCommand("scceditor").setExecutor(new MultipleCommandExecutor(this));
+	}
+	
+	public boolean reload()
+	{
+		if(!yamlHandler.loadYamlHandler())
+		{
+			return false;
+		}
+		if(!utility.loadUtility())
+		{
+			return false;
+		}
+		if(yamlHandler.get().getBoolean("Mysql.Status", false))
+		{
+			mysqlSetup.closeConnection();
+			if(!mysqlHandler.loadMysqlHandler())
+			{
+				return false;
+			}
+			if(!mysqlSetup.loadMysqlSetup())
+			{
+				return false;
+			}
+		} else
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	public void ListenerSetup()

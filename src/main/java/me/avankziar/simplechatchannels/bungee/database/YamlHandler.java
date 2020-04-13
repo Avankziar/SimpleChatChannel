@@ -15,7 +15,7 @@ public class YamlHandler
 	private SimpleChatChannels plugin;
 	private Configuration cfg;
 	private Configuration lgg;
-	private String language;
+	private String languages;
 	private String symbolglobal;
 	private String symboltrade;
 	private String symbolauction;
@@ -32,58 +32,83 @@ public class YamlHandler
 	public YamlHandler(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
-		mkdir();
-		loadYaml();
-		language = cfg.getString("language");
-		symbolglobal = lgg.getString(language+".ChannelSymbol.Global");
-		symboltrade = lgg.getString(language+".ChannelSymbol.Trade");
-		symbolauction = lgg.getString(language+".ChannelSymbol.Auction");
-		symbollocal = lgg.getString(language+".ChannelSymbol.Local");
-		symbolworld = lgg.getString(language+".ChannelSymbol.World");
-		symbolsupport = lgg.getString(language+".ChannelSymbol.Support");
-		symbolteam = lgg.getString(language+".ChannelSymbol.Team");
-		symboladmin = lgg.getString(language+".ChannelSymbol.Admin");
-		symbolpm = lgg.getString(language+".ChannelSymbol.PrivateMessage");
-		symbolpmre = lgg.getString(language+".ChannelSymbol.PrivateMessageRe");
-		symbolgroup = lgg.getString(language+".ChannelSymbol.Group");
-		symbolcustom = lgg.getString(language+".ChannelSymbol.Custom");
+		loadYamlHandler();
 	}
 	
-	public void loadYaml()
+	public boolean loadYamlHandler()
+	{
+		if(!mkdir())
+		{
+			return false;
+		}
+		if(!loadYaml())
+		{
+			return false;
+		}
+		languages = cfg.getString("Language", "English");
+		symbolglobal = lgg.getString(languages+".ChannelSymbol.Global", "");
+		symboltrade = lgg.getString(languages+".ChannelSymbol.Trade", "$");
+		symbolauction = lgg.getString(languages+".ChannelSymbol.Auction", "!");
+		symbollocal = lgg.getString(languages+".ChannelSymbol.Local", ",");
+		symbolworld = lgg.getString(languages+".ChannelSymbol.World", "°");
+		symbolsupport = lgg.getString(languages+".ChannelSymbol.Support", "?");
+		symbolteam = lgg.getString(languages+".ChannelSymbol.Team", "+");
+		symboladmin = lgg.getString(languages+".ChannelSymbol.Admin", "#");
+		symbolpm = lgg.getString(languages+".ChannelSymbol.PrivateMessage", "@");
+		symbolpmre = lgg.getString(languages+".ChannelSymbol.PrivateMessageRe", "@r");
+		symbolgroup = lgg.getString(languages+".ChannelSymbol.Group", "@*");
+		symbolcustom = lgg.getString(languages+".ChannelSymbol.Custom", ";");
+		return true;
+	}
+	
+	public boolean loadYaml()
 	 {
 		 try 
 		 {
 			 cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(plugin.getDataFolder(), "bungeeconfig.yml"));
-		 } catch (IOException e) {
+		 } catch (IOException e) 
+		 {
 			 e.printStackTrace();
+			 return false;
 		 }
 		 try 
 		 {
 			 lgg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(plugin.getDataFolder(), "language.yml"));
-		 } catch (IOException e) {
+		 } catch (IOException e) 
+		 {
 			 e.printStackTrace();
+			 return false;
 		 }
+		 return true;
 	 }
 		
-	 public void saveConfig()
+	 public boolean saveConfig()
 	 {
-		 try {
+		 try 
+		 {
 			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(cfg, new File(plugin.getDataFolder(), "bungeeconfig.yml"));
-		 } catch (IOException e) {
+		 } catch (IOException e) 
+		 {
 			 e.printStackTrace();
+			 return false;
 		 }
+		 return true;
 	 }
 	 
-	 public void saveLanguage()
+	 public boolean saveLanguage()
 	 {
-		 try {
+		 try 
+		 {
 			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(lgg, new File(plugin.getDataFolder(), "language.yml"));
-		 } catch (IOException e) {
+		 } catch (IOException e) 
+		 {
 			 e.printStackTrace();
+			 return false;
 		 }
+		 return true;
 	 }
 	 
-	 public void mkdir()
+	 public boolean mkdir()
 	 {
 		 if (!plugin.getDataFolder().exists())
 		 {
@@ -98,6 +123,7 @@ public class YamlHandler
 	         } catch (IOException e) 
 	    	 {
 	        	 e.printStackTrace();
+	        	 return false;
 	         }
 	     }
 	     File l = new File(plugin.getDataFolder(), "language.yml");  
@@ -109,8 +135,10 @@ public class YamlHandler
 	         } catch (IOException e) 
 	    	 {
 	        	 e.printStackTrace();
+	        	 return false;
 	         }
 	     }
+	     return true;
 	 }
 	 
 	 public Configuration get()
@@ -253,5 +281,10 @@ public class YamlHandler
 			 return symbolpm;
 		}
 		return symbolglobal;
+	 }
+	 
+	 public String getLanguages()
+	 {
+	    return languages;
 	 }
 }

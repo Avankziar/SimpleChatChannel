@@ -39,11 +39,13 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchann
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOptionJoin;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOptionSpy;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPlayerlist;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGReload;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGUnmute;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGWordfilter;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.listener.EventChat;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventJoinLeave;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventTabCompletion;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.ServerListener;
@@ -168,6 +170,7 @@ public class SimpleChatChannels extends Plugin
 		new ARGOptionJoin(this);
 		new ARGOptionSpy(this);
 		new ARGPlayerlist(this);
+		new ARGReload(this);
 		new ARGUnmute(this);
 		new ARGWordfilter(this);
 		pm.registerCommand(this, new CommandExecutorSimpleChatChannel(this));
@@ -183,10 +186,38 @@ public class SimpleChatChannels extends Plugin
 	{
 		getProxy().registerChannel("simplechatchannels:sccbungee");
 		PluginManager pm = getProxy().getPluginManager();
-		pm.registerListener(this, new main.java.me.avankziar.simplechatchannels.bungee.listener.EventChat(this));
+		pm.registerListener(this, new EventChat(this));
 		pm.registerListener(this, new EventJoinLeave(this));
 		pm.registerListener(this, new ServerListener(this));
 		pm.registerListener(this, new EventTabCompletion());
+	}
+	
+	public boolean reload()
+	{
+		if(!yamlHandler.loadYamlHandler())
+		{
+			return false;
+		}
+		if(!utility.loadUtility())
+		{
+			return false;
+		}
+		if(yamlHandler.get().getBoolean("Mysql.Status", false))
+		{
+			mysqlSetup.closeConnection();
+			if(!mysqlHandler.loadMysqlHandler())
+			{
+				return false;
+			}
+			if(!mysqlSetup.loadMysqlSetup())
+			{
+				return false;
+			}
+		} else 
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	private boolean setupPunisher()

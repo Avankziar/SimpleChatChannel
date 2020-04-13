@@ -1,10 +1,9 @@
-package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels;
+package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGReload extends CommandModule
 {
@@ -19,18 +18,18 @@ public class ARGReload extends CommandModule
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		Player player = (Player) sender;
+		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage();
 		String scc = ".CmdScc.";
 		if(plugin.reload())
 		{
 			///Yaml Datein wurden neugeladen.
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"Reload.Success"));
+			player.sendMessage(plugin.getUtility().tctlYaml(language+scc+"Reload.Success"));
 			return;
 		} else
 		{
 			///Es wurde ein Fehler gefunden! Siehe Konsole!
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"Reload.Error"));
+			player.sendMessage(plugin.getUtility().tctlYaml(language+scc+"Reload.Error"));
 			return;
 		}
 	}

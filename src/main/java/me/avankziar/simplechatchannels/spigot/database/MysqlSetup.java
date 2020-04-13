@@ -16,12 +16,27 @@ public class MysqlSetup
 	public MysqlSetup(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
-		connectToDatabase();
-		setupDatabaseI();
-		setupDatabaseII();
+		loadMysqlSetup();
 	}
 	
-	public void connectToDatabase() 
+	public boolean loadMysqlSetup()
+	{
+		if(!connectToDatabase())
+		{
+			return false;
+		}
+		if(!setupDatabaseI())
+		{
+			return false;
+		}
+		if(setupDatabaseII())
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean connectToDatabase() 
 	{
 		SimpleChatChannels.log.info("Connecting to the database...");
 		try {
@@ -46,20 +61,23 @@ public class MysqlSetup
           } catch (ClassNotFoundException e) 
 		{
         	  SimpleChatChannels.log.severe("Could not locate drivers for mysql! Error: " + e.getMessage());
-            return;
+            return false;
           } catch (SQLException e) 
 		{
         	  SimpleChatChannels.log.severe("Could not connect to mysql database! Error: " + e.getMessage());
-            return;
+            return false;
           }
 		SimpleChatChannels.log.info("Database connection successful!");
+		return true;
 	}
 	
-	public void setupDatabaseI() 
+	public boolean setupDatabaseI() 
 	{
-		if (conn != null) {
+		if (conn != null) 
+		{
 			PreparedStatement query = null;
-		      try {	        
+		      try 
+		      {	        
 		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameI
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY, player_uuid char(36) NOT NULL UNIQUE, player_name varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
 		        		+ " can_chat boolean, mutetime LONG,"
@@ -70,44 +88,58 @@ public class MysqlSetup
 		        		+ " spy boolean, joinmessage boolean);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
-		      } catch (SQLException e) {
+		      } catch (SQLException e) 
+		      {
 		        e.printStackTrace();
 		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
+		        return false;
 		      } finally {
 		    	  try {
-		    		  if (query != null) {
+		    		  if (query != null) 
+		    		  {
 		    			  query.close();
 		    		  }
-		    	  } catch (Exception e) {
+		    	  } catch (Exception e) 
+		    	  {
 		    		  e.printStackTrace();
+		    		  return false;
 		    	  }
 		      }
 		}
+		return true;
 	}
 	
-	public void setupDatabaseII() 
+	public boolean setupDatabaseII() 
 	{
-		if (conn != null) {
+		if (conn != null) 
+		{
 			PreparedStatement query = null;
-		      try {	        
+		      try 
+		      {	        
 		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameII
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY, player_uuid char(36) NOT NULL, ignore_uuid char(36) NOT NULL,"
 		        		+ " ignore_name char(16) NOT NULL);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
-		      } catch (SQLException e) {
+		      } catch (SQLException e) 
+		      {
 		        e.printStackTrace();
 		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
+		        return false;
 		      } finally {
 		    	  try {
-		    		  if (query != null) {
+		    		  if (query != null) 
+		    		  {
 		    			  query.close();
 		    		  }
-		    	  } catch (Exception e) {
+		    	  } catch (Exception e) 
+		    	  {
 		    		  e.printStackTrace();
+		    		  return false;
 		    	  }
 		      }
 		}
+		return true;
 	}
 	
 	public Connection getConnection() 

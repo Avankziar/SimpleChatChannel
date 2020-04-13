@@ -444,7 +444,6 @@ public class CMDSimpleChatChannels implements CommandExecutor
     		plugin.getYamlHandler().mkdir();
     		if(plugin.getYamlHandler().loadYamls())
     		{
-    			plugin.getYamlHandler().reload();
     			player.spigot().sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"reload.msg01")));
     			return true;
     		} else

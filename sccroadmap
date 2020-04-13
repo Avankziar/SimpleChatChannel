@@ -1,7 +1,4 @@
 - Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
-- Tab correct umsetzten siehe votereborn
-- Commands neu aufsetzten siehe votereborn
-- Prefix in config.yml einbauen
 
 Build 33
 - +Ignorelist und Ignore gefixt
@@ -13,6 +10,10 @@ Build 33
 - +/scc wordfiler <add/remove> <word> => /scc wordfilter <word>
 - +/scc broadcast, hat aliase bekommen "ausstrahlen, übertragen"
 - +Spieler die Afk sind, bekommen trotzdem die PrivateNachricht
+- +Reload befehl in bungee eingebaut, und auf Bungee und Spigot Ebene bewirkt es auch einen reconnect der Mysql anhand neuer Daten.
+- +Tab correct umsetzten siehe votereborn
+- +Commands neu aufsetzten siehe votereborn
+- +Prefix in config.yml einbauen
 
 Build 31
 - +Hover bei Commands in chat

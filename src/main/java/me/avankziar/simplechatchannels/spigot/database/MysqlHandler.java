@@ -18,8 +18,22 @@ public class MysqlHandler
 	public MysqlHandler(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
+		loadMysqlHandler();
+	}
+	
+	public boolean loadMysqlHandler()
+	{
 		tableNameI = plugin.getYamlHandler().get().getString("Mysql.TableNameI");
+		if(tableNameI == null)
+		{
+			return false;
+		}
 		tableNameII = plugin.getYamlHandler().get().getString("Mysql.TableNameII");
+		if(tableNameII == null)
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean hasAccount(Player player) 

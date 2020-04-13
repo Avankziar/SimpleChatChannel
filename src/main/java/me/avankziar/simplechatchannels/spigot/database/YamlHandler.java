@@ -32,38 +32,33 @@ public class YamlHandler
 	public YamlHandler(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
-		mkdir();
-		loadYamls();
-		languages = cfg.getString("language");
-		symbolglobal = lgg.getString(languages+".channelsymbol.global");
-		symboltrade = lgg.getString(languages+".channelsymbol.trade");
-		symbolauction = lgg.getString(languages+".channelsymbol.auction");
-		symbollocal = lgg.getString(languages+".channelsymbol.local");
-		symbolworld = lgg.getString(languages+".channelsymbol.world");
-		symbolsupport = lgg.getString(languages+".channelsymbol.support");
-		symbolteam = lgg.getString(languages+".channelsymbol.team");
-		symboladmin = lgg.getString(languages+".channelsymbol.admin");
-		symbolpm = lgg.getString(languages+".channelsymbol.message");
-		symbolpmre = lgg.getString(languages+".channelsymbol.messagere");
-		symbolgroup = lgg.getString(languages+".channelsymbol.group");
-		symbolcustom = lgg.getString(languages+".channelsymbol.custom");
+		loadYamlHandler();
 	}
 	
-	public void reload()
+	public boolean loadYamlHandler()
 	{
-		languages = cfg.getString("language");
-		symbolglobal = lgg.getString(languages+".channelsymbol.global");
-		symboltrade = lgg.getString(languages+".channelsymbol.trade");
-		symbolauction = lgg.getString(languages+".channelsymbol.auction");
-		symbollocal = lgg.getString(languages+".channelsymbol.local");
-		symbolworld = lgg.getString(languages+".channelsymbol.world");
-		symbolsupport = lgg.getString(languages+".channelsymbol.support");
-		symbolteam = lgg.getString(languages+".channelsymbol.team");
-		symboladmin = lgg.getString(languages+".channelsymbol.admin");
-		symbolpm = lgg.getString(languages+".channelsymbol.message");
-		symbolpmre = lgg.getString(languages+".channelsymbol.messagere");
-		symbolgroup = lgg.getString(languages+".channelsymbol.group");
-		symbolcustom = lgg.getString(languages+".channelsymbol.custom");
+		if(!mkdir())
+		{
+			return false;
+		}
+		if(!loadYamls())
+		{
+			return false;
+		}
+		languages = cfg.getString("Language", "English");
+		symbolglobal = lgg.getString(languages+".ChannelSymbol.Global", "");
+		symboltrade = lgg.getString(languages+".ChannelSymbol.Trade", "$");
+		symbolauction = lgg.getString(languages+".ChannelSymbol.Auction", "!");
+		symbollocal = lgg.getString(languages+".ChannelSymbol.Local", ",");
+		symbolworld = lgg.getString(languages+".ChannelSymbol.World", "°");
+		symbolsupport = lgg.getString(languages+".ChannelSymbol.Support", "?");
+		symbolteam = lgg.getString(languages+".ChannelSymbol.Team", "+");
+		symboladmin = lgg.getString(languages+".ChannelSymbol.Admin", "#");
+		symbolpm = lgg.getString(languages+".ChannelSymbol.PrivateMessage", "@");
+		symbolpmre = lgg.getString(languages+".ChannelSymbol.PrivateMessageRe", "@r");
+		symbolgroup = lgg.getString(languages+".ChannelSymbol.Group", "@*");
+		symbolcustom = lgg.getString(languages+".ChannelSymbol.Custom", ";");
+		return true;
 	}
 	
 	public YamlConfiguration get()
@@ -76,7 +71,7 @@ public class YamlHandler
 		return lgg;
 	}
 	
-	public void mkdir() 
+	public boolean mkdir() 
 	{
 		config = new File(plugin.getDataFolder(), "spigotconfig.yml");
 		if(!config.exists()) 
@@ -90,9 +85,10 @@ public class YamlHandler
 			SimpleChatChannels.log.info("Create language.yml...");
 			plugin.saveResource("language.yml", false);
 		}
+		return true;
 	}
 	
-	public void saveConfig() 
+	public boolean saveConfig() 
 	{
 	    try 
 	    {
@@ -102,10 +98,12 @@ public class YamlHandler
 	    {
 	    	SimpleChatChannels.log.severe("Could not save the spigotconfig.yml! Error: " + e.getMessage());
 			e.printStackTrace();
+			return false;
 	    }
+	    return true;
 	}
 	
-	public void saveLanguage() 
+	public boolean saveLanguage() 
 	{
 	    try 
 	    {
@@ -115,7 +113,9 @@ public class YamlHandler
 	    {
 	    	SimpleChatChannels.log.severe("Could not save the language.yml! Error: " + e.getMessage());
 			e.printStackTrace();
+			return false;
 	    }
+	    return true;
 	}
 	
 	public boolean loadYamls() 
@@ -144,88 +144,88 @@ public class YamlHandler
 	public String getChannel(String channelwithoutsymbol, String msg)
 	 {
 		 String cws = channelwithoutsymbol;
-		 if(!cws.equalsIgnoreCase("global"))
+		 if(!cws.equalsIgnoreCase("Global"))
 		 {
 			 if(msg.startsWith(symbolglobal))
 			 {
-				 return "global";
+				 return "Global";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("trade"))
+		 if(!cws.equalsIgnoreCase("Trade"))
 		 {
 			 if(msg.startsWith(symboltrade))
 			 {
-				 return "trade";
+				 return "Trade";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("auction"))
+		 if(!cws.equalsIgnoreCase("Auction"))
 		 {
 			 if(msg.startsWith(symbolauction))
 			 {
-				 return "auction";
+				 return "Auction";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("local"))
+		 if(!cws.equalsIgnoreCase("Local"))
 		 {
 			 if(msg.startsWith(symbollocal))
 			 {
-				 return "local";
+				 return "Local";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("world"))
+		 if(!cws.equalsIgnoreCase("World"))
 		 {
 			 if(msg.startsWith(symbolworld))
 			 {
-				 return "world";
+				 return "World";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("support"))
+		 if(!cws.equalsIgnoreCase("Support"))
 		 {
 			 if(msg.startsWith(symbolsupport))
 			 {
-				 return "support";
+				 return "Support";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("team"))
+		 if(!cws.equalsIgnoreCase("Team"))
 		 {
 			 if(msg.startsWith(symbolteam))
 			 {
-				 return "team";
+				 return "Team";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("admin"))
+		 if(!cws.equalsIgnoreCase("Admin"))
 		 {
 			 if(msg.startsWith(symboladmin))
 			 {
-				 return "admin";
+				 return "Admin";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("custom"))
+		 if(!cws.equalsIgnoreCase("Custom"))
 		 {
 			 if(msg.startsWith(symbolcustom))
 			 {
-				 return "custom";
+				 return "Custom";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("group"))
+		 if(!cws.equalsIgnoreCase("Group"))
 		 {
 			 if(msg.startsWith(symbolgroup))
 			 {
-				 return "group";
+				 return "Group";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("pmre"))
+		 if(!cws.equalsIgnoreCase("PrivateMessageRe"))
 		 {
 			 if(msg.startsWith(symbolpmre))
 			 {
-				 return "pmre";
+				 return "PrivateMessageRe";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("pm"))
+		 if(!cws.equalsIgnoreCase("PrivateMessage"))
 		 {
 			 if(msg.startsWith(symbolpm))
 			 {
-				 return "pm";
+				 return "PrivateMessage";
 			 }
 		 }
 		return cws;
@@ -233,43 +233,48 @@ public class YamlHandler
 	 
 	 public String getSymbol(String channel)
 	 {
-		if(channel.equals("global"))
+		if(channel.equals("Global"))
 		{
 			return symbolglobal;
-		} else if(channel.equals("trade"))
+		} else if(channel.equals("Trade"))
 		{
 			return symboltrade;
-		} else if(channel.equals("auction"))
+		} else if(channel.equals("Auction"))
 		{
 			return symbolauction;
-		} else if(channel.equals("local"))
+		} else if(channel.equals("Local"))
 		{
 			return symbollocal;
-		} else if(channel.equals("world"))
+		} else if(channel.equals("World"))
 		{
 			return symbolworld;
-		} else if(channel.equals("support"))
+		} else if(channel.equals("Support"))
 		{
 			 return symbolsupport;
-		} else if(channel.equals("team"))
+		} else if(channel.equals("Team"))
 		{
 			 return symbolteam;
-		} else if(channel.equals("admin"))
+		} else if(channel.equals("Admin"))
 		{
 			 return symboladmin;
-		} else if(channel.equals("custom"))
+		} else if(channel.equals("Custom"))
 		{
 			 return symbolcustom;
-		} else if(channel.equals("group"))
+		} else if(channel.equals("Group"))
 		{
 			return symbolgroup;
-		} else if(channel.equals("pmre"))
+		} else if(channel.equals("PrivateMessageRe"))
 		{
 			 return symbolpmre;
-		} else if(channel.equals("pm"))
+		} else if(channel.equals("PrivateMessage"))
 		{
 			 return symbolpm;
 		}
 		return symbolglobal;
 	 }
+
+	public String getLanguages()
+	{
+		return languages;
+	}
 }

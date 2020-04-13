@@ -49,8 +49,14 @@ public class Utility
 	public Utility(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
-		setPrefix(plugin.getYamlHandler().get().getString("Prefix"));
-		setLanguage(plugin.getYamlHandler().get().getString("Language"));
+		loadUtility();
+	}
+	
+	public boolean loadUtility()
+	{
+		setPrefix(plugin.getYamlHandler().get().getString("Prefix", "&7[&eS&6c&cc&7] &r"));
+		setLanguage(plugin.getYamlHandler().getLanguages());
+		return true;
 	}
 	
 	public String getPrefix()

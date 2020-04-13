@@ -227,8 +227,6 @@ German:
   CmdSccEditor:
     In: '&eDu bist nun im Editorbereich. &cAlle Chateingaben sind deaktiviert!'
     Out: '&eDu verlässt den Editorbereich. &aAlle Chateingaben sind aktiviert!'
-  SpigotBungee:
-    msg01: '&7Es ist keiner da, der dich hört!'
   Punisher:
     Jail: '&cDu bist im Gefängnis! Du kannst nichts schreiben und auch keine Befehle nutzten!'
   AfkRecord:
@@ -448,8 +446,8 @@ English:
       Headline: '&7=====&eMsg PlayerList&7====='
       WrongInput: '&cNo player fits the &cdescription.'
     Reload:
-      msg01: '&aYaml file was reloaded.'
-      msg02: '&cError found by reloading the files! See console!'
+      Success: '&aYaml file was reloaded.'
+      Error: '&cError found by reloading the files! See console!'
     Serverlistener:
       BungeeOff: '&7BungeeCord for SCC has been deactivated!'
       BungeeOn: '&7BungeeCord for SCC was activated!'
@@ -461,8 +459,6 @@ English:
   CmdSccEditor:
     In: '&eYou are now in the editor area. & cAll chat entries are deactivated!'
     Out: '&eYou leave the editor area. & aAll chat entries are activated!'
-  SpigotBungee:
-    msg01: '&7There is no one here to hear you!'
   Punisher:
     Jail: '&cYou are in jail! You can not write anything or use commands!'
   AfkRecord:
