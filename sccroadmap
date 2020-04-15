@@ -8,7 +8,7 @@ Build 33
 - +ignore_name aktualisierungsmethode einfügen
 - +Namen von configs & language neu benennen nach der neuen Konform
 - +/scc wordfiler <add/remove> <word> => /scc wordfilter <word>
-- +/scc broadcast, hat aliase bekommen "ausstrahlen, übertragen"
+- +/scc broadcast, hat alias bekommen "ausstrahlung"
 - +Spieler die Afk sind, bekommen trotzdem die PrivateNachricht
 - +Reload befehl in bungee eingebaut, und auf Bungee und Spigot Ebene bewirkt es auch einen reconnect der Mysql anhand neuer Daten.
 - +Tab correct umsetzten siehe votereborn
@@ -20,7 +20,7 @@ Build 31
 - +Hover bei Commands in chat
 - +CommandHandler
 - +Item und Command replacerblocks in language.yml änderbar gemacht um missbrauch vorzubeugen
-
+ 
 Build 30
 - afk, spigot und bungee. Ist bungee aktive, wird es in spigot ausgelassen
 - chatformat, naja

@@ -507,13 +507,13 @@ public class Utility
 		return "scc.no_prefix_suffix";
 	}
 	
-	public boolean getIgnored(Player player, Player target)
+	public boolean getIgnored(Player target, Player player)
 	{
-		if(plugin.getMysqlHandler().existIgnore(player, target.getUniqueId().toString()))
+		if(plugin.getMysqlHandler().existIgnore(target, player.getUniqueId().toString()))
 		{
-			if(target.hasPermission(PERMBYPASSIGNORE))
+			if(player.hasPermission(PERMBYPASSIGNORE))
 			{
-				target.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
 						plugin.getYamlHandler().getL().getString(language+".EventChat.PlayerIgnoreYou"))));
 				return false;
 			}
