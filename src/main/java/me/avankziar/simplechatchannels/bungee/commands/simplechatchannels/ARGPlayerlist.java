@@ -36,7 +36,7 @@ public class ARGPlayerlist extends CommandModule
 			for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
     		{
 				TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
-						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" ", false);
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);
 				list.add(prefix);
     		}
 		} else if(args.length==2)
@@ -56,7 +56,7 @@ public class ARGPlayerlist extends CommandModule
 						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize))
 				{
 					TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
-							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" ", false);
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);
     				list.add(prefix);
 				}
     		}

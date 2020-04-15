@@ -159,7 +159,7 @@ public class EventChat implements Listener
 			
 			plugin.getUtility().saveAfkTimes(player);
 			
-			utility.sendAllMessage(player, "channel_"+channel, MSG);
+			utility.sendAllMessage(player, "channel_"+channel, MSG, false);
 			return;
 		} else if(channel.equals("Custom")) //----------------------------------------------------------Support Channel
 		{
@@ -212,7 +212,7 @@ public class EventChat implements Listener
 					{
 						if((boolean) mysqlHandler.getDataI(all, "channel_custom", "player_uuid"))
 						{
-							if(!utility.getIgnored(all,player))
+							if(!utility.getIgnored(all,player, false))
 							{
 								all.sendMessage(MSG);
 							}
@@ -292,7 +292,7 @@ public class EventChat implements Listener
 				{
 					if(!all.equals(player))
 					{
-						if(!utility.getIgnored(all,player))
+						if(!utility.getIgnored(all,player, false))
 						{
 							if(all.hasPermission(ps))
 							{
@@ -392,7 +392,7 @@ public class EventChat implements Listener
 			
 			plugin.getUtility().saveAfkTimes(player);
 			
-			if(utility.getIgnored(tr, player))
+			if(utility.getIgnored(tr, player, true))
 			{
 				///Der Spieler ignoriert dich!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerIgnoreYou"));
@@ -489,7 +489,7 @@ public class EventChat implements Listener
 			
 			plugin.getUtility().saveAfkTimes(player);
 			
-			if(utility.getIgnored(tr, player))
+			if(utility.getIgnored(tr, player, true))
 			{
 				///Der Spieler ignoriert dich!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerIgnoreYou"));

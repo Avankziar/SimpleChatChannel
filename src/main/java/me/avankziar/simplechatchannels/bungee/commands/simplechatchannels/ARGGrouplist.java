@@ -57,7 +57,7 @@ public class ARGGrouplist extends CommandModule
 			for(String g : groups)
     		{
 				TextComponent prefix = utility.clickEvent("&6"+g+" ", 
-						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("group")+g+" ", false);
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+g+" ", false);
 				list.add(prefix);
     		}
 		} else if(args.length==2)
@@ -68,7 +68,7 @@ public class ARGGrouplist extends CommandModule
 				if(s.startsWith(g))
 				{
 					TextComponent prefix = utility.clickEvent("&6"+g+" ", 
-							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("group")+g+" ", false);
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+g+" ", false);
     				list.add(prefix);	
 				}
     		}

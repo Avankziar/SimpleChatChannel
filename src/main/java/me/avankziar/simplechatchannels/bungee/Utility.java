@@ -415,15 +415,18 @@ public class Utility
 		return "scc.no_prefix_suffix";
 	}
 	
-	public boolean getIgnored(ProxiedPlayer target, ProxiedPlayer player)
+	public boolean getIgnored(ProxiedPlayer target, ProxiedPlayer player, boolean privatechat)
 	{
 		if(plugin.getMysqlHandler().existIgnore(target, player.getUniqueId().toString()))
 		{
-			if(player.hasPermission(PERMBYPASSIGNORE))
+			if(privatechat)
 			{
-				player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-						plugin.getYamlHandler().getL().getString(language+".EventChat.PlayerIgnoreYou"))));
-				return false;
+				if(player.hasPermission(PERMBYPASSIGNORE))
+				{
+					player.sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".EventChat.PlayerIgnoreYou"))));
+					return false;
+				}
 			}
 			return true;
 		}
@@ -572,13 +575,13 @@ public class Utility
 		}
 	}
 	
-	public void sendAllMessage(ProxiedPlayer player, String mysql_channel, TextComponent MSG)
+	public void sendAllMessage(ProxiedPlayer player, String mysql_channel, TextComponent MSG, boolean privatechat)
 	{
 		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
 			if((boolean) plugin.getMysqlHandler().getDataI(all, mysql_channel, "player_uuid"))
 			{
-				if(!getIgnored(all,player))
+				if(!getIgnored(all,player, privatechat))
 				{
 					all.sendMessage(MSG);
 				}

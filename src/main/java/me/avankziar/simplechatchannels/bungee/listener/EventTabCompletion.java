@@ -47,7 +47,7 @@ public class EventTabCompletion implements Listener
 						event.getSuggestions().clear();
 						event.getSuggestions().addAll(list);
 						return;
-					} else if (cc.length == 2) 
+					} else
 					{
 						if (!cc[1].equals("")) 
 						{
@@ -74,9 +74,6 @@ public class EventTabCompletion implements Listener
 						 * und keine zwei. Erst wenn "/scc a" geschrieben wurde oder ähnliches erkennt
 						 * er es als 2 Elemente. 
 						 */
-					} else if(cc.length == 3)
-					{
-						return; //Müsste man mal überlegen
 					}
 				}
 			}

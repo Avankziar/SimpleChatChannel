@@ -507,17 +507,20 @@ public class Utility
 		return "scc.no_prefix_suffix";
 	}
 	
-	public boolean getIgnored(Player target, Player player)
+	public boolean getIgnored(Player target, Player player, boolean privatechat)
 	{
 		if(plugin.getMysqlHandler().existIgnore(target, player.getUniqueId().toString()))
 		{
-			if(player.hasPermission(PERMBYPASSIGNORE))
+			if(privatechat)
 			{
-				player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-						plugin.getYamlHandler().getL().getString(language+".EventChat.PlayerIgnoreYou"))));
-				return false;
+				if(player.hasPermission(PERMBYPASSIGNORE))
+				{
+					player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+							plugin.getYamlHandler().getL().getString(language+".EventChat.PlayerIgnoreYou"))));
+					return false;
+				}
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}
@@ -664,13 +667,13 @@ public class Utility
 		}
 	}
 	
-	public void sendAllMessage(Player player, String mysql_channel, TextComponent MSG)
+	public void sendAllMessage(Player player, String mysql_channel, TextComponent MSG, boolean privatechat)
 	{
 		for(Player all : plugin.getServer().getOnlinePlayers())
 		{
 			if((boolean) plugin.getMysqlHandler().getDataI(all, mysql_channel, "player_uuid"))
 			{
-				if(!getIgnored(all,player))
+				if(!getIgnored(all,player, privatechat))
 				{
 					all.spigot().sendMessage(MSG);
 				}
