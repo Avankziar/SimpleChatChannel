@@ -21,8 +21,7 @@ public class ARGChannelTrade extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandHelper().channeltoggle(player, args, language, "trade", "Trade");
+		plugin.getCommandHelper().channeltoggle(player, "trade", "Trade");
 		return;
 	}
 }

@@ -29,7 +29,7 @@ public class CommandExecutorSimpleChatChannel extends Command
 		}
 		if (args.length == 0) 
 		{
-			plugin.getCommandHelper().scc(player, language); //Info Command
+			plugin.getCommandHelper().scc(player); //Info Command
 			return;
 		}
 		if (SimpleChatChannels.sccarguments.containsKey(args[0])) 

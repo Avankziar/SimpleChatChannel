@@ -27,7 +27,7 @@ public class YamlHandler
 	private String symbolpm;
 	private String symbolpmre;
 	private String symbolgroup;
-	private String symbolcustom;
+	private String symboltemp;
 	
 	public YamlHandler(SimpleChatChannels plugin)
 	{
@@ -57,7 +57,7 @@ public class YamlHandler
 		symbolpm = lgg.getString(languages+".ChannelSymbol.PrivateMessage", "@");
 		symbolpmre = lgg.getString(languages+".ChannelSymbol.PrivateMessageRe", "@r");
 		symbolgroup = lgg.getString(languages+".ChannelSymbol.Group", "@*");
-		symbolcustom = lgg.getString(languages+".ChannelSymbol.Custom", ";");
+		symboltemp = lgg.getString(languages+".ChannelSymbol.Temp", ";");
 		return true;
 	}
 	
@@ -210,11 +210,11 @@ public class YamlHandler
 				 return "Admin";
 			 }
 		 }
-		 if(!cws.equalsIgnoreCase("Custom"))
+		 if(!cws.equalsIgnoreCase("Temp"))
 		 {
-			 if(msg.startsWith(symbolcustom))
+			 if(msg.startsWith(symboltemp))
 			 {
-				 return "Custom";
+				 return "Temp";
 			 }
 		 }
 		 if(!cws.equalsIgnoreCase("Group"))
@@ -267,9 +267,9 @@ public class YamlHandler
 		} else if(channel.equals("Admin"))
 		{
 			 return symboladmin;
-		} else if(channel.equals("Custom"))
+		} else if(channel.equals("Temp"))
 		{
-			 return symbolcustom;
+			 return symboltemp;
 		} else if(channel.equals("Group"))
 		{
 			return symbolgroup;

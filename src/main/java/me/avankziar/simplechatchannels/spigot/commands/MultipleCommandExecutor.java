@@ -33,7 +33,7 @@ public class MultipleCommandExecutor implements CommandExecutor
 			Player player = (Player) sender;
 			if (args.length == 0) 
 			{
-				plugin.getCommandHelper().scc(player, language); //Info Command
+				plugin.getCommandHelper().scc(player); //Info Command
 				return false;
 			}
 			if (SimpleChatChannels.sccarguments.containsKey(args[0])) 

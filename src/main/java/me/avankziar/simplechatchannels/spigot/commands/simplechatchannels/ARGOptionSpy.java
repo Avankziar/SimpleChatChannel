@@ -4,7 +4,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 
 public class ARGOptionSpy extends CommandModule
@@ -22,9 +21,7 @@ public class ARGOptionSpy extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
-		plugin.getCommandHelper().optiontoggle(player, args, language, "spy", "spy", "Spy");
+		plugin.getCommandHelper().optiontoggle(player, "spy", "spy", "Spy");
 		return;
 	}
 }

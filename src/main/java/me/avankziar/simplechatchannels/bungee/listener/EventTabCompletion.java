@@ -14,9 +14,11 @@ import net.md_5.bungee.event.EventHandler;
 
 public class EventTabCompletion implements Listener
 {	
-	public EventTabCompletion()
+	private SimpleChatChannels plugin;
+	
+	public EventTabCompletion(SimpleChatChannels plugin)
 	{
-		
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
@@ -24,6 +26,7 @@ public class EventTabCompletion implements Listener
 	{
 		String c = event.getCursor();
 		String[] cc = c.split(" ");
+		int space = plugin.getUtility().countCharacters(c, " ");
 		ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 		if (event.getSender() instanceof ProxiedPlayer) 
 		{
@@ -47,7 +50,7 @@ public class EventTabCompletion implements Listener
 						event.getSuggestions().clear();
 						event.getSuggestions().addAll(list);
 						return;
-					} else
+					} else if(cc.length == 2 && space == 1)
 					{
 						if (!cc[1].equals("")) 
 						{
@@ -74,6 +77,10 @@ public class EventTabCompletion implements Listener
 						 * und keine zwei. Erst wenn "/scc a" geschrieben wurde oder ähnliches erkennt
 						 * er es als 2 Elemente. 
 						 */
+					} else
+					{
+						event.getSuggestions().clear();
+						return;
 					}
 				}
 			}

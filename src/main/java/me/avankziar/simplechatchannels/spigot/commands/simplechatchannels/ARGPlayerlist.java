@@ -31,7 +31,6 @@ public class ARGPlayerlist extends CommandModule
 		//All needed vars
 		Player player = (Player) sender;
 		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
 		List<BaseComponent> list = new ArrayList<>();
 		if(args.length==1)
 		{
@@ -67,7 +66,7 @@ public class ARGPlayerlist extends CommandModule
 			utility.rightArgs(player,args,2);
 			return;
 		}
-		plugin.getCommandHelper().playergrouplist(player, language, list, "PlayerList");
+		plugin.getCommandHelper().playergrouplist(player, list, "PlayerList");
 		return;
 	}
 

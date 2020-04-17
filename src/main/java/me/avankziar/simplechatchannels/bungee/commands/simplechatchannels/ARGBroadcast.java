@@ -14,7 +14,7 @@ public class ARGBroadcast extends CommandModule
 	
 	public ARGBroadcast(SimpleChatChannels plugin)
 	{
-		super("broadcast","scc.cmd.broadcast",SimpleChatChannels.sccarguments,2,Integer.MAX_VALUE,"ausstrahlung");
+		super("broadcast","scc.cmd.broadcast",SimpleChatChannels.sccarguments,1,999999999,"ausstrahlung");
 		this.plugin = plugin;
 	}
 
@@ -35,8 +35,8 @@ public class ARGBroadcast extends CommandModule
 			player.sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
 			return;
 		}
-		TextComponent MSG = utility.tctlYaml(language+".CmdScc.Broadcast.Prefix");
-		MSG.setExtra(utility.msgLater(player, 0, "global", msg));
+		TextComponent MSG = utility.tc("");
+		MSG.setExtra(utility.broadcast(player, 0, "Global", msg, utility.tctlYaml(language+".CmdScc.Broadcast.Intro")));
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
 			all.sendMessage(MSG);

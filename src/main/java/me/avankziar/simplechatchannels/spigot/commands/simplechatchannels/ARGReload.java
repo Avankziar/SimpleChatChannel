@@ -12,7 +12,7 @@ public class ARGReload extends CommandModule
 	
 	public ARGReload(SimpleChatChannels plugin)
 	{
-		super("reload","scc.cmd.reload",SimpleChatChannels.sccarguments,1,1,"neuladen");
+		super("spigotreload","scc.cmd.reload",SimpleChatChannels.sccarguments,1,1,"spigotneuladen");
 		this.plugin = plugin;
 	}
 

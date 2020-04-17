@@ -21,8 +21,7 @@ public class ARGChannelGlobal extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandHelper().channeltoggle(player, args, language, "global", "Global");
+		plugin.getCommandHelper().channeltoggle(player, "global", "Global");
 		return;
 	}
 }

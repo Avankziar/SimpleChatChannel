@@ -21,8 +21,7 @@ public class ARGChannelPrivateMessage extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandHelper().channeltoggle(player, args, language, "pm", "Private Message");
+		plugin.getCommandHelper().channeltoggle(player, "pm", "Private Message");
 		return;
 	}
 }

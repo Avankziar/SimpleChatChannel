@@ -7,13 +7,13 @@ import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGCustomChannelChangePassword extends CommandModule
+public class ARGTemporaryChannelChangePassword extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGCustomChannelChangePassword(SimpleChatChannels plugin)
+	public ARGTemporaryChannelChangePassword(SimpleChatChannels plugin)
 	{
-		super("ccchangepassword","scc.cmd.cc.changepassword",SimpleChatChannels.sccarguments,2,2,"ccpasswortändern");
+		super("tcchangepassword","scc.cmd.tc.changepassword",SimpleChatChannels.sccarguments,2,2,"tcpasswortändern");
 		this.plugin = plugin;
 	}
 
@@ -28,20 +28,20 @@ public class ARGCustomChannelChangePassword extends CommandModule
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+scc+"CustomChannelGeneral.NotInAChannel"));
+			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannel"));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+scc+"CustomChannelGeneral.NotTheCreator"));
+			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotTheCreator"));
 			return;
 		}
 		cc.setPassword(args[1]);
 		///Du hast das Passwort zu &f%password% &egeändert!
 		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCChangepassword.PasswordChange")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCChangepassword.PasswordChange")
 				.replace("%password%", args[1])));
 		return;
 	}

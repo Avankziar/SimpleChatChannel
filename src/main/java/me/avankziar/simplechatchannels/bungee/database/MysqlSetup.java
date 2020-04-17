@@ -85,7 +85,7 @@ public class MysqlSetup
 		        		+ " channel_global boolean, channel_trade boolean, channel_auction boolean, channel_support boolean,"
 		        		+ " channel_local boolean, channel_world boolean,"
 		        		+ " channel_team boolean, channel_admin boolean,"
-		        		+ " channel_group boolean, channel_pm boolean, channel_custom boolean,"
+		        		+ " channel_group boolean, channel_pm boolean, channel_temp boolean,"
 		        		+ " spy boolean, joinmessage boolean);";
 		        query = conn.prepareStatement(data);
 		        query.execute();

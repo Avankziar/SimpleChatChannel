@@ -12,6 +12,7 @@ TimeOfDaysOutput: '&7[%time%] &r'
 UsePrefixForPlayerColor: true
 ShowJoinMessageGlobal: false
 ShowLeaveMessageGlobal: false
+CCInviteCooldown: 60
 Mysql:
   Status: false
   Host: '127.0.0.1'

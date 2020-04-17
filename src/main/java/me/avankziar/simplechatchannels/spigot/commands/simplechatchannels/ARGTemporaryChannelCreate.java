@@ -10,13 +10,13 @@ import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 
 
-public class ARGCustomChannelCreate extends CommandModule
+public class ARGTemporaryChannelCreate extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGCustomChannelCreate(SimpleChatChannels plugin)
+	public ARGTemporaryChannelCreate(SimpleChatChannels plugin)
 	{
-		super("cccreate","scc.cmd.cc.create",SimpleChatChannels.sccarguments,2,3,"ccerschaffen");
+		super("tccreate","scc.cmd.tc.create",SimpleChatChannels.sccarguments,2,3,"tcerschaffen");
 		this.plugin = plugin;
 	}
 
@@ -30,7 +30,7 @@ public class ARGCustomChannelCreate extends CommandModule
 		{
 			///Du bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.
 			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+"CCCreate.AlreadyInAChannel")
+					plugin.getYamlHandler().getL().getString(language+"TCCreate.AlreadyInAChannel")
 					.replace("%channel%", cc.getName()))));
 			return;
 		}
@@ -52,13 +52,13 @@ public class ARGCustomChannelCreate extends CommandModule
 		{
 			///Du hast den Custom Channel &f%channel% &eerstellt!
 			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+"CCCreate.ChannelCreateWithoutPassword")
+					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithoutPassword")
 					.replace("%channel%", cc.getName()))));
 		} else
 		{
 			///Du hast den Custom Channel &f%channel% &emit dem Passwort &f%password% &eerstellt!
 			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+"CCCreate.ChannelCreateWithPassword")
+					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getName())
 					.replace("%password%", password))));
 		}

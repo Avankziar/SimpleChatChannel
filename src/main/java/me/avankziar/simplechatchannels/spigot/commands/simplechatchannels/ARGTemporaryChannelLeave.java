@@ -8,13 +8,13 @@ import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 
-public class ARGCustomChannelLeave extends CommandModule
+public class ARGTemporaryChannelLeave extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGCustomChannelLeave(SimpleChatChannels plugin)
+	public ARGTemporaryChannelLeave(SimpleChatChannels plugin)
 	{
-		super("ccleave","scc.cmd.cc.leave",SimpleChatChannels.sccarguments,1,1,"ccverlassen");
+		super("tcleave","scc.cmd.tc.leave",SimpleChatChannels.sccarguments,1,1,"tcverlassen");
 		this.plugin = plugin;
 	}
 
@@ -28,7 +28,7 @@ public class ARGCustomChannelLeave extends CommandModule
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"CustomChannelGeneral.NotInAChannel"));
+			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannel"));
 			return;
 		}
 		final String name = cc.getName();
@@ -48,7 +48,7 @@ public class ARGCustomChannelLeave extends CommandModule
 				cc.setCreator(newcreator);
 				///Du wurdest der neue Erstelle der CustomChannels &f%channel%
     			newcreator.spigot().sendMessage(utility.tctl(
-    					plugin.getYamlHandler().getL().getString(language+"ChannelLeave.NewCreator")
+    					plugin.getYamlHandler().getL().getString(language+"TCLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			} else 
 			{
@@ -59,7 +59,7 @@ public class ARGCustomChannelLeave extends CommandModule
 		}
 		///Du hast den CustomChannel &f%channel% &everlassen!
 		player.spigot().sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+"ChannelLeave.YouLeft")
+				plugin.getYamlHandler().getL().getString(language+"TCLeave.YouLeft")
 				.replace("%channel%", name)));
 		return;
 	}

@@ -7,13 +7,13 @@ import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGCustomChannelInfo extends CommandModule
+public class ARGTemporaryChannelInfo extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGCustomChannelInfo(SimpleChatChannels plugin)
+	public ARGTemporaryChannelInfo(SimpleChatChannels plugin)
 	{
-		super("ccinfo","scc.cmd.cc.info",SimpleChatChannels.sccarguments,1,1);
+		super("tcinfo","scc.cmd.tc.info",SimpleChatChannels.sccarguments,1,1);
 		this.plugin = plugin;
 	}
 
@@ -28,31 +28,31 @@ public class ARGCustomChannelInfo extends CommandModule
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+scc+"CustomChannelGeneral.NotInAChannel"));
+			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannel"));
 			return;
 		}
 		///&e=====&5[&fCustomChannel &6%channel%&5]&e=====
 		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Headline")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Headline")
 				.replace("%channel%", cc.getName())));
 		///Channel Ersteller: &f%creator%
 		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Creator")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Creator")
 				.replace("%creator%", cc.getCreator().getName())));
 		///Channel Mitglieder: &f%members%
 		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Members")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Members")
 				.replace("%members%", cc.getMembers().toString())));
 		if(cc.getPassword()!=null)
 		{
 			///Channel Passwort: &f%password%
 			player.sendMessage(utility.tctl(
-					plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Password")
+					plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Password")
 					.replace("%password%", cc.getPassword())));
 		}
 		///Channel Gebannte Spieler: &f%banned%
 		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Banned")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Banned")
 				.replace("%banned%", cc.getBanned().toString())));
 		return;
 	}

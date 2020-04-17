@@ -7,13 +7,13 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 
-public class ARGCustomChannelInfo extends CommandModule
+public class ARGTemporaryChannelInfo extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGCustomChannelInfo(SimpleChatChannels plugin)
+	public ARGTemporaryChannelInfo(SimpleChatChannels plugin)
 	{
-		super("ccinfo","scc.cmd.cc.info",SimpleChatChannels.sccarguments,1,1);
+		super("tcinfo","scc.cmd.tc.info",SimpleChatChannels.sccarguments,1,1);
 		this.plugin = plugin;
 	}
 
@@ -27,31 +27,31 @@ public class ARGCustomChannelInfo extends CommandModule
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"CustomChannelGeneral.NotInAChannel"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"ChannelGeneral.NotInAChannel"));
 			return;
 		}
 		///&e=====&5[&fCustomChannel &6%channel%&5]&e=====
 		player.spigot().sendMessage(plugin.getUtility().tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Headline")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Headline")
 				.replace("%channel%", cc.getName())));
 		///Channel Ersteller: &f%creator%
 		player.spigot().sendMessage(plugin.getUtility().tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Creator")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Creator")
 				.replace("%creator%", cc.getCreator().getName())));
 		///Channel Mitglieder: &f%members%
 		player.spigot().sendMessage(plugin.getUtility().tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Members")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Members")
 				.replace("%members%", cc.getMembers().toString())));
 		if(cc.getPassword()!=null)
 		{
 			///Channel Passwort: &f%password%
 			player.spigot().sendMessage(plugin.getUtility().tctl(
-					plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Password")
+					plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Password")
 					.replace("%password%", cc.getPassword())));
 		}
 		///Channel Gebannte Spieler: &f%banned%
 		player.spigot().sendMessage(plugin.getUtility().tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"CCInfo.Banned")
+				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Banned")
 				.replace("%banned%", cc.getBanned().toString())));
 		return;
 	}

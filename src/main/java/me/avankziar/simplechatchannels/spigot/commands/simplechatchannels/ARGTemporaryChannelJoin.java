@@ -7,13 +7,13 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
 
-public class ARGCustomChannelJoin extends CommandModule
+public class ARGTemporaryChannelJoin extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGCustomChannelJoin(SimpleChatChannels plugin)
+	public ARGTemporaryChannelJoin(SimpleChatChannels plugin)
 	{
-		super("ccjoin","scc.cmd.cc.join",SimpleChatChannels.sccarguments,1,1,"ccbeitreten");
+		super("tcjoin","scc.cmd.tc.join",SimpleChatChannels.sccarguments,2,3,"tcbeitreten");
 		this.plugin = plugin;
 	}
 
@@ -41,21 +41,21 @@ public class ARGCustomChannelJoin extends CommandModule
 		if(oldcc!=null)
 		{
 			///Du bist schon in einem anderen Channel gejoint, verlasse erst diesen!
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.AlreadyInAChannel"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"TCJoin.AlreadyInAChannel"));
 			return;
 		}
 		if(cc==null)
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
 			player.spigot().sendMessage(plugin.getUtility().tctl(
-					plugin.getYamlHandler().getL().getString(language+"CCJoin.UnknowChannel")
+					plugin.getYamlHandler().getL().getString(language+"TCJoin.UnknowChannel")
 					.replace("%name%", name)));
 			return;
 		}
 		if(cc.getBanned().contains(player))
 		{
 			///Du bist in diesem CustomChannel gebannt und darfst nicht joinen!
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.Banned"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"TCJoin.Banned"));
 			return;
 		}
 		if(password==null)
@@ -63,7 +63,7 @@ public class ARGCustomChannelJoin extends CommandModule
 			if(cc.getPassword()!=null)
 			{
 				///Der CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!
-				player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.ChannelHasPassword"));
+				player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"TCJoin.ChannelHasPassword"));
 				return;
 			}
 		} else
@@ -71,21 +71,27 @@ public class ARGCustomChannelJoin extends CommandModule
 			if(cc.getPassword()==null)
 			{
 				///Es ist kein Passwort angegeben, du kannst so joinen!
-				player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.ChannelHasNoPassword"));
+				player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"TCJoin.ChannelHasNoPassword"));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
 				///Das angegebene Passwort ist nicht korrekt!
-				player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"CCJoin.PasswordIncorrect"));
+				player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"TCJoin.PasswordIncorrect"));
 				return;
 			}
 		}
 		cc.addMembers(player);
 		///Du bist dem CustomChannel &f%channel% &agejoint!
 		player.spigot().sendMessage(plugin.getUtility().tctl(
-				plugin.getYamlHandler().getL().getString(language+"CCJoin.ChannelJoined")
+				plugin.getYamlHandler().getL().getString(language+"TCJoin.ChannelJoined")
 				.replace("%channel%", cc.getName())));
+		for(Player members : cc.getMembers())
+		{
+			members.spigot().sendMessage(plugin.getUtility().tctl(
+					plugin.getYamlHandler().getL().getString(language+"TCCJoin.PlayerIsJoined")
+					.replace("%player%", player.getName())));
+		}
 		return;
 	}
 }

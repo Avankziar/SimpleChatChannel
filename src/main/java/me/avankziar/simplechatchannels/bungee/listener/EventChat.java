@@ -161,9 +161,9 @@ public class EventChat implements Listener
 			
 			utility.sendAllMessage(player, "channel_"+channel, MSG, false);
 			return;
-		} else if(channel.equals("Custom")) //----------------------------------------------------------Support Channel
+		} else if(channel.equals("Temp")) //----------------------------------------------------------Support Channel
 		{
-			if(!utility.hasChannelRights(player, "channel_custom"))
+			if(!utility.hasChannelRights(player, "channel_temp"))
 			{
 				return;
 			}
@@ -171,7 +171,7 @@ public class EventChat implements Listener
 			if(CustomChannel.getCustomChannel(player)==null)
 			{
 				///Du bist in keinem CustomChannel!
-				player.sendMessage(utility.tctlYaml(language+".CustomChannelGeneral.NotInAChannel"));
+				player.sendMessage(utility.tctlYaml(language+".ChannelGeneral.NotInAChannel"));
 				return;
 			}
 			
@@ -190,7 +190,7 @@ public class EventChat implements Listener
 			else {MSG = utility.tc("");}
 			
 			MSG.setExtra(utility.getAllTextComponentForChannels(
-					player, event.getMessage(), "Custom", symbol, symbol.length()));
+					player, event.getMessage(), "Temp", symbol, symbol.length()));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
@@ -210,7 +210,7 @@ public class EventChat implements Listener
 				{
 					if(members.getName().equals(all.getName()))
 					{
-						if((boolean) mysqlHandler.getDataI(all, "channel_custom", "player_uuid"))
+						if((boolean) mysqlHandler.getDataI(all, "channel_temp", "player_uuid"))
 						{
 							if(!utility.getIgnored(all,player, false))
 							{

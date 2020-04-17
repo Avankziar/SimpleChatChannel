@@ -21,8 +21,7 @@ public class ARGChannelTeam extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandHelper().channeltoggle(player, args, language, "team", "Team");
+		plugin.getCommandHelper().channeltoggle(player, "team", "Team");
 		return;
 	}
 }

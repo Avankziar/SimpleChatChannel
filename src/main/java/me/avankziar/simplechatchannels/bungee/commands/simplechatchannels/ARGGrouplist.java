@@ -73,7 +73,7 @@ public class ARGGrouplist extends CommandModule
 				}
     		}
 		}
-		plugin.getCommandHelper().playergrouplist(player, language, list, "GroupList");
+		plugin.getCommandHelper().playergrouplist(player, list, "GroupList");
 		return;
 	}
 

@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -22,7 +23,8 @@ public class ARGBroadcast extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage();
+		Utility utility = plugin.getUtility();
+		String language = utility.getLanguage();
 		String msg = "";
 		for (int i = 1; i < args.length; i++) 
         {
@@ -34,8 +36,8 @@ public class ARGBroadcast extends CommandModule
 			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+".EventChat.Wordfilter"));
 			return;
 		}
-		TextComponent MSG = plugin.getUtility().tctlYaml(language+".CmdScc.Broadcast.Prefix");
-		MSG.setExtra(plugin.getUtility().msgLater(player, 0, "global", msg));
+		TextComponent MSG = utility.tc("");
+		MSG.setExtra(utility.broadcast(player, 0, "Global", msg, utility.tctlYaml(language+".CmdScc.Broadcast.Intro")));
 		for(Player all : Bukkit.getOnlinePlayers())
 		{
 			all.spigot().sendMessage(MSG);

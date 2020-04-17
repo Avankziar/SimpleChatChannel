@@ -21,8 +21,9 @@ public class CommandHelper
 		this.plugin = plugin;
 	}
 	
-	public void scc(Player player, String language)
+	public void scc(Player player)
 	{
+		String language = plugin.getUtility().getLanguage();
 		if(player.hasPermission("scc.option.admin"))
 		{
 			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"Info.msg10"));
@@ -94,51 +95,55 @@ public class CommandHelper
 		}
 	}
 	
-	public void playergrouplist(Player player, String language, List<BaseComponent> list, String path)
+	public void playergrouplist(Player player, List<BaseComponent> list, String path)
 	{
 		TextComponent MSG = plugin.getUtility().tc("");
 		if(list.isEmpty())
 		{
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+path+".WrongInput"));
+			player.spigot().sendMessage(plugin.getUtility().tctlYaml(plugin.getUtility().getLanguage()+scc+path+".WrongInput"));
 			return;
 		}
 		MSG.setExtra(list);
-		player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+path+".Headline"));
+		player.spigot().sendMessage(plugin.getUtility().tctlYaml(plugin.getUtility().getLanguage()+scc+path+".Headline"));
 		player.spigot().sendMessage(MSG);
 	}
 	
-	public void channeltoggle(Player player, String[] args, String language, String channel, String replacer)
+	public void channeltoggle(Player player, String channel, String replacer)
 	{
 		if((boolean) plugin.getMysqlHandler().getDataI(player, "channel_"+channel, "player_uuid"))
 		{
 			///Du hast den Channel %channel% &causgeblendet!
 			plugin.getMysqlHandler().updateDataI(player, false, "channel_"+channel);
-			player.spigot().sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.Off")
+			player.spigot().sendMessage(plugin.getUtility().tctl(
+					plugin.getYamlHandler().getL().getString(plugin.getUtility().getLanguage()+scc+"ChannelToggle.ChannelOff")
 					.replace("%channel%", replacer)));
 		} else
 		{
 			///Du hast den Channel %channel% &aeingeblendet!
 			plugin.getMysqlHandler().updateDataI(player, true, "channel_"+channel);
-			player.spigot().sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.On")
+			player.spigot().sendMessage(plugin.getUtility().tctl(
+					plugin.getYamlHandler().getL().getString(plugin.getUtility().getLanguage()+scc+"ChannelToggle.ChannelOn")
 					.replace("%channel%", replacer)));
 		}
 		return;
 	}
 	
-	public void optiontoggle(Player player, String[] args, String language, String optionperm,
+	public void optiontoggle(Player player, String optionperm,
 			String option, String replacer)
 	{
 		if(((boolean) plugin.getMysqlHandler().getDataI(player, option, "player_uuid")))
 		{
 			plugin.getMysqlHandler().updateDataI(player, false, option);
 			///Du hast den Channel %channel% &causgeblendet!
-			player.spigot().sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.Off")
+			player.spigot().sendMessage(plugin.getUtility().tctl(
+					plugin.getYamlHandler().getL().getString(plugin.getUtility().getLanguage()+scc+"ChannelToggle.ChannelOff")
 					.replace("%channel%", replacer)));
 		} else
 		{
 			plugin.getMysqlHandler().updateDataI(player, true, option);
 			///Du hast den Channel %channel% &aeingeblendet!
-			player.spigot().sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+scc+"Channel.On")
+			player.spigot().sendMessage(plugin.getUtility().tctl(
+					plugin.getYamlHandler().getL().getString(plugin.getUtility().getLanguage()+scc+"ChannelToggle.ChannelOn")
 					.replace("%channel%", replacer)));
 		}
 	}

@@ -21,8 +21,7 @@ public class ARGChannelSupport extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage();
-		plugin.getCommandHelper().channeltoggle(player, args, language, "support", "Support");
+		plugin.getCommandHelper().channeltoggle(player, "support", "Support");
 		return;
 	}
 }

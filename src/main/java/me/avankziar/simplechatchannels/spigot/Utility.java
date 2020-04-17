@@ -139,17 +139,18 @@ public class Utility
 	
 	public TextComponent tc(String s)
 	{
-		return new TextComponent(s);
+		return new TextComponent(TextComponent.fromLegacyText(s));
 	}
 	
 	public TextComponent tctl(String s)
 	{
-		return new TextComponent(ChatColor.translateAlternateColorCodes('&', s));
+		return new TextComponent(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', s)));
 	}
 	
 	public TextComponent tctlYaml(String path)
 	{
-		return new TextComponent(ChatColor.translateAlternateColorCodes('&', plugin.getYamlHandler().getL().getString(path)));
+		return new TextComponent(TextComponent.fromLegacyText(
+				ChatColor.translateAlternateColorCodes('&', plugin.getYamlHandler().getL().getString(path))));
 	}
 	
 	public TextComponent TextWithExtra(String s, List<BaseComponent> list)
@@ -275,8 +276,12 @@ public class Utility
 			{
 				if(hasColor(splitmsg))
 				{
+					if(safeColor==null)
+					{
+						safeColor = cc;
+					}
+					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					TextComponent word = tc(tl(splitmsg+" "));
 					list.add(word);
 				} else
 				{
@@ -284,13 +289,54 @@ public class Utility
 					{
 						safeColor = cc;
 					}
-					TextComponent word = tc(tl(splitmsg+" "));
+					TextComponent word = tctl(safeColor+splitmsg+" ");
 					list.add(word);
 				}
 			} else
 			{
 				String colorFreeWord = removeColor(splitmsg);
-				TextComponent word = tc(tl(colorFreeWord+" "));
+				TextComponent word = tctl(colorFreeWord+" ");
+				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+			}
+			
+		}
+		return list;
+	}
+	
+	public List<BaseComponent> broadcast(Player player, int ss, String channel, String msg, TextComponent intro)
+	{
+		String rawmsg = msg.substring(ss);
+		List<BaseComponent> list = new ArrayList<>();
+		list.add(intro);
+		String[] fullmsg = rawmsg.split(" ");
+		String cc = plugin.getYamlHandler().getL().getString(language+".ChannelColor."+channel);
+		String safeColor = null;
+		for(String splitmsg : fullmsg)
+		{
+			if(player.hasPermission(PERMBYPASSCOLOR))
+			{
+				if(hasColor(splitmsg))
+				{
+					if(safeColor==null)
+					{
+						safeColor = cc;
+					}
+					TextComponent word = tctl(safeColor+splitmsg+" ");
+					safeColor = getSafeColor(splitmsg);
+					list.add(word);
+				} else
+				{
+					if(safeColor==null)
+					{
+						safeColor = cc;
+					}
+					TextComponent word = tctl(safeColor+splitmsg+" ");
+					list.add(word);
+				}
+			} else
+			{
+				String colorFreeWord = removeColor(splitmsg);
+				TextComponent word = tctl(colorFreeWord+" ");
 				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 			}
 			
@@ -710,7 +756,7 @@ public class Utility
 		boolean world = (boolean)mi.getDataI(player, "channel_world", "player_uuid");
 		boolean group = (boolean)mi.getDataI(player, "channel_group", "player_uuid");
 		boolean privatemsg = (boolean)mi.getDataI(player, "channel_pm", "player_uuid");
-		boolean custom = (boolean)mi.getDataI(player, "channel_custom", "player_uuid");
+		boolean custom = (boolean)mi.getDataI(player, "channel_temp", "player_uuid");
 		boolean spy = (boolean)mi.getDataI(player, "spy", "player_uuid");
 		
 		String comma = plugin.getYamlHandler().getL().getString(language+".Join.Comma");
@@ -729,7 +775,7 @@ public class Utility
 		if(admin) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Admin")+comma;}
 		if(group) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Group")+comma;}
 		if(privatemsg) {ac += plugin.getYamlHandler().getL().getString(language+".Join.PrivateMessage")+comma;}
-		if(custom) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Custom")+comma;}
+		if(custom) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Temp")+comma;}
 		if(spy) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Spy")+comma;}
 		return ac.substring(0, ac.length()-2);
 	}
@@ -780,15 +826,23 @@ public class Utility
 	    return itemAsJsonObject.toString();
 	}
 	
-	public void existMethod(Class<?> externclass, String method, boolean methodboolean)
+	public boolean existMethod(Class<?> externclass, String method)
 	{
 	    try 
 	    {
-	    	externclass.getMethod(method);
-	    	methodboolean = true;
+	    	Method[] mtds = externclass.getMethods();
+	    	for(Method methods : mtds)
+	    	{
+	    		if(methods.getName().equalsIgnoreCase(method))
+	    		{
+	    	    	//SimpleChatChannels.log.info("Method "+method+" in Class "+externclass.getName()+" loaded!");
+	    	    	return true;
+	    		}
+	    	}
+	    	return false;
 	    } catch (Exception e) 
 	    {
-	      methodboolean = false;
+	    	return false;
 	    }
 	}
 	
@@ -796,7 +850,7 @@ public class Utility
 	{
 		if(plugin.getAfkRecord() != null)
 		{
-			if(AFKRECORDISAFK)
+			if(existMethod(plugin.getAfkRecord().getClass(), "isAfk"))
 			{
 				if(plugin.getAfkRecord().isAfk(targed))
 				{
@@ -811,7 +865,7 @@ public class Utility
 	{
 		if(plugin.getAfkRecord() != null)
 		{
-			if(AFKRECORDSOFTSAVE)
+			if(existMethod(plugin.getAfkRecord().getClass(), "softSave"))
 			{
 				plugin.getAfkRecord().softSave(player);
 			}

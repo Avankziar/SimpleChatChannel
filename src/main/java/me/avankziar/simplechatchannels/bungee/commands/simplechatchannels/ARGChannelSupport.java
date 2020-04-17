@@ -1,7 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,9 +20,7 @@ public class ARGChannelSupport extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
-		plugin.getCommandHelper().channeltoggle(player, args, language, "support", "Support");
+		plugin.getCommandHelper().channeltoggle(player, "support", "Support");
 		return;
 	}
 }

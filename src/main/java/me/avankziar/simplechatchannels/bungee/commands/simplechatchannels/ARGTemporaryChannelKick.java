@@ -7,13 +7,13 @@ import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGCustomChannelKick extends CommandModule
+public class ARGTemporaryChannelKick extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGCustomChannelKick(SimpleChatChannels plugin)
+	public ARGTemporaryChannelKick(SimpleChatChannels plugin)
 	{
-		super("cckick","scc.cmd.cc.kick",SimpleChatChannels.sccarguments,2,2,"ccrausschmeißen");
+		super("tckick","scc.cmd.tc.kick",SimpleChatChannels.sccarguments,2,2,"tcrausschmeißen");
 		this.plugin = plugin;
 	}
 
@@ -27,42 +27,49 @@ public class ARGCustomChannelKick extends CommandModule
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"CustomChannelGeneral.NotInAChannel"));
+			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannel"));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"CustomChannelGeneral.NotTheCreator"));
+			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotTheCreator"));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[1])!=null)
+		if(plugin.getProxy().getPlayer(args[1])==null)
 		{
-			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"CustomChannelGeneral.NotChannelMember"));
+			///Der Spieler ist nicht online oder existiert nicht!
+			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
 		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
+		if(!cc.getMembers().contains(target))
+		{
+			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
+			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotChannelMember"));
+			return;
+		}
 		if(target.getName().equals(creator.getName()))
 		{
 			///Du als Ersteller kannst dich nicht kicken!
-			player.sendMessage(utility.tctlYaml(language+"ChannelKick.CreatorCannotSelfKick"));
+			player.sendMessage(utility.tctlYaml(language+"TCKick.CreatorCannotSelfKick"));
 			return;
 		}
 		cc.removeMembers(target);
 		///Du wurdest aus dem CustomChannel gekickt!
-		target.sendMessage(utility.tctlYaml(language+"ChannelKick.YouWereKicked"));
+		target.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"TCKick.YouWereKicked")
+				.replace("%channel%", cc.getName())));
 		///Du hast &f%player% &eaus dem Channel gekickt!
 		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+"ChannelKick.YouKicked")
-				.replace("%player%", args[1])));
+				plugin.getYamlHandler().getL().getString(language+"TCKick.YouKicked")
+				.replace("%player%", args[1]).replace("%channel%", cc.getName())));
 		for(ProxiedPlayer members : cc.getMembers())
 		{
 			///Der Spieler &f%player% &ewurde aus dem Channel gekickt!
 			members.sendMessage(utility.tctl(
-					plugin.getYamlHandler().getL().getString(language+"ChannelKick.CreatorKickedSomeone")
-					.replace("%player%", args[1])));
+					plugin.getYamlHandler().getL().getString(language+"TCKick.CreatorKickedSomeone")
+					.replace("%player%", args[1]).replace("%channel%", cc.getName())));
 		}
 		return;
 	}
