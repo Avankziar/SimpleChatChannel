@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class CustomChannel 
+public class TemporaryChannel 
 {
 	private String name;
 	private ProxiedPlayer creator;
 	private ArrayList<ProxiedPlayer> members = new ArrayList<ProxiedPlayer>();
-	private static ArrayList<CustomChannel> customchannel = new ArrayList<CustomChannel>();
+	private static ArrayList<TemporaryChannel> customchannel = new ArrayList<TemporaryChannel>();
 	private String password;
 	private ArrayList<ProxiedPlayer> banned = new ArrayList<ProxiedPlayer>();
 	
-	public CustomChannel(String name, ProxiedPlayer creator, ArrayList<ProxiedPlayer> members, String password,
+	public TemporaryChannel(String name, ProxiedPlayer creator, ArrayList<ProxiedPlayer> members, String password,
 			ArrayList<ProxiedPlayer> banned)
 	{
 		setName(name);
@@ -69,10 +69,10 @@ public class CustomChannel
 		}
 	}
 	
-	public static CustomChannel getCustomChannel(ProxiedPlayer player)
+	public static TemporaryChannel getCustomChannel(ProxiedPlayer player)
 	{
-		CustomChannel c = null;
-		for (CustomChannel cc : customchannel)
+		TemporaryChannel c = null;
+		for (TemporaryChannel cc : customchannel)
 		{
 			for(ProxiedPlayer p : cc.getMembers())
 			{
@@ -86,10 +86,10 @@ public class CustomChannel
 		return c;
 	}
 	
-	public static CustomChannel getCustomChannel(String name)
+	public static TemporaryChannel getCustomChannel(String name)
 	{
-		CustomChannel c = null;
-		for (CustomChannel cc : customchannel)
+		TemporaryChannel c = null;
+		for (TemporaryChannel cc : customchannel)
 		{
 			if(cc.getName().equalsIgnoreCase(name))
 			{
@@ -100,12 +100,12 @@ public class CustomChannel
 		return c;
 	}
 	
-	public static void addCustomChannel(CustomChannel cc)
+	public static void addCustomChannel(TemporaryChannel cc)
 	{
 		customchannel.add(cc);
 	}
 	
-	public static void removeCustomChannel(CustomChannel cc)
+	public static void removeCustomChannel(TemporaryChannel cc)
 	{
 		customchannel.remove(cc);
 	}

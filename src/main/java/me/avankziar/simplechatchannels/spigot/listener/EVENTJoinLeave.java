@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -37,7 +37,14 @@ public class EVENTJoinLeave implements Listener
 		Player player = event.getPlayer();
 		String pn = player.getName();
 		utility.controlChannelSaves(player);
-		if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
+		String oldplayername = (String) plugin.getMysqlHandler().getDataI(
+				player.getUniqueId().toString(), "player_name", "player_uuid");
+		//Names Aktualisierung
+		if(!oldplayername.equals(pn))
+		{
+			plugin.getMysqlHandler().updateDataI(player, pn, "player_name");
+		}
+		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
 		{
 			player.spigot().sendMessage(utility.tctl(utility.getActiveChannels(player)));
 			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
@@ -54,7 +61,7 @@ public class EVENTJoinLeave implements Listener
 		{
 			if(!all.getName().equals(player.getName()))
 			{
-				if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
+				if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
 				{
 					///%player% &6hat den Server betreten!
 					TextComponent msg = utility.apichat(
@@ -89,7 +96,7 @@ public class EVENTJoinLeave implements Listener
 		String scc = ".CmdScc.";
 		String language = utility.getLanguage();
 		
-		CustomChannel cc = CustomChannel.getCustomChannel(event.getPlayer());
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(event.getPlayer());
 		if(cc!=null)
 		{
 			cc.removeMembers(event.getPlayer());
@@ -120,7 +127,7 @@ public class EVENTJoinLeave implements Listener
 		}
 		for(Player all : Bukkit.getOnlinePlayers())
 		{
-			if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
 			{
 				///%player% &4hat den Server verlassen!
 				String msg = plugin.getYamlHandler().getL().getString(

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 
 public class ARGTemporaryChannelUnban extends CommandModule
 {
@@ -25,7 +25,7 @@ public class ARGTemporaryChannelUnban extends CommandModule
 		Player player = (Player) sender;
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage() + ".CmdScc.";
-		CustomChannel cc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!

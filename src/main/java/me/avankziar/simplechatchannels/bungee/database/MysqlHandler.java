@@ -4,8 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class MysqlHandler 
@@ -13,6 +17,7 @@ public class MysqlHandler
 	private SimpleChatChannels plugin;
 	public String tableNameI;
 	public String tableNameII;
+	public String tableNameIII;
 	
 	public MysqlHandler(SimpleChatChannels plugin)
 	{
@@ -29,6 +34,11 @@ public class MysqlHandler
 		}
 		tableNameII = plugin.getYamlHandler().get().getString("Mysql.TableNameII");
 		if(tableNameII == null)
+		{
+			return false;
+		}
+		tableNameIII = plugin.getYamlHandler().get().getString("Mysql.TableNameIII");
+		if(tableNameIII == null)
 		{
 			return false;
 		}
@@ -91,6 +101,90 @@ public class MysqlHandler
 		        preparedUpdateStatement = conn.prepareStatement(sql);
 		        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
 		        preparedUpdateStatement.setString(2, ignoreuuid);
+		        
+		        result = preparedUpdateStatement.executeQuery();
+		        while (result.next()) 
+		        {
+		        	return true;
+		        }
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedUpdateStatement != null) 
+		    		  {
+		    			  preparedUpdateStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return false;
+	}
+	
+	public boolean existChannel(int id) 
+	{
+		PreparedStatement preparedUpdateStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "SELECT `id` FROM `" + tableNameIII + "` WHERE `id` = ? LIMIT 1";
+		        preparedUpdateStatement = conn.prepareStatement(sql);
+		        preparedUpdateStatement.setInt(1, id);
+		        
+		        result = preparedUpdateStatement.executeQuery();
+		        while (result.next()) 
+		        {
+		        	return true;
+		        }
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedUpdateStatement != null) 
+		    		  {
+		    			  preparedUpdateStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return false;
+	}
+	
+	public boolean existChannel(String channelname) 
+	{
+		PreparedStatement preparedUpdateStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "SELECT `channel_name` FROM `" + tableNameIII + "` WHERE `channel_name` = ? LIMIT 1";
+		        preparedUpdateStatement = conn.prepareStatement(sql);
+		        preparedUpdateStatement.setString(1, channelname);
 		        
 		        result = preparedUpdateStatement.executeQuery();
 		        while (result.next()) 
@@ -228,12 +322,48 @@ public class MysqlHandler
 		return false;
 	}
 	
+	public boolean createChannel(PermanentChannel pc) 
+	{
+		PreparedStatement preparedStatement = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) {
+			try 
+			{
+				String sql = "INSERT INTO `" + tableNameIII + "`(`channel_name`, `creator`, `vice`, `members`, `password`, `banned`) " 
+						+ "VALUES(?, ?, ?, ?, ?, ?)";
+				preparedStatement = conn.prepareStatement(sql);
+		        preparedStatement.setString(1, pc.getName());
+		        preparedStatement.setString(2, pc.getCreator());
+		        preparedStatement.setString(3, String.join(";", pc.getVice()));
+		        preparedStatement.setString(4, String.join(";", pc.getMembers()));
+		        preparedStatement.setString(5, pc.getPassword());
+		        preparedStatement.setString(6, String.join(";", pc.getBanned()));
+		        
+		        preparedStatement.executeUpdate();
+		        return true;
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) 
+		    	  {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return false;
+	}
+	
 	public boolean updateDataI(ProxiedPlayer player, Object object, String setcolumn) 
 	{
-		if (!hasAccount(player)) 
-		{
-			createAccount(player);
-		}
 		PreparedStatement preparedUpdateStatement = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) 
@@ -296,12 +426,40 @@ public class MysqlHandler
         return false;
 	}
 	
-	public Object getDataI(ProxiedPlayer player, String selectcolumn, String wherecolumn)
+	public boolean updateDataIII(PermanentChannel pc, Object object, String setcolumn) 
 	{
-		if (!hasAccount(player)) 
+		PreparedStatement preparedUpdateStatement = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
 		{
-			createAccount(player);
+			try 
+			{
+				String data = "UPDATE `" + tableNameIII 
+						+ "` " + "SET `" + setcolumn + "` = ?" + " WHERE `id` = ?";
+				preparedUpdateStatement = conn.prepareStatement(data);
+				preparedUpdateStatement.setObject(1, object);
+				preparedUpdateStatement.setInt(2, pc.getId());
+				
+				preparedUpdateStatement.executeUpdate();
+				return true;
+			} catch (SQLException e) {
+				SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				e.printStackTrace();
+			} finally {
+				try {
+					if (preparedUpdateStatement != null) {
+						preparedUpdateStatement.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
+        return false;
+	}
+	
+	public Object getDataI(Object object, String selectcolumn, String wherecolumn)
+	{
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
@@ -311,7 +469,7 @@ public class MysqlHandler
 			{			
 				String sql = "SELECT `" + selectcolumn + "` FROM `" + tableNameI + "` WHERE `" + wherecolumn + "` = ? LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
-		        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
+		        preparedUpdateStatement.setObject(1, object);
 		        
 		        result = preparedUpdateStatement.executeQuery();
 		        while (result.next()) 
@@ -363,6 +521,56 @@ public class MysqlHandler
 		        while (result.next()) 
 		        {
 		        	return result.getObject(selectcolumn);
+		        }
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedUpdateStatement != null) 
+		    		  {
+		    			  preparedUpdateStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return null;
+	}
+	
+	public PermanentChannel getDataIII(int id)
+	{
+		PreparedStatement preparedUpdateStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "SELECT `*` FROM `" + tableNameIII + "` WHERE `id` = ? LIMIT 1";
+		        preparedUpdateStatement = conn.prepareStatement(sql);
+		        preparedUpdateStatement.setInt(1, id);
+		        
+		        result = preparedUpdateStatement.executeQuery();
+		        while (result.next()) 
+		        {
+		        	PermanentChannel pc = new PermanentChannel(
+		        			result.getInt("id"),
+		        			result.getString("channel_name"), 
+		        			result.getString("creator"), 
+		        			new ArrayList<String>(Arrays.asList(result.getString("vice").split(";"))), 
+		        			new ArrayList<String>(Arrays.asList(result.getString("members").split(";"))), 
+		        			result.getString("password"), 
+		        			new ArrayList<String>(Arrays.asList(result.getString("banned").split(";"))));
+		        	return pc;
 		        }
 		    } catch (SQLException e) 
 			{
@@ -487,5 +695,72 @@ public class MysqlHandler
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void deleteDataIII(String channelname)
+	{
+		PreparedStatement preparedStatement = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		try 
+		{
+			String sql = "DELETE FROM `" + tableNameIII + "` WHERE `channel_name` = ?";
+			preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setObject(1, channelname);
+			preparedStatement.execute();
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		} finally 
+		{
+			try {
+				if (preparedStatement != null) 
+				{
+					preparedStatement.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public int getLastIDIII()
+	{
+		PreparedStatement preparedUpdateStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "SELECT `id` FROM `" + tableNameIII + "` ORDER BY `id` ASC LIMIT 1";
+		        preparedUpdateStatement = conn.prepareStatement(sql);
+		        
+		        result = preparedUpdateStatement.executeQuery();
+		        while (result.next()) 
+		        {
+		        	return result.getInt("id");
+		        }
+		    } catch (SQLException e) 
+			{
+				  Punisher.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedUpdateStatement != null) 
+		    		  {
+		    			  preparedUpdateStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return 0;
 	}
 }

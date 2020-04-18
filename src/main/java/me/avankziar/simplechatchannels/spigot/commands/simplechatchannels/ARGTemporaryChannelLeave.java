@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 
 public class ARGTemporaryChannelLeave extends CommandModule
 {
@@ -24,7 +24,7 @@ public class ARGTemporaryChannelLeave extends CommandModule
 		Player player = (Player) sender;
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage() + ".CmdScc.";
-		CustomChannel cc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
@@ -52,7 +52,7 @@ public class ARGTemporaryChannelLeave extends CommandModule
     					.replace("%channel%", cc.getName())));
 			} else 
 			{
-				CustomChannel.removeCustomChannel(cc);
+				TemporaryChannel.removeCustomChannel(cc);
 				cc = null;
 			}
 			

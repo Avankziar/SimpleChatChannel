@@ -2,7 +2,7 @@ package main.java.me.avankziar.simplechatchannels.bungee.listener;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -30,7 +30,14 @@ public class EventJoinLeave implements Listener
 		String language = utility.getLanguage();
 		String pn = player.getName();
 		utility.controlChannelSaves(player);
-		if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
+		String oldplayername = (String) plugin.getMysqlHandler().getDataI(
+				player.getUniqueId().toString(), "player_name", "player_uuid");
+		//Names Aktualisierung
+		if(!oldplayername.equals(pn))
+		{
+			plugin.getMysqlHandler().updateDataI(player, pn, "player_name");
+		}
+		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
 		{
 			player.sendMessage(utility.tctl(utility.getActiveChannels(player)));
 			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
@@ -47,7 +54,7 @@ public class EventJoinLeave implements Listener
 		{
 			if(!all.getName().equals(pn))
 			{
-				if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
+				if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
 				{
 					///%player% &6hat den Server betreten!
 					TextComponent msg = utility.apichat(
@@ -78,7 +85,7 @@ public class EventJoinLeave implements Listener
 			String message = "editor"+µ+pn+µ+"remove";
 			utility.sendSpigotMessage("simplechatchannels:sccbungee", message);
 		}
-		CustomChannel cc = CustomChannel.getCustomChannel(pn);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(pn);
 		if(cc!=null)
 		{
 			cc.removeMembers(event.getPlayer());
@@ -110,7 +117,7 @@ public class EventJoinLeave implements Listener
 		}
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
-			if((boolean) plugin.getMysqlHandler().getDataI(player, "joinmessage", "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
 			{
 				///%player% &4hat den Server verlassen!
 				String msg = plugin.getYamlHandler().getL().getString(

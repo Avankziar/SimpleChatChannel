@@ -18,7 +18,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.database.YamlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -96,17 +96,18 @@ public class EVENTChat implements Listener
 		event.setCancelled(true);	
 		String pl = player.getUniqueId().toString();
 		MysqlHandler mysqlHandler = plugin.getMysqlHandler();
-		boolean canchat = (boolean) mysqlHandler.getDataI(player, "can_chat", "player_uuid");
+		boolean canchat = (boolean) mysqlHandler.getDataI(player.getUniqueId().toString(), "can_chat", "player_uuid");
 		
 		if(!canchat)
 		{
 			String time = "";
-			if((Long) mysqlHandler.getDataI(player, "mutetime", "player_uuid")==0)
+			if((Long) mysqlHandler.getDataI(player.getUniqueId().toString(), "mutetime", "player_uuid")==0)
 			{
 				time = "permanent";
 			} else
 			{
-				long a = ((Long) mysqlHandler.getDataI(player, "mutetime", "player_uuid")-System.currentTimeMillis())/(1000*60);
+				long a = ((Long) mysqlHandler.getDataI(player.getUniqueId().toString(), "mutetime", "player_uuid")
+						-System.currentTimeMillis())/(1000*60);
 				time = String.valueOf(a)+" min";
 			}
 			///Du bist für &c%time% gemutet!
@@ -169,7 +170,7 @@ public class EVENTChat implements Listener
 				{
 					if(tl.distance(pyloc) <= blockDistance) 
 					{
-						if((boolean) mysqlHandler.getDataI(t, "channel_local", "player_uuid"))
+						if((boolean) mysqlHandler.getDataI(t.getUniqueId().toString(), "channel_local", "player_uuid"))
 						{
 							if(!utility.getIgnored(t,player, false))
 							{
@@ -221,7 +222,7 @@ public class EVENTChat implements Listener
 				World tw = t.getWorld();
 				if(tw.getName().equals(player.getWorld().getName()))
 				{
-					if((boolean) mysqlHandler.getDataI(t, "channel_world", "player_uuid"))
+					if((boolean) mysqlHandler.getDataI(t.getUniqueId().toString(), "channel_world", "player_uuid"))
 					{
 						if(!utility.getIgnored(t,player, false))
 						{
@@ -277,14 +278,14 @@ public class EVENTChat implements Listener
 				return;
 			}
 			
-			if(CustomChannel.getCustomChannel(player)==null)
+			if(TemporaryChannel.getCustomChannel(player)==null)
 			{
 				///Du bist in keinem CustomChannel!
 				player.spigot().sendMessage(utility.tctlYaml(language+".CustomChannelGeneral.NotInAChannel"));
 				return;
 			}
 			
-			CustomChannel cc = CustomChannel.getCustomChannel(player);
+			TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 			
 			if(event.getMessage().length()>=symbol.length()
 					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
@@ -321,7 +322,7 @@ public class EVENTChat implements Listener
 				{
 					if(members.getName().equals(all.getName()))
 					{
-						if((boolean) mysqlHandler.getDataI(all, "channel_custom", "player_uuid"))
+						if((boolean) mysqlHandler.getDataI(all.getUniqueId().toString(), "channel_custom", "player_uuid"))
 						{
 							if(!utility.getIgnored(all,player, false))
 							{
@@ -400,7 +401,7 @@ public class EVENTChat implements Listener
 			
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
-				if((boolean) mysqlHandler.getDataI(all, "channel_group", "player_uuid"))
+				if((boolean) mysqlHandler.getDataI(all.getUniqueId().toString(), "channel_group", "player_uuid"))
 				{
 					if(!all.equals(player))
 					{
@@ -493,7 +494,7 @@ public class EVENTChat implements Listener
 				return;
 			}
 			
-			if(!(boolean) mysqlHandler.getDataI(tr, "channel_pm", "player_uuid"))
+			if(!(boolean) mysqlHandler.getDataI(tr.getUniqueId().toString(), "channel_pm", "player_uuid"))
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
@@ -591,7 +592,7 @@ public class EVENTChat implements Listener
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			
-			if(!(boolean) mysqlHandler.getDataI(tr, "channel_pm", "player_uuid"))
+			if(!(boolean) mysqlHandler.getDataI(tr.getUniqueId().toString(), "channel_pm", "player_uuid"))
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));

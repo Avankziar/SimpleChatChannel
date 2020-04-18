@@ -462,7 +462,7 @@ public class Utility
 		{
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
-				if((boolean) plugin.getMysqlHandler().getDataI(all, "spy", "player_uuid"))
+				if((boolean) plugin.getMysqlHandler().getDataI(all.getUniqueId().toString(), "spy", "player_uuid"))
 				{
 					all.spigot().sendMessage(msg);
 				}
@@ -702,7 +702,7 @@ public class Utility
 	
 	public boolean hasChannelRights(Player player, String mysql_channel)
 	{
-		if(!(boolean) plugin.getMysqlHandler().getDataI(player, mysql_channel, "player_uuid"))
+		if(!(boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), mysql_channel, "player_uuid"))
 		{
 			///Du hast diesen Channel ausgeschaltet. Bitte schalte ihn &7mit &c/scc <channel> &7wieder an.
 			sendMessage(player,plugin.getYamlHandler().getL().getString(language+".EventChat.ChannelIsOff"));
@@ -717,7 +717,7 @@ public class Utility
 	{
 		for(Player all : plugin.getServer().getOnlinePlayers())
 		{
-			if((boolean) plugin.getMysqlHandler().getDataI(all, mysql_channel, "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(all.getUniqueId().toString(), mysql_channel, "player_uuid"))
 			{
 				if(!getIgnored(all,player, privatechat))
 				{
@@ -745,19 +745,19 @@ public class Utility
 	{
 		String language = plugin.getUtility().getLanguage();
 		MysqlHandler mi = plugin.getMysqlHandler();
-		boolean canchat = (boolean)mi.getDataI(player, "can_chat", "player_uuid");
-		boolean global = (boolean)mi.getDataI(player, "channel_global", "player_uuid");
-		boolean local = (boolean)mi.getDataI(player, "channel_local", "player_uuid");
-		boolean auction = (boolean)mi.getDataI(player, "channel_auction", "player_uuid");
-		boolean trade = (boolean)mi.getDataI(player, "channel_trade", "player_uuid");
-		boolean support = (boolean)mi.getDataI(player, "channel_support", "player_uuid");
-		boolean team = (boolean)mi.getDataI(player, "channel_team", "player_uuid");
-		boolean admin = (boolean)mi.getDataI(player, "channel_admin", "player_uuid");
-		boolean world = (boolean)mi.getDataI(player, "channel_world", "player_uuid");
-		boolean group = (boolean)mi.getDataI(player, "channel_group", "player_uuid");
-		boolean privatemsg = (boolean)mi.getDataI(player, "channel_pm", "player_uuid");
-		boolean custom = (boolean)mi.getDataI(player, "channel_temp", "player_uuid");
-		boolean spy = (boolean)mi.getDataI(player, "spy", "player_uuid");
+		boolean canchat = (boolean)mi.getDataI(player.getUniqueId().toString(), "can_chat", "player_uuid");
+		boolean global = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_global", "player_uuid");
+		boolean local = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_local", "player_uuid");
+		boolean auction = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_auction", "player_uuid");
+		boolean trade = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_trade", "player_uuid");
+		boolean support = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_support", "player_uuid");
+		boolean team = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_team", "player_uuid");
+		boolean admin = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_admin", "player_uuid");
+		boolean world = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_world", "player_uuid");
+		boolean group = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_group", "player_uuid");
+		boolean privatemsg = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_pm", "player_uuid");
+		boolean custom = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_temp", "player_uuid");
+		boolean spy = (boolean)mi.getDataI(player.getUniqueId().toString(), "spy", "player_uuid");
 		
 		String comma = plugin.getYamlHandler().getL().getString(language+".Join.Comma");
 		

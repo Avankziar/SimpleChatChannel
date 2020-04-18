@@ -3,7 +3,7 @@ package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchan
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -24,7 +24,7 @@ public class ARGTemporaryChannelInfo extends CommandModule
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage();
 		String scc = ".CmdScc.";
-		CustomChannel cc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!

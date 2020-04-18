@@ -8,7 +8,8 @@ import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -106,10 +107,10 @@ public class EventChat implements Listener
 		event.setCancelled(true);
 		String pl = player.getUniqueId().toString();
 		MysqlHandler mysqlHandler = plugin.getMysqlHandler();
-		boolean canchat = (boolean) mysqlHandler.getDataI(player, "can_chat", "player_uuid");
+		boolean canchat = (boolean) mysqlHandler.getDataI(player.getUniqueId().toString(), "can_chat", "player_uuid");
 		if(!canchat)
 		{
-			long millitime = (long) mysqlHandler.getDataI(player, "mutetime", "player_uuid");
+			long millitime = (long) mysqlHandler.getDataI(player.getUniqueId().toString(), "mutetime", "player_uuid");
 			String time = "";
 			if(millitime==0)
 			{
@@ -161,21 +162,21 @@ public class EventChat implements Listener
 			
 			utility.sendAllMessage(player, "channel_"+channel, MSG, false);
 			return;
-		} else if(channel.equals("Temp")) //----------------------------------------------------------Support Channel
+		} else if(channel.equals("Temp")) //----------------------------------------------------------Temporärer Channel
 		{
 			if(!utility.hasChannelRights(player, "channel_temp"))
 			{
 				return;
 			}
 			
-			if(CustomChannel.getCustomChannel(player)==null)
+			if(TemporaryChannel.getCustomChannel(player)==null)
 			{
 				///Du bist in keinem CustomChannel!
 				player.sendMessage(utility.tctlYaml(language+".ChannelGeneral.NotInAChannel"));
 				return;
 			}
 			
-			CustomChannel cc = CustomChannel.getCustomChannel(player);
+			TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 			
 			if(event.getMessage().length()>=symbol.length() 
 					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
@@ -204,18 +205,69 @@ public class EventChat implements Listener
 			
 			plugin.getUtility().saveAfkTimes(player);
 			
+			for(ProxiedPlayer members : cc.getMembers())
+			{
+				if((boolean) mysqlHandler.getDataI(members.getUniqueId().toString(), "channel_temp", "player_uuid"))
+				{
+					if(!utility.getIgnored(members,player, false))
+					{
+						members.sendMessage(MSG);
+					}
+				}
+			}
+			return;
+		} else if(channel.equals("Perma")) //----------------------------------------------------------Permanenter Channel
+		{
+			if(!utility.hasChannelRights(player, "channel_temp"))
+			{
+				return;
+			}
+			
+			if(PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString())==null)
+			{
+				///Du bist in keinem CustomChannel!
+				player.sendMessage(utility.tctlYaml(language+".ChannelGeneral.NotInAChannelII"));
+				return;
+			}
+			
+			PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+			
+			if(event.getMessage().length()>=symbol.length() 
+					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
+			{
+				///Einer deiner geschriebenen Wörter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
+				player.sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
+				return;
+			}
+			
+			TextComponent MSG = null;
+			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
+			else {MSG = utility.tc("");}
+			
+			MSG.setExtra(utility.getAllTextComponentForChannels(
+					player, event.getMessage(), "Perma", symbol, symbol.length()));
+			
+			plugin.getProxy().getConsole().sendMessage(MSG); //Console
+			
+			if(event.getMessage().substring(1).length()<0)
+			{
+				///Die Nachricht ist nicht lang genug!
+				player.sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
+				return;
+			}
+			utility.spy(MSG);
+			
+			plugin.getUtility().saveAfkTimes(player);
+			
 			for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 			{
-				for(ProxiedPlayer members : cc.getMembers())
+				if(cc.getMembers().contains(all.getUniqueId().toString()))
 				{
-					if(members.getName().equals(all.getName()))
+					if((boolean) mysqlHandler.getDataI(all.getUniqueId().toString(), "channel_perma", "player_uuid"))
 					{
-						if((boolean) mysqlHandler.getDataI(all, "channel_temp", "player_uuid"))
+						if(!utility.getIgnored(all,player, false))
 						{
-							if(!utility.getIgnored(all,player, false))
-							{
-								all.sendMessage(MSG);
-							}
+							all.sendMessage(MSG);
 						}
 					}
 				}
@@ -288,7 +340,7 @@ public class EventChat implements Listener
 			
 			for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 			{
-				if((boolean) mysqlHandler.getDataI(all, "channel_group", "player_uuid"))
+				if((boolean) mysqlHandler.getDataI(all.getUniqueId().toString(), "channel_group", "player_uuid"))
 				{
 					if(!all.equals(player))
 					{
@@ -380,7 +432,7 @@ public class EventChat implements Listener
 				return;
 			}
 			
-			if(!(boolean) mysqlHandler.getDataI(tr, "channel_pm", "player_uuid"))
+			if(!(boolean) mysqlHandler.getDataI(tr.getUniqueId().toString(), "channel_pm", "player_uuid"))
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
@@ -477,7 +529,7 @@ public class EventChat implements Listener
 			
 			plugin.getProxy().getConsole().sendMessage(MSG1); //Console
 			
-			if(!(boolean) mysqlHandler.getDataI(tr, "channel_pm", "player_uuid"))
+			if(!(boolean) mysqlHandler.getDataI(tr.getUniqueId().toString(), "channel_pm", "player_uuid"))
 			{
 				///Der Spieler hat private Nachrichten &cdeaktiviert!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));

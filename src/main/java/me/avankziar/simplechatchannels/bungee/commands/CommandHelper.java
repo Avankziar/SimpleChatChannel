@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -109,7 +109,7 @@ public class CommandHelper
 	
 	public void channeltoggle(ProxiedPlayer player, String channel, String replacer)
 	{
-		if((boolean) plugin.getMysqlHandler().getDataI(player, "channel_"+channel, "player_uuid"))
+		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(),"channel_"+channel, "player_uuid"))
 		{
 			///Du hast den Channel %channel% &causgeblendet!
 			plugin.getMysqlHandler().updateDataI(player, false, "channel_"+channel);
@@ -130,7 +130,7 @@ public class CommandHelper
 	public void optiontoggle(ProxiedPlayer player, String optionperm,
 			String option, String replacer)
 	{
-		if(((boolean) plugin.getMysqlHandler().getDataI(player, option, "player_uuid")))
+		if(((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), option, "player_uuid")))
 		{
 			plugin.getMysqlHandler().updateDataI(player, false, option);
 			///Du hast den Channel %channel% &causgeblendet!
@@ -148,12 +148,12 @@ public class CommandHelper
 	}
 	
 	//Obsolete
-	public void cccreate(ProxiedPlayer player, String language, CustomChannel cc, String name, String password)
+	public void cccreate(ProxiedPlayer player, String language, TemporaryChannel cc, String name, String password)
 	{
 		ArrayList<ProxiedPlayer> members = new ArrayList<ProxiedPlayer>();
 		members.add(player);
-		cc = new CustomChannel(name, player, members, password, new ArrayList<ProxiedPlayer>());
-		CustomChannel.addCustomChannel(cc);
+		cc = new TemporaryChannel(name, player, members, password, new ArrayList<ProxiedPlayer>());
+		TemporaryChannel.addCustomChannel(cc);
 		if(password==null)
 		{
 			player.sendMessage(plugin.getUtility().tctl(
@@ -171,8 +171,8 @@ public class CommandHelper
 	//Obsolete
 	public void ccjoin(ProxiedPlayer player, String language, String name, String password)
 	{
-		CustomChannel cc = CustomChannel.getCustomChannel(name);
-		CustomChannel oldcc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(name);
+		TemporaryChannel oldcc = TemporaryChannel.getCustomChannel(player);
 		if(oldcc!=null)
 		{
 			player.sendMessage(plugin.getUtility().tctl(

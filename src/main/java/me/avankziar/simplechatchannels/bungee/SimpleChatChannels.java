@@ -46,6 +46,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchann
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventChat;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventJoinLeave;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventTabCompletion;
@@ -96,6 +97,16 @@ public class SimpleChatChannels extends Plugin
 	{
 		getProxy().getScheduler().cancel(this);
 		//HandlerList.unregisterAll();
+		
+		for(PermanentChannel pc : PermanentChannel.getPermanentChannel())
+		{
+			getMysqlHandler().updateDataIII(pc, pc.getName(), "channel_name");
+			getMysqlHandler().updateDataIII(pc, String.join(";", pc.getVice()), "vice");
+			getMysqlHandler().updateDataIII(pc, String.join(";", pc.getMembers()), "members");
+			getMysqlHandler().updateDataIII(pc, pc.getPassword(), "password");
+			getMysqlHandler().updateDataIII(pc, String.join(";", pc.getBanned()), "banned");
+		}
+		
 		if(yamlHandler.get().getBoolean("Mysql.Status", false))
 		{
 			if (mysqlSetup.getConnection() != null) 
@@ -156,6 +167,14 @@ public class SimpleChatChannels extends Plugin
 		new ARGChannelTeam(this);
 		new ARGChannelTrade(this);
 		new ARGChannelWorld(this);
+		new ARGGrouplist(this);
+		new ARGIgnore(this);
+		new ARGIgnoreList(this);
+		new ARGMute(this);
+		new ARGOptionJoin(this);
+		new ARGOptionSpy(this);
+		new ARGPlayerlist(this);
+		new ARGReload(this);
 		new ARGTemporaryChannelBan(this);
 		new ARGTemporaryChannelChangePassword(this);
 		new ARGTemporaryChannelCreate(this);
@@ -165,14 +184,6 @@ public class SimpleChatChannels extends Plugin
 		new ARGTemporaryChannelKick(this);
 		new ARGTemporaryChannelLeave(this);
 		new ARGTemporaryChannelUnban(this);
-		new ARGGrouplist(this);
-		new ARGIgnore(this);
-		new ARGIgnoreList(this);
-		new ARGMute(this);
-		new ARGOptionJoin(this);
-		new ARGOptionSpy(this);
-		new ARGPlayerlist(this);
-		new ARGReload(this);
 		new ARGUnmute(this);
 		new ARGWordfilter(this);
 		pm.registerCommand(this, new CommandExecutorSimpleChatChannel(this));

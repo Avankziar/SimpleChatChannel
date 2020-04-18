@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -548,7 +549,7 @@ public class Utility
 	{
 		for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers())
 		{
-			if((boolean) plugin.getMysqlHandler().getDataI(player, "spy", "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "spy", "player_uuid"))
 			{
 				player.sendMessage(msg);
 			}
@@ -557,7 +558,7 @@ public class Utility
 	
 	public boolean getIgnored(ProxiedPlayer target, ProxiedPlayer player, boolean privatechat)
 	{
-		if(plugin.getMysqlHandler().existIgnore(target, player.getUniqueId().toString()))
+		if(plugin.getMysqlHandler().existIgnore(target, target.getUniqueId().toString()))
 		{
 			if(privatechat)
 			{
@@ -618,7 +619,7 @@ public class Utility
 	
 	public boolean hasChannelRights(ProxiedPlayer player, String mysql_channel)
 	{
-		if(!(boolean) plugin.getMysqlHandler().getDataI(player, mysql_channel, "player_uuid"))
+		if(!(boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), mysql_channel, "player_uuid"))
 		{
 			///Du hast diesen Channel ausgeschaltet. Bitte schalte ihn &7mit &c/scc <channel> &7wieder an.
 			player.sendMessage(tctlYaml(language+".EventChat.ChannelIsOff"));
@@ -633,7 +634,7 @@ public class Utility
 	{
 		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
-			if((boolean) plugin.getMysqlHandler().getDataI(all, mysql_channel, "player_uuid"))
+			if((boolean) plugin.getMysqlHandler().getDataI(all.getUniqueId().toString(), mysql_channel, "player_uuid"))
 			{
 				if(!getIgnored(all,player, privatechat))
 				{
@@ -674,19 +675,20 @@ public class Utility
 	{
 		String language = getLanguage();
 		MysqlHandler mi = plugin.getMysqlHandler();
-		boolean canchat = (boolean)mi.getDataI(player, "can_chat", "player_uuid");
-		boolean global = (boolean)mi.getDataI(player, "channel_global", "player_uuid");
-		boolean local = (boolean)mi.getDataI(player, "channel_local", "player_uuid");
-		boolean auction = (boolean)mi.getDataI(player, "channel_auction", "player_uuid");
-		boolean trade = (boolean)mi.getDataI(player, "channel_trade", "player_uuid");
-		boolean support = (boolean)mi.getDataI(player, "channel_support", "player_uuid");
-		boolean team = (boolean)mi.getDataI(player, "channel_team", "player_uuid");
-		boolean admin = (boolean)mi.getDataI(player, "channel_admin", "player_uuid");
-		boolean world = (boolean)mi.getDataI(player, "channel_world", "player_uuid");
-		boolean group = (boolean)mi.getDataI(player, "channel_group", "player_uuid");
-		boolean privatemsg = (boolean)mi.getDataI(player, "channel_pm", "player_uuid");
-		boolean custom = (boolean)mi.getDataI(player, "channel_temp", "player_uuid");
-		boolean spy = (boolean)mi.getDataI(player, "spy", "player_uuid");
+		boolean canchat = (boolean)mi.getDataI(player.getUniqueId().toString(), "can_chat", "player_uuid");
+		boolean global = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_global", "player_uuid");
+		boolean local = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_local", "player_uuid");
+		boolean auction = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_auction", "player_uuid");
+		boolean trade = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_trade", "player_uuid");
+		boolean support = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_support", "player_uuid");
+		boolean team = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_team", "player_uuid");
+		boolean admin = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_admin", "player_uuid");
+		boolean world = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_world", "player_uuid");
+		boolean group = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_group", "player_uuid");
+		boolean privatemsg = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_pm", "player_uuid");
+		boolean temp = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_temp", "player_uuid");
+		boolean perma = (boolean)mi.getDataI(player.getUniqueId().toString(), "channel_perma", "player_uuid");
+		boolean spy = (boolean)mi.getDataI(player.getUniqueId().toString(), "spy", "player_uuid");
 		
 		String comma = plugin.getYamlHandler().getL().getString(language+".Join.Comma");
 		
@@ -704,7 +706,8 @@ public class Utility
 		if(admin) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Admin")+comma;}
 		if(group) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Group")+comma;}
 		if(privatemsg) {ac += plugin.getYamlHandler().getL().getString(language+".Join.PrivateMessage")+comma;}
-		if(custom) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Temp")+comma;}
+		if(temp) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Temp")+comma;}
+		if(perma) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Perma")+comma;}
 		if(spy) {ac += plugin.getYamlHandler().getL().getString(language+".Join.Spy")+comma;}
 		return ac.substring(0, ac.length()-2);
 	}
@@ -714,9 +717,6 @@ public class Utility
 		if(!plugin.getMysqlHandler().hasAccount(player))
 		{
 			plugin.getMysqlHandler().createAccount(player);
-			return;
-		} else
-		{
 			return;
 		}
 	}
@@ -780,6 +780,21 @@ public class Utility
 			{
 				plugin.getAfkRecord().softSave(player);
 			}
+		}
+	}
+	
+	public void updatePermanentChannels(PermanentChannel pc)
+	{
+		if(plugin.getMysqlHandler().existChannel(pc.getName()))
+		{
+			plugin.getMysqlHandler().updateDataIII(pc, pc.getName(), "channel_name");
+			plugin.getMysqlHandler().updateDataIII(pc, String.join(";", pc.getVice()), "vice");
+			plugin.getMysqlHandler().updateDataIII(pc, String.join(";", pc.getMembers()), "members");
+			plugin.getMysqlHandler().updateDataIII(pc, pc.getPassword(), "password");
+			plugin.getMysqlHandler().updateDataIII(pc, String.join(";", pc.getBanned()), "banned");
+		} else
+		{
+			plugin.getMysqlHandler().createChannel(pc);
 		}
 	}
 }

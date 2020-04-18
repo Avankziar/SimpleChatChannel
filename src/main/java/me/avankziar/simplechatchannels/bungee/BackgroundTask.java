@@ -3,7 +3,7 @@ package main.java.me.avankziar.simplechatchannels.bungee;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class BackgroundTask 
@@ -16,6 +16,12 @@ public class BackgroundTask
 		this.plugin = plugin;
 		players = new ArrayList<String>();
 		runTask();
+		initPermanentChannels();
+	}
+	
+	public ArrayList<String> getPlayers()
+	{
+		return players;
 	}
 	
 	private void runTask()
@@ -37,8 +43,20 @@ public class BackgroundTask
 		}, 15L, TimeUnit.SECONDS);	
 	}
 	
-	public ArrayList<String> getPlayers()
+	public void initPermanentChannels()
 	{
-		return players;
+		int lastid = plugin.getMysqlHandler().getLastIDIII();
+		if(lastid == 0)
+		{
+			return;
+		}
+		for(int i = 1; i <= lastid; i++)
+		{
+			if(plugin.getMysqlHandler().existChannel(i))
+			{
+				PermanentChannel pc = plugin.getMysqlHandler().getDataIII(i);
+				PermanentChannel.addCustomChannel(pc);
+			}
+		}
 	}
 }

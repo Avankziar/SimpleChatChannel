@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 
 public class ARGTemporaryChannelBan extends CommandModule
 {
@@ -23,7 +23,7 @@ public class ARGTemporaryChannelBan extends CommandModule
 	{
 		Player player = (Player) sender;
 		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
-		CustomChannel cc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
@@ -57,6 +57,7 @@ public class ARGTemporaryChannelBan extends CommandModule
 			return;
 		}
 		cc.addBanned(target);
+		cc.removeMembers(target);
 		///Du hast den Spieler &f%player% &eaus dem CustomChannel gebannt.
 		player.spigot().sendMessage(plugin.getUtility().tctl(
 				plugin.getYamlHandler().getL().getString(language+"TCBan.YouHasBanned")

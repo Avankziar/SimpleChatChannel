@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -23,7 +23,7 @@ public class ARGTemporaryChannelCreate extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
-		CustomChannel cc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc!=null)
 		{
 			///Du bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.
@@ -44,8 +44,8 @@ public class ARGTemporaryChannelCreate extends CommandModule
 		}
 		ArrayList<ProxiedPlayer> members = new ArrayList<ProxiedPlayer>();
 		members.add(player);
-		cc = new CustomChannel(name, player, members, password, new ArrayList<ProxiedPlayer>());
-		CustomChannel.addCustomChannel(cc);
+		cc = new TemporaryChannel(name, player, members, password, new ArrayList<ProxiedPlayer>());
+		TemporaryChannel.addCustomChannel(cc);
 		if(password==null)
 		{
 			///Du hast den Custom Channel &f%channel% &eerstellt!

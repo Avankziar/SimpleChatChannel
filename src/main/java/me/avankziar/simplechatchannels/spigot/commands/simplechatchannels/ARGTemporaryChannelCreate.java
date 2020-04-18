@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 
 
 public class ARGTemporaryChannelCreate extends CommandModule
@@ -25,7 +25,7 @@ public class ARGTemporaryChannelCreate extends CommandModule
 	{
 		Player player = (Player) sender;
 		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
-		CustomChannel cc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc!=null)
 		{
 			///Du bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.
@@ -46,8 +46,8 @@ public class ARGTemporaryChannelCreate extends CommandModule
 		}
 		ArrayList<Player> members = new ArrayList<Player>();
 		members.add(player);
-		cc = new CustomChannel(name, player, members, password, new ArrayList<Player>());
-		CustomChannel.addCustomChannel(cc);
+		cc = new TemporaryChannel(name, player, members, password, new ArrayList<Player>());
+		TemporaryChannel.addCustomChannel(cc);
 		if(password==null)
 		{
 			///Du hast den Custom Channel &f%channel% &eerstellt!

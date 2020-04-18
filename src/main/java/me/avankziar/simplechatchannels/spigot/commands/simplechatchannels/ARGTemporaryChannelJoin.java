@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 
 public class ARGTemporaryChannelJoin extends CommandModule
 {
@@ -36,8 +36,8 @@ public class ARGTemporaryChannelJoin extends CommandModule
 			plugin.getUtility().rightArgs(player,args,3);
 			return;
 		}
-		CustomChannel cc = CustomChannel.getCustomChannel(name);
-		CustomChannel oldcc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(name);
+		TemporaryChannel oldcc = TemporaryChannel.getCustomChannel(player);
 		if(oldcc!=null)
 		{
 			///Du bist schon in einem anderen Channel gejoint, verlasse erst diesen!

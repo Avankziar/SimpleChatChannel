@@ -5,20 +5,20 @@ import java.util.LinkedHashMap;
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGTemporaryChannelInvite extends CommandModule
+public class ARGPermanentChannelInvite extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	private LinkedHashMap<ProxiedPlayer, Long> inviteCooldown;
 	
-	public ARGTemporaryChannelInvite(SimpleChatChannels plugin)
+	public ARGPermanentChannelInvite(SimpleChatChannels plugin)
 	{
-		super("tcinvite","scc.cmd.tc.invite",SimpleChatChannels.sccarguments,2,2,"tceinladen");
+		super("pcinvite","scc.cmd.pc.invite",SimpleChatChannels.sccarguments,2,2,"pceinladen");
 		this.plugin = plugin;
 		inviteCooldown = new LinkedHashMap<>();
 	}
@@ -30,16 +30,23 @@ public class ARGTemporaryChannelInvite extends CommandModule
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage();
 		String scc = ".CmdScc.";
-		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
+		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
 		if(cc==null)
 		{
-			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannel"));
+			///Du bist in keinem permanenten Channel!
+			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannelII"));
+			return;
+		}
+		if(!cc.getCreator().equals(player.getUniqueId().toString())
+				&& !cc.getVice().contains(player.getUniqueId().toString()))
+		{
+			///Du bist nicht der Ersteller des CustomChannel!
+			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotChannelViceII"));
 			return;
 		}
 		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()>inviteCooldown.get(player))
 		{
-			player.sendMessage(utility.tctlYaml(language+scc+"TCInvite.Cooldown"));
+			player.sendMessage(utility.tctlYaml(language+scc+"PCInvite.Cooldown"));
 			return;
 		}
 		String t = args[1];
@@ -55,16 +62,16 @@ public class ARGTemporaryChannelInvite extends CommandModule
 		{
 			cmd += " "+cc.getPassword();
 		}
-		player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"TCInvite.SendInvite")
+		player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"PCInvite.SendInvite")
 				.replace("%target%", target.getName()).replace("%channel%", cc.getName())));
-		target.sendMessage(utility.clickEvent(plugin.getYamlHandler().getL().getString(language+scc+"TCInvite.Invitation")
+		target.sendMessage(utility.clickEvent(plugin.getYamlHandler().getL().getString(language+scc+"PCInvite.Invitation")
 				.replace("%player%", player.getName()).replace("%channel%", cc.getName()), ClickEvent.Action.RUN_COMMAND, cmd, false));
 		if(inviteCooldown.containsKey(player))
 		{
-			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("TCInviteCooldown"));
+			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("PCInviteCooldown"));
 		} else
 		{
-			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("TCInviteCooldown"));
+			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("PCInviteCooldown"));
 		}
 		return;
 	}

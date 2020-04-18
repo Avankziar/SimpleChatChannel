@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
-public class CustomChannel 
+public class TemporaryChannel 
 {
 	private String name;
 	private Player creator;
 	private ArrayList<Player> members = new ArrayList<Player>();
-	private static ArrayList<CustomChannel> customchannel = new ArrayList<CustomChannel>();
+	private static ArrayList<TemporaryChannel> customchannel = new ArrayList<TemporaryChannel>();
 	private String password;
 	private ArrayList<Player> banned = new ArrayList<Player>();
 	
-	public CustomChannel(String name, Player creator, ArrayList<Player> members, String password,
+	public TemporaryChannel(String name, Player creator, ArrayList<Player> members, String password,
 			ArrayList<Player> banned)
 	{
 		setName(name);
@@ -69,10 +69,10 @@ public class CustomChannel
 		}
 	}
 	
-	public static CustomChannel getCustomChannel(Player player)
+	public static TemporaryChannel getCustomChannel(Player player)
 	{
-		CustomChannel c = null;
-		for (CustomChannel cc : customchannel)
+		TemporaryChannel c = null;
+		for (TemporaryChannel cc : customchannel)
 		{
 			for(Player p : cc.getMembers())
 			{
@@ -86,10 +86,10 @@ public class CustomChannel
 		return c;
 	}
 	
-	public static CustomChannel getCustomChannel(String name)
+	public static TemporaryChannel getCustomChannel(String name)
 	{
-		CustomChannel c = null;
-		for (CustomChannel cc : customchannel)
+		TemporaryChannel c = null;
+		for (TemporaryChannel cc : customchannel)
 		{
 			if(cc.getName().equalsIgnoreCase(name))
 			{
@@ -100,12 +100,12 @@ public class CustomChannel
 		return c;
 	}
 	
-	public static void addCustomChannel(CustomChannel cc)
+	public static void addCustomChannel(TemporaryChannel cc)
 	{
 		customchannel.add(cc);
 	}
 	
-	public static void removeCustomChannel(CustomChannel cc)
+	public static void removeCustomChannel(TemporaryChannel cc)
 	{
 		customchannel.remove(cc);
 	}

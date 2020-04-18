@@ -296,12 +296,8 @@ public class MysqlHandler
         return false;
 	}
 	
-	public Object getDataI(Player player, String selectcolumn, String wherecolumn)
+	public Object getDataI(Object object, String selectcolumn, String wherecolumn)
 	{
-		if (!hasAccount(player)) 
-		{
-			createAccount(player);
-		}
 		PreparedStatement preparedUpdateStatement = null;
 		ResultSet result = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
@@ -311,7 +307,7 @@ public class MysqlHandler
 			{			
 				String sql = "SELECT `" + selectcolumn + "` FROM `" + tableNameI + "` WHERE `" + wherecolumn + "` = ? LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
-		        preparedUpdateStatement.setString(1, player.getUniqueId().toString());
+		        preparedUpdateStatement.setObject(1, object);
 		        
 		        result = preparedUpdateStatement.executeQuery();
 		        while (result.next()) 

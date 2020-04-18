@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.CustomChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -110,7 +110,7 @@ public class CommandHelper
 	
 	public void channeltoggle(Player player, String channel, String replacer)
 	{
-		if((boolean) plugin.getMysqlHandler().getDataI(player, "channel_"+channel, "player_uuid"))
+		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "channel_"+channel, "player_uuid"))
 		{
 			///Du hast den Channel %channel% &causgeblendet!
 			plugin.getMysqlHandler().updateDataI(player, false, "channel_"+channel);
@@ -131,7 +131,7 @@ public class CommandHelper
 	public void optiontoggle(Player player, String optionperm,
 			String option, String replacer)
 	{
-		if(((boolean) plugin.getMysqlHandler().getDataI(player, option, "player_uuid")))
+		if(((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), option, "player_uuid")))
 		{
 			plugin.getMysqlHandler().updateDataI(player, false, option);
 			///Du hast den Channel %channel% &causgeblendet!
@@ -149,12 +149,12 @@ public class CommandHelper
 	}
 	
 	//Obsolete
-	public void cccreate(Player player, String language, CustomChannel cc, String name, String password)
+	public void cccreate(Player player, String language, TemporaryChannel cc, String name, String password)
 	{
 		ArrayList<Player> members = new ArrayList<Player>();
 		members.add(player);
-		cc = new CustomChannel(name, player, members, password, new ArrayList<Player>());
-		CustomChannel.addCustomChannel(cc);
+		cc = new TemporaryChannel(name, player, members, password, new ArrayList<Player>());
+		TemporaryChannel.addCustomChannel(cc);
 		if(password==null)
 		{
 			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
@@ -172,8 +172,8 @@ public class CommandHelper
 	//Obsolete
 	public void ccjoin(Player player, String language, String name, String password)
 	{
-		CustomChannel cc = CustomChannel.getCustomChannel(name);
-		CustomChannel oldcc = CustomChannel.getCustomChannel(player);
+		TemporaryChannel cc = TemporaryChannel.getCustomChannel(name);
+		TemporaryChannel oldcc = TemporaryChannel.getCustomChannel(player);
 		if(oldcc!=null)
 		{
 			player.spigot().sendMessage(plugin.getUtility().tctl(

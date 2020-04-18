@@ -11,10 +11,11 @@ Build 33
 - +/scc broadcast, hat alias bekommen "ausstrahlung"
 - +Spieler die Afk sind, bekommen trotzdem die PrivateNachricht
 - +Reload befehl in bungee eingebaut, und auf Bungee und Spigot Ebene bewirkt es auch einen reconnect der Mysql anhand neuer Daten.
-- +Tab correct umsetzten siehe votereborn
-- +Commands neu aufsetzten siehe votereborn
+- +Besseres TabComplete eingebaut
+- +Commands in neuerer Struktur gebaut. Ist übersichtlicher generell und leichter neue Argumente einzubauen.
 - +Prefix in config.yml einbauen
 - +AfkRecord bekommt nun ab Build 6(!!) bei jedem ChatEvent einen SoftSave(Zeiten des Spielers werden im RAM gespeichert)
+- +Namensänderungen werden nun bei jedem Join überprüft und gegebenfalls aktualisiert
 
 Build 31
 - +Hover bei Commands in chat
