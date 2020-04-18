@@ -51,10 +51,14 @@ public class ARGPermanentChannelInfo extends CommandModule
 				.replace("%members%", getPlayers(cc.getMembers()))));
 		if(cc.getPassword()!=null)
 		{
-			///Channel Passwort: &f%password%
-			player.sendMessage(utility.tctl(
-					plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Password")
-					.replace("%password%", cc.getPassword())));
+			if(cc.getCreator().equals(player.getUniqueId().toString())
+					|| cc.getVice().contains(player.getUniqueId().toString()))
+			{
+				///Channel Passwort: &f%password%
+				player.sendMessage(utility.tctl(
+						plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Password")
+						.replace("%password%", cc.getPassword())));
+			}
 		}
 		///Channel Gebannte Spieler: &f%banned%
 		player.sendMessage(utility.tctl(

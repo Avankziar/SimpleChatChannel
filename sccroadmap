@@ -16,6 +16,29 @@ Build 33
 - +Prefix in config.yml einbauen
 - +AfkRecord bekommt nun ab Build 6(!!) bei jedem ChatEvent einen SoftSave(Zeiten des Spielers werden im RAM gespeichert)
 - +Namensänderungen werden nun bei jedem Join überprüft und gegebenfalls aktualisiert
+- +PermissionÄnderung: aus allen scc.cmd.cc.XXXX wird scc.cmd.tc.XXXX
+- +Aus CustomChannel wird Temporärer Channel.
+- +Neue Commands:
+  */scc tcinvite <Spieler> | Lädt den Spieler in deinen Temporären Channel ein (Mit Cooldown) | scc.cmd.tc.invite
+- +In der Mysql muss nun aus der Spalte "channel_custom" => "channel_temp" werden.
+- +In der Mysql muss nun eine neue Spalte hinzugefügt werden, falls sie nicht das erste Mal starten:
+  Name: "channel_perma", TinyInt(1), Default:1 (ihr könnt auch 0 bei default machen, hängt davon ab, ob alle spieler es sofort
+  aktiviert haben sollen oder nicht.
+- +Neuer Channel ist hinzugefügt worden: PermanenterChannel, DefaultSymbol "."
+- +Neue Commands:
+  */scc pcban <spieler> | Bannt den Spieler aus dem PChannel (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.ban
+  */scc pcchangepassword <pw> | Ändert das Passwort. Nur Ersteller oder Stellvertreter | scc.cmd.pc.changepassword
+  */scc pccreate <ChannelName> [Pw] | Erstellt einen PChannel, der ausführende Spieler ist somit für immer Ersteller | scc.cmd.pc.create
+  */scc pcinfo | Zeigt alle Infos des Channels (Passwort nur für Ersteller und Stellvertreter sichtbar) | scc.cmd.pc.info
+  */scc pcinvite <spieler> | Lädt den Spieler in deinen channel ein (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.invite
+  */scc pcjoin <Channelname> [pw] | Joint dem Channel (Passwort muss natürlich übereinstimmen) | scc.cmd.pc.join
+  */scc pckick <spieler> | Kickt den Spieler aus dem Channel (Nur für Ersteller & Stellvertreter). Dabei kann der Ersteller
+  die Stellvertreter kicken aber nicht umgekehrt. | scc.cmd.pc.kick
+  */scc pcleave [bestätigen] | Verlässt den Channel. Ersteller müssen bestätigen. Bei Bestätigung wird der gesamte Channel
+  gelöscht und alle Mitglieder verlassen diesen | scc.cmd.pc.leave
+  */scc pcunban <spieler> | Begnadigt den Spieler. ABER er wird kein Mitglied dadurch, falls er vorher eins war | scc.cmd.pc.unban
+  */scc pcvice <spieler> | Befördert oder degradiert einen Spieler zum Stellvertreter oder zum Mitglied.
+- Noch ins englische übersetzten
 
 Build 31
 - +Hover bei Commands in chat

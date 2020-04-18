@@ -151,7 +151,7 @@ public class EventChat implements Listener
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
-			if(event.getMessage().substring(1).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
@@ -195,7 +195,7 @@ public class EventChat implements Listener
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
-			if(event.getMessage().substring(1).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
@@ -240,16 +240,31 @@ public class EventChat implements Listener
 				return;
 			}
 			
+			TextComponent channels = utility.apichat(yamlHandler.getL().getString(language+".Channels.Perma")
+					.replace("%channel%", cc.getName()), 
+					ClickEvent.Action.SUGGEST_COMMAND, symbol+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.Perma"), false);
+			
+			List<BaseComponent> prefix = utility.getPrefix(player);
+			
+			TextComponent playertext = utility.apichat(yamlHandler.getL().getString(language+".PlayerColor")+player.getName(), 
+					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
+					.replace("%player%", player.getName()), false);
+			
+			List<BaseComponent> suffix = utility.getSuffix(player);
+			
+			List<BaseComponent> msg = utility.msgLater(player, symbol.length(), channel, event.getMessage());
+			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getAllTextComponentForChannels(
-					player, event.getMessage(), "Perma", symbol, symbol.length()));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
-			if(event.getMessage().substring(1).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
@@ -425,7 +440,7 @@ public class EventChat implements Listener
 			
 			plugin.getProxy().getConsole().sendMessage(MSG1); //Console
 			
-			if(event.getMessage().substring(3).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
@@ -499,15 +514,14 @@ public class EventChat implements Listener
 					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
 					.replace("%player%", tr.getName()), false);
 			
-			if(event.getMessage().substring(targets[0].length()+1).length()<0)
+			if(event.getMessage().substring(targets[0].length()+symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
 				return;
 			}
-			if(event.getMessage().length()>=yamlHandler.getSymbol("PrivateMessage").length() 
-					&& utility.getWordfilter(event.getMessage().substring(
-							yamlHandler.getSymbol("PrivateMessage").length()))) //Wordfilter
+			if(event.getMessage().length()>=symbol.length() 
+					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
 			{
 				///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
