@@ -14,7 +14,7 @@ public class ARGPermanentChannelUnban extends CommandModule
 	
 	public ARGPermanentChannelUnban(SimpleChatChannels plugin)
 	{
-		super("pcunban","scc.cmd.pc.unban",SimpleChatChannels.sccarguments,2,2,"pcentbannen");
+		super("pcunban","scc.cmd.pc.unban",SimpleChatChannels.sccarguments,3,3,"pcentbannen");
 		this.plugin = plugin;
 	}
 
@@ -24,11 +24,12 @@ public class ARGPermanentChannelUnban extends CommandModule
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage() + ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
-			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannelII"));
+			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString())
@@ -38,13 +39,13 @@ public class ARGPermanentChannelUnban extends CommandModule
 			player.sendMessage(utility.tctl(language+"ChannelGeneral.NotChannelViceII"));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[1])==null)
+		if(plugin.getProxy().getPlayer(args[2])==null)
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
 			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
+		ProxiedPlayer target = plugin.getProxy().getPlayer(args[2]); 
 		if(!cc.getBanned().contains(target.getUniqueId().toString()))
 		{
 			///Der Spieler ist nicht auf der Bannliste!

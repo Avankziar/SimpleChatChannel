@@ -13,7 +13,7 @@ public class ARGPermanentChannelChangePassword extends CommandModule
 	
 	public ARGPermanentChannelChangePassword(SimpleChatChannels plugin)
 	{
-		super("pcchangepassword","scc.cmd.pc.changepassword",SimpleChatChannels.sccarguments,2,2,"pcpasswortändern");
+		super("pcchangepassword","scc.cmd.pc.changepassword",SimpleChatChannels.sccarguments,3,3,"pcpasswortändern");
 		this.plugin = plugin;
 	}
 
@@ -24,11 +24,12 @@ public class ARGPermanentChannelChangePassword extends CommandModule
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage();
 		String scc = ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Du bist in keinem permanenten Channel!
-			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannelII"));
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"ChannelGeneral.ChannelNotExistII")
+					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()))
@@ -37,12 +38,12 @@ public class ARGPermanentChannelChangePassword extends CommandModule
 			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotTheCreatorII"));
 			return;
 		}
-		cc.setPassword(args[1]);
+		cc.setPassword(args[2]);
 		plugin.getUtility().updatePermanentChannels(cc);
 		///Du hast das Passwort zu &f%password% &egeändert!
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCChangepassword.PasswordChange")
-				.replace("%password%", args[1])));
+				.replace("%password%", args[2])));
 		return;
 	}
 }

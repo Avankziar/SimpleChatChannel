@@ -47,21 +47,44 @@ public class CommandHelper
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg11",
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg12",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tccreate <Name> [Password]", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg13",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcjoin <Name>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg14",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcleave", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg15",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tckick <Player>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg16",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcban <Player>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg17",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcunban <Player>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg18",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcchangepassword <Password>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg19",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcinfo", true));
+			
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg20",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcinvite <Player>", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg21",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pccreate <Name> [Password]", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg22",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcjoin <Name>", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg23",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcleave confirm", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg24",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pckick <Player>", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg25",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcban <Player>", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg26",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcunban <Player>", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg27",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcchangepassword <Password>", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg28",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcinfo", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg29",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcinvite <Player>", true));
+			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg30",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcvice <Player>", true));
 		} else
 		{
 			player.sendMessage(plugin.getUtility().tctlYaml(language+scc+"Info.msg10"));
@@ -76,21 +99,21 @@ public class CommandHelper
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg11",
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg12",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tccreate <Name> [Password]", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg13",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcjoin <Name>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg14",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcleave", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg15",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tckick <Player>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg16",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcban <Player>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg17",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcunban <Player>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg18",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc thangepassword <Password>", true));
 			player.sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg19",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcinfo", true));
 		}
 	}
 	

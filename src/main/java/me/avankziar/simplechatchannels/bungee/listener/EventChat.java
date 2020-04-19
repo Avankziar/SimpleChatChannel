@@ -172,7 +172,7 @@ public class EventChat implements Listener
 			if(TemporaryChannel.getCustomChannel(player)==null)
 			{
 				///Du bist in keinem CustomChannel!
-				player.sendMessage(utility.tctlYaml(language+".ChannelGeneral.NotInAChannel"));
+				player.sendMessage(utility.tctlYaml(language+".CmdScc.ChannelGeneral.NotInAChannel"));
 				return;
 			}
 			
@@ -186,12 +186,27 @@ public class EventChat implements Listener
 				return;
 			}
 			
+			TextComponent channels = utility.apichat(yamlHandler.getL().getString(language+".Channels.Perma")
+					.replace("%channel%", cc.getName()), 
+					ClickEvent.Action.SUGGEST_COMMAND, symbol+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.Perma"), false);
+			
+			List<BaseComponent> prefix = utility.getPrefix(player);
+			
+			TextComponent playertext = utility.apichat(yamlHandler.getL().getString(language+".PlayerColor")+player.getName(), 
+					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
+					.replace("%player%", player.getName()), false);
+			
+			List<BaseComponent> suffix = utility.getSuffix(player);
+			
+			List<BaseComponent> msg = utility.msgLater(player, symbol.length(), channel, event.getMessage());
+			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getAllTextComponentForChannels(
-					player, event.getMessage(), "Temp", symbol, symbol.length()));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
@@ -218,19 +233,32 @@ public class EventChat implements Listener
 			return;
 		} else if(channel.equals("Perma")) //----------------------------------------------------------Permanenter Channel
 		{
-			if(!utility.hasChannelRights(player, "channel_temp"))
+			if(!utility.hasChannelRights(player, "channel_perma"))
 			{
 				return;
 			}
 			
-			if(PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString())==null)
+			String[] space = event.getMessage().split(" ");
+			PermanentChannel fromSymbol = PermanentChannel.getChannelFromSymbol(space[0].substring(symbol.length()));
+			PermanentChannel fromPlayer = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+			PermanentChannel cc = fromSymbol;
+			boolean check = true;
+			if(fromSymbol==null)
 			{
-				///Du bist in keinem CustomChannel!
-				player.sendMessage(utility.tctlYaml(language+".ChannelGeneral.NotInAChannelII"));
-				return;
+				cc = fromPlayer;
+				check = false;
+				if(fromPlayer==null)
+				{
+					///Du bist in keinem CustomChannel!
+					player.sendMessage(utility.tctlYaml(language+".CmdScc.ChannelGeneral.ChannelNotExistII"));
+					return;
+				}
 			}
 			
-			PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+			if(check)
+			{
+				symbol = symbol+cc.getSymbolExtra();
+			}
 			
 			if(event.getMessage().length()>=symbol.length() 
 					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
@@ -241,7 +269,7 @@ public class EventChat implements Listener
 			}
 			
 			TextComponent channels = utility.apichat(yamlHandler.getL().getString(language+".Channels.Perma")
-					.replace("%channel%", cc.getName()), 
+					.replace("%channel%", cc.getNameColor()+cc.getName()), 
 					ClickEvent.Action.SUGGEST_COMMAND, symbol+" ", 
 					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.Perma"), false);
 			
@@ -254,7 +282,7 @@ public class EventChat implements Listener
 			
 			List<BaseComponent> suffix = utility.getSuffix(player);
 			
-			List<BaseComponent> msg = utility.msgLater(player, symbol.length(), channel, event.getMessage());
+			List<BaseComponent> msg = utility.msgPerma(player, symbol.length(), channel, event.getMessage(), cc.getChatColor());
 			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}

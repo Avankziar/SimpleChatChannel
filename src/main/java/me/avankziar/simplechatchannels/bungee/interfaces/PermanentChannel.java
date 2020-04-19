@@ -11,10 +11,14 @@ public class PermanentChannel
 	private ArrayList<String> members = new ArrayList<String>();
 	private static ArrayList<PermanentChannel> permanentChannel = new ArrayList<PermanentChannel>();
 	private String password;
+	private String symbolExtra;
+	private String nameColor;
+	private String chatColor;
 	private ArrayList<String> banned = new ArrayList<String>();
 	
 	public PermanentChannel(int id, String name, String creator, ArrayList<String> vice,
-			ArrayList<String> members, String password, ArrayList<String> banned)
+			ArrayList<String> members, String password, ArrayList<String> banned,
+			String symbolextra, String namecolor, String chatcolor)
 	{
 		setId(id);
 		setName(name);
@@ -23,6 +27,9 @@ public class PermanentChannel
 		setMembers(members);
 		setPassword(password);
 		setBanned(banned);
+		setSymbolExtra(symbolextra);
+		setNameColor(namecolor);
+		setChatColor(chatcolor);
 	}
 	
 	public static PermanentChannel getChannelFromPlayer(String playeruuid)
@@ -48,6 +55,20 @@ public class PermanentChannel
 		for (PermanentChannel cc : permanentChannel)
 		{
 			if(cc.getName().equalsIgnoreCase(name))
+			{
+				c = cc;
+				break;
+			}
+		}
+		return c;
+	}
+	
+	public static PermanentChannel getChannelFromSymbol(String symbol)
+	{
+		PermanentChannel c = null;
+		for (PermanentChannel cc : permanentChannel)
+		{
+			if(cc.getSymbolExtra().equals(symbol))
 			{
 				c = cc;
 				break;
@@ -146,6 +167,36 @@ public class PermanentChannel
 	public void setPassword(String password)
 	{
 		this.password = password;
+	}
+
+	public String getSymbolExtra()
+	{
+		return symbolExtra;
+	}
+
+	public void setSymbolExtra(String symbolExtra)
+	{
+		this.symbolExtra = symbolExtra;
+	}
+
+	public String getNameColor()
+	{
+		return nameColor;
+	}
+
+	public void setNameColor(String nameColor)
+	{
+		this.nameColor = nameColor;
+	}
+
+	public String getChatColor()
+	{
+		return chatColor;
+	}
+
+	public void setChatColor(String chatColor)
+	{
+		this.chatColor = chatColor;
 	}
 
 	public ArrayList<String> getBanned()

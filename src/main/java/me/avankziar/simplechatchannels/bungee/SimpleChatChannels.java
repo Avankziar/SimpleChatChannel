@@ -18,6 +18,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchann
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelGlobal;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelGroup;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelLocal;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelPerma;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelPrivateMessage;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelSupport;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelTeam;
@@ -32,12 +33,15 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchann
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOptionSpy;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelBan;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelChangePassword;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelChatColor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelCreate;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelInfo;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelInvite;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelJoin;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelKick;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelLeave;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelNameColor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelSymbol;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelUnban;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelVice;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPlayerlist;
@@ -88,7 +92,6 @@ public class SimpleChatChannels extends Plugin
 		yamlHandler = new YamlHandler(this);
 		utility = new Utility(this);
 		commandHelper = new CommandHelper(this);
-		backgroundtask = new BackgroundTask(this);
 		if(yamlHandler.get().getBoolean("Mysql.Status", false))
 		{
 			mysqlHandler = new MysqlHandler(this);
@@ -97,6 +100,7 @@ public class SimpleChatChannels extends Plugin
 		{
 			log.severe("MySQL is not enabled! "+pluginName+" wont work correctly!");
 		}
+		backgroundtask = new BackgroundTask(this);
 		setupPunisher();
 		setupAfkRecord();
 		CommandSetup();
@@ -168,13 +172,14 @@ public class SimpleChatChannels extends Plugin
 		new ARGBungee(this);
 		new ARGChannelAdmin(this);
 		new ARGChannelAuction(this);
-		new ARGChannelTemp(this);
 		new ARGChannelGlobal(this);
 		new ARGChannelGroup(this);
 		new ARGChannelLocal(this);
+		new ARGChannelPerma(this);
 		new ARGChannelPrivateMessage(this);
 		new ARGChannelSupport(this);
 		new ARGChannelTeam(this);
+		new ARGChannelTemp(this);
 		new ARGChannelTrade(this);
 		new ARGChannelWorld(this);	
 		new ARGGrouplist(this);
@@ -185,12 +190,15 @@ public class SimpleChatChannels extends Plugin
 		new ARGOptionSpy(this);
 		new ARGPermanentChannelBan(this);
 		new ARGPermanentChannelChangePassword(this);
+		new ARGPermanentChannelChatColor(this);
 		new ARGPermanentChannelCreate(this);
 		new ARGPermanentChannelInfo(this);
 		new ARGPermanentChannelInvite(this);
 		new ARGPermanentChannelJoin(this);
 		new ARGPermanentChannelKick(this);
 		new ARGPermanentChannelLeave(this);
+		new ARGPermanentChannelNameColor(this);
+		new ARGPermanentChannelSymbol(this);
 		new ARGPermanentChannelUnban(this);
 		new ARGPermanentChannelVice(this);
 		new ARGPlayerlist(this);

@@ -14,7 +14,7 @@ public class ARGPermanentChannelKick extends CommandModule
 	
 	public ARGPermanentChannelKick(SimpleChatChannels plugin)
 	{
-		super("pckick","scc.cmd.pc.kick",SimpleChatChannels.sccarguments,2,2,"pcrausschmeißen");
+		super("pckick","scc.cmd.pc.kick",SimpleChatChannels.sccarguments,3,3,"pcrausschmeißen");
 		this.plugin = plugin;
 	}
 
@@ -24,11 +24,12 @@ public class ARGPermanentChannelKick extends CommandModule
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage() + ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(args[1]);
 		if(cc==null)
 		{
-			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannelII"));
+			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString())
@@ -38,13 +39,13 @@ public class ARGPermanentChannelKick extends CommandModule
 			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotChannelViceII"));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[1])==null)
+		if(plugin.getProxy().getPlayer(args[2])==null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
 			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
+		ProxiedPlayer target = plugin.getProxy().getPlayer(args[2]); 
 		if(!cc.getMembers().contains(target.getUniqueId().toString()))
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
@@ -62,11 +63,11 @@ public class ARGPermanentChannelKick extends CommandModule
 		plugin.getUtility().updatePermanentChannels(cc);
 		///Du wurdest aus dem CustomChannel gekickt!
 		target.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"PCKick.YouWereKicked")
-				.replace("%channel%", cc.getName())));
+				.replace("%channel%", cc.getNameColor()+cc.getName())));
 		///Du hast &f%player% &eaus dem Channel gekickt!
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCKick.YouKicked")
-				.replace("%player%", args[1]).replace("%channel%", cc.getName())));
+				.replace("%player%", args[2]).replace("%channel%", cc.getNameColor()+cc.getName())));
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
@@ -74,7 +75,7 @@ public class ARGPermanentChannelKick extends CommandModule
 				///Der Spieler &f%player% &ewurde aus dem Channel gekickt!
 				members.sendMessage(utility.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCKick.KickedSomeone")
-						.replace("%player%", args[1]).replace("%channel%", cc.getName())));
+						.replace("%player%", args[2]).replace("%channel%", cc.getNameColor()+cc.getName())));
 			}
 		}
 		return;

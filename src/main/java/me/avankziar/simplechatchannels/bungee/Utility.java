@@ -40,7 +40,6 @@ public class Utility
 	PERMBYPASSCOMMAND = "scc.channels.bypass.command",
 	PERMBYPASSIGNORE = "scc.channels.bypass.ignore",
 	PERMBYPASSITEM = "scc.channels.bypass.item",
-	PERMBYPASSCCINVITE = "scc.channel.bypass.invite",
 	PERMBYPASSPRIVACY = "scc.channel.bypass.privacy",
 	PERMBYPASSWEBSITE = "scc.channels.bypass.website";
 	
@@ -77,10 +76,18 @@ public class Utility
 		this.language = language;
 	}
 	
-	//tl = translate
-	public String tl(String path)
+	/**
+	 * <ul><b><u>getDurationInSeconds</u></b>
+	 * <pre><p><i>String tl</i></pre>
+	 * <p><b>Deutsch:</b> Gibt einen String zurück, wo &x Zeichenpaare in den ChatColor umgewandelt wird. 
+	 * tl steht für das translate als Abkürzung.
+	 * @return String
+	 * @author Avankziar
+	 */
+
+	public String tl(String s)
 	{
-		return ChatColor.translateAlternateColorCodes('&', path);
+		return ChatColor.translateAlternateColorCodes('&', s);
 	}
 	
 	public TextComponent tc(String s)
@@ -215,6 +222,48 @@ public class Utility
 		list.add(tctl(channelsplit));
 		String[] fullmsg = rawmsg.split(" ");
 		String cc = plugin.getYamlHandler().getL().getString(language+".ChannelColor."+channel);
+		String safeColor = null;
+		for(String splitmsg : fullmsg)
+		{
+			if(player.hasPermission(PERMBYPASSCOLOR))
+			{
+				if(hasColor(splitmsg))
+				{
+					if(safeColor==null)
+					{
+						safeColor = cc;
+					}
+					TextComponent word = tctl(safeColor+splitmsg+" ");
+					safeColor = getSafeColor(splitmsg);
+					list.add(word);
+				} else
+				{
+					if(safeColor==null)
+					{
+						safeColor = cc;
+					}
+					TextComponent word = tctl(safeColor+splitmsg+" ");
+					list.add(word);
+				}
+			} else
+			{
+				String colorFreeWord = removeColor(splitmsg);
+				TextComponent word = tctl(colorFreeWord+" ");
+				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+			}
+			
+		}
+		return list;
+	}
+	
+	public List<BaseComponent> msgPerma(ProxiedPlayer player, int ss, String channel, String msg, String chatcolor)
+	{
+		String channelsplit = plugin.getYamlHandler().getL().getString(language+".ChatSplit."+channel);
+		String rawmsg = msg.substring(ss);
+		List<BaseComponent> list = new ArrayList<>();
+		list.add(tctl(channelsplit));
+		String[] fullmsg = rawmsg.split(" ");
+		String cc = chatcolor;
 		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
@@ -396,6 +445,34 @@ public class Utility
 				.replace("§A", "").replace("§B", "").replace("§C", "").replace("§D", "").replace("§E", "").replace("§F", "")
 				.replace("§K", "").replace("§L", "").replace("§M", "").replace("§N", "").replace("§O", "").replace("§R", "");
 		return a;
+	}
+	
+	public String returnColor(String msg)
+	{
+		String colors = "";
+		int i = 0;
+		int end = msg.length();
+		while(i<end)
+		{
+			char a = 0;
+			char b = 0;
+			try
+			{
+				a = msg.charAt(i);
+				b = msg.charAt(i+1);
+				String c = String.valueOf(a)+String.valueOf(b);
+				colors += ChatColor.valueOf(c).name()+" ";
+			} catch(IndexOutOfBoundsException e)
+			{
+				break;
+			}
+			i += 2;
+		}
+		if(colors.length()>1)
+		{
+			colors = colors.substring(0, colors.length()-1);
+		}
+		return colors;
 	}
 	
 	private ChatColor getFristUseColor(String msg)
@@ -792,6 +869,9 @@ public class Utility
 			plugin.getMysqlHandler().updateDataIII(pc, String.join(";", pc.getMembers()), "members");
 			plugin.getMysqlHandler().updateDataIII(pc, pc.getPassword(), "password");
 			plugin.getMysqlHandler().updateDataIII(pc, String.join(";", pc.getBanned()), "banned");
+			plugin.getMysqlHandler().updateDataIII(pc, pc.getSymbolExtra(), "symbolextra");
+			plugin.getMysqlHandler().updateDataIII(pc, pc.getNameColor(), "namecolor");
+			plugin.getMysqlHandler().updateDataIII(pc, pc.getChatColor(), "chatcolor");
 		} else
 		{
 			plugin.getMysqlHandler().createChannel(pc);

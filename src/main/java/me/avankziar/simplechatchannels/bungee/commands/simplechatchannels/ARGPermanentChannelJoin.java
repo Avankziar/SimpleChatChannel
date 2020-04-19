@@ -33,19 +33,8 @@ public class ARGPermanentChannelJoin extends CommandModule
 		{
 			name = args[1];
 			password = args[2];
-		} else
-		{
-			utility.rightArgs(player,args,3);
-			return;
 		}
 		PermanentChannel cc = PermanentChannel.getChannelFromName(name);
-		PermanentChannel oldcc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
-		if(oldcc!=null)
-		{
-			///Du bist schon in einem anderen Channel gejoint, verlasse erst diesen!
-			player.sendMessage(utility.tctlYaml(language+"PCJoin.AlreadyInAChannel"));
-			return;
-		}
 		if(cc==null)
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
@@ -89,7 +78,7 @@ public class ARGPermanentChannelJoin extends CommandModule
 		///Du bist dem CustomChannel &f%channel% &agejoint!
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCJoin.ChannelJoined")
-				.replace("%channel%", cc.getName())));
+				.replace("%channel%", cc.getNameColor()+cc.getName())));
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))

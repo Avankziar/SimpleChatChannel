@@ -11,7 +11,7 @@ public class ARGChannelTemp extends CommandModule
 	
 	public ARGChannelTemp(SimpleChatChannels plugin)
 	{
-		super("custom",
+		super("temp",
 				"scc.channels.temp",SimpleChatChannels.sccarguments,1,1);
 		this.plugin = plugin;
 	}

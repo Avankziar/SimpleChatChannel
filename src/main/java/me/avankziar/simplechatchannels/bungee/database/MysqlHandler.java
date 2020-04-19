@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -329,8 +328,10 @@ public class MysqlHandler
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + tableNameIII + "`(`channel_name`, `creator`, `vice`, `members`, `password`, `banned`) " 
-						+ "VALUES(?, ?, ?, ?, ?, ?)";
+				String sql = "INSERT INTO `" + tableNameIII 
+						+ "`(`channel_name`, `creator`, `vice`, `members`, `password`, `banned`,"
+						+ " `symbolextra`, `namecolor`, `chatcolor`)" 
+						+ " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
 		        preparedStatement.setString(1, pc.getName());
 		        preparedStatement.setString(2, pc.getCreator());
@@ -338,6 +339,9 @@ public class MysqlHandler
 		        preparedStatement.setString(4, String.join(";", pc.getMembers()));
 		        preparedStatement.setString(5, pc.getPassword());
 		        preparedStatement.setString(6, String.join(";", pc.getBanned()));
+		        preparedStatement.setString(7, pc.getSymbolExtra());
+		        preparedStatement.setString(8, pc.getNameColor());
+		        preparedStatement.setString(9, pc.getChatColor());
 		        
 		        preparedStatement.executeUpdate();
 		        return true;
@@ -569,7 +573,10 @@ public class MysqlHandler
 		        			new ArrayList<String>(Arrays.asList(result.getString("vice").split(";"))), 
 		        			new ArrayList<String>(Arrays.asList(result.getString("members").split(";"))), 
 		        			result.getString("password"), 
-		        			new ArrayList<String>(Arrays.asList(result.getString("banned").split(";"))));
+		        			new ArrayList<String>(Arrays.asList(result.getString("banned").split(";"))),
+		        			result.getString("symbolextra"),
+		        			result.getString("namecolor"),
+		        			result.getString("chatcolor"));
 		        	return pc;
 		        }
 		    } catch (SQLException e) 
@@ -742,8 +749,8 @@ public class MysqlHandler
 		        }
 		    } catch (SQLException e) 
 			{
-				  Punisher.log.warning("Error: " + e.getMessage());
-				  e.printStackTrace();
+		    	e.printStackTrace();
+		    	return 0;
 		    } finally 
 			{
 		    	  try 

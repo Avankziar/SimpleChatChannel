@@ -17,7 +17,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 	
 	public ARGPermanentChannelLeave(SimpleChatChannels plugin)
 	{
-		super("pcleave","scc.cmd.pc.leave",SimpleChatChannels.sccarguments,1,2,"pcverlassen");
+		super("pcleave","scc.cmd.pc.leave",SimpleChatChannels.sccarguments,2,3,"pcverlassen");
 		this.plugin = plugin;
 	}
 
@@ -27,20 +27,20 @@ public class ARGPermanentChannelLeave extends CommandModule
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage() + ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
-			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannelII"));
+			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+					.replace("%channel%", args[1])));
 			return;
 		}
-		final String name = cc.getName();
-		if(args.length==1)
+		if(args.length==2)
 		{
 			if(cc.getCreator().equals(player.getUniqueId().toString()))
 			{
 				player.sendMessage(plugin.getUtility().clickEvent(language+"PCLeave.Confirm",
-						ClickEvent.Action.SUGGEST_COMMAND, "/scc pcleave confirm", true));
+						ClickEvent.Action.SUGGEST_COMMAND, "/scc pcleave "+args[1]+" confirm", true));
 				return;
 			} else
 			{
@@ -50,7 +50,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 				///Du hast den CustomChannel &f%channel% &everlassen!
 				player.sendMessage(utility.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCLeave.YouLeft")
-						.replace("%channel%", name)));
+						.replace("%channel%", cc.getNameColor()+cc.getName())));
 				for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 				{
 					if(cc.getMembers().contains(members.getUniqueId().toString()))
@@ -58,30 +58,30 @@ public class ARGPermanentChannelLeave extends CommandModule
 						///Der Spieler &f%player% &chat den &5perma&fnenten &cChannel &f%channel% &cverlassen!
 						members.sendMessage(utility.tctl(
 								plugin.getYamlHandler().getL().getString(language+"PCLeave.PlayerLeft")
-								.replace("%player%", player.getName()).replace("%channel%", cc.getName())));
+								.replace("%player%", player.getName()).replace("%channel%", cc.getNameColor()+cc.getName())));
 					}
 				}
 			}
 			return;
-		} else if(args.length == 2)
+		} else if(args.length == 3)
 		{
-			if(args[1].equalsIgnoreCase("confirm") || args[1].equalsIgnoreCase("bestätigen"))
+			if(args[2].equalsIgnoreCase("confirm") || args[2].equalsIgnoreCase("bestätigen"))
 			{
 				if(cc.getCreator().equals(player.getName()))
 				{
 					final ArrayList<String> oldmembers = cc.getMembers();
 					plugin.getMysqlHandler().deleteDataIII(cc.getName());
-					PermanentChannel.removeCustomChannel(cc);
-					cc = null;
 					for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 					{
 						if(oldmembers.contains(members.getUniqueId().toString()))
 						{
 							player.sendMessage(utility.tctl(
 									plugin.getYamlHandler().getL().getString(language+"PCLeave.YouLeft")
-									.replace("%channel%", name)));
+									.replace("%channel%", cc.getNameColor()+cc.getName())));
 						}
 					}
+					PermanentChannel.removeCustomChannel(cc);
+					cc = null;
 				} else
 				{
 					cc.removeMembers(player.getUniqueId().toString());
@@ -90,7 +90,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 					///Du hast den CustomChannel &f%channel% &everlassen!
 					player.sendMessage(utility.tctl(
 							plugin.getYamlHandler().getL().getString(language+"PCLeave.YouLeft")
-							.replace("%channel%", name)));
+							.replace("%channel%", cc.getNameColor()+cc.getName())));
 					for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 					{
 						if(cc.getMembers().contains(members.getUniqueId().toString()))
@@ -98,7 +98,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 							///Der Spieler &f%player% &chat den &5perma&fnenten &cChannel &f%channel% &cverlassen!
 							members.sendMessage(utility.tctl(
 									plugin.getYamlHandler().getL().getString(language+"PCLeave.PlayerLeft")
-									.replace("%player%", player.getName()).replace("%channel%", cc.getName())));
+									.replace("%player%", player.getName()).replace("%channel%", cc.getNameColor()+cc.getName())));
 						}
 					}
 				}

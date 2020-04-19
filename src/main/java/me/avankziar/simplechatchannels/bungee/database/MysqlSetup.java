@@ -33,6 +33,10 @@ public class MysqlSetup
 		{
 			return false;
 		}
+		if(!setupDatabaseIII())
+		{
+			return false;
+		}
 		return true;
 	}
 	
@@ -85,7 +89,7 @@ public class MysqlSetup
 		        		+ " channel_global boolean, channel_trade boolean, channel_auction boolean, channel_support boolean,"
 		        		+ " channel_local boolean, channel_world boolean,"
 		        		+ " channel_team boolean, channel_admin boolean,"
-		        		+ " channel_group boolean, channel_pm boolean, channel_temp boolean, channel_perma"
+		        		+ " channel_group boolean, channel_pm boolean, channel_temp boolean, channel_perma boolean,"
 		        		+ " spy boolean, joinmessage boolean);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
@@ -154,9 +158,10 @@ public class MysqlSetup
 			PreparedStatement query = null;
 		      try 
 		      {	        
-		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameII
+		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameIII
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY, channel_name TEXT NOT NULL, "
-		        		+ " creator TEXT NOT NULL, vice MEDIUMTEXT, members MEDIUMTEXT, password TEXT, banned MEDIUMTEXT);";
+		        		+ " creator TEXT NOT NULL, vice MEDIUMTEXT, members MEDIUMTEXT, password TEXT, banned MEDIUMTEXT,"
+		        		+ " symbolextra TEXT, namecolor TEXT, chatcolor TEXT);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
 		      } catch (SQLException e) 

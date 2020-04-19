@@ -13,6 +13,7 @@ UsePrefixForPlayerColor: true
 ShowJoinMessageGlobal: false
 ShowLeaveMessageGlobal: false
 TCInviteCooldown: 60
+PCInviteCooldown: 60
 Mysql:
   Status: false
   Host: '127.0.0.1'
@@ -25,5 +26,6 @@ Mysql:
   Password: 'not_0123456789'
   TableNameI: 'simplechatchannelsPlayerData'
   TableNameII: 'simplechatchannelsIgnorelist'
+  TableNameIII: 'simplechatchannelsPermanentChannels'
 General:
   WorldNameReplaceInChannel: true

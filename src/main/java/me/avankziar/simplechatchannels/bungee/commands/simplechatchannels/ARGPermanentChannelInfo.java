@@ -15,7 +15,7 @@ public class ARGPermanentChannelInfo extends CommandModule
 	
 	public ARGPermanentChannelInfo(SimpleChatChannels plugin)
 	{
-		super("pcinfo","scc.cmd.pc.info",SimpleChatChannels.sccarguments,1,1);
+		super("pcinfo","scc.cmd.pc.info",SimpleChatChannels.sccarguments,1,2);
 		this.plugin = plugin;
 	}
 
@@ -26,17 +26,32 @@ public class ARGPermanentChannelInfo extends CommandModule
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage();
 		String scc = ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
-		if(cc==null)
+		PermanentChannel cc = null;
+		if(args.length == 1)
 		{
-			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannelII"));
-			return;
+			cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+			if(cc==null)
+			{
+				///Du bist in keinem CustomChannel!
+				player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannelII"));
+				return;
+			}
+		} else
+		{
+			cc = PermanentChannel.getChannelFromPlayer(args[1]);
+			if(cc==null)
+			{
+				///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
+				player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"ChannelGeneral.ChannelNotExistII")
+						.replace("%channel%", args[1])));
+				return;
+			}
 		}
+		
 		///&e=====&5[&fCustomChannel &6%channel%&5]&e=====
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Headline")
-				.replace("%channel%", cc.getName())));
+				.replace("%channel%", cc.getNameColor()+cc.getName())));
 		///Channel Ersteller: &f%creator%
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Creator")
@@ -60,6 +75,18 @@ public class ARGPermanentChannelInfo extends CommandModule
 						.replace("%password%", cc.getPassword())));
 			}
 		}
+		///Channel Symbol: &f%symbol%
+		player.sendMessage(utility.tctl(
+				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Symbol")
+				.replace("%symbol%", plugin.getYamlHandler().getSymbol("Perma")+cc.getSymbolExtra())));
+		///Channel NamenFarben: &f%color%
+		player.sendMessage(utility.tctl(
+				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.NameColor")
+				.replace("%color%", plugin.getUtility().returnColor(cc.getNameColor()))));
+		///Channel ChatFarben: &f%color%
+		player.sendMessage(utility.tctl(
+				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.ChatColor")
+				.replace("%color%", plugin.getUtility().returnColor(cc.getChatColor()))));
 		///Channel Gebannte Spieler: &f%banned%
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Banned")

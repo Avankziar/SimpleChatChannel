@@ -38,7 +38,12 @@ Build 33
   gelöscht und alle Mitglieder verlassen diesen | scc.cmd.pc.leave
   */scc pcunban <spieler> | Begnadigt den Spieler. ABER er wird kein Mitglied dadurch, falls er vorher eins war | scc.cmd.pc.unban
   */scc pcvice <spieler> | Befördert oder degradiert einen Spieler zum Stellvertreter oder zum Mitglied.
+  */scc pcchatcolor <Channelname> <Farben> | Ändert die Farben, die für den Channel im chat benutzt werden | scc.cmd.pc.chatcolor
+  */scc pcnamecolor <channelname> <Farben> | Ändert die Farben, die für den Channelnamen benutzt werden | scc.cmd.pc.namecolor
+  */scc pcsymbol <channelname> <Symbol> | Ändert das Symbol, welches benutzt wird um den Channel zu erreichen.
+  (Der ConfigSymbol von den Permanenten Channel wird immer davor gesetzt) | scc.cmd.pc.symbol
 - Noch ins englische übersetzten
+- +Aktualisierungsmethode für die Mute & Unmute Commands
 
 Build 31
 - +Hover bei Commands in chat

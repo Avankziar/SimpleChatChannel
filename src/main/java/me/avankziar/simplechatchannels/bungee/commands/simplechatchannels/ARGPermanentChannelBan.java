@@ -14,7 +14,7 @@ public class ARGPermanentChannelBan extends CommandModule
 	
 	public ARGPermanentChannelBan(SimpleChatChannels plugin)
 	{
-		super("pcban","sc.cmd.pc.ban",SimpleChatChannels.sccarguments,2,2,"pcverbannen");
+		super("pcban","sc.cmd.pc.ban",SimpleChatChannels.sccarguments,3,3,"pcverbannen");
 		this.plugin = plugin;
 	}
 
@@ -24,11 +24,12 @@ public class ARGPermanentChannelBan extends CommandModule
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage() + ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
+		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Du bist in keinem permanenten Channel!
-			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannelII"));
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()) && !cc.getVice().contains(player.getUniqueId().toString()))
@@ -39,13 +40,13 @@ public class ARGPermanentChannelBan extends CommandModule
 					.replace("%channel%", cc.getName())));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[1])==null)
+		if(plugin.getProxy().getPlayer(args[2])==null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
 			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]);
+		ProxiedPlayer target = plugin.getProxy().getPlayer(args[2]);
 		if(target.getUniqueId().toString().equals(player.getUniqueId().toString()))
 		{
 			///Du als Ersteller kannst dich nicht selber bannen!
@@ -65,11 +66,11 @@ public class ARGPermanentChannelBan extends CommandModule
 		///Du hast den Spieler &f%player% &eaus dem CustomChannel gebannt.
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCBan.YouHasBanned")
-				.replace("%player%", args[1])));
+				.replace("%player%", args[2])));
 		///Du wurdest vom CustomChannel %channel% gebannt!
 		target.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCBan.YourWereBanned")
-				.replace("%channel%", cc.getName())));
+				.replace("%channel%", cc.getNameColor()+cc.getName())));
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
@@ -77,7 +78,7 @@ public class ARGPermanentChannelBan extends CommandModule
 				///Der Spieler &f%player% &ewurde aus dem &5perma&fnenten &eChannel verbannt.
 				members.sendMessage(utility.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCBan.CreatorHasBanned")
-						.replace("%player%", args[1])));
+						.replace("%player%", args[2])));
 			}
 		}
 		return;

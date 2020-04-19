@@ -75,7 +75,6 @@ public class SimpleChatChannels extends JavaPlugin
 		editorplayers = new ArrayList<>();
 		sccarguments = new HashMap<String, CommandModule>();
 		yamlHandler = new YamlHandler(this);
-		backgroundtask = new BackgroundTask(this);
 		commandHelper = new CommandHelper(this);
 		utility = new Utility(this);
 		if(yamlHandler.get().getBoolean("Mysql.Status", false))
@@ -88,6 +87,7 @@ public class SimpleChatChannels extends JavaPlugin
 			Bukkit.getPluginManager().getPlugin("SimpleChatChannels").getPluginLoader().disablePlugin(this);
 			return;
 		}
+		backgroundtask = new BackgroundTask(this);
 		setupPunisher();
 		setupAfkRecord();
 		CommandSetup();
