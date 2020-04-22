@@ -67,7 +67,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 		{
 			if(args[2].equalsIgnoreCase("confirm") || args[2].equalsIgnoreCase("bestätigen"))
 			{
-				if(cc.getCreator().equals(player.getName()))
+				if(cc.getCreator().equals(player.getUniqueId().toString()))
 				{
 					final ArrayList<String> oldmembers = cc.getMembers();
 					plugin.getMysqlHandler().deleteDataIII(cc.getName());

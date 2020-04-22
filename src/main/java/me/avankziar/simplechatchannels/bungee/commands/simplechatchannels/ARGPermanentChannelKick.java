@@ -39,31 +39,35 @@ public class ARGPermanentChannelKick extends CommandModule
 			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotChannelViceII"));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[2])==null)
+		if(plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name") == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
 			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		ProxiedPlayer target = plugin.getProxy().getPlayer(args[2]); 
-		if(!cc.getMembers().contains(target.getUniqueId().toString()))
+		String targetuuid = (String) plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name");
+		if(!cc.getMembers().contains(targetuuid))
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
 			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotChannelMemberII"));
 			return;
 		}
-		if(target.getUniqueId().toString().equals(player.getUniqueId().toString()))
+		if(targetuuid.equals(player.getUniqueId().toString()))
 		{
 			///Du als Ersteller kannst dich nicht kicken!
 			player.sendMessage(utility.tctlYaml(language+"PCKick.CannotSelfKick"));
 			return;
 		}
-		cc.removeMembers(target.getUniqueId().toString());
-		cc.removeVice(target.getUniqueId().toString());
+		cc.removeMembers(targetuuid);
+		cc.removeVice(targetuuid);
 		plugin.getUtility().updatePermanentChannels(cc);
-		///Du wurdest aus dem CustomChannel gekickt!
-		target.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"PCKick.YouWereKicked")
-				.replace("%channel%", cc.getNameColor()+cc.getName())));
+		if(ProxyServer.getInstance().getPlayer(args[2]) != null)
+		{
+			ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[2]);
+			///Du wurdest aus dem CustomChannel gekickt!
+			target.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"PCKick.YouWereKicked")
+					.replace("%channel%", cc.getNameColor()+cc.getName())));
+		}
 		///Du hast &f%player% &eaus dem Channel gekickt!
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCKick.YouKicked")

@@ -8,13 +8,13 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGPermanentChannelChatColor extends CommandModule
+public class ARGPermanentChannelRename extends CommandModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelChatColor(SimpleChatChannels plugin)
+	public ARGPermanentChannelRename(SimpleChatChannels plugin)
 	{
-		super("pcchatcolor","scc.cmd.pc.chatcolor",SimpleChatChannels.sccarguments,3,3,"pcchatfarbe");
+		super("pcrename","scc.cmd.pc.rename",SimpleChatChannels.sccarguments,3,3,"pcumbenennen");
 		this.plugin = plugin;
 	}
 
@@ -23,32 +23,28 @@ public class ARGPermanentChannelChatColor extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = utility.getLanguage();
+		String scc = ".CmdScc.";
 		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
-			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"ChannelGeneral.ChannelNotExistII")
 					.replace("%channel%", args[1])));
 			return;
 		}
-		if(!cc.getCreator().equals(player.getUniqueId().toString()))
-		{
-			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotTheCreatorII"));
-			return;
-		}
-		String chatcolor = args[2];
-		cc.setChatColor(chatcolor);
+		final String oldchannel = cc.getName();
+		cc.setName(args[2]);
 		plugin.getUtility().updatePermanentChannels(cc);
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.sendMessage(plugin.getUtility().tctl(
-						plugin.getYamlHandler().getL().getString(language+"PCChatColor.NewColor")
-						.replace("%color%", chatcolor+"Example")
-						.replace("%channel%", cc.getNameColor()+cc.getName())));
+				///Der &5perma&fnenten &eChannel %oldchannel% &r&ewurde in %channel% &r&eumbenannt.
+				members.sendMessage(utility.tctl(
+						plugin.getYamlHandler().getL().getString(language+scc+"PCRename.Renaming")
+						.replace("%channel%", cc.getNameColor()+cc.getName())
+						.replace("%oldchannel%", cc.getNameColor()+oldchannel)));
 			}
 		}
 		return;

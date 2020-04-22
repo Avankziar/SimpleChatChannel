@@ -13,6 +13,7 @@ ShowJoinMessageGlobal: false
 ShowLeaveMessageGlobal: false
 TCInviteCooldown: 60
 PCInviteCooldown: 60
+PermanentChannelAmountPerPlayer: 1
 Mysql:
   Status: false
   Host: '127.0.0.1'

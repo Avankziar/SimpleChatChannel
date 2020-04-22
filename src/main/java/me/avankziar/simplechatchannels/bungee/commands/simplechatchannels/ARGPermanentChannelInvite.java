@@ -30,7 +30,7 @@ public class ARGPermanentChannelInvite extends CommandModule
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage();
 		String scc = ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(args[1]);
+		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
@@ -58,7 +58,7 @@ public class ARGPermanentChannelInvite extends CommandModule
 			return;
 		}
 		ProxiedPlayer target = ProxyServer.getInstance().getPlayer(t);
-		String cmd = "/scc ccjoin "+cc.getName();
+		String cmd = "/scc pcjoin "+cc.getName();
 		if(cc.getPassword()!=null)
 		{
 			cmd += " "+cc.getPassword();

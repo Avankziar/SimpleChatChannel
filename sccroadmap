@@ -42,8 +42,15 @@ Build 33
   */scc pcnamecolor <channelname> <Farben> | Ändert die Farben, die für den Channelnamen benutzt werden | scc.cmd.pc.namecolor
   */scc pcsymbol <channelname> <Symbol> | Ändert das Symbol, welches benutzt wird um den Channel zu erreichen.
   (Der ConfigSymbol von den Permanenten Channel wird immer davor gesetzt) | scc.cmd.pc.symbol
+  */scc pcrename <Channelname> <Neuer Channelname> | um den channel umzubenennen | scc.cmd.pc.rename
+  */scc pcplayer <Player>  | Fragt ab, in welchem Channel der Spieler aktiv ist | scc.cmd.pc.player
+  */scc pcinherit <Channelname> <Player> | um den Spieler zum neuen Ersteller zu ernennen | scc.cmd.pc.inherit
+  */scc pcdelete <Channelname> | um den Channel von admins löschen zu lassen | scc.cmd.pc.delete
+  */scc perma | Togglet den Permanenten Channel | scc.cmd.perma
+  */scc temp | Togglet den Temporären Channel | scc.cmd.temp (Nachfolger und Ersetzt /scc custom)
 - Noch ins englische übersetzten
 - +Aktualisierungsmethode für die Mute & Unmute Commands
+- Noch im scc die neuen cmd auflisten
 
 Build 31
 - +Hover bei Commands in chat

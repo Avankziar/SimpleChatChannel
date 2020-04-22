@@ -39,25 +39,34 @@ public class ARGPermanentChannelUnban extends CommandModule
 			player.sendMessage(utility.tctl(language+"ChannelGeneral.NotChannelViceII"));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[2])==null)
+		if(plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name") == null)
 		{
-			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
+			///Der Spieler ist nicht online oder existiert nicht!
 			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		ProxiedPlayer target = plugin.getProxy().getPlayer(args[2]); 
-		if(!cc.getBanned().contains(target.getUniqueId().toString()))
+		String targetuuid = (String) plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name");
+		if(!cc.getBanned().contains(targetuuid))
 		{
 			///Der Spieler ist nicht auf der Bannliste!
 			player.sendMessage(utility.tctlYaml(language+"PCUnban.PlayerNotBanned"));
 			return;
 		}
-		cc.removeBanned(target.getUniqueId().toString());
+		cc.removeBanned(targetuuid);
 		plugin.getUtility().updatePermanentChannels(cc);
 		///Du hast &f%player% &efür den CustomChannel entbannt!
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCUnban.YouUnbanPlayer")
-				.replace("%player%", target.getName())));
+				.replace("%player%", args[2])));
+		if(ProxyServer.getInstance().getPlayer(args[2]) != null)
+		{
+			ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[2]);
+			///Du wurdest vom CustomChannel %channel% gebannt!
+			target.sendMessage(utility.tctl(
+					plugin.getYamlHandler().getL().getString(language+"PCUnban.CreatorUnbanPlayer")
+					.replace("%player%", args[2])
+					.replace("%channel%", cc.getNameColor()+cc.getName())));
+		}
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
@@ -65,7 +74,8 @@ public class ARGPermanentChannelUnban extends CommandModule
 				///Der Spieler &f%player% &ewurde für den CustomChannel entbannt.
 				members.sendMessage(utility.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCUnban.CreatorUnbanPlayer")
-						.replace("%player%", target.getName())));
+						.replace("%player%", args[2])
+						.replace("%channel%", cc.getNameColor()+cc.getName())));
 			}
 		}
 		return;

@@ -39,6 +39,19 @@ public class ARGPermanentChannelCreate extends CommandModule
 			///&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!
 			player.sendMessage(plugin.getUtility().tctlYaml(language+"PCCreate.ChannelNameAlreadyExist"));
 		}
+		int amount = 0;
+		for(PermanentChannel c : PermanentChannel.getPermanentChannel())
+		{
+			if(c.getCreator().equals(player.getUniqueId().toString()))
+			{
+				amount++;
+			}
+		}
+		if(plugin.getYamlHandler().get().getInt("PermanentChannelAmountPerPlayer") == amount)
+		{
+			///&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!
+			player.sendMessage(plugin.getUtility().tctlYaml(language+"PCCreate.MaximumAmount"));
+		}
 		String symbol = name;
 		check = PermanentChannel.getChannelFromSymbol(symbol);
 		if(check != null)

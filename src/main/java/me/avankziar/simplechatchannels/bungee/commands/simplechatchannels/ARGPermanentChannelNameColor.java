@@ -39,14 +39,15 @@ public class ARGPermanentChannelNameColor extends CommandModule
 			return;
 		}
 		String namecolor = args[2];
-		cc.setNameColor(namecolor);;
+		cc.setNameColor(namecolor);
+		plugin.getUtility().updatePermanentChannels(cc);
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
 				members.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCNameColor.NewColor")
-						.replace("%color%", plugin.getUtility().returnColor(namecolor))
+						.replace("%color%", namecolor+"Example")
 						.replace("%channel%", cc.getNameColor()+cc.getName())));
 			}
 		}

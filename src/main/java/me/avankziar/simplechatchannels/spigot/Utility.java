@@ -313,6 +313,7 @@ public class Utility
 		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
+			String colorFreeWord = removeColor(splitmsg);
 			if(player.hasPermission(PERMBYPASSCOLOR))
 			{
 				if(hasColor(splitmsg))
@@ -323,7 +324,7 @@ public class Utility
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
 				} else
 				{
 					if(safeColor==null)
@@ -331,11 +332,10 @@ public class Utility
 						safeColor = cc;
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
 				}
 			} else
 			{
-				String colorFreeWord = removeColor(splitmsg);
 				TextComponent word = tctl(colorFreeWord+" ");
 				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 			}
@@ -497,11 +497,11 @@ public class Utility
 		return ChatColor.RESET;
 	}
 	
-	public void sendBungeeSpyMessage(Player p, String server, String msg)  //FIN
+	public void sendBungeeSpyMessage(Player player, String server, String msg)  //FIN
 	{
 		String µ = "µ";
 		String Category = "spy";
-        String PlayerUUID = p.getUniqueId().toString();
+        String PlayerUUID = player.getUniqueId().toString();
         String ToServer = server;
 		String message = Category+µ+PlayerUUID+µ+ToServer+µ+msg;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -511,7 +511,24 @@ public class Utility
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        p.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
+        player.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
+    }
+	
+	public void sendBungeeMessage(Player player, String server, String msg)  //FIN
+	{
+		String µ = "µ";
+		String Category = "spy";
+        String PlayerUUID = player.getUniqueId().toString();
+        String ToServer = server;
+		String message = Category+µ+PlayerUUID+µ+ToServer+µ+msg;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(stream);
+        try {
+			out.writeUTF(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        plugin.getServer().sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
     }
 	
 	public void sendBungeeItemMessage(Player p, String itemname, String msg)  //FIN

@@ -41,7 +41,9 @@ public class Utility
 	PERMBYPASSIGNORE = "scc.channels.bypass.ignore",
 	PERMBYPASSITEM = "scc.channels.bypass.item",
 	PERMBYPASSPRIVACY = "scc.channel.bypass.privacy",
-	PERMBYPASSWEBSITE = "scc.channels.bypass.website";
+	PERMBYPASSWEBSITE = "scc.channels.bypass.website",
+	
+	PERMBYPASSPCDELETE = "scc.cmd.bypass.permanentchannel";
 	
 	public Utility(SimpleChatChannels plugin)
 	{
@@ -225,6 +227,7 @@ public class Utility
 		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
+			String colorFreeWord = removeColor(splitmsg);
 			if(player.hasPermission(PERMBYPASSCOLOR))
 			{
 				if(hasColor(splitmsg))
@@ -235,7 +238,7 @@ public class Utility
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 				} else
 				{
 					if(safeColor==null)
@@ -243,11 +246,10 @@ public class Utility
 						safeColor = cc;
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 				}
 			} else
 			{
-				String colorFreeWord = removeColor(splitmsg);
 				TextComponent word = tctl(colorFreeWord+" ");
 				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 			}
@@ -267,6 +269,7 @@ public class Utility
 		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
+			String colorFreeWord = removeColor(splitmsg);
 			if(player.hasPermission(PERMBYPASSCOLOR))
 			{
 				if(hasColor(splitmsg))
@@ -277,7 +280,7 @@ public class Utility
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
 				} else
 				{
 					if(safeColor==null)
@@ -285,11 +288,10 @@ public class Utility
 						safeColor = cc;
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
 				}
 			} else
 			{
-				String colorFreeWord = removeColor(splitmsg);
 				TextComponent word = tctl(colorFreeWord+" ");
 				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 			}
@@ -308,6 +310,7 @@ public class Utility
 		String safeColor = null;
 		for(String splitmsg : fullmsg)
 		{
+			String colorFreeWord = removeColor(splitmsg);
 			if(player.hasPermission(PERMBYPASSCOLOR))
 			{
 				if(hasColor(splitmsg))
@@ -318,7 +321,7 @@ public class Utility
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 				} else
 				{
 					if(safeColor==null)
@@ -326,11 +329,10 @@ public class Utility
 						safeColor = cc;
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
-					list.add(word);
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 				}
 			} else
 			{
-				String colorFreeWord = removeColor(splitmsg);
 				TextComponent word = tctl(colorFreeWord+" ");
 				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
 			}
@@ -339,6 +341,7 @@ public class Utility
 		return list;
 	}
 	
+	//TODO
 	private BaseComponent addFunctions(ProxiedPlayer player, String splitmsg, String colorFreeWord, TextComponent word, String cc)
 	{
 		if(splitmsg.contains("http"))
@@ -351,13 +354,13 @@ public class Utility
 				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Website")));
 			}
 		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Item")))
-		{
+		{ //TODO nicht richter colorcode angezeigt
 			if(player.hasPermission(PERMBYPASSITEM))
 			{
 				if(Utility.itemname.containsKey(player.getUniqueId().toString())
 						&& Utility.item.containsKey(player.getUniqueId().toString()))
 				{
-					word = tctl(removeColor(Utility.itemname.get(player.getUniqueId().toString()))+" ");
+					word = tctl(Utility.itemname.get(player.getUniqueId().toString())+" ");
 					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Item")));
 					word.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
 							new BaseComponent[]{new TextComponent(Utility.item.get(player.getUniqueId().toString()))}));
@@ -445,34 +448,6 @@ public class Utility
 				.replace("§A", "").replace("§B", "").replace("§C", "").replace("§D", "").replace("§E", "").replace("§F", "")
 				.replace("§K", "").replace("§L", "").replace("§M", "").replace("§N", "").replace("§O", "").replace("§R", "");
 		return a;
-	}
-	
-	public String returnColor(String msg)
-	{
-		String colors = "";
-		int i = 0;
-		int end = msg.length();
-		while(i<end)
-		{
-			char a = 0;
-			char b = 0;
-			try
-			{
-				a = msg.charAt(i);
-				b = msg.charAt(i+1);
-				String c = String.valueOf(a)+String.valueOf(b);
-				colors += ChatColor.valueOf(c).name()+" ";
-			} catch(IndexOutOfBoundsException e)
-			{
-				break;
-			}
-			i += 2;
-		}
-		if(colors.length()>1)
-		{
-			colors = colors.substring(0, colors.length()-1);
-		}
-		return colors;
 	}
 	
 	private ChatColor getFristUseColor(String msg)
@@ -862,9 +837,10 @@ public class Utility
 	
 	public void updatePermanentChannels(PermanentChannel pc)
 	{
-		if(plugin.getMysqlHandler().existChannel(pc.getName()))
+		if(plugin.getMysqlHandler().existChannel(pc.getId()))
 		{
 			plugin.getMysqlHandler().updateDataIII(pc, pc.getName(), "channel_name");
+			plugin.getMysqlHandler().updateDataIII(pc, pc.getCreator(), "creator");
 			plugin.getMysqlHandler().updateDataIII(pc, String.join(";", pc.getVice()), "vice");
 			plugin.getMysqlHandler().updateDataIII(pc, String.join(";", pc.getMembers()), "members");
 			plugin.getMysqlHandler().updateDataIII(pc, pc.getPassword(), "password");

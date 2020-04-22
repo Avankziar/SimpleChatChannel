@@ -52,7 +52,9 @@ public class ARGPlayerlist extends CommandModule
 			for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
     		{
 				if(pp.getName().startsWith(s) || pp.getName().startsWith(s.toLowerCase()) 
-						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize))
+						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize)
+						|| pp.getName().contains(s) || pp.getName().contains(s.toLowerCase()) 
+								|| pp.getName().contains(s.toUpperCase()) || pp.getName().contains(caseCapitalize))
 				{
 					TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
 							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);

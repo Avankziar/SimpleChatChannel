@@ -172,24 +172,29 @@ German:
       msg28: '&e/scc pcinfo [Name] &f| Zeigt alle Infos zum Permanenten channel an.'
       msg29: '&e/scc pcinvite <Name> <spieler> &f| Lädt einen Spieler in den Permanenten Channel ein.'
       msg30: '&e/scc pcvice <Name> <spieler> &f| Befördert oder degradiert einen Spieler innerhalbs des Permanenten Channels.'
+      msg31: '&e/scc pcdelete <Channelname> &f| '
+      msg32: '&e/scc pcinherit <Channelname> <Spieler> &f| '
+      msg33: '&e/scc pcchatcolor <Channelname> <Farbcode> &f| '
+      msg34: '&e/scc pcnamecolor <Channelname> <Farbcode> &f| '
+      msg35: '&e/scc pcplayer [Spieler> &f| '
     Broadcast:
-      Intro: '&7[&cBroadcast&7] &r'
+      Intro: '&7&l[&c&lINFO&7&l] &r'
     ChannelToggle:
       ChannelOff: '&7Du hast den Channel %channel% &causgeblendet!'
       ChannelOn: '&7Du hast den Channel %channel% &aeingeblendet!'
     ChannelGeneral:
-      NotInAChannel: '&cDu bist in &5temp&forären &cCustomChannel!'
-      NotInAChannelII: '&cDu bist in keinem &5perma&fnenten &cChannel!'
-      NotTheCreator: '&cDu bist nicht der Ersteller des &5temp&forären &cChannel!'
-      NotTheCreatorII: '&cDu bist nicht der Ersteller des &5perma&fnenten &cChannel!'
-      NotChannelMember: '&cDer angegebene Spieler ist nicht Mitglied im &5temp&forären &cChannel!'
-      NotChannelMemberII: '&cDer angegebene Spieler ist nicht Mitglied im &5perma&fnenten &cChannel!'
-      NotChannelViceII: '&cDu bist weder der Ersteller noch ein Stellvertreter im &5perma&fnenten &cChannel &f%channel%&c!'
-      ChannelNotExistII: '&cDer angegebene Channel &5perma&fnenten %channel% existiert nicht!'
+      NotInAChannel: '&cDu bist in keinem temporären CustomChannel!'
+      NotInAChannelII: '&cDu bist in keinem permanenten Channel!'
+      NotTheCreator: '&cDu bist nicht der Ersteller des temporären &cChannel!'
+      NotTheCreatorII: '&cDu bist nicht der Ersteller des permanenten Channel!'
+      NotChannelMember: '&cDer angegebene Spieler ist nicht Mitglied im temporären Channel!'
+      NotChannelMemberII: '&cDer angegebene Spieler ist nicht Mitglied im permanenten Channel!'
+      NotChannelViceII: '&cDu bist weder der Ersteller noch ein Stellvertreter im permanenten Channel &f%channel%&c!'
+      ChannelNotExistII: '&cDer angegebene Channel permanenten &f%channel% &cexistiert nicht!'
     PCBan:
       AlreadyBanned: '&cDer Spieler ist schon auf der Bannliste!'
       YouHasBanned: '&eDu hast den Spieler &f%player% &eaus dem &5perma&fnenten &eChannel gebannt.'
-      YourWereBanned: '&cDu wurdest vom &5perma&fnenten &cChannel &r%channel%&r &cgebannt!'
+      YourWereBanned: '&cDu wurdest vom permanenten Channel &r%channel%&r &cgebannt!'
       CreatorCannotBan: '&cDer Ersteller kannst nicht gebannt werden!'
       CreatorHasBanned: '&eDer Spieler &f%player% &ewurde aus dem &5perma&fnenten &eChannel verbannt.'
     PCChangepassword:
@@ -197,10 +202,14 @@ German:
     PCChatColor:
       NewColor: '&eDie Farben vom Chat des Channels &r%channel%&r &ewurden in &f%color% &egeändert.'
     PCCreate:
-      AlreadyInAChannel: '&cDu bist schon in dem &5perma&fnenten &cChannel &r%channel%&r&c! Um einen neuen &5perma&fnenten &cChannel zu eröffnen, müsst du den vorigen erst schließen.'
+      AlreadyInAChannel: '&cDu bist schon in dem permanenten Channel &r%channel%&r&c! Um einen neuen permanenten Channel zu eröffnen, müsst du den vorigen erst schließen.'
       ChannelCreateWithoutPassword: '&eDu hast den &5perma&fnenten &eChannel &r%channel%&r &eerstellt! Zum Schreiben am Anfang &f%symbol% &enutzen.'
       ChannelCreateWithPassword: '&eDu hast den &5perma&fnenten &eChannel &r%channel%&r &emit dem Passwort &f%password% &eerstellt! Zum Schreiben am Anfang &f%symbol% &enutzen.'
-      ChannelNameAlreadyExist: '&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!'
+      ChannelNameAlreadyExist: '&cDieser Name für permanenten Channels ist schon vergeben!'
+      MaximumAmount: '&cDu hast schon die maximale Anzahl von permanenten Channels erstellt. Lösche vorher einer von deinen permanenten Channels um einen neuen zu erstellen!'
+    PCDelete:
+      Confirm: '&cBist du sicher, dass du den permanenten Channel %channel% &r&clöschen willst? Wenn ja, klicke auf diese Nachricht.'
+      Deleted: '&cDer permanenten Channel %channel% &cwurde von %player% gelöscht. Alle Mitglieder verlassen somit diesen.'
     PCInfo:
       Headline: '&e=====&5[&5Perma&fnenter &fChannel &r%channel%&r&5]&e====='
       Creator: '&eChannel Ersteller: &f%creator%'
@@ -208,54 +217,65 @@ German:
       Members: '&eChannel Mitglieder: &f%members%'
       Password: '&eChannel Passwort: &f%password%'
       Symbol: '&eChannel Symbol: &f%symbol%'
-      ChatColor: '&eChannel Chat Farben: &f%color%'
-      NameColor: '&eChannel Namen Farben: &f%color%'
+      ChatColor: '&eChannel Chat Farben: &f%color% Beispielsnachricht'
+      NameColor: '&eChannel Farben: &f%color%'
       Banned: '&eChannel Gebannte Spieler: &f%banned%'
+    PCInherit:
+      NewCreator: '&eIm &5perma&fnenten &eChannel %channel% &r&ebeerbt der Spieler &a%creator% &eden Spieler &c%oldcreator% &eals neuer Ersteller des Channels.'
     PCInvite:
       Cooldown: '&cDu hast schon in der letzten Zeit jemanden eingeladen hast! Bitte warte etwas bis zur nächsten Einladung!'
-      SendInvite: '&eDu hast den Spieler &e%target% &ein den &5perma&fnenten &eChannel &r%channel%&r &aeingeladen.'
-      Invitation: '&eDu wurdest vom Spieler &e%player% &ein den &5perma&fnenten &eChannel &r%channel%&r &aeingeladen.'
+      SendInvite: '&eDu hast den Spieler &6%target% &ein den &5perma&fnenten &eChannel &r%channel%&r &aeingeladen.'
+      Invitation: '&eDu wurdest vom Spieler &6%player% &ein den &5perma&fnenten &eChannel &r%channel%&r &aeingeladen. Oder Klicke auf die Nachricht.'
     PCJoin:
-      UnknowChannel: '&cEs gibt keinen &5perma&fnenten Channel mit dem Namen &f%name%&c!'
-      ChannelHasPassword: '&cDer &5perma&fnente &cChannel hat ein Passwort, bitte gebe die beim Beitreten an!'
+      UnknowChannel: '&cEs gibt keinen permanenten Channel mit dem Namen &f%name%&c!'
+      ChannelHasPassword: '&cDer permanente Channel hat ein Passwort, bitte gebe dies beim Beitreten an!'
       PasswordIncorrect: '&cDas angegebene Passwort ist nicht korrekt!'
       ChannelHasNoPassword: '&cEs ist kein Passwort angegeben, du kannst so beitreten!'
-      ChannelJoined: '&eDu bist dem &5perma&fnenten &eChannel &r%channel%&r &abeigetreten!'
-      AlreadyInAChannel: '&cDu bist schon in einem anderen &5perma&fnenten &cChannel beigetreten, verlasse erst diesen!'
-      Banned: '&cDu bist in diesem &5perma&fnenten &cChannel gebannt und darfst nicht beitreten!'
-      PlayerIsJoined: '&eSpieler &F%player% &eist dem &5perma&fnenten &eChannel beigetreten!'
+      ChannelJoined: '&eDu bist dem &5perma&fnenten &eChannel &r%channel%&r &abeigetreten&e! ChannelSymbol: &r%symbol%'
+      AlreadyInAChannel: '&cDu bist schon in einem anderen permanenten Channel beigetreten, verlasse erst diesen!'
+      Banned: '&cDu bist in diesem permanenten Channel gebannt und darfst nicht beitreten!'
+      PlayerIsJoined: '&eSpieler &f%player% &eist dem &5perma&fnenten &eChannel beigetreten!'
     PCKick:
-      YouWereKicked: '&cDu wurdest aus dem &5perma&fnenten &eChannel &r%channel%&r &egekickt!'
+      YouWereKicked: '&cDu wurdest aus dem permanenten &eChannel &r%channel%&r &cgekickt!'
       YouKicked: '&eDu hast &f%player% &eaus dem &5perma&fnenten &eChannel &r%channel%&r &egekickt!'
       KickedSomeone: '&eDer Spieler &f%player% &ewurde aus dem &5perma&fnenten &eChannel &r%channel%&r &egekickt!'
       CannotSelfKick: '&cDu kannst dich nicht kicken!'
     PCLeave:
       YouLeft: '&eDu hast den &5perma&fnenten &eChannel &r%channel%&r &everlassen!'
-      CreatorLeft: '&cDer Ersteller hat den Channel verlassen und ihn somit aufgelöst. Alle Mitglieder haben somit den &5perma&fnenten &cChannel &r%channel%&r &cverlassen!'
-      PlayerLeft: '&cDer Spieler &f%player% &chat den &5perma&fnenten &cChannel &r%channel%&r &cverlassen!'
-      Confirm: '&c&lAchtung! &r&cBist du sicher, dass du den Channel verlassen willst? Wenn der Ersteller den &5perma&fnenten &cChannel verlässt wird dieser gelöscht! Bitte mit &f/scc pcleave bestätigen &cbestätigen oder klicke einfach auf diese Nachricht.'
+      CreatorLeft: '&cDer Ersteller hat den Channel verlassen und ihn somit aufgelöst. Alle Mitglieder haben somit den permanenten Channel &r%channel%&r &cverlassen!'
+      PlayerLeft: '&cDer Spieler &f%player% &chat den permanenten Channel &r%channel%&r &cverlassen!'
+      Confirm: '&c&lAchtung! &r&cBist du sicher, dass du den Channel verlassen willst? Wenn der Ersteller den permanenten Channel verlässt, wird dieser gelöscht! Bitte mit &f/scc pcleave <Channelname> bestätigen &cbestätigen oder klicke einfach auf diese Nachricht.'
     PCNameColor:
-      NewColor: '&eDie Farben vom Chat des Channels &r%channel%&r &ewurden in &f%color% &egeändert.'
+      NewColor: '&eDie Farben vom Namen des Channels &r%channel%&r &ewurden in &f%color% &egeändert.'
+    PCPlayer:
+      Headline: '&e=====&5[&5Perma&fnente &fChannels von &6%player%&5]&e====='
+      Creator: '&eIst Ersteller von: &r%creator%'
+      Vice: '&eIst Vertreter bei: &r%vice%'
+      Member: '&eIst Mitglied bei: &r%member%'
+      Banned: '&eIst Gebannt bei: &r%member%'
+    PCRename:
+      Renaming: '&eDer &5perma&fnenten &eChannel %oldchannel% &r&ewurde in %channel% &r&eumbenannt.'
     PCSymbol:
-      SymbolAlreadyExist: '&cDas Symbol &f%symbol% &cwird schon von dem &5perma&fnenten &cChannel &r%channel%&r &cbenutzt!'
+      SymbolAlreadyExist: '&cDas Symbol &f%symbol% &cwird schon von dem permanenten Channel &r%channel%&r &cbenutzt!'
       NewSymbol: '&eFür den &5perma&fnenten &eChannel &r%channel%&r &egibt es ein neues Symbol: &f%symbol%'
+      ChannelUnknow: '&cDer permanente Channel %symbol% existiert nicht.'
     PCUnban:
-      PlayerNotBanned: '&cDer Spieler ist nicht auf der &cBannliste!'
+      PlayerNotBanned: '&cDer Spieler ist nicht auf der Bannliste!'
       YouUnbanPlayer: '&eDu hast &f%player% &efür den &5perma&fnenten &eChannel entbannt!'
-      CreatorUnbanPlayer: '&eDer Spieler &f%player% &ewurde für den &5perma&fnenten &eChannel entbannt.'
+      CreatorUnbanPlayer: '&eDer Spieler &f%player% &ewurde für den &5perma&fnenten &eChannel %channel% &r&eentbannt.'
     PCVice:
       Promoted: '&eDer Spieler &f%player% &ewurde zum Stellvertreter im &5perma&fnenten &eChannel &r%channel%&r &abefördert&e!'
       Degraded: '&eDer Spieler &f%player% &ewurde zum Mitglied im &5perma&fnenten &eChannel &r%channel%&r &cdegradiert&e!'
     TCBan:
       AlreadyBanned: '&cDer Spieler ist schon auf der Bannliste!'
       YouHasBanned: '&eDu hast den Spieler &f%player% &eaus dem &5temp&forären &eChannel gebannt.'
-      YourWereBanned: '&cDu wurdest vom &5temp&forären &cChannel %channel% gebannt!'
+      YourWereBanned: '&cDu wurdest vom temporären Channel &f%channel% &cgebannt!'
       CreatorCannotSelfBan: '&cDu als Ersteller kannst dich nicht selber bannen!'
       CreatorHasBanned: '&eDer Spieler &f%player% &ewurde aus dem &5temp&forären &eChannel verbannt.'
     TCChangepassword:
       PasswordChange: '&eDu hast das Passwort zu &f%password% &egeändert!'
     TCCreate:
-      AlreadyInAChannel: '&cDu bist schon in dem &5temp&forären &cChannel %channel%! Um einen neuen &5temp&forären Channel zu eröffnen, müsst du den vorigen erst schließen.'
+      AlreadyInAChannel: '&cDu bist schon in dem temporären Channel &f%channel%&c! Um einen neuen temporären Channel zu eröffnen, müsst du den vorigen erst schließen.'
       ChannelCreateWithoutPassword: '&eDu hast den &5temp&forären &eChannel &f%channel% &eerstellt!'
       ChannelCreateWithPassword: '&eDu hast den &5temp&forären &eChannel &f%channel% &emit dem Passwort &f%password% &eerstellt!'
     TCInfo:
@@ -266,19 +286,19 @@ German:
       Banned: '&eChannel Gebannte Spieler: &f%banned%'
     TCInvite:
       Cooldown: '&cDu hast schon in der letzten Zeit jemanden eingeladen hast! Bitte warte etwas bis zur nächsten Einladung!'
-      SendInvite: '&eDu hast den Spieler &e%target% &ein den &5temp&forären &eChannel &6%channel% &aeingeladen.'
-      Invitation: '&eDu wurdest vom Spieler &e%player% &ein den &5temp&forären &eChannel &6%channel% &aeingeladen.'
+      SendInvite: '&eDu hast den Spieler &6%target% &ein den &5temp&forären &eChannel &6%channel% &aeingeladen.'
+      Invitation: '&eDu wurdest vom Spieler &6%player% &ein den &5temp&forären &eChannel &6%channel% &aeingeladen. Oder Klicke auf die Nachricht.'
     TCJoin:
-      UnknowChannel: '&cEs gibt keinen &5temp&forären Channel mit dem Namen &f%name%&c!'
-      ChannelHasPassword: '&cDer &5temp&foräre &cChannel hat ein Passwort, bitte gebe die beim Beitreten an!'
+      UnknowChannel: '&cEs gibt keinen temporären Channel mit dem Namen &f%name%&c!'
+      ChannelHasPassword: '&cDer temporäre Channel hat ein Passwort, bitte gebe die beim Beitreten an!'
       PasswordIncorrect: '&cDas angegebene Passwort ist nicht korrekt!'
       ChannelHasNoPassword: '&cEs ist kein Passwort angegeben, du kannst so beitreten!'
       ChannelJoined: '&eDu bist dem &5temp&forären &eChannel &f%channel% &abeigetreten!'
-      AlreadyInAChannel: '&cDu bist schon in einem anderen &5temp&forären &cChannel beigetreten, verlasse erst diesen!'
-      Banned: '&cDu bist in diesem &5temp&forären &cChannel gebannt und darfst nicht beitreten!'
-      PlayerIsJoined: '&eSpieler &F%player% &eist dem &5temp&forären &eChannel beigetreten!'
+      AlreadyInAChannel: '&cDu bist schon in einem anderen temporären Channel beigetreten, verlasse erst diesen!'
+      Banned: '&cDu bist in diesem temporären Channel gebannt und darfst nicht beitreten!'
+      PlayerIsJoined: '&eSpieler &f%player% &eist dem &5temp&forären &eChannel beigetreten!'
     TCKick:
-      YouWereKicked: '&cDu wurdest aus dem &5temp&forären &eChannel %channel% gekickt!'
+      YouWereKicked: '&cDu wurdest aus dem temporären Channel &f%channel% &cgekickt!'
       YouKicked: '&eDu hast &f%player% &eaus dem &5temp&forären &eChannel %channel% gekickt!'
       CreatorKickedSomeone: '&eDer Spieler &f%player% &ewurde aus dem &5temp&forären &eChannel %channel% gekickt!'
       CreatorCannotSelfKick: '&cDu als Ersteller kannst dich nicht kicken!'
@@ -510,6 +530,10 @@ English:
       ChannelCreateWithoutPassword: '&eYou have created the &5perma&fnent &echannel &f%channel%&e! Use &f%symbol% &eto start writing.'
       ChannelCreateWithPassword: '&eYou have created the &5perma&fnent &echannel &r%channel%&r &ewith the password &f%password%&e! Use &f%symbol% &eto start writing.'
       ChannelNameAlreadyExist: '&cThis name for &5perma&fnent &cchannels is already taken!'
+      MaximumAmount: '&cDu hast schon die maximale Anzahl von permanenten Channels erstellt. Lösche vorher einer von deinen permanenten Channels um einen neuen zu erstellen!'
+    PCDelete:
+      Confirm: '&cBist du sicher, dass du den permanenten Channel %channel% &r&clöschen willst? Wenn ja, klicke auf diese Nachricht.'
+      Deleted: '&cDer permanenten Channel %channel% &cwurde von %player% gelöscht. Alle Mitglieder verlassen somit diesen.'
     PCInfo:
       Headline: '&e=====&5[&fTemporaryChannel &r%channel%&r&5]&e====='
       Creator: '&eChannel Creator: &f%creator%'
@@ -517,9 +541,11 @@ English:
       Members: '&eChannel Members: &f%members%'
       Password: '&eChannel Password: &f%password%'
       Symbol: '&eChannel Symbol: &f%symbol%'
-      ChatColor: '&eChannel Chat Color: &f%color%'
-      NameColor: '&eChannel Namen Color: &f%color%'
+      ChatColor: '&eChannel Chat Color: &f%color% ExampleMessage'
+      NameColor: '&eChannel Color: &f%color%'
       Banned: '&eChannel Banned Players: &f%banned%'
+    PCInherit:
+      NewCreator: '&eIm &5perma&fnenten &eChannel %channel% &r&ebeerbt der Spieler &a%creator% &eden Spieler &c%oldcreator% &eals neuer Ersteller des Channels.'
     PCInvite:
       Cooldown: '&cYou have invited someone recently! Please wait for the next invitation!'
       SendInvite: '&eYou have the player &f%target% &ein the &5perma&fnent &echannel &r%channel%&r &ainvited.'
@@ -544,6 +570,14 @@ English:
       Confirm: '&c&lAttention! &r&cAre you sure you want to leave the channel? If the creator leaves the &5perma&fnent &cchannel it will be deleted! Please confirm with &f/scc pcleave confirm &cor simply click on this message.'
     PCNameColor:
       NewColor: '&eThe colors of the chat of the channel &r%channel%&r &ehave been changed to &f%color%&e.'
+    PCPlayer:
+      Headline: '&e=====&5[&5Perma&fnente &fChannels von &6%player%&5]&e====='
+      Creator: '&eIst Ersteller von: &r%creator%'
+      Vice: '&eIst Vertreter bei: &r%vice%'
+      Member: '&eIst Mitglied bei: &r%member%'
+      Banned: '&eIst Gebannt bei: &r%banned%'
+    PCRename:
+      Renaming: '&eDer &5perma&fnenten &eChannel %oldchannel% &r&ewurde in %channel% &r&eumbenannt.'
     PCSymbol:
       SymbolAlreadyExist: '&cThe symbol &f%symbol% &cis already used by the &5perma&fnent &cChannel &r%channel%&r&c!'
       NewSymbol: '&eThere is a new symbol for &5perma&fnent &eChannel &r%channel%&r&e: &f%symbol%'

@@ -221,7 +221,7 @@ public class YamlHandler
 		 }
 		 if(!cws.equalsIgnoreCase("Perma"))
 		 {
-			 if(msg.startsWith(symboltemp))
+			 if(msg.startsWith(symbolperma))
 			 {
 				 return "Perma";
 			 }

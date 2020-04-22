@@ -239,26 +239,14 @@ public class EventChat implements Listener
 			}
 			
 			String[] space = event.getMessage().split(" ");
-			PermanentChannel fromSymbol = PermanentChannel.getChannelFromSymbol(space[0].substring(symbol.length()));
-			PermanentChannel fromPlayer = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
-			PermanentChannel cc = fromSymbol;
-			boolean check = true;
-			if(fromSymbol==null)
+			PermanentChannel cc = PermanentChannel.getChannelFromSymbol(space[0].substring(symbol.length()));
+			if(cc==null)
 			{
-				cc = fromPlayer;
-				check = false;
-				if(fromPlayer==null)
-				{
-					///Du bist in keinem CustomChannel!
-					player.sendMessage(utility.tctlYaml(language+".CmdScc.ChannelGeneral.ChannelNotExistII"));
-					return;
-				}
+				///Der permanente Channel %symbol% existiert nicht.
+				player.sendMessage(utility.tctlYaml(language+".PCSymbol.ChannelUnknow"));
+				return;
 			}
-			
-			if(check)
-			{
-				symbol = symbol+cc.getSymbolExtra();
-			}
+			symbol = symbol+cc.getSymbolExtra();
 			
 			if(event.getMessage().length()>=symbol.length() 
 					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
@@ -282,7 +270,7 @@ public class EventChat implements Listener
 			
 			List<BaseComponent> suffix = utility.getSuffix(player);
 			
-			List<BaseComponent> msg = utility.msgPerma(player, symbol.length(), channel, event.getMessage(), cc.getChatColor());
+			List<BaseComponent> msg = utility.msgPerma(player, symbol.length()+1, channel, event.getMessage(), cc.getChatColor());
 			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}

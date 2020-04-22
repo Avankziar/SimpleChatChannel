@@ -78,7 +78,8 @@ public class ARGPermanentChannelJoin extends CommandModule
 		///Du bist dem CustomChannel &f%channel% &agejoint!
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCJoin.ChannelJoined")
-				.replace("%channel%", cc.getNameColor()+cc.getName())));
+				.replace("%channel%", cc.getNameColor()+cc.getName())
+				.replace("%symbol%", plugin.getYamlHandler().getSymbol("Perma")+cc.getSymbolExtra())));
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))

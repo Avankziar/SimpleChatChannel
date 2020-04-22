@@ -38,7 +38,7 @@ public class ARGPermanentChannelInfo extends CommandModule
 			}
 		} else
 		{
-			cc = PermanentChannel.getChannelFromPlayer(args[1]);
+			cc = PermanentChannel.getChannelFromName(args[1]);
 			if(cc==null)
 			{
 				///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
@@ -67,7 +67,8 @@ public class ARGPermanentChannelInfo extends CommandModule
 		if(cc.getPassword()!=null)
 		{
 			if(cc.getCreator().equals(player.getUniqueId().toString())
-					|| cc.getVice().contains(player.getUniqueId().toString()))
+					|| cc.getVice().contains(player.getUniqueId().toString())
+					|| !player.hasPermission(Utility.PERMBYPASSPCDELETE))
 			{
 				///Channel Passwort: &f%password%
 				player.sendMessage(utility.tctl(
@@ -82,11 +83,11 @@ public class ARGPermanentChannelInfo extends CommandModule
 		///Channel NamenFarben: &f%color%
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.NameColor")
-				.replace("%color%", plugin.getUtility().returnColor(cc.getNameColor()))));
+				.replace("%color%", cc.getNameColor()+cc.getName())));
 		///Channel ChatFarben: &f%color%
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.ChatColor")
-				.replace("%color%", plugin.getUtility().returnColor(cc.getChatColor()))));
+				.replace("%color%", cc.getChatColor())));
 		///Channel Gebannte Spieler: &f%banned%
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Banned")
@@ -102,9 +103,23 @@ public class ARGPermanentChannelInfo extends CommandModule
 	private String getPlayers(ArrayList<String> uuids)
 	{
 		String s = "[";
-		for(String uuid : uuids)
+		if(!uuids.isEmpty())
 		{
-			s += (String) plugin.getMysqlHandler().getDataI(uuid, "player_name", "player_uuid")+",";
+			for(int i = 0; i < uuids.size(); i++)
+			{
+				String uuid = uuids.get(i);
+				if(!uuid.equals("null") 
+						&& plugin.getMysqlHandler().getDataI(uuid, "player_name", "player_uuid") != null)
+				{
+					if(uuids.size()-1 == i)
+					{
+						s += (String) plugin.getMysqlHandler().getDataI(uuid, "player_name", "player_uuid");
+					} else
+					{
+						s += (String) plugin.getMysqlHandler().getDataI(uuid, "player_name", "player_uuid")+",";
+					}
+				}
+			}
 		}
 		s += "]";
 		return s;

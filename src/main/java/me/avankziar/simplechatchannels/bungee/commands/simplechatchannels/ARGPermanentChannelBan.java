@@ -40,37 +40,41 @@ public class ARGPermanentChannelBan extends CommandModule
 					.replace("%channel%", cc.getName())));
 			return;
 		}
-		if(plugin.getProxy().getPlayer(args[2])==null)
+		if(plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name") == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
 			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		ProxiedPlayer target = plugin.getProxy().getPlayer(args[2]);
-		if(target.getUniqueId().toString().equals(player.getUniqueId().toString()))
+		String targetuuid = (String) plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name");
+		if(targetuuid.equals(player.getUniqueId().toString()))
 		{
 			///Du als Ersteller kannst dich nicht selber bannen!
 			player.sendMessage(utility.tctlYaml(language+"PCBan.CreatorCannotBan"));
 			return;
 		}
-		if(cc.getBanned().contains(target.getUniqueId().toString()))
+		if(cc.getBanned().contains(targetuuid))
 		{
 			//Der Spieler ist schon auf der Bannliste!
 			player.sendMessage(utility.tctlYaml(language+"PCBan.AlreadyBanned"));
 			return;
 		}
-		cc.addBanned(target.getUniqueId().toString());
-		cc.removeVice(target.getUniqueId().toString());
-		cc.removeMembers(target.getUniqueId().toString());
+		cc.addBanned(targetuuid);
+		cc.removeVice(targetuuid);
+		cc.removeMembers(targetuuid);
 		plugin.getUtility().updatePermanentChannels(cc);
 		///Du hast den Spieler &f%player% &eaus dem CustomChannel gebannt.
 		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCBan.YouHasBanned")
 				.replace("%player%", args[2])));
-		///Du wurdest vom CustomChannel %channel% gebannt!
-		target.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+"PCBan.YourWereBanned")
-				.replace("%channel%", cc.getNameColor()+cc.getName())));
+		if(ProxyServer.getInstance().getPlayer(args[2]) != null)
+		{
+			ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[2]);
+			///Du wurdest vom CustomChannel %channel% gebannt!
+			target.sendMessage(utility.tctl(
+					plugin.getYamlHandler().getL().getString(language+"PCBan.YourWereBanned")
+					.replace("%channel%", cc.getNameColor()+cc.getName())));
+		}
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
