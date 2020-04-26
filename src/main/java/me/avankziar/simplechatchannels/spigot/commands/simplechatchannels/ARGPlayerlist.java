@@ -3,7 +3,6 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,30 +33,21 @@ public class ARGPlayerlist extends CommandModule
 		List<BaseComponent> list = new ArrayList<>();
 		if(args.length==1)
 		{
-			for(Player pp : Bukkit.getOnlinePlayers())
+			for(Player pp : plugin.getServer().getOnlinePlayers())
     		{
 				TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
-						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" ", false);
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);
 				list.add(prefix);
     		}
 		} else if(args.length==2)
 		{
 			String s = args[1];
-			String caseCapitalize = "";
-			if(s.length()>=2)
-			{
-				caseCapitalize = s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
-			} else
-			{
-				caseCapitalize = s;
-			}
-			for(Player pp : Bukkit.getOnlinePlayers())
+			for(Player pp : plugin.getServer().getOnlinePlayers())
     		{
-				if(pp.getName().startsWith(s) || pp.getName().startsWith(s.toLowerCase()) 
-						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize))
+				if(Utility.containsIgnoreCase(pp.getName(), s))
 				{
 					TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
-							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("pm")+pp.getName()+" ", false);
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);
     				list.add(prefix);
 				}
     		}

@@ -1,12 +1,10 @@
 package main.java.me.avankziar.simplechatchannels.spigot.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -21,7 +19,7 @@ public class CommandHelper
 		this.plugin = plugin;
 	}
 	
-	public void scc(Player player)
+	public void scc(Player player) //CCinvite hinzufügen
 	{
 		String language = plugin.getUtility().getLanguage();
 		if(player.hasPermission("scc.option.admin"))
@@ -48,21 +46,57 @@ public class CommandHelper
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg11",
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg12",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tccreate <Name> [Password]", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg13",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcjoin <Name>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg14",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcleave", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg15",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tckick <Player>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg16",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcban <Player>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg17",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcunban <Player>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg18",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcchangepassword <Password>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg19",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcinfo", true));
+			
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg20",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcinvite <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg21",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pccreate <Name> [Password]", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg22",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcjoin <Channelname> <Name>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg23",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcleave <Channelname> confirm", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg24",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pckick <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg25",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcban <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg26",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcunban <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg27",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcchangepassword <Channelname> <Password>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg28",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcinfo [Channelname]", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg29",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcinvite <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg30",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcvice <Channelname> <Player>", true));
+			
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg31",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcdelete <Channelname>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg32",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcinherit <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg33",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcchatcolor <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg34",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcnamecolor <Channelname>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg35",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcplayer [Player]", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg36",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcchannels", true));
 		} else
 		{
 			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+scc+"Info.msg10"));
@@ -77,21 +111,53 @@ public class CommandHelper
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg11",
 					ClickEvent.Action.SUGGEST_COMMAND,  "/scc grouplist [String]", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg12",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cccreate <Name> [Password]", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tccreate <Name> [Password]", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg13",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccjoin <Name>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcjoin <Name>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg14",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccleave", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcleave", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg15",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc cckick <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tckick <Player>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg16",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcban <Player>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg17",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc ccunban <Player>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcunban <Player>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg18",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc changepassword <Password>", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc thangepassword <Password>", true));
 			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg19",
-					ClickEvent.Action.SUGGEST_COMMAND,  "/scc channelinfo", true));
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcinfo", true));
+			
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg20",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc tcinvite <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg21",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pccreate <Name> [Password]", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg22",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcjoin <Channelname> <Name>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg23",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcleave <Channelname> confirm", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg24",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pckick <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg25",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcban <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg26",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcunban <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg27",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcchangepassword <Channelname> <Password>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg28",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcinfo [Channelname]", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg29",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcinvite <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg30",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcvice <Channelname> <Player>", true));
+	
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg33",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcchatcolor <Channelname> <Player>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg34",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcnamecolor <Channelname>", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg35",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcplayer [Player]", true));
+			player.spigot().sendMessage(plugin.getUtility().clickEvent(language+scc+"Info.msg36",
+					ClickEvent.Action.SUGGEST_COMMAND,  "/scc pcchannels", true));
 		}
 	}
 	
@@ -110,7 +176,7 @@ public class CommandHelper
 	
 	public void channeltoggle(Player player, String channel, String replacer)
 	{
-		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "channel_"+channel, "player_uuid"))
+		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(),"channel_"+channel, "player_uuid"))
 		{
 			///Du hast den Channel %channel% &causgeblendet!
 			plugin.getMysqlHandler().updateDataI(player, false, "channel_"+channel);
@@ -146,80 +212,5 @@ public class CommandHelper
 					plugin.getYamlHandler().getL().getString(plugin.getUtility().getLanguage()+scc+"ChannelToggle.ChannelOn")
 					.replace("%channel%", replacer)));
 		}
-	}
-	
-	//Obsolete
-	public void cccreate(Player player, String language, TemporaryChannel cc, String name, String password)
-	{
-		ArrayList<Player> members = new ArrayList<Player>();
-		members.add(player);
-		cc = new TemporaryChannel(name, player, members, password, new ArrayList<Player>());
-		TemporaryChannel.addCustomChannel(cc);
-		if(password==null)
-		{
-			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelCreate.msg02")
-					.replace("%channel%", cc.getName()))));
-		} else
-		{
-			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelCreate.msg03")
-					.replace("%channel%", cc.getName())
-					.replace("%password%", password))));
-		}
-	}
-	
-	//Obsolete
-	public void ccjoin(Player player, String language, String name, String password)
-	{
-		TemporaryChannel cc = TemporaryChannel.getCustomChannel(name);
-		TemporaryChannel oldcc = TemporaryChannel.getCustomChannel(player);
-		if(oldcc!=null)
-		{
-			player.spigot().sendMessage(plugin.getUtility().tctl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg06")));
-			return;
-		}
-		if(cc==null)
-		{
-			player.spigot().sendMessage(plugin.getUtility().tctl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg01")
-					.replace("%name%", name)));
-			return;
-		}
-		if(cc.getBanned().contains(player))
-		{
-			player.spigot().sendMessage(plugin.getUtility().tctl(
-					plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg07")));
-			return;
-		}
-		if(password==null)
-		{
-			if(cc.getPassword()!=null)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tctl(
-						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg02")));
-				return;
-			}
-		} else
-		{
-			if(cc.getPassword()==null)
-			{
-				player.spigot().sendMessage(plugin.getUtility().tctl(
-						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg04")));
-				return;
-			}
-			if(!cc.getPassword().equals(password))
-			{
-				player.spigot().sendMessage(plugin.getUtility().tctl(
-						plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg03")));
-				return;
-			}
-		}
-		cc.addMembers(player);
-		player.spigot().sendMessage(plugin.getUtility().tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"ChannelJoin.msg05")
-				.replace("%channel%", cc.getName())));
-		return;
 	}
 }

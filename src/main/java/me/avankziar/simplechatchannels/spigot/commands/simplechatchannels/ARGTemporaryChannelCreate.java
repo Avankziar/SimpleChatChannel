@@ -9,7 +9,6 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 
-
 public class ARGTemporaryChannelCreate extends CommandModule
 {
 	private SimpleChatChannels plugin;
@@ -29,9 +28,9 @@ public class ARGTemporaryChannelCreate extends CommandModule
 		if(cc!=null)
 		{
 			///Du bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.
-			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+			player.spigot().sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.AlreadyInAChannel")
-					.replace("%channel%", cc.getName()))));
+					.replace("%channel%", cc.getName())));
 			return;
 		}
 		String name = null;
@@ -51,16 +50,16 @@ public class ARGTemporaryChannelCreate extends CommandModule
 		if(password==null)
 		{
 			///Du hast den Custom Channel &f%channel% &eerstellt!
-			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+			player.spigot().sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithoutPassword")
-					.replace("%channel%", cc.getName()))));
+					.replace("%channel%", cc.getName())));
 		} else
 		{
 			///Du hast den Custom Channel &f%channel% &emit dem Passwort &f%password% &eerstellt!
-			player.spigot().sendMessage(plugin.getUtility().tc(plugin.getUtility().tl(
+			player.spigot().sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getName())
-					.replace("%password%", password))));
+					.replace("%password%", password)));
 		}
 		return;
 	}

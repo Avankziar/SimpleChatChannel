@@ -19,7 +19,7 @@ public class ARGGrouplist extends CommandModule
 	public ARGGrouplist(SimpleChatChannels plugin)
 	{
 		super("grouplist",
-				"scc.cmd.grouplist",SimpleChatChannels.sccarguments,1,2,"gruppenliste");
+				"scc.cmd.grouplist",SimpleChatChannels.sccarguments,1,2,"gruppenliste",null);
 		this.plugin = plugin;
 	}
 
@@ -65,7 +65,7 @@ public class ARGGrouplist extends CommandModule
 			String s = args[1];
 			for(String g : groups)
     		{
-				if(s.startsWith(g))
+				if(Utility.containsIgnoreCase(s, g))
 				{
 					TextComponent prefix = utility.clickEvent("&6"+g+" ", 
 							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+g+" ", false);

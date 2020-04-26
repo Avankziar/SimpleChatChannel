@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -13,7 +16,8 @@ public class ARGTemporaryChannelChangePassword extends CommandModule
 	
 	public ARGTemporaryChannelChangePassword(SimpleChatChannels plugin)
 	{
-		super("tcchangepassword","scc.cmd.tc.changepassword",SimpleChatChannels.sccarguments,2,2,"tcpasswortändern");
+		super("tcchangepassword","scc.cmd.tc.changepassword",SimpleChatChannels.sccarguments,2,2,"tcpasswortändern",
+				new ArrayList<String>(Arrays.asList("<NewPassword>".split(";"))));
 		this.plugin = plugin;
 	}
 

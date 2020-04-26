@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelUnban extends CommandModule
 	
 	public ARGPermanentChannelUnban(SimpleChatChannels plugin)
 	{
-		super("pcunban","scc.cmd.pc.unban",SimpleChatChannels.sccarguments,3,3,"pcentbannen");
+		super("pcunban","scc.cmd.pc.unban",SimpleChatChannels.sccarguments,3,3,"pcentbannen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 

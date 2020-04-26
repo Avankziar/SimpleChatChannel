@@ -12,7 +12,7 @@ public class ARGChannelLocal extends CommandModule
 	public ARGChannelLocal(SimpleChatChannels plugin)
 	{
 		super("local",
-				"scc.channels.local",SimpleChatChannels.sccarguments,1,1,"lokal");
+				"scc.channels.local",SimpleChatChannels.sccarguments,1,1,"lokal",null);
 		this.plugin = plugin;
 	}
 

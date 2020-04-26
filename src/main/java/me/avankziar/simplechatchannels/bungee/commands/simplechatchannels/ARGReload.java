@@ -11,7 +11,7 @@ public class ARGReload extends CommandModule
 	
 	public ARGReload(SimpleChatChannels plugin)
 	{
-		super("bungeereload","scc.cmd.reload",SimpleChatChannels.sccarguments,1,1,"bungeeneuladen");
+		super("bungeereload","scc.cmd.reload",SimpleChatChannels.sccarguments,1,1,"bungeeneuladen",null);
 		this.plugin = plugin;
 	}
 

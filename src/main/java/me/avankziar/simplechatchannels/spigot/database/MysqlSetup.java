@@ -13,7 +13,7 @@ public class MysqlSetup
 	private SimpleChatChannels plugin;
 	private Connection conn = null;
 	
-	public MysqlSetup(SimpleChatChannels plugin) 
+	public MysqlSetup(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 		loadMysqlSetup();
@@ -29,7 +29,11 @@ public class MysqlSetup
 		{
 			return false;
 		}
-		if(setupDatabaseII())
+		if(!setupDatabaseII())
+		{
+			return false;
+		}
+		if(!setupDatabaseIII())
 		{
 			return false;
 		}
@@ -39,7 +43,8 @@ public class MysqlSetup
 	public boolean connectToDatabase() 
 	{
 		SimpleChatChannels.log.info("Connecting to the database...");
-		try {
+		try 
+		{
        	 	//Load Drivers
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
@@ -84,7 +89,7 @@ public class MysqlSetup
 		        		+ " channel_global boolean, channel_trade boolean, channel_auction boolean, channel_support boolean,"
 		        		+ " channel_local boolean, channel_world boolean,"
 		        		+ " channel_team boolean, channel_admin boolean,"
-		        		+ " channel_group boolean, channel_pm boolean, channel_temp boolean,"
+		        		+ " channel_group boolean, channel_pm boolean, channel_temp boolean, channel_perma boolean,"
 		        		+ " spy boolean, joinmessage boolean);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
@@ -93,8 +98,10 @@ public class MysqlSetup
 		        e.printStackTrace();
 		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
 		        return false;
-		      } finally {
-		    	  try {
+		      } finally 
+		      {
+		    	  try 
+		    	  {
 		    		  if (query != null) 
 		    		  {
 		    			  query.close();
@@ -126,8 +133,46 @@ public class MysqlSetup
 		        e.printStackTrace();
 		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
 		        return false;
-		      } finally {
-		    	  try {
+		      } finally 
+		      {
+		    	  try 
+		    	  {
+		    		  if (query != null) 
+		    		  {
+		    			  query.close();
+		    		  }
+		    	  } catch (Exception e) 
+		    	  {
+		    		  e.printStackTrace();
+		    		  return false;
+		    	  }
+		      }
+		}
+		return true;
+	}
+	
+	public boolean setupDatabaseIII() 
+	{
+		if (conn != null) 
+		{
+			PreparedStatement query = null;
+		      try 
+		      {	        
+		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameIII
+		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY, channel_name TEXT NOT NULL, "
+		        		+ " creator TEXT NOT NULL, vice MEDIUMTEXT, members MEDIUMTEXT, password TEXT, banned MEDIUMTEXT,"
+		        		+ " symbolextra TEXT, namecolor TEXT, chatcolor TEXT);";
+		        query = conn.prepareStatement(data);
+		        query.execute();
+		      } catch (SQLException e) 
+		      {
+		        e.printStackTrace();
+		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
+		        return false;
+		      } finally 
+		      {
+		    	  try 
+		    	  {
 		    		  if (query != null) 
 		    		  {
 		    			  query.close();

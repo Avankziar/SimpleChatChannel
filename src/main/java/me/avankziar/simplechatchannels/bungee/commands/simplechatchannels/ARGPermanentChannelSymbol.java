@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelSymbol extends CommandModule
 	
 	public ARGPermanentChannelSymbol(SimpleChatChannels plugin)
 	{
-		super("pcsymbol","scc.cmd.pc.symbol",SimpleChatChannels.sccarguments,3,3);
+		super("pcsymbol","scc.cmd.pc.symbol",SimpleChatChannels.sccarguments,3,3,null,
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -44,8 +48,9 @@ public class ARGPermanentChannelSymbol extends CommandModule
 		{
 			player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"PCSymbol.SymbolAlreadyExist")
-					.replace("%symbol%", cc.getSymbolExtra())
+					.replace("%symbol%", other.getSymbolExtra())
 					.replace("%channel%", other.getNameColor()+other.getName())));
+			return;
 		}
 		cc.setSymbolExtra(symbol);
 		plugin.getUtility().updatePermanentChannels(cc);

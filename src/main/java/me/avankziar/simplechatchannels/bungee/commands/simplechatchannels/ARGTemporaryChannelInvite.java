@@ -1,5 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
@@ -18,7 +20,8 @@ public class ARGTemporaryChannelInvite extends CommandModule
 	
 	public ARGTemporaryChannelInvite(SimpleChatChannels plugin)
 	{
-		super("tcinvite","scc.cmd.tc.invite",SimpleChatChannels.sccarguments,2,2,"tceinladen");
+		super("tcinvite","scc.cmd.tc.invite",SimpleChatChannels.sccarguments,2,2,"tceinladen",
+				new ArrayList<String>(Arrays.asList("<Player>".split(";"))));
 		this.plugin = plugin;
 		inviteCooldown = new LinkedHashMap<>();
 	}
@@ -50,7 +53,7 @@ public class ARGTemporaryChannelInvite extends CommandModule
 			return;
 		}
 		ProxiedPlayer target = ProxyServer.getInstance().getPlayer(t);
-		String cmd = "/scc ccjoin "+cc.getName();
+		String cmd = "/scc tcjoin "+cc.getName();
 		if(cc.getPassword()!=null)
 		{
 			cmd += " "+cc.getPassword();

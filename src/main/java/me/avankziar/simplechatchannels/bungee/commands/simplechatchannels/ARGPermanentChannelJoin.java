@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelJoin extends CommandModule
 	
 	public ARGPermanentChannelJoin(SimpleChatChannels plugin)
 	{
-		super("pcjoin","scc.cmd.pc.join",SimpleChatChannels.sccarguments,2,3,"pcbeitreten");
+		super("pcjoin","scc.cmd.pc.join",SimpleChatChannels.sccarguments,2,3,"pcbeitreten",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -47,6 +51,12 @@ public class ARGPermanentChannelJoin extends CommandModule
 		{
 			///Du bist in diesem CustomChannel gebannt und darfst nicht joinen!
 			player.sendMessage(utility.tctlYaml(language+"PCJoin.Banned"));
+			return;
+		}
+		if(cc.getMembers().contains(player.getUniqueId().toString()))
+		{
+			///Du bist schon diesem permanenten Channel beigetreten!
+			player.sendMessage(utility.tctlYaml(language+"PCJoin.AlreadyInTheChannel"));
 			return;
 		}
 		if(password==null)
@@ -86,7 +96,8 @@ public class ARGPermanentChannelJoin extends CommandModule
 			{
 				members.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCJoin.PlayerIsJoined")
-						.replace("%player%", player.getName())));
+						.replace("%player%", player.getName())
+						.replace("%channel%", cc.getNameColor()+cc.getName())));
 			}
 		}
 		return;

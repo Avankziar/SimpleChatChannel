@@ -54,7 +54,7 @@ public class PermanentChannel
 		PermanentChannel c = null;
 		for (PermanentChannel cc : permanentChannel)
 		{
-			if(cc.getName().equalsIgnoreCase(name))
+			if(cc.getName().equals(name))
 			{
 				c = cc;
 				break;
@@ -232,7 +232,15 @@ public class PermanentChannel
 	
 	public static void removeCustomChannel(PermanentChannel cc)
 	{
-		permanentChannel.remove(cc);
+		PermanentChannel r = null;
+		for(PermanentChannel pc : permanentChannel)
+		{
+			if(pc.getId() == cc.getId())
+			{
+				r = pc;
+			}
+		}
+		permanentChannel.remove(r);
 	}
 
 	public int getId()

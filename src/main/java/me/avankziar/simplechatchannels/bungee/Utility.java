@@ -31,6 +31,8 @@ public class Utility
 	private SimpleChatChannels plugin;
 	public static LinkedHashMap<String, String> item = new LinkedHashMap<>(); //Playeruuid, ItemJason
 	public static LinkedHashMap<String, String> itemname = new LinkedHashMap<>(); //Playeruuid, Itemname
+	public static ArrayList<String> onlineplayers = new ArrayList<>();
+
 	
 	private String prefix;
 	private String language;
@@ -341,7 +343,7 @@ public class Utility
 		return list;
 	}
 	
-	//TODO
+	
 	private BaseComponent addFunctions(ProxiedPlayer player, String splitmsg, String colorFreeWord, TextComponent word, String cc)
 	{
 		if(splitmsg.contains("http"))
@@ -354,7 +356,7 @@ public class Utility
 				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString(language+".ReplacerColor.Website")));
 			}
 		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Item")))
-		{ //TODO nicht richter colorcode angezeigt
+		{
 			if(player.hasPermission(PERMBYPASSITEM))
 			{
 				if(Utility.itemname.containsKey(player.getUniqueId().toString())
@@ -610,7 +612,7 @@ public class Utility
 	
 	public boolean getIgnored(ProxiedPlayer target, ProxiedPlayer player, boolean privatechat)
 	{
-		if(plugin.getMysqlHandler().existIgnore(target, target.getUniqueId().toString()))
+		if(plugin.getMysqlHandler().existIgnore(target, player.getUniqueId().toString()))
 		{
 			if(privatechat)
 			{
@@ -631,7 +633,7 @@ public class Utility
 		List<String> wordfilter = plugin.getYamlHandler().get().getStringList("WordFilter");
 		for(String wf : wordfilter)
 		{
-			if(msg.contains(wf))
+			if(containsIgnoreCase(msg, wf))
 			{
 				return true;
 			}
@@ -710,19 +712,6 @@ public class Utility
     	}
     }
 	
-	public void sendMessage(Server server, String Channel, String message) 
-	{
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(stream);
-        String msg = message;
-        try {
-			out.writeUTF(msg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        server.sendData(Channel, stream.toByteArray());
-    }
-	
 	public String getActiveChannels(ProxiedPlayer player)
 	{
 		String language = getLanguage();
@@ -771,22 +760,6 @@ public class Utility
 			plugin.getMysqlHandler().createAccount(player);
 			return;
 		}
-	}
-	
-	public void sendSpigotMessage(String tagkey, String message)
-	{
-		ByteArrayOutputStream streamout = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(streamout);
-        String msg = message;
-        try {
-			out.writeUTF(msg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        for(ServerInfo si : plugin.getProxy().getServers().values())
-        {
-        	si.sendData(tagkey, streamout.toByteArray());
-        }
 	}
 	
 	public boolean existMethod(Class<?> externclass, String method)
@@ -848,9 +821,53 @@ public class Utility
 			plugin.getMysqlHandler().updateDataIII(pc, pc.getSymbolExtra(), "symbolextra");
 			plugin.getMysqlHandler().updateDataIII(pc, pc.getNameColor(), "namecolor");
 			plugin.getMysqlHandler().updateDataIII(pc, pc.getChatColor(), "chatcolor");
-		} else
-		{
-			plugin.getMysqlHandler().createChannel(pc);
 		}
+	}
+	
+	public static boolean containsIgnoreCase(String message, String searchStr)     
+	{
+	    if(message == null || searchStr == null) return false;
+
+	    final int length = searchStr.length();
+	    if (length == 0)
+	        return true;
+
+	    for (int i = message.length() - length; i >= 0; i--) 
+	    {
+	        if (message.regionMatches(true, i, searchStr, 0, length))
+	        {
+	        	return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public void sendMessage(Server server, String Channel, String message) 
+	{
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(stream);
+        String msg = message;
+        try {
+			out.writeUTF(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        server.sendData(Channel, stream.toByteArray());
+    }
+	
+	public void sendSpigotMessage(String tagkey, String message)
+	{
+		ByteArrayOutputStream streamout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(streamout);
+        String msg = message;
+        try {
+			out.writeUTF(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        for(ServerInfo si : plugin.getProxy().getServers().values())
+        {
+        	si.sendData(tagkey, streamout.toByteArray());
+        }
 	}
 }

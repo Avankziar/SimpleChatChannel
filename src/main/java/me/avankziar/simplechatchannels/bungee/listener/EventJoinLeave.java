@@ -101,9 +101,12 @@ public class EventJoinLeave implements Listener
     			}
     			cc.setCreator(newcreator);
     			///Du wurdest der neue Ersteller der CustomChannels %channel%
-    			newcreator.sendMessage(utility.tctl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"CCLeave.NewCreator")
-    					.replace("%channel%", cc.getName())));
+    			if(newcreator!=null)
+    			{
+    				newcreator.sendMessage(utility.tctl(
+        					plugin.getYamlHandler().getL().getString(language+scc+"CCLeave.NewCreator")
+        					.replace("%channel%", cc.getName())));
+    			}
 			}
 		}
 		if(!plugin.getMysqlHandler().hasAccount(player))

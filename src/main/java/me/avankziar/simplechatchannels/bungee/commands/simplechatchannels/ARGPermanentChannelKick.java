@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelKick extends CommandModule
 	
 	public ARGPermanentChannelKick(SimpleChatChannels plugin)
 	{
-		super("pckick","scc.cmd.pc.kick",SimpleChatChannels.sccarguments,3,3,"pcrausschmeißen");
+		super("pckick","scc.cmd.pc.kick",SimpleChatChannels.sccarguments,3,3,"pcrausschmeißen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -24,7 +28,7 @@ public class ARGPermanentChannelKick extends CommandModule
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		Utility utility = plugin.getUtility();
 		String language = utility.getLanguage() + ".CmdScc.";
-		PermanentChannel cc = PermanentChannel.getChannelFromPlayer(args[1]);
+		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
@@ -36,7 +40,8 @@ public class ARGPermanentChannelKick extends CommandModule
 				&& !cc.getVice().contains(player.getUniqueId().toString()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotChannelViceII"));
+			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotChannelViceII")
+					.replace("%channel%", cc.getNameColor()+cc.getName())));
 			return;
 		}
 		if(plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name") == null)
@@ -46,6 +51,12 @@ public class ARGPermanentChannelKick extends CommandModule
 			return;
 		}
 		String targetuuid = (String) plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name");
+		if(cc.getCreator().equals(targetuuid) && cc.getVice().contains(player.getUniqueId().toString()))
+		{
+			///Du als Stellvertreter kannst den Ersteller nicht kicken!
+			player.sendMessage(utility.tctlYaml(language+"PCKick.ViceCannotKickCreator"));
+			return;
+		}
 		if(!cc.getMembers().contains(targetuuid))
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!

@@ -1,5 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
@@ -14,7 +16,8 @@ public class ARGWordfilter extends CommandModule
 	
 	public ARGWordfilter(SimpleChatChannels plugin)
 	{
-		super("wordfilter","scc.cmd.wordfilter",SimpleChatChannels.sccarguments,2,2,"wortfilter");
+		super("wordfilter","scc.cmd.wordfilter",SimpleChatChannels.sccarguments,2,2,"wortfilter",
+				new ArrayList<String>(Arrays.asList("<Word>".split(";"))));
 		this.plugin = plugin;
 	}
 

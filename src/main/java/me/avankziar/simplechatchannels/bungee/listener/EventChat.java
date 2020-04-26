@@ -469,6 +469,9 @@ public class EventChat implements Listener
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
 				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
+					player.sendMessage(MSG2);
+					utility.spy(MSG1);
+					reply.put(pl, trl);
 					return;
 				}
 			}
@@ -481,11 +484,12 @@ public class EventChat implements Listener
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerIgnoreYou"));
 				utility.spy(MSG1);
 				player.sendMessage(MSG2);
+				reply.put(pl, trl);
 				return;
 			}
 			
 			tr.sendMessage(MSG1);
-			player.sendMessage(MSG2);
+			
 			utility.spy(MSG1);
 			reply.put(pl, trl);
 			reply.put(trl, pl);
@@ -565,6 +569,9 @@ public class EventChat implements Listener
 				player.sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
 				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
+					player.sendMessage(MSG2);
+					utility.spy(MSG1);
+					reply.put(pl, trl);
 					return;
 				}
 			}	

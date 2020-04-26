@@ -1,6 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,13 +38,13 @@ public class ARGTemporaryChannelUnban extends CommandModule
 			player.spigot().sendMessage(utility.tctl(language+"ChannelGeneral.NotTheCreator"));
 			return;
 		}
-		if(Bukkit.getPlayer(args[1])==null)
+		if(plugin.getServer().getPlayer(args[1])==null)
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
 			player.spigot().sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		Player target = Bukkit.getPlayer(args[1]); 
+		Player target = plugin.getServer().getPlayer(args[1]); 
 		if(!cc.getBanned().contains(target))
 		{
 			///Der Spieler ist nicht auf der Bannliste!

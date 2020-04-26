@@ -2,30 +2,40 @@
 
 Build 33
 - +Ignorelist und Ignore gefixt
-- +BypassPerm für Admins der Ignore | scc.channels.bypass.ignore
-- +BypassPerm für Admins um jemanden anzuschreiben, der Pm Channel aus hat. | scc.channel.bypass.privacy
-- +Änderungen in der language.yml bei Chatsplit
-- +ignore_name aktualisierungsmethode einfügen
-- +Namen von configs & language neu benennen nach der neuen Konform
+- +Farben in der zweiten Zeile werden korrekt übernommen.
+
 - +/scc wordfiler <add/remove> <word> => /scc wordfilter <word>
-- +/scc broadcast, hat alias bekommen "ausstrahlung"
+- +/scc broadcast, neuer Alias = "ausstrahlung"
 - +Spieler die Afk sind, bekommen trotzdem die PrivateNachricht
-- +Reload befehl in bungee eingebaut, und auf Bungee und Spigot Ebene bewirkt es auch einen reconnect der Mysql anhand neuer Daten.
 - +Besseres TabComplete eingebaut
 - +Commands in neuerer Struktur gebaut. Ist übersichtlicher generell und leichter neue Argumente einzubauen.
-- +Prefix in config.yml einbauen
-- +AfkRecord bekommt nun ab Build 6(!!) bei jedem ChatEvent einen SoftSave(Zeiten des Spielers werden im RAM gespeichert)
-- +Namensänderungen werden nun bei jedem Join überprüft und gegebenfalls aktualisiert
-- +PermissionÄnderung: aus allen scc.cmd.cc.XXXX wird scc.cmd.tc.XXXX
 - +Aus CustomChannel wird Temporärer Channel.
-- +Neue Commands:
-  */scc tcinvite <Spieler> | Lädt den Spieler in deinen Temporären Channel ein (Mit Cooldown) | scc.cmd.tc.invite
+- +Wortfilter ignoriert nun die Groß und Kleinschreibung
+
+- +PermissionÄnderung: aus allen scc.cmd.cc.XXXX wird scc.cmd.tc.XXXX
+
+- +BypassPerm für Admins der Ignore | scc.channels.bypass.ignore
+- +BypassPerm für Admins um jemanden anzuschreiben, der Pm Channel aus hat. | scc.channel.bypass.privacy
+- +BypassPerm für Admins um permanente Channels zu löschen oder beerben zu lassen | scc.cmd.bypass.permanentchannel
+
+- +Änderungen in der language.yml bei Chatsplit
+- +Namen von configs & language neu benennen nach der neuen Konform
+- +Prefix in config.yml einbauen
+
 - +In der Mysql muss nun aus der Spalte "channel_custom" => "channel_temp" werden.
 - +In der Mysql muss nun eine neue Spalte hinzugefügt werden, falls sie nicht das erste Mal starten:
   Name: "channel_perma", TinyInt(1), Default:1 (ihr könnt auch 0 bei default machen, hängt davon ab, ob alle spieler es sofort
   aktiviert haben sollen oder nicht.
+
 - +Neuer Channel ist hinzugefügt worden: PermanenterChannel, DefaultSymbol "."
+- +ignore_name aktualisierungsmethode einfügen
+- +AfkRecord bekommt nun ab Build 6(!!) bei jedem ChatEvent einen SoftSave(Zeiten des Spielers werden im RAM gespeichert)
+- +Namensänderungen werden nun bei jedem Join überprüft und gegebenfalls aktualisiert
+- +Aktualisierungsmethode für die Mute & Unmute Commands
+
 - +Neue Commands:
+  */scc tcinvite <Spieler> | Lädt den Spieler in deinen Temporären Channel ein (Mit Cooldown) | scc.cmd.tc.invite
+  */scc bungeereload | Lädt die Yaml und die Mysql neu
   */scc pcban <spieler> | Bannt den Spieler aus dem PChannel (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.ban
   */scc pcchangepassword <pw> | Ändert das Passwort. Nur Ersteller oder Stellvertreter | scc.cmd.pc.changepassword
   */scc pccreate <ChannelName> [Pw] | Erstellt einen PChannel, der ausführende Spieler ist somit für immer Ersteller | scc.cmd.pc.create
@@ -46,11 +56,10 @@ Build 33
   */scc pcplayer <Player>  | Fragt ab, in welchem Channel der Spieler aktiv ist | scc.cmd.pc.player
   */scc pcinherit <Channelname> <Player> | um den Spieler zum neuen Ersteller zu ernennen | scc.cmd.pc.inherit
   */scc pcdelete <Channelname> | um den Channel von admins löschen zu lassen | scc.cmd.pc.delete
+  */scc pcchannels | Listet alle Channels auf | scc.cmd.pc.channels
   */scc perma | Togglet den Permanenten Channel | scc.cmd.perma
   */scc temp | Togglet den Temporären Channel | scc.cmd.temp (Nachfolger und Ersetzt /scc custom)
 - Noch ins englische übersetzten
-- +Aktualisierungsmethode für die Mute & Unmute Commands
-- Noch im scc die neuen cmd auflisten
 
 Build 31
 - +Hover bei Commands in chat

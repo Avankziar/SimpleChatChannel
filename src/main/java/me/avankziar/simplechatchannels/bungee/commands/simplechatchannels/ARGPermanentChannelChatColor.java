@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelChatColor extends CommandModule
 	
 	public ARGPermanentChannelChatColor(SimpleChatChannels plugin)
 	{
-		super("pcchatcolor","scc.cmd.pc.chatcolor",SimpleChatChannels.sccarguments,3,3,"pcchatfarbe");
+		super("pcchatcolor","scc.cmd.pc.chatcolor",SimpleChatChannels.sccarguments,3,3,"pcchatfarbe",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -47,7 +51,7 @@ public class ARGPermanentChannelChatColor extends CommandModule
 			{
 				members.sendMessage(plugin.getUtility().tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCChatColor.NewColor")
-						.replace("%color%", chatcolor+"Example")
+						.replace("%color%", chatcolor)
 						.replace("%channel%", cc.getNameColor()+cc.getName())));
 			}
 		}

@@ -227,7 +227,8 @@ public class MysqlHandler
 		Boolean admin = player.hasPermission("scc.channels.admin");
 		Boolean group = player.hasPermission("scc.channels.group");
 		Boolean pmn = player.hasPermission("scc.channels.pm");
-		Boolean custom = player.hasPermission("scc.channels.custom");
+		Boolean temp = player.hasPermission("scc.channels.temp");
+		Boolean perma = player.hasPermission("scc.channels.perma");
 		PreparedStatement preparedStatement = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
 		if (conn != null) {
@@ -238,9 +239,9 @@ public class MysqlHandler
 						+ " `channel_global`, `channel_trade`, `channel_auction`, `channel_support`,"
 						+ " `channel_local`, `channel_world`,"
 						+ " `channel_team`, `channel_admin`,"
-						+ " `channel_group`, `channel_pm`, `channel_custom`,"
+						+ " `channel_group`, `channel_pm`, `channel_temp`, `channel_perma`, "
 						+ " `spy`, `joinmessage`) " 
-						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
 		        preparedStatement.setString(1, player.getUniqueId().toString());
 		        preparedStatement.setString(2, player.getName());
@@ -256,9 +257,10 @@ public class MysqlHandler
 		        preparedStatement.setBoolean(12, admin);
 		        preparedStatement.setBoolean(13, group);
 		        preparedStatement.setBoolean(14, pmn);
-		        preparedStatement.setBoolean(15, custom);
-		        preparedStatement.setBoolean(16, f);
-		        preparedStatement.setBoolean(17, true);
+		        preparedStatement.setBoolean(15, temp);
+		        preparedStatement.setBoolean(16, perma);
+		        preparedStatement.setBoolean(17, f);
+		        preparedStatement.setBoolean(18, true);
 		        
 		        
 		        preparedStatement.executeUpdate();
@@ -704,15 +706,15 @@ public class MysqlHandler
 		}
 	}
 	
-	public void deleteDataIII(String channelname)
+	public void deleteDataIII(int id)
 	{
 		PreparedStatement preparedStatement = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
 		try 
 		{
-			String sql = "DELETE FROM `" + tableNameIII + "` WHERE `channel_name` = ?";
+			String sql = "DELETE FROM `" + tableNameIII + "` WHERE `id` = ?";
 			preparedStatement = conn.prepareStatement(sql);
-			preparedStatement.setObject(1, channelname);
+			preparedStatement.setObject(1, id);
 			preparedStatement.execute();
 		} catch (Exception e) 
 		{
@@ -739,11 +741,11 @@ public class MysqlHandler
 		{
 			try 
 			{			
-				String sql = "SELECT `id` FROM `" + tableNameIII + "` ORDER BY `id` ASC LIMIT 1";
+				String sql = "SELECT `id` FROM `" + tableNameIII + "` ORDER BY `id` DESC LIMIT 1";
 		        preparedUpdateStatement = conn.prepareStatement(sql);
 		        
 		        result = preparedUpdateStatement.executeQuery();
-		        while (result.next()) 
+		        while(result.next())
 		        {
 		        	return result.getInt("id");
 		        }
@@ -763,7 +765,8 @@ public class MysqlHandler
 		    		  {
 		    			  preparedUpdateStatement.close();
 		    		  }
-		    	  } catch (Exception e) {
+		    	  } catch (Exception e) 
+		    	  {
 		    		  e.printStackTrace();
 		    	  }
 		      }

@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelBan extends CommandModule
 	
 	public ARGPermanentChannelBan(SimpleChatChannels plugin)
 	{
-		super("pcban","sc.cmd.pc.ban",SimpleChatChannels.sccarguments,3,3,"pcverbannen");
+		super("pcban","scc.cmd.pc.ban",SimpleChatChannels.sccarguments,3,3,"pcverbannen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -47,10 +51,16 @@ public class ARGPermanentChannelBan extends CommandModule
 			return;
 		}
 		String targetuuid = (String) plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name");
+		if(cc.getCreator().equals(targetuuid) && cc.getVice().contains(player.getUniqueId().toString()))
+		{
+			///Du als Stellvertreter kannst den Ersteller nicht ban!
+			player.sendMessage(utility.tctlYaml(language+"PCBan.ViceCannotBanCreator"));
+			return;
+		}
 		if(targetuuid.equals(player.getUniqueId().toString()))
 		{
 			///Du als Ersteller kannst dich nicht selber bannen!
-			player.sendMessage(utility.tctlYaml(language+"PCBan.CreatorCannotBan"));
+			player.sendMessage(utility.tctlYaml(language+"PCBan.YourselfCannotBan"));
 			return;
 		}
 		if(cc.getBanned().contains(targetuuid))

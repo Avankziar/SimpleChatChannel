@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +15,8 @@ public class ARGPermanentChannelCreate extends CommandModule
 	
 	public ARGPermanentChannelCreate(SimpleChatChannels plugin)
 	{
-		super("pccreate","scc.cmd.pc.create",SimpleChatChannels.sccarguments,2,3,"pcerschaffen");
+		super("pccreate","scc.cmd.pc.create",SimpleChatChannels.sccarguments,2,3,"pcerschaffen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -38,6 +40,7 @@ public class ARGPermanentChannelCreate extends CommandModule
 		{
 			///&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!
 			player.sendMessage(plugin.getUtility().tctlYaml(language+"PCCreate.ChannelNameAlreadyExist"));
+			return;
 		}
 		int amount = 0;
 		for(PermanentChannel c : PermanentChannel.getPermanentChannel())
@@ -47,10 +50,11 @@ public class ARGPermanentChannelCreate extends CommandModule
 				amount++;
 			}
 		}
-		if(plugin.getYamlHandler().get().getInt("PermanentChannelAmountPerPlayer") == amount)
+		if(plugin.getYamlHandler().get().getInt("PermanentChannelAmountPerPlayer") <= amount)
 		{
 			///&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!
 			player.sendMessage(plugin.getUtility().tctlYaml(language+"PCCreate.MaximumAmount"));
+			return;
 		}
 		String symbol = name;
 		check = PermanentChannel.getChannelFromSymbol(symbol);
@@ -81,7 +85,7 @@ public class ARGPermanentChannelCreate extends CommandModule
 			player.sendMessage(plugin.getUtility().tctl(
 					plugin.getYamlHandler().getL().getString(language+"PCCreate.ChannelCreateWithoutPassword")
 					.replace("%channel%", cc.getNameColor()+cc.getName())
-					.replace("%symbol%", symbol)));
+					.replace("%symbol%", plugin.getYamlHandler().getSymbol("Perma")+symbol)));
 		} else
 		{
 			///Du hast den permanenten Channel %channel% mit dem Passwort %password% erstellt!
@@ -89,7 +93,7 @@ public class ARGPermanentChannelCreate extends CommandModule
 					plugin.getYamlHandler().getL().getString(language+"PCCreate.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getNameColor()+cc.getName())
 					.replace("%password%", password)
-					.replace("%symbol%", symbol)));
+					.replace("%symbol%", plugin.getYamlHandler().getSymbol("Perma")+symbol)));
 		}
 		return;
 	}

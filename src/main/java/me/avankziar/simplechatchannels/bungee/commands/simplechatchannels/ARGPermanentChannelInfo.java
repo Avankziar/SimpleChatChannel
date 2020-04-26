@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
@@ -15,7 +16,8 @@ public class ARGPermanentChannelInfo extends CommandModule
 	
 	public ARGPermanentChannelInfo(SimpleChatChannels plugin)
 	{
-		super("pcinfo","scc.cmd.pc.info",SimpleChatChannels.sccarguments,1,2);
+		super("pcinfo","scc.cmd.pc.info",SimpleChatChannels.sccarguments,1,2,null,
+				new ArrayList<String>(Arrays.asList("[Channelname]".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -54,6 +56,10 @@ public class ARGPermanentChannelInfo extends CommandModule
 				.replace("%channel%", cc.getNameColor()+cc.getName())));
 		///Channel Ersteller: &f%creator%
 		player.sendMessage(utility.tctl(
+				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.ID")
+				.replace("%id%", cc.getId()+"")));
+		///Channel Ersteller: &f%creator%
+		player.sendMessage(utility.tctl(
 				plugin.getYamlHandler().getL().getString(language+scc+"PCInfo.Creator")
 				.replace("%creator%", getPlayer(cc.getCreator()))));
 		///Channel Stellvertreter: &f%vice%
@@ -68,7 +74,7 @@ public class ARGPermanentChannelInfo extends CommandModule
 		{
 			if(cc.getCreator().equals(player.getUniqueId().toString())
 					|| cc.getVice().contains(player.getUniqueId().toString())
-					|| !player.hasPermission(Utility.PERMBYPASSPCDELETE))
+					|| player.hasPermission(Utility.PERMBYPASSPCDELETE))
 			{
 				///Channel Passwort: &f%password%
 				player.sendMessage(utility.tctl(

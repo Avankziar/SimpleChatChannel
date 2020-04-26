@@ -1,28 +1,31 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.md_5.bungee.api.CommandSender;
 
 public abstract class CommandModule
 {
-	public String lable;
+	public String argument;
 	public String permission;
     public int minArgs;
     public int maxArgs;
-    public String[] aliases;
+    public String alias;
+    public ArrayList<String> secondargument;
 
-    public CommandModule(String lable, String permission, HashMap<String, CommandModule> map, 
-    		int minArgs, int maxArgs, String... aliases)
+    public CommandModule(String argument, String permission, HashMap<String, CommandModule> map, 
+    		int minArgs, int maxArgs, String alias, ArrayList<String> secondargument)
     {
-        this.lable = lable;
+        this.argument = argument;
         this.permission = permission;
         this.minArgs = minArgs;
         this.maxArgs = maxArgs;
-        this.aliases = aliases;
+        this.alias = alias;
+        this.secondargument = secondargument;
 
-		map.put(lable, this);
-		for(String alias : aliases)
+		map.put(argument, this);
+		if(alias!=null)
 		{
 			map.put(alias, this);
 		}

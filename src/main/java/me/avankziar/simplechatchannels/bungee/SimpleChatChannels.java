@@ -33,6 +33,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchann
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOptionSpy;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelBan;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelChangePassword;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelChatColor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelCreate;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannelDelete;
@@ -194,6 +195,7 @@ public class SimpleChatChannels extends Plugin
 		new ARGOptionSpy(this);
 		new ARGPermanentChannelBan(this);
 		new ARGPermanentChannelChangePassword(this);
+		new ARGPermanentChannelChannels(this);
 		new ARGPermanentChannelChatColor(this);
 		new ARGPermanentChannelCreate(this);
 		new ARGPermanentChannelDelete(this);

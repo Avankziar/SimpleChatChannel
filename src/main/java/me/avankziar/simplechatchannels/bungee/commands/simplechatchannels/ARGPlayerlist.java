@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
@@ -19,7 +20,8 @@ public class ARGPlayerlist extends CommandModule
 	public ARGPlayerlist(SimpleChatChannels plugin)
 	{
 		super("playerlist",
-				"scc.cmd.playerlist", SimpleChatChannels.sccarguments,1,2,"spielerliste");
+				"scc.cmd.playerlist", SimpleChatChannels.sccarguments,1,2,"spielerliste",
+				new ArrayList<String>(Arrays.asList("[Players]".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -41,20 +43,9 @@ public class ARGPlayerlist extends CommandModule
 		} else if(args.length==2)
 		{
 			String s = args[1];
-			String caseCapitalize = "";
-			if(s.length()>=2)
-			{
-				caseCapitalize = s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
-			} else
-			{
-				caseCapitalize = s;
-			}
 			for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
     		{
-				if(pp.getName().startsWith(s) || pp.getName().startsWith(s.toLowerCase()) 
-						|| pp.getName().startsWith(s.toUpperCase()) || pp.getName().startsWith(caseCapitalize)
-						|| pp.getName().contains(s) || pp.getName().contains(s.toLowerCase()) 
-								|| pp.getName().contains(s.toUpperCase()) || pp.getName().contains(caseCapitalize))
+				if(Utility.containsIgnoreCase(pp.getName(), s))
 				{
 					TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
 							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);

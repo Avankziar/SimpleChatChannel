@@ -28,6 +28,7 @@ public class YamlHandler
 	private String symbolpmre;
 	private String symbolgroup;
 	private String symboltemp;
+	private String symbolperma;
 	
 	public YamlHandler(SimpleChatChannels plugin) 
 	{
@@ -57,7 +58,8 @@ public class YamlHandler
 		symbolpm = lgg.getString(languages+".ChannelSymbol.PrivateMessage", "@");
 		symbolpmre = lgg.getString(languages+".ChannelSymbol.PrivateMessageRe", "@r");
 		symbolgroup = lgg.getString(languages+".ChannelSymbol.Group", "@*");
-		symboltemp = lgg.getString(languages+".ChannelSymbol.temp", ";");
+		symboltemp = lgg.getString(languages+".ChannelSymbol.Temp", ";");
+		symbolperma = lgg.getString(languages+".ChannelSymbol.Perma", ".");
 		return true;
 	}
 	
@@ -207,6 +209,13 @@ public class YamlHandler
 				 return "Temp";
 			 }
 		 }
+		 if(!cws.equalsIgnoreCase("Perma"))
+		 {
+			 if(msg.startsWith(symbolperma))
+			 {
+				 return "Perma";
+			 }
+		 }
 		 if(!cws.equalsIgnoreCase("Group"))
 		 {
 			 if(msg.startsWith(symbolgroup))
@@ -260,6 +269,9 @@ public class YamlHandler
 		} else if(channel.equals("Temp"))
 		{
 			 return symboltemp;
+		} else if(channel.equals("Perma"))
+		{
+			 return symbolperma;
 		} else if(channel.equals("Group"))
 		{
 			return symbolgroup;

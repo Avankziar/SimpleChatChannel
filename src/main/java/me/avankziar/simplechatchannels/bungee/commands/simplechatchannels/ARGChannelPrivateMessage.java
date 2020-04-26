@@ -12,7 +12,7 @@ public class ARGChannelPrivateMessage extends CommandModule
 	public ARGChannelPrivateMessage(SimpleChatChannels plugin)
 	{
 		super("pm",
-				"scc.channels.pm",SimpleChatChannels.sccarguments,1,1,"pn");
+				"scc.channels.pm",SimpleChatChannels.sccarguments,1,1,"pn",null);
 		this.plugin = plugin;
 	}
 

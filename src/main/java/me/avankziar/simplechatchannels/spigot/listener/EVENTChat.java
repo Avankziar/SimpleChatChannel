@@ -17,6 +17,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import main.java.me.avankziar.simplechatchannels.spigot.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.database.YamlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -158,7 +159,7 @@ public class EVENTChat implements Listener
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
-			utility.spy(player, MSG);
+			utility.spy(MSG);
 			
 			utility.saveAfkTimes(player);
 			
@@ -213,7 +214,7 @@ public class EVENTChat implements Listener
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
-			utility.spy(player, MSG);
+			utility.spy(MSG);
 			
 			utility.saveAfkTimes(player);
 			
@@ -242,8 +243,7 @@ public class EVENTChat implements Listener
 				return;
 			}	
 			
-			if(event.getMessage().length()>=symbol.length()
-					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
+			if(utility.getWordfilter(event.getMessage().substring(symbol.length())))
 			{
 				///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
@@ -254,26 +254,25 @@ public class EVENTChat implements Listener
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			
 			MSG.setExtra(utility.getAllTextComponentForChannels(
 					player, event.getMessage(), channel, symbol, symbol.length()));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
-			if(event.getMessage().substring(1).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
 				return;
 			}
 			
-			utility.saveAfkTimes(player);
+			plugin.getUtility().saveAfkTimes(player);
 			
 			utility.sendAllMessage(player, "channel_"+channel, MSG, false);
 			return;
-		} else if(channel.equals("Custom")) //----------------------------------------------------------Support Channel
+		} else if(channel.equals("Temp")) //----------------------------------------------------------Temporärer Channel
 		{
-			if(!utility.hasChannelRights(player, "channel_custom"))
+			if(!utility.hasChannelRights(player, "channel_temp"))
 			{
 				return;
 			}
@@ -281,53 +280,133 @@ public class EVENTChat implements Listener
 			if(TemporaryChannel.getCustomChannel(player)==null)
 			{
 				///Du bist in keinem CustomChannel!
-				player.spigot().sendMessage(utility.tctlYaml(language+".CustomChannelGeneral.NotInAChannel"));
+				player.spigot().sendMessage(utility.tctlYaml(language+".CmdScc.ChannelGeneral.NotInAChannel"));
 				return;
 			}
 			
 			TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 			
-			if(event.getMessage().length()>=symbol.length()
+			if(event.getMessage().length()>=symbol.length() 
 					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
 			{
-				///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
+				///Einer deiner geschriebenen Wörter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
 				return;
 			}
+			
+			TextComponent channels = utility.apichat(yamlHandler.getL().getString(language+".Channels.Perma")
+					.replace("%channel%", cc.getName()), 
+					ClickEvent.Action.SUGGEST_COMMAND, symbol+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.Perma"), false);
+			
+			List<BaseComponent> prefix = utility.getPrefix(player);
+			
+			TextComponent playertext = utility.apichat(yamlHandler.getL().getString(language+".PlayerColor")+player.getName(), 
+					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
+					.replace("%player%", player.getName()), false);
+			
+			List<BaseComponent> suffix = utility.getSuffix(player);
+			
+			List<BaseComponent> msg = utility.msgLater(player, symbol.length(), channel, event.getMessage());
 			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			
-			MSG.setExtra(utility.getAllTextComponentForChannels(
-					player, event.getMessage(), "Custom", symbol, symbol.length()));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
-			if(event.getMessage().substring(1).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
 				return;
 			}
+			utility.spy(MSG);
 			
-			utility.saveAfkTimes(player);
+			plugin.getUtility().saveAfkTimes(player);
 			
-			utility.spy(player, MSG);
+			for(Player members : cc.getMembers())
+			{
+				if((boolean) mysqlHandler.getDataI(members.getUniqueId().toString(), "channel_temp", "player_uuid"))
+				{
+					if(!utility.getIgnored(members,player, false))
+					{
+						members.spigot().sendMessage(MSG);
+					}
+				}
+			}
+			return;
+		} else if(channel.equals("Perma")) //----------------------------------------------------------Permanenter Channel
+		{
+			if(!utility.hasChannelRights(player, "channel_perma"))
+			{
+				return;
+			}
+			
+			String[] space = event.getMessage().split(" ");
+			PermanentChannel cc = PermanentChannel.getChannelFromSymbol(space[0].substring(symbol.length()));
+			if(cc==null)
+			{
+				///Der permanente Channel %symbol% existiert nicht.
+				player.spigot().sendMessage(utility.tctlYaml(language+".PCSymbol.ChannelUnknow"));
+				return;
+			}
+			symbol = symbol+cc.getSymbolExtra();
+			
+			if(event.getMessage().length()>=symbol.length() 
+					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
+			{
+				///Einer deiner geschriebenen Wörter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
+				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
+				return;
+			}
+			
+			TextComponent channels = utility.apichat(yamlHandler.getL().getString(language+".Channels.Perma")
+					.replace("%channel%", cc.getNameColor()+cc.getName()), 
+					ClickEvent.Action.SUGGEST_COMMAND, symbol+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.Perma"), false);
+			
+			List<BaseComponent> prefix = utility.getPrefix(player);
+			
+			TextComponent playertext = utility.apichat(yamlHandler.getL().getString(language+".PlayerColor")+player.getName(), 
+					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
+					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
+					.replace("%player%", player.getName()), false);
+			
+			List<BaseComponent> suffix = utility.getSuffix(player);
+			
+			List<BaseComponent> msg = utility.msgPerma(player, symbol.length()+1, channel, event.getMessage(), cc.getChatColor());
+			
+			TextComponent MSG = null;
+			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
+			else {MSG = utility.tc("");}
+			
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
+			
+			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
+			
+			if(event.getMessage().substring(symbol.length()).length()<0)
+			{
+				///Die Nachricht ist nicht lang genug!
+				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
+				return;
+			}
+			utility.spy(MSG);
+			
+			plugin.getUtility().saveAfkTimes(player);
 			
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
-				for(Player members : cc.getMembers())
+				if(cc.getMembers().contains(all.getUniqueId().toString()))
 				{
-					if(members.getName().equals(all.getName()))
+					if((boolean) mysqlHandler.getDataI(all.getUniqueId().toString(), "channel_perma", "player_uuid"))
 					{
-						if((boolean) mysqlHandler.getDataI(all.getUniqueId().toString(), "channel_custom", "player_uuid"))
+						if(!utility.getIgnored(all,player, false))
 						{
-							if(!utility.getIgnored(all,player, false))
-							{
-								all.spigot().sendMessage(MSG);
-							}
+							all.spigot().sendMessage(MSG);
 						}
 					}
 				}
@@ -343,7 +422,7 @@ public class EVENTChat implements Listener
 			String[] eventmsg = event.getMessage().split(" ");
 			int lenghteventmsg = eventmsg[0].length()+1;
 			
-			if(event.getMessage().length()>=lenghteventmsg
+			if(event.getMessage().length()>=lenghteventmsg 
 					&& utility.getWordfilter(event.getMessage().substring(lenghteventmsg))) //Wordfilter
 			{
 				///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
@@ -377,14 +456,13 @@ public class EVENTChat implements Listener
 			
 			List<BaseComponent> suffix = utility.getSuffix(player);
 			
+			List<BaseComponent> msg = utility.msgLater(player, lenghteventmsg, channel, event.getMessage());
+			
 			TextComponent MSG = null;
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			
-			MSG.setExtra(utility.getTCinLine(
-					channels, prefix, playertext, suffix, 
-					utility.msgLater(player, lenghteventmsg,"Group", event.getMessage())));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -397,7 +475,7 @@ public class EVENTChat implements Listener
 			
 			player.spigot().sendMessage(MSG);
 			
-			utility.saveAfkTimes(player);
+			plugin.getUtility().saveAfkTimes(player);
 			
 			for(Player all : plugin.getServer().getOnlinePlayers())
 			{
@@ -416,7 +494,7 @@ public class EVENTChat implements Listener
 				}
 			}
 			
-			utility.spy(player, MSG);
+			utility.spy(MSG);
 			return;
 		} else if(channel.equalsIgnoreCase("PrivateMessageRe")) //Reply Message
 		{
@@ -426,7 +504,7 @@ public class EVENTChat implements Listener
 			}
 			if(!reply.containsKey(pl))
 			{
-				///Du hast mit keinem Spieler dich &cprivat unterhalten!
+				///Du hast mit keinem Spieler dich privat unterhalten!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.NoRePlayer"));
 				return;
 			}
@@ -438,9 +516,10 @@ public class EVENTChat implements Listener
 				return;
 			}
 			Player tr = plugin.getServer().getPlayer(UUID.fromString(target));
-			String trl = tr.getUniqueId().toString();
 			
 			utility.isAfk(player, tr);
+			
+			String trl = tr.getUniqueId().toString();
 			
 			TextComponent channel1 = utility.apichat(language+".Channels.PrivateMessage", 
 					ClickEvent.Action.SUGGEST_COMMAND, yamlHandler.getSymbol("PrivateMessage")+player.getName()+" ", 
@@ -462,9 +541,8 @@ public class EVENTChat implements Listener
 					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
 					.replace("%player%", player.getName()), false);
 			
-			if(event.getMessage().length()>=symbol.length()
-					&& utility.getWordfilter(event.getMessage().substring(
-					symbol.length()))) //Wordfilter
+			if(event.getMessage().length()>=symbol.length() && utility.getWordfilter(event.getMessage().substring(
+					symbol.length())))
 			{
 				///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.Wordfilter"));
@@ -479,15 +557,14 @@ public class EVENTChat implements Listener
 			if(timeofdays == true) {MSG2 = utility.tc(timeofdaysoutput);}
 			else {MSG2 = utility.tc("");}
 			
-			
 			MSG1.setExtra(utility.getTCinLinePN(channel1, playertext, player2text, 
-					utility.msgLater(player, symbol.length(),"PrivateMessageRe", event.getMessage())));
+					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())));
 			MSG2.setExtra(utility.getTCinLinePN(channel2, playertext, player2text, 
-					utility.msgLater(player, symbol.length(),"PrivateMessageRe", event.getMessage())));
+					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())));
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			
-			if(event.getMessage().substring(3).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
@@ -500,24 +577,28 @@ public class EVENTChat implements Listener
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
 				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
+					player.spigot().sendMessage(MSG2);
+					utility.spy(MSG1);
+					reply.put(pl, trl);
 					return;
 				}
 			}
 			
-			utility.saveAfkTimes(player);
+			plugin.getUtility().saveAfkTimes(player);
 			
-			if(utility.getIgnored(tr,player, true))
+			if(utility.getIgnored(tr, player, true))
 			{
 				///Der Spieler ignoriert dich!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerIgnoreYou"));
-				utility.spy(player, MSG1);
+				utility.spy(MSG1);
 				player.spigot().sendMessage(MSG2);
+				reply.put(pl, trl);
 				return;
 			}
 			
 			tr.spigot().sendMessage(MSG1);
-			player.spigot().sendMessage(MSG2);
-			utility.spy(player, MSG1);
+			
+			utility.spy(MSG1);
 			reply.put(pl, trl);
 			reply.put(trl, pl);
 			return;
@@ -529,7 +610,7 @@ public class EVENTChat implements Listener
 			}
 			
 			String[] targets = event.getMessage().split(" ");
-			String target = targets[0].substring(symbol.length());
+			String target = targets[0].substring(yamlHandler.getSymbol("PrivateMessage").length());
 			if(plugin.getServer().getPlayer(target) == null)
 			{
 				///Der Spieler ist nicht online oder existiert nicht!
@@ -561,13 +642,13 @@ public class EVENTChat implements Listener
 					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
 					.replace("%player%", tr.getName()), false);
 			
-			if(event.getMessage().substring(targets[0].length()+1).length()<0)
+			if(event.getMessage().substring(targets[0].length()+symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
 				return;
 			}
-			if(event.getMessage().length()>=symbol.length()
+			if(event.getMessage().length()>=symbol.length() 
 					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
 			{
 				///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
@@ -583,12 +664,10 @@ public class EVENTChat implements Listener
 			if(timeofdays == true) {MSG2 = utility.tc(timeofdaysoutput);}
 			else {MSG2 = utility.tc("");}
 			
-			MSG1.setExtra(utility.getTCinLinePN(
-					channel1, playertext, player2text, 
-					utility.msgLater(player, targets[0].length(),"PrivateMessage", event.getMessage())));
-			MSG2.setExtra(utility.getTCinLinePN(
-					channel2, playertext, player2text, 
-					utility.msgLater(player, targets[0].length(),"PrivateMessage", event.getMessage())));
+			MSG1.setExtra(utility.getTCinLinePN(channel1, playertext, player2text, 
+					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())));
+			MSG2.setExtra(utility.getTCinLinePN(channel2, playertext, player2text, 
+					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())));
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			
@@ -598,24 +677,27 @@ public class EVENTChat implements Listener
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerNoPrivateMessage"));
 				if(!player.hasPermission(Utility.PERMBYPASSPRIVACY))
 				{
+					player.spigot().sendMessage(MSG2);
+					utility.spy(MSG1);
+					reply.put(pl, trl);
 					return;
 				}
-			}
+			}	
 			
-			utility.saveAfkTimes(player);
+			plugin.getUtility().saveAfkTimes(player);
 			
-			if(utility.getIgnored(tr,player, true))
+			if(utility.getIgnored(tr, player, true))
 			{
 				///Der Spieler ignoriert dich!
-				player.spigot().sendMessage(utility.tctlYaml((language+".EventChat.PlayerIgnoreYou")));
-				utility.spy(player, MSG1);
+				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.PlayerIgnoreYou"));
+				utility.spy(MSG1);
 				player.spigot().sendMessage(MSG2);
 				return;
 			}
 			
 			tr.spigot().sendMessage(MSG1);
 			player.spigot().sendMessage(MSG2);
-			utility.spy(player, MSG1);
+			utility.spy(MSG1);
 			reply.put(pl, trl);
 			reply.put(trl, pl);
 			return;

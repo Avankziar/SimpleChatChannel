@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
@@ -17,7 +18,8 @@ public class ARGPermanentChannelDelete extends CommandModule
 	
 	public ARGPermanentChannelDelete(SimpleChatChannels plugin)
 	{
-		super("pcdelete","scc.cmd.pc.rename",SimpleChatChannels.sccarguments,2,3,"pclöschen");
+		super("pcdelete","scc.cmd.pc.rename",SimpleChatChannels.sccarguments,2,3,"pclöschen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -55,18 +57,17 @@ public class ARGPermanentChannelDelete extends CommandModule
 					player.sendMessage(plugin.getUtility().tctlYaml(language+scc+"NoPermission"));
 					return;
 				}
-				final ArrayList<String> oldmembers = cc.getMembers();
-				plugin.getMysqlHandler().deleteDataIII(cc.getName());
 				for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 				{
-					if(oldmembers.contains(members.getUniqueId().toString()))
+					if(cc.getMembers().contains(members.getUniqueId().toString()))
 					{
-						player.sendMessage(utility.tctl(
-								plugin.getYamlHandler().getL().getString(language+scc+"PCDelte.Deleted")
+						members.sendMessage(utility.tctl(
+								plugin.getYamlHandler().getL().getString(language+scc+"PCDelete.Deleted")
 								.replace("%channel%", cc.getNameColor()+cc.getName())
 								.replace("%player%", player.getName())));
 					}
 				}
+				plugin.getMysqlHandler().deleteDataIII(cc.getId());
 				PermanentChannel.removeCustomChannel(cc);
 				cc = null;
 			} else
@@ -74,6 +75,7 @@ public class ARGPermanentChannelDelete extends CommandModule
 				///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
 				player.sendMessage(plugin.getUtility().clickEvent(language+".CmdScc.InputIsWrong",
 						ClickEvent.Action.RUN_COMMAND, "/scc", true));
+				return;
 			}
 		}
 		return;

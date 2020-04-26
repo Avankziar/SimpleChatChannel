@@ -12,7 +12,7 @@ public class ARGOptionSpy extends CommandModule
 	public ARGOptionSpy(SimpleChatChannels plugin)
 	{
 		super("spy",
-				"scc.option.spy", SimpleChatChannels.sccarguments,1,1,"spitzeln");
+				"scc.option.spy", SimpleChatChannels.sccarguments,1,1,"spitzeln",null);
 		this.plugin = plugin;
 	}
 

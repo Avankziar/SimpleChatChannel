@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +15,8 @@ public class ARGTemporaryChannelCreate extends CommandModule
 	
 	public ARGTemporaryChannelCreate(SimpleChatChannels plugin)
 	{
-		super("tccreate","scc.cmd.tc.create",SimpleChatChannels.sccarguments,2,3,"tcerschaffen");
+		super("tccreate","scc.cmd.tc.create",SimpleChatChannels.sccarguments,2,3,"tcerschaffen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 

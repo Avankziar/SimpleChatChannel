@@ -12,7 +12,7 @@ public class ARGIgnoreList extends CommandModule
 	
 	public ARGIgnoreList(SimpleChatChannels plugin)
 	{
-		super("ignorelist","scc.cmd.ignorelist",SimpleChatChannels.sccarguments,1,1);
+		super("ignorelist","scc.cmd.ignorelist",SimpleChatChannels.sccarguments,1,1,null,null);
 		this.plugin = plugin;
 	}
 

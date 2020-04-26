@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelRename extends CommandModule
 	
 	public ARGPermanentChannelRename(SimpleChatChannels plugin)
 	{
-		super("pcrename","scc.cmd.pc.rename",SimpleChatChannels.sccarguments,3,3,"pcumbenennen");
+		super("pcrename","scc.cmd.pc.rename",SimpleChatChannels.sccarguments,3,3,"pcumbenennen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -31,6 +35,21 @@ public class ARGPermanentChannelRename extends CommandModule
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
 			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"ChannelGeneral.ChannelNotExistII")
 					.replace("%channel%", args[1])));
+			return;
+		}
+		if(!cc.getCreator().equals(player.getUniqueId().toString()))
+		{
+			///Du bist nicht der Ersteller des CustomChannel!
+			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotTheCreatorII"));
+			return;
+		}
+		PermanentChannel other = PermanentChannel.getChannelFromName(args[2]);
+		if(other != null)
+		{
+			player.sendMessage(plugin.getUtility().tctl(
+					plugin.getYamlHandler().getL().getString(language+"PCRename.NameAlreadyExist")
+					.replace("%name%", other.getName())
+					.replace("%channel%", other.getNameColor()+other.getName())));
 			return;
 		}
 		final String oldchannel = cc.getName();

@@ -12,7 +12,7 @@ public class ARGChannelTrade extends CommandModule
 	public ARGChannelTrade(SimpleChatChannels plugin)
 	{
 		super("trade",
-				"scc.channels.trade",SimpleChatChannels.sccarguments,1,1,"handel");
+				"scc.channels.trade",SimpleChatChannels.sccarguments,1,1,"handel",null);
 		this.plugin = plugin;
 	}
 

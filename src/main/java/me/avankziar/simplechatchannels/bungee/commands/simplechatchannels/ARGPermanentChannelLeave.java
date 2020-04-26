@@ -1,6 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
@@ -17,7 +18,8 @@ public class ARGPermanentChannelLeave extends CommandModule
 	
 	public ARGPermanentChannelLeave(SimpleChatChannels plugin)
 	{
-		super("pcleave","scc.cmd.pc.leave",SimpleChatChannels.sccarguments,2,3,"pcverlassen");
+		super("pcleave","scc.cmd.pc.leave",SimpleChatChannels.sccarguments,2,3,"pcverlassen",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -69,19 +71,18 @@ public class ARGPermanentChannelLeave extends CommandModule
 			{
 				if(cc.getCreator().equals(player.getUniqueId().toString()))
 				{
-					final ArrayList<String> oldmembers = cc.getMembers();
-					plugin.getMysqlHandler().deleteDataIII(cc.getName());
 					for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 					{
-						if(oldmembers.contains(members.getUniqueId().toString()))
+						if(cc.getMembers().contains(members.getUniqueId().toString()))
 						{
-							player.sendMessage(utility.tctl(
-									plugin.getYamlHandler().getL().getString(language+"PCLeave.YouLeft")
+							members.sendMessage(utility.tctl(
+									plugin.getYamlHandler().getL().getString(language+"PCLeave.CreatorLeft")
 									.replace("%channel%", cc.getNameColor()+cc.getName())));
 						}
 					}
+					plugin.getMysqlHandler().deleteDataIII(cc.getId());
 					PermanentChannel.removeCustomChannel(cc);
-					cc = null;
+					return;
 				} else
 				{
 					cc.removeMembers(player.getUniqueId().toString());
@@ -101,14 +102,15 @@ public class ARGPermanentChannelLeave extends CommandModule
 									.replace("%player%", player.getName()).replace("%channel%", cc.getNameColor()+cc.getName())));
 						}
 					}
+					return;
 				}
 			} else
 			{
 				///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
 				player.sendMessage(plugin.getUtility().clickEvent(language+".CmdScc.InputIsWrong",
 						ClickEvent.Action.RUN_COMMAND, "/scc", true));
+				return;
 			}
-			return;
 		}
 	}
 }

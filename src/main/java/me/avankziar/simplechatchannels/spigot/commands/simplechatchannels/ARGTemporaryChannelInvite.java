@@ -2,7 +2,6 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 
 import java.util.LinkedHashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -44,19 +43,19 @@ public class ARGTemporaryChannelInvite extends CommandModule
 			return;
 		}
 		String t = args[1];
-		if(Bukkit.getPlayer(t) == null)
+		if(plugin.getServer().getPlayer(t) == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+".NoPlayerExist")));
+			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"NoPlayerExist")));
 			return;
 		}
-		Player target = Bukkit.getPlayer(t);
-		String cmd = "/scc ccjoin "+cc.getName();
+		Player target = plugin.getServer().getPlayer(t);
+		String cmd = "/scc tcjoin "+cc.getName();
 		if(cc.getPassword()!=null)
 		{
 			cmd += " "+cc.getPassword();
 		}
-		player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"TCInvite.SendInvite")
+		player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"TCInvite.spigot().sendInvite")
 				.replace("%target%", target.getName()).replace("%channel%", cc.getName())));
 		target.spigot().sendMessage(utility.clickEvent(plugin.getYamlHandler().getL().getString(language+scc+"TCInvite.Invitation")
 				.replace("%player%", player.getName()).replace("%channel%", cc.getName()), ClickEvent.Action.RUN_COMMAND, cmd, false));

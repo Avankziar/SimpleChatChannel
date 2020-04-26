@@ -1,6 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,13 +38,13 @@ public class ARGTemporaryChannelKick extends CommandModule
 			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotTheCreator"));
 			return;
 		}
-		if(Bukkit.getPlayer(args[1])==null)
+		if(plugin.getServer().getPlayer(args[1])==null)
 		{
-			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NoPlayerExist"));
+			///Der Spieler ist nicht online oder existiert nicht!
+			player.spigot().sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
 			return;
 		}
-		Player target = Bukkit.getPlayer(args[1]); 
+		Player target = plugin.getServer().getPlayer(args[1]); 
 		if(!cc.getMembers().contains(target))
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
@@ -60,7 +59,7 @@ public class ARGTemporaryChannelKick extends CommandModule
 		}
 		cc.removeMembers(target);
 		///Du wurdest aus dem CustomChannel gekickt!
-		target.spigot().sendMessage(utility.tctlYaml(plugin.getYamlHandler().getL().getString(language+"TCKick.YouWereKicked")
+		target.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"TCKick.YouWereKicked")
 				.replace("%channel%", cc.getName())));
 		///Du hast &f%player% &eaus dem Channel gekickt!
 		player.spigot().sendMessage(utility.tctl(

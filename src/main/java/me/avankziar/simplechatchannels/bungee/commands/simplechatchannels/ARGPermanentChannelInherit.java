@@ -1,5 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -14,7 +17,8 @@ public class ARGPermanentChannelInherit extends CommandModule
 	
 	public ARGPermanentChannelInherit(SimpleChatChannels plugin)
 	{
-		super("pcinherit","scc.cmd.pc.inherit",SimpleChatChannels.sccarguments,3,3,"pcerben");
+		super("pcinherit","scc.cmd.pc.inherit",SimpleChatChannels.sccarguments,3,3,"pcerben",
+				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
 		this.plugin = plugin;
 	}
 
@@ -26,7 +30,7 @@ public class ARGPermanentChannelInherit extends CommandModule
 		String language = utility.getLanguage();
 		String scc = ".CmdScc.";
 		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
-		if(plugin.getMysqlHandler().getDataI(args[1], "player_uuid", "player_name") == null)
+		if(plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name") == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
 			player.sendMessage(utility.tctlYaml(language+scc+"NoPlayerExist"));
@@ -45,6 +49,16 @@ public class ARGPermanentChannelInherit extends CommandModule
 				.replace("%channel%", cc.getNameColor()+cc.getName())
 				.replace("%creator%", args[2])
 				.replace("%oldcreator%", oldcreator)));
+		if(ProxyServer.getInstance().getPlayer(oldcreator) != null)
+		{
+			ProxiedPlayer target = ProxyServer.getInstance().getPlayer(oldcreator);
+			///Du wurdest vom CustomChannel %channel% gebannt!
+			target.sendMessage(utility.tctl(
+					plugin.getYamlHandler().getL().getString(language+scc+"PCInherit.NewCreator")
+					.replace("%channel%", cc.getNameColor()+cc.getName())
+					.replace("%creator%", args[2])
+					.replace("%oldcreator%", oldcreator)));
+		}
 		if(ProxyServer.getInstance().getPlayer(args[2]) != null)
 		{
 			ProxiedPlayer target = ProxyServer.getInstance().getPlayer(args[2]);
@@ -62,7 +76,7 @@ public class ARGPermanentChannelInherit extends CommandModule
 				member.sendMessage(utility.tctl(
 						plugin.getYamlHandler().getL().getString(language+scc+"PCInherit.NewCreator")
 						.replace("%channel%", cc.getNameColor()+cc.getName())
-						.replace("%creator%", args[1])
+						.replace("%creator%", args[2])
 						.replace("%oldcreator%", oldcreator)));
 			}
 		}

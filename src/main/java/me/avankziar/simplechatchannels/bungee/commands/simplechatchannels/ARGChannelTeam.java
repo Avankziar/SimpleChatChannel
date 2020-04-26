@@ -12,7 +12,7 @@ public class ARGChannelTeam extends CommandModule
 	public ARGChannelTeam(SimpleChatChannels plugin)
 	{
 		super("team",
-				"scc.channels.trade",SimpleChatChannels.sccarguments,1,1);
+				"scc.channels.trade",SimpleChatChannels.sccarguments,1,1,null,null);
 		this.plugin = plugin;
 	}
 
