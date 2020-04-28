@@ -33,14 +33,14 @@ public class ServerListener  implements PluginMessageListener
             		boolean boo = plugin.getYamlHandler().get().getBoolean("bungee", false);
             		if(boo)
             		{
-            			plugin.getYamlHandler().get().set("bungee", false);
+            			plugin.getYamlHandler().get().set("Bungee", false);
             			plugin.getYamlHandler().saveConfig();
         				player.spigot().sendMessage(plugin.getUtility().tctl(
         						plugin.getYamlHandler().getL().getString(language+".CmdScc.ServerListener.BungeeOff")));
         				return;
             		} else
             		{
-            			plugin.getYamlHandler().get().set("bungee", true);
+            			plugin.getYamlHandler().get().set("Bungee", true);
             			plugin.getYamlHandler().saveConfig();
         				player.spigot().sendMessage(plugin.getUtility().tctl(
         						plugin.getYamlHandler().getL().getString(language+".CmdScc.Serverlistener.BungeeOn")));

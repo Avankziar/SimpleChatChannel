@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -18,7 +15,7 @@ public class ARGPermanentChannelInherit extends CommandModule
 	public ARGPermanentChannelInherit(SimpleChatChannels plugin)
 	{
 		super("pcinherit","scc.cmd.pc.inherit",SimpleChatChannels.sccarguments,3,3,"pcerben",
-				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
+				"<Channelname>;<Player>".split(";"));
 		this.plugin = plugin;
 	}
 

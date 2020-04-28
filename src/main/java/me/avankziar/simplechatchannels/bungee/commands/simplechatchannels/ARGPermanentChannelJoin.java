@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -18,7 +15,7 @@ public class ARGPermanentChannelJoin extends CommandModule
 	public ARGPermanentChannelJoin(SimpleChatChannels plugin)
 	{
 		super("pcjoin","scc.cmd.pc.join",SimpleChatChannels.sccarguments,2,3,"pcbeitreten",
-				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
+				"<Channelname>;[Password]".split(";"));
 		this.plugin = plugin;
 	}
 

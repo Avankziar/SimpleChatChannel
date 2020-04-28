@@ -19,7 +19,7 @@ public class ARGPermanentChannelChannels extends CommandModule
 	
 	public ARGPermanentChannelChannels(SimpleChatChannels plugin)
 	{
-		super("pcchannels","scc.cmd.pc.channels",SimpleChatChannels.sccarguments,1,1,"pckanäle",null);
+		super("pcchannels","scc.cmd.pc.channels",SimpleChatChannels.sccarguments,1,1,"pckanäle");
 		this.plugin = plugin;
 	}
 

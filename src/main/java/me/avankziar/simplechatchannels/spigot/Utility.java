@@ -514,12 +514,15 @@ public class Utility
 			if(p.hasPermission("scc.prefix."+String.valueOf(a))) 
 			{
 				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a));
-				String pors = removeColor(preorsuffix);
-				TextComponent prefix = apichat(plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))+" ", 
-						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+pors+" ", 
-						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(
-								language+".ChannelExtra.Hover.Group"), false);
-				list.add(prefix);
+				if(preorsuffix != null)
+				{
+					String pors = removeColor(preorsuffix);
+					TextComponent prefix = apichat(plugin.getYamlHandler().getL().getString(language+".Prefix."+String.valueOf(a))+" ", 
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+pors+" ", 
+							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(
+									language+".ChannelExtra.Hover.Group"), false);
+					list.add(prefix);
+				}
 			}
 			a++;
 		}		
@@ -542,12 +545,15 @@ public class Utility
 			{
 				perms.add("scc.suffix."+String.valueOf(a)); //TODO
 				String preorsuffix = plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a));
-				String pors = removeColor(preorsuffix);
-				TextComponent suffix = apichat(" "+plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))+" ", 
-						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+pors+" ", 
-						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(
-								language+".ChannelExtra.Hover.Group"), false);
-				list.add(suffix);
+				if(preorsuffix != null)
+				{
+					String pors = removeColor(preorsuffix);
+					TextComponent suffix = apichat(" "+plugin.getYamlHandler().getL().getString(language+".Suffix."+String.valueOf(a))+" ", 
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+pors+" ", 
+							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString(
+									language+".ChannelExtra.Hover.Group"), false);
+					list.add(suffix);
+				}
 			}
 			a++;
 		}

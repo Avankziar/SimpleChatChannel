@@ -1,7 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
@@ -17,7 +16,7 @@ public class ARGPermanentChannelInfo extends CommandModule
 	public ARGPermanentChannelInfo(SimpleChatChannels plugin)
 	{
 		super("pcinfo","scc.cmd.pc.info",SimpleChatChannels.sccarguments,1,2,null,
-				new ArrayList<String>(Arrays.asList("[Channelname]".split(";"))));
+				"[Channelname]".split(";"));
 		this.plugin = plugin;
 	}
 

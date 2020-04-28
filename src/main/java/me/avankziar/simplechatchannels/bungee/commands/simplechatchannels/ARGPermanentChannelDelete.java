@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -19,7 +16,7 @@ public class ARGPermanentChannelDelete extends CommandModule
 	public ARGPermanentChannelDelete(SimpleChatChannels plugin)
 	{
 		super("pcdelete","scc.cmd.pc.rename",SimpleChatChannels.sccarguments,2,3,"pclöschen",
-				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
+				"<Channelname>".split(";"));
 		this.plugin = plugin;
 	}
 

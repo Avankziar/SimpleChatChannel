@@ -19,7 +19,7 @@ public class ARGGrouplist extends CommandModule
 	public ARGGrouplist(SimpleChatChannels plugin)
 	{
 		super("grouplist",
-				"scc.cmd.grouplist",SimpleChatChannels.sccarguments,1,2,"gruppenliste",null);
+				"scc.cmd.grouplist",SimpleChatChannels.sccarguments,1,2,"gruppenliste");
 		this.plugin = plugin;
 	}
 

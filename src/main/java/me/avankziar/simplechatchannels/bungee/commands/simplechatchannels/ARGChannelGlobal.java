@@ -12,7 +12,7 @@ public class ARGChannelGlobal extends CommandModule
 	public ARGChannelGlobal(SimpleChatChannels plugin)
 	{
 		super("global",
-				"scc.channels.global",SimpleChatChannels.sccarguments,1,1,null,null);
+				"scc.channels.global",SimpleChatChannels.sccarguments,1,1,null);
 		this.plugin = plugin;
 	}
 

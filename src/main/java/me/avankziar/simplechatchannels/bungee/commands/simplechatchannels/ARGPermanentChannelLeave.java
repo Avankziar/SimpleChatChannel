@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -19,7 +16,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 	public ARGPermanentChannelLeave(SimpleChatChannels plugin)
 	{
 		super("pcleave","scc.cmd.pc.leave",SimpleChatChannels.sccarguments,2,3,"pcverlassen",
-				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
+				"<Channelname>".split(";"));
 		this.plugin = plugin;
 	}
 

@@ -12,7 +12,7 @@ public class ARGChannelAuction extends CommandModule
 	public ARGChannelAuction(SimpleChatChannels plugin)
 	{
 		super("auction",
-				"scc.channels.auction",SimpleChatChannels.sccarguments,1,1,"auktion",null);
+				"scc.channels.auction",SimpleChatChannels.sccarguments,1,1,"auktion");
 		this.plugin = plugin;
 	}
 

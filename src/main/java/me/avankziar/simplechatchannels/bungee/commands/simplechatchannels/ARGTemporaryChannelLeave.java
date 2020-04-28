@@ -13,7 +13,7 @@ public class ARGTemporaryChannelLeave extends CommandModule
 	
 	public ARGTemporaryChannelLeave(SimpleChatChannels plugin)
 	{
-		super("tcleave","scc.cmd.tc.leave",SimpleChatChannels.sccarguments,1,1,"tcverlassen",null);
+		super("tcleave","scc.cmd.tc.leave",SimpleChatChannels.sccarguments,1,1,"tcverlassen");
 		this.plugin = plugin;
 	}
 

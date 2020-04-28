@@ -12,7 +12,7 @@ public class ARGChannelPerma extends CommandModule
 	public ARGChannelPerma(SimpleChatChannels plugin)
 	{
 		super("perma",
-				"scc.channels.perma",SimpleChatChannels.sccarguments,1,1,null,null);
+				"scc.channels.perma",SimpleChatChannels.sccarguments,1,1,null);
 		this.plugin = plugin;
 	}
 

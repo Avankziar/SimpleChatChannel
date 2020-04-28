@@ -1,7 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
@@ -21,7 +19,7 @@ public class ARGPermanentChannelInvite extends CommandModule
 	public ARGPermanentChannelInvite(SimpleChatChannels plugin)
 	{
 		super("pcinvite","scc.cmd.pc.invite",SimpleChatChannels.sccarguments,3,3,"pceinladen",
-				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
+				"<Channelname>;<Player>".split(";"));
 		this.plugin = plugin;
 		inviteCooldown = new LinkedHashMap<>();
 	}

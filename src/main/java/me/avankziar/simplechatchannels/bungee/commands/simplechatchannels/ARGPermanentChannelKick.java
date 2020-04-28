@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -18,7 +15,7 @@ public class ARGPermanentChannelKick extends CommandModule
 	public ARGPermanentChannelKick(SimpleChatChannels plugin)
 	{
 		super("pckick","scc.cmd.pc.kick",SimpleChatChannels.sccarguments,3,3,"pcrausschmeißen",
-				new ArrayList<String>(Arrays.asList("<Channelname>".split(";"))));
+				"<Channelname>;<Player>".split(";"));
 		this.plugin = plugin;
 	}
 

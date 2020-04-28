@@ -12,7 +12,7 @@ public class ARGBungee extends CommandModule
 	
 	public ARGBungee(SimpleChatChannels plugin)
 	{
-		super("bungee","scc.cmd.bungee",SimpleChatChannels.sccarguments,1,1,null, null);
+		super("bungee","scc.cmd.bungee",SimpleChatChannels.sccarguments,1,1,null);
 		this.plugin = plugin;
 	}
 

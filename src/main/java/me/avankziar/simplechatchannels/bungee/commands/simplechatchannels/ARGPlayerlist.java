@@ -1,7 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
@@ -21,7 +20,7 @@ public class ARGPlayerlist extends CommandModule
 	{
 		super("playerlist",
 				"scc.cmd.playerlist", SimpleChatChannels.sccarguments,1,2,"spielerliste",
-				new ArrayList<String>(Arrays.asList("[Players]".split(";"))));
+				"[Players]".split(";"));
 		this.plugin = plugin;
 	}
 

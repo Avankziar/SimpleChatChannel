@@ -134,7 +134,7 @@ public class EVENTChat implements Listener
 				return;
 			}
 			
-			if(event.getMessage().substring(1).length()<0)
+			if(event.getMessage().substring(symbol.length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.spigot().sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));

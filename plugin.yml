@@ -92,29 +92,32 @@ permissions:
   scc.cmd.reload:
     description: Gives access to /scc reload, to reload all yaml file on spigot level.
     default: false
-  scc.cmd.cc.create:
-    description: Gives access to /scc cccreate <name of channel> [password], create a custom channel.
+  scc.cmd.tc.create:
+    description: Gives access to /scc tccreate <name of channel> [password], create a temporary channel.
     default: false
-  scc.cmd.cc.join:
-    description: Gives access to /scc ccjoin <name of channel> [passwort], join a custom channel.
+  scc.cmd.tc.join:
+    description: Gives access to /scc tcjoin <name of channel> [passwort], join a temporary channel.
     default: false
-  scc.cmd.cc.info:
-    description: Gives access to /scc ccinfo, gives all information from the custom channel, in which you are in.
+  scc.cmd.tc.info:
+    description: Gives access to /scc tcinfo, gives all information from the temporary channel, in which you are in.
     default: false
-  scc.cmd.cc.leave:
-    description: Gives access to /scc ccleave, leave a custom channel.
+  scc.cmd.tc.leave:
+    description: Gives access to /scc tcleave, leave the temporary channel.
     default: false
-  scc.cmd.cc.kick:
-    description: Gives access to /scc cckick <player>, kick a player from your custom channel.
+  scc.cmd.tc.kick:
+    description: Gives access to /scc tckick <player>, kick a player from your temporary channel.
     default: false
-  scc.cmd.cc.ban:
-    description: Gives access to /scc ccban <player>, ban a player from your custom channel.
+  scc.cmd.tc.ban:
+    description: Gives access to /scc tcban <player>, ban a player from your temporary channel.
     default: false
-  scc.cmd.cc.unban:
-    description: Gives access to /scc ccunban <player>, unban a player from your custom channel.
+  scc.cmd.tc.unban:
+    description: Gives access to /scc tcunban <player>, unban a player from your temporary channel.
     default: false
-  scc.cmd.cc.changepassword:
-    description: Gives access to /scc ccchangepassword <password>, change a password for your custom channel.
+  scc.cmd.tc.changepassword:
+    description: Gives access to /scc tcchangepassword <password>, change a password for your temporary channel.
+    default: false
+  scc.cmd.tc.invite:
+    description: Gives access to /scc tcinvite <Player>, to invite a player to your temporary channel.
     default: false
   scc.channels.bypass.color:
     description: Gives access to use Color offside from the ChannelColor.

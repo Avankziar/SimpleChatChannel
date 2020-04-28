@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -17,7 +14,7 @@ public class ARGIgnore extends CommandModule
 	public ARGIgnore(SimpleChatChannels plugin)
 	{
 		super("ignore","scc.cmd.ignore",SimpleChatChannels.sccarguments,2,2,"ignorieren",
-				new ArrayList<String>(Arrays.asList("<Players>".split(";"))));
+				"<Player>".split(";"));
 		this.plugin = plugin;
 	}
 

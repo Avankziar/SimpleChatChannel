@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -17,7 +14,7 @@ public class ARGMute extends CommandModule
 	public ARGMute(SimpleChatChannels plugin)
 	{
 		super("mute","scc.cmd.mute",SimpleChatChannels.sccarguments,1,3,"verstummen",
-				new ArrayList<String>(Arrays.asList("<Zahl>;[Players]".split(";"))));
+				"<Player>;<NumberInMinutes>".split(";"),"<Player>".split(";"));
 		this.plugin = plugin;
 	}
 

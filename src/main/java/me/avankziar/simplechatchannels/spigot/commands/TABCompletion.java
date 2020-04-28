@@ -47,7 +47,7 @@ public class TABCompletion implements TabCompleter
 					CommandModule mod = commandList.get(commandString);
 					if (player.hasPermission(mod.permission))
 					{
-						if (commandString.startsWith(args[1].toLowerCase()) || commandString.startsWith(args[1].toUpperCase())) 
+						if (commandString.startsWith(args[0])) 
 						{
 							list.add(commandString);
 						}

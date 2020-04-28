@@ -14,7 +14,7 @@ public class ARGBroadcast extends CommandModule
 	
 	public ARGBroadcast(SimpleChatChannels plugin)
 	{
-		super("broadcast","scc.cmd.broadcast",SimpleChatChannels.sccarguments,1,999999999,"ausstrahlung", null);
+		super("broadcast","scc.cmd.broadcast",SimpleChatChannels.sccarguments,1,999999999,"ausstrahlung");
 		this.plugin = plugin;
 	}
 

@@ -26,7 +26,7 @@ public class EVENTJoinLeave implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event)
 	{
-		if(plugin.getYamlHandler().get().getBoolean("bungee", false))
+		if(plugin.getYamlHandler().get().getBoolean("Bungee", false))
 		{
 			event.setJoinMessage("");
 			return;
@@ -80,14 +80,14 @@ public class EVENTJoinLeave implements Listener
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event)
 	{
-		if(plugin.getYamlHandler().get().getBoolean("bungee", false))
+		if(plugin.getYamlHandler().get().getBoolean("Bungee", false))
 		{
 			if(SimpleChatChannels.editorplayers.contains(event.getPlayer().getName()))
 			{
 				SimpleChatChannels.editorplayers.remove(event.getPlayer().getName());
 			}
 		}
-		if(plugin.getYamlHandler().get().getBoolean("bungee", false))
+		if(plugin.getYamlHandler().get().getBoolean("Bungee", false))
 		{
 			event.setQuitMessage("");
 			return;

@@ -1,7 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
@@ -17,7 +16,7 @@ public class ARGPermanentChannelPlayer extends CommandModule
 	public ARGPermanentChannelPlayer(SimpleChatChannels plugin)
 	{
 		super("pcplayer","scc.cmd.pc.player",SimpleChatChannels.sccarguments,1,2,"pcspieler",
-				new ArrayList<String>(Arrays.asList("[Spieler]".split(";"))));
+				"[Spieler]".split(";"));
 		this.plugin = plugin;
 	}
 

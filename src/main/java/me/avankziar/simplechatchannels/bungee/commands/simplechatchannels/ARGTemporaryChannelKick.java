@@ -1,8 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
@@ -17,7 +14,7 @@ public class ARGTemporaryChannelKick extends CommandModule
 	public ARGTemporaryChannelKick(SimpleChatChannels plugin)
 	{
 		super("tckick","scc.cmd.tc.kick",SimpleChatChannels.sccarguments,2,2,"tcrausschmeißen",
-				new ArrayList<String>(Arrays.asList("<Player>".split(";"))));
+				"<Player>".split(";"));
 		this.plugin = plugin;
 	}
 

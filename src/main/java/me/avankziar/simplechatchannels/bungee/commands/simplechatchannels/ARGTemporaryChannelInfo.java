@@ -13,7 +13,7 @@ public class ARGTemporaryChannelInfo extends CommandModule
 	
 	public ARGTemporaryChannelInfo(SimpleChatChannels plugin)
 	{
-		super("tcinfo","scc.cmd.tc.info",SimpleChatChannels.sccarguments,1,1,null,null);
+		super("tcinfo","scc.cmd.tc.info",SimpleChatChannels.sccarguments,1,1,null);
 		this.plugin = plugin;
 	}
 

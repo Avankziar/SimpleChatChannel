@@ -12,17 +12,22 @@ public abstract class CommandModule
     public int minArgs;
     public int maxArgs;
     public String alias;
-    public ArrayList<String> secondargument;
+    //public ArrayList<String> secondargument;
+    public String[][] nextArgumentChain;
 
-    public CommandModule(String argument, String permission, HashMap<String, CommandModule> map, 
-    		int minArgs, int maxArgs, String alias, ArrayList<String> secondargument)
+	public CommandModule(String argument, String permission, HashMap<String, CommandModule> map, 
+    		int minArgs, int maxArgs, String alias
+    		//, ArrayList<String> secondargument
+    		, String[]... nextArgumentChain
+    		)
     {
         this.argument = argument;
         this.permission = permission;
         this.minArgs = minArgs;
         this.maxArgs = maxArgs;
         this.alias = alias;
-        this.secondargument = secondargument;
+        //this.secondargument = secondargument;
+        this.nextArgumentChain = nextArgumentChain;
 
 		map.put(argument, this);
 		if(alias!=null)

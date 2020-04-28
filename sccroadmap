@@ -1,6 +1,6 @@
 - Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
 
-Build 33
+Build 33 ==================================================================================================
 - +Ignorelist und Ignore gefixt
 - +Farben in der zweiten Zeile werden korrekt übernommen.
 
@@ -9,8 +9,8 @@ Build 33
 - +Spieler die Afk sind, bekommen trotzdem die PrivateNachricht
 - +Besseres TabComplete eingebaut
 - +Commands in neuerer Struktur gebaut. Ist übersichtlicher generell und leichter neue Argumente einzubauen.
-- +Aus CustomChannel wird Temporärer Channel.
 - +Wortfilter ignoriert nun die Groß und Kleinschreibung
+- +Aus CustomChannel wird Temporärer Channel.
 
 - +PermissionÄnderung: aus allen scc.cmd.cc.XXXX wird scc.cmd.tc.XXXX
 
@@ -27,7 +27,7 @@ Build 33
   Name: "channel_perma", TinyInt(1), Default:1 (ihr könnt auch 0 bei default machen, hängt davon ab, ob alle spieler es sofort
   aktiviert haben sollen oder nicht.
 
-- +Neuer Channel ist hinzugefügt worden: PermanenterChannel, DefaultSymbol "."
+- +Neuer Channel ist hinzugefügt worden: PermanenterChannel => DefaultSymbol ".<Spieler spezifisches Channelsymbol Extra>"
 - +ignore_name aktualisierungsmethode einfügen
 - +AfkRecord bekommt nun ab Build 6(!!) bei jedem ChatEvent einen SoftSave(Zeiten des Spielers werden im RAM gespeichert)
 - +Namensänderungen werden nun bei jedem Join überprüft und gegebenfalls aktualisiert
@@ -59,7 +59,7 @@ Build 33
   */scc pcchannels | Listet alle Channels auf | scc.cmd.pc.channels
   */scc perma | Togglet den Permanenten Channel | scc.cmd.perma
   */scc temp | Togglet den Temporären Channel | scc.cmd.temp (Nachfolger und Ersetzt /scc custom)
-- Noch ins englische übersetzten
+=============================================================================================================
 
 Build 31
 - +Hover bei Commands in chat
