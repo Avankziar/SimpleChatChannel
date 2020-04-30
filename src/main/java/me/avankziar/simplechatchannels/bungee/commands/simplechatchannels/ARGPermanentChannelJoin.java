@@ -40,7 +40,7 @@ public class ARGPermanentChannelJoin extends CommandModule
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
 			player.sendMessage(utility.tctl(
-					plugin.getYamlHandler().getL().getString(language+"PCJoin.UnknowChannel")
+					plugin.getYamlHandler().getL().getString(language+"PCJoin.UnknownChannel")
 					.replace("%name%", name)));
 			return;
 		}

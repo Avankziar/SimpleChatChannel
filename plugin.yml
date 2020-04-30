@@ -38,8 +38,11 @@ permissions:
   scc.channels.admin:
     description: Enable admin channel rights, to read and write and use /scc admin.
     default: false
-  scc.channels.custom:
-    description: Enable custom channel rights, to read and write and use /scc custom.
+  scc.channels.temp:
+    description: Enable temp channel rights, to read and write and use /scc temp.
+    default: true
+  scc.channels.perma:
+    description: Enable permanent channel rights, to read and write and use /scc perma.
     default: true
   scc.channels.group:
     description: Enable group channel rights, to read and write and use /scc group.
@@ -118,6 +121,60 @@ permissions:
     default: false
   scc.cmd.tc.invite:
     description: Gives access to /scc tcinvite <Player>, to invite a player to your temporary channel.
+    default: false
+  scc.cmd.pc.ban:
+    description: Gives access to /scc pcban <Channelname> <Player>, to ban a player from your permanent channel.
+    default: false
+  scc.cmd.pc.changepassword:
+    description: Gives access to /scc pcchangepassword <Channelname> <Password>, to change the password from your permanent channel.
+    default: false
+  scc.cmd.pc.channels:
+    description: Gives access to /scc pcchannels, to show all existing permanent channel.
+    default: false
+  scc.cmd.pc.chatcolor:
+    description: Gives access to /scc pcchatcolor <Channelname> <ColorCode>, to change the Color which shows in the chat of your permanent channel.
+    default: false
+  scc.cmd.pc.create:
+    description: Gives access to /scc pccreate <Channelname> [Password], to create your permanent channel.
+    default: false
+  scc.cmd.pc.delete:
+    description: Gives access to /scc pcdelte <Channelname>, to delete a permanent channel. Admin Tool.
+    default: false
+  scc.cmd.pc.info:
+    description: Gives access to /scc pcinfo <Channelname>, to show all info from the permanent channel.
+    default: false
+  scc.cmd.pc.inherit:
+    description: Gives access to /scc pcinherit <Channelname> <Player>, to inherit a player as creator to the permanent channel. Admin Tool.
+    default: false
+  scc.cmd.pc.invite:
+    description: Gives access to /scc pcinvite <Channelname> <Player>, to invite a player to your permanent channel.
+    default: false
+  scc.cmd.pc.join:
+    description: Gives access to /scc pcjoin <Channelname> [Passsword], to join a permanent channel.
+    default: false
+  scc.cmd.pc.kick:
+    description: Gives access to /scc pckick <Channelname> <Player>, to invite a player to your permanent channel.
+    default: false
+  scc.cmd.pc.leave:
+    description: Gives access to /scc pcleave <Channelname>, to leave a permanent channel.
+    default: false
+  scc.cmd.pc.namecolor:
+    description: Gives access to /scc pcnamecolor <Channelname> <ColorCode>, to change the color from the name prefox of your permanent channel.
+    default: false
+  scc.cmd.pc.player:
+    description: Gives access to /scc pcplayer <Player>, to show all permanent channel which the player is in.
+    default: false
+  scc.cmd.pc.rename:
+    description: Gives access to /scc pcrename <Channelname> <NewName>, to rename your permanent channel.
+    default: false
+  scc.cmd.pc.symbol:
+    description: Gives access to /scc pcsymbol <Channelname> <Symbol>, to change the symbol, to access the permanent channel.
+    default: false
+  scc.cmd.pc.unban:
+    description: Gives access to /scc pcunban <Channelname> <Player>, to pardon a player from your permanent channel.
+    default: false
+  scc.cmd.pc.vice:
+    description: Gives access to /scc pcvice <Channelname> <Player>, to promote or demote a player as vice or member your permanent channel.
     default: false
   scc.channels.bypass.color:
     description: Gives access to use Color offside from the ChannelColor.

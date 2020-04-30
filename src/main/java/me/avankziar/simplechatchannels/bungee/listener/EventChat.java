@@ -243,7 +243,7 @@ public class EventChat implements Listener
 			if(cc==null)
 			{
 				///Der permanente Channel %symbol% existiert nicht.
-				player.sendMessage(utility.tctlYaml(language+".PCSymbol.ChannelUnknow"));
+				player.sendMessage(utility.tctlYaml(language+".PCSymbol.ChannelUnknown"));
 				return;
 			}
 			symbol = symbol+cc.getSymbolExtra();

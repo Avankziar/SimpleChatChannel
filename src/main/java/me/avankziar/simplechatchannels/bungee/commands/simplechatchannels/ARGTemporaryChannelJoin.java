@@ -50,7 +50,7 @@ public class ARGTemporaryChannelJoin extends CommandModule
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
 			player.sendMessage(utility.tctl(
-					plugin.getYamlHandler().getL().getString(language+"TCJoin.UnknowChannel")
+					plugin.getYamlHandler().getL().getString(language+"TCJoin.UnknownChannel")
 					.replace("%name%", name)));
 			return;
 		}

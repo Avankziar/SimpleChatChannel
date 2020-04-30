@@ -1,6 +1,5 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.md_5.bungee.api.CommandSender;
