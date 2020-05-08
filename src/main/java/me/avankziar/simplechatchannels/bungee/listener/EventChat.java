@@ -142,12 +142,10 @@ public class EventChat implements Listener
 				return;
 			}
 			
-			TextComponent MSG = null;
-			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
-			else {MSG = utility.tc("");}
+			TextComponent MSG = utility.tc("");
 			
 			MSG.setExtra(utility.getAllTextComponentForChannels(
-					player, event.getMessage(), channel, symbol, symbol.length()));
+					player, event.getMessage(), channel, symbol, symbol.length(), timeofdays, timeofdaysoutput));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
@@ -206,7 +204,7 @@ public class EventChat implements Listener
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
@@ -246,6 +244,14 @@ public class EventChat implements Listener
 				player.sendMessage(utility.tctlYaml(language+".PCSymbol.ChannelUnknown"));
 				return;
 			}
+			
+			if(!cc.getMembers().contains(player.getUniqueId().toString()))
+			{
+				///Du bist in keinem Permanenten Channel!
+				player.sendMessage(utility.tctlYaml(language+".ChannelGeneral.NotInAChannelII"));
+				return;
+			}
+			
 			symbol = symbol+cc.getSymbolExtra();
 			
 			if(event.getMessage().length()>=symbol.length() 
@@ -276,7 +282,7 @@ public class EventChat implements Listener
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
@@ -354,7 +360,7 @@ public class EventChat implements Listener
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG); //Console
 			
@@ -450,9 +456,11 @@ public class EventChat implements Listener
 			else {MSG2 = utility.tc("");}
 			
 			MSG1.setExtra(utility.getTCinLinePN(channel1, playertext, player2text, 
-					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			MSG2.setExtra(utility.getTCinLinePN(channel2, playertext, player2text, 
-					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG1); //Console
 			
@@ -489,7 +497,7 @@ public class EventChat implements Listener
 			}
 			
 			tr.sendMessage(MSG1);
-			
+			player.sendMessage(MSG2);
 			utility.spy(MSG1);
 			reply.put(pl, trl);
 			reply.put(trl, pl);
@@ -557,9 +565,11 @@ public class EventChat implements Listener
 			else {MSG2 = utility.tc("");}
 			
 			MSG1.setExtra(utility.getTCinLinePN(channel1, playertext, player2text, 
-					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			MSG2.setExtra(utility.getTCinLinePN(channel2, playertext, player2text, 
-					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			plugin.getProxy().getConsole().sendMessage(MSG1); //Console
 			

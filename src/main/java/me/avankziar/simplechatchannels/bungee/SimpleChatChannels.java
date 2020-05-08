@@ -12,7 +12,6 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandExecutor
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandHelper;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGBroadcast;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGBungee;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelAdmin;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelAuction;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannelGlobal;
@@ -61,6 +60,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchann
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannelLeave;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannelUnban;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGUnmute;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGUpdatePlayer;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGWordfilter;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
@@ -174,7 +174,6 @@ public class SimpleChatChannels extends Plugin
 		
 		//CMD /scc
 		new ARGBroadcast(this);
-		new ARGBungee(this);
 		new ARGChannelAdmin(this);
 		new ARGChannelAuction(this);
 		new ARGChannelGlobal(this);
@@ -222,6 +221,7 @@ public class SimpleChatChannels extends Plugin
 		new ARGTemporaryChannelKick(this);
 		new ARGTemporaryChannelLeave(this);
 		new ARGTemporaryChannelUnban(this);
+		new ARGUpdatePlayer(this);
 		new ARGUnmute(this);
 		new ARGWordfilter(this);
 		pm.registerCommand(this, new CommandExecutorSimpleChatChannel(this));
@@ -303,5 +303,19 @@ public class SimpleChatChannels extends Plugin
 	public AfkRecord getAfkRecord()
 	{
 		return afkrecord;
+	}
+	
+	public boolean PlayerToChatEditor(String playername)
+	{
+		if(editorplayers.contains(playername))
+		{
+			editorplayers.remove(playername);
+			return false;
+		} else if(!editorplayers.contains(playername))
+		{
+			editorplayers.add(playername);
+			return true;
+		}
+		return false;
 	}
 }

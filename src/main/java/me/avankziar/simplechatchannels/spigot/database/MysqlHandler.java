@@ -87,6 +87,48 @@ public class MysqlHandler
 		return false;
 	}
 	
+	public boolean hasAccount(String playername) 
+	{
+		PreparedStatement preparedUpdateStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "SELECT `player_uuid` FROM `" + tableNameI + "` WHERE `player_name` = ? LIMIT 1";
+		        preparedUpdateStatement = conn.prepareStatement(sql);
+		        preparedUpdateStatement.setString(1, playername);
+		        
+		        result = preparedUpdateStatement.executeQuery();
+		        while (result.next()) 
+		        {
+		        	return true;
+		        }
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedUpdateStatement != null) 
+		    		  {
+		    			  preparedUpdateStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return false;
+	}
+	
 	public boolean existIgnore(Player player, String ignoreuuid) 
 	{
 		PreparedStatement preparedUpdateStatement = null;

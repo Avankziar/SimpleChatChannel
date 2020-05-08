@@ -44,6 +44,7 @@ public class Utility
 	PERMBYPASSCOMMAND = "scc.channels.bypass.command",
 	PERMBYPASSIGNORE = "scc.channels.bypass.ignore",
 	PERMBYPASSITEM = "scc.channels.bypass.item",
+	PERMBYPASSITEMUPLOAD = "scc.channels.bypass.itemupload",
 	PERMBYPASSPRIVACY = "scc.channel.bypass.privacy",
 	PERMBYPASSWEBSITE = "scc.channels.bypass.website",
 	
@@ -199,7 +200,7 @@ public class Utility
 	}
 	
 	public List<BaseComponent> getAllTextComponentForChannels(Player p, String eventmsg,
-			String channelname, String channelsymbol, int substring)
+			String channelname, String channelsymbol, int substring, boolean time, String timevalue)
 	{
 		TextComponent channel = apichat(language+".Channels."+channelname,
 				ClickEvent.Action.SUGGEST_COMMAND, channelsymbol, 
@@ -217,7 +218,7 @@ public class Utility
 		
 		List<BaseComponent> msg = msgLater(p,substring,channelname, eventmsg);
 		
-		return getTCinLine(channel, prefix, player, suffix, msg);
+		return getTCinLine(channel, prefix, player, suffix, msg, time, tc(timevalue));
 	}
 	
 	public List<BaseComponent> msgLater(Player player, int ss, String channel, String msg)
@@ -242,7 +243,7 @@ public class Utility
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
 				} else
 				{
 					if(safeColor==null)
@@ -250,12 +251,12 @@ public class Utility
 						safeColor = cc;
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
 				}
 			} else
 			{
 				TextComponent word = tctl(colorFreeWord+" ");
-				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
 			}
 			
 		}
@@ -284,7 +285,7 @@ public class Utility
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor, channel));
 				} else
 				{
 					if(safeColor==null)
@@ -292,12 +293,12 @@ public class Utility
 						safeColor = cc;
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, safeColor, channel));
 				}
 			} else
 			{
 				TextComponent word = tctl(colorFreeWord+" ");
-				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
 			}
 			
 		}
@@ -325,7 +326,7 @@ public class Utility
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
 					safeColor = getSafeColor(splitmsg);
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
 				} else
 				{
 					if(safeColor==null)
@@ -333,12 +334,12 @@ public class Utility
 						safeColor = cc;
 					}
 					TextComponent word = tctl(safeColor+splitmsg+" ");
-					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
 				}
 			} else
 			{
 				TextComponent word = tctl(colorFreeWord+" ");
-				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc));
+				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
 			}
 			
 		}
@@ -346,7 +347,8 @@ public class Utility
 	}
 	
 	
-	private BaseComponent addFunctions(Player player, String splitmsg, String colorFreeWord, TextComponent word, String cc)
+	private BaseComponent addFunctions(Player player, String splitmsg, String colorFreeWord, TextComponent word, String cc,
+			String channel)
 	{
 		if(splitmsg.contains("http"))
 		{
@@ -359,7 +361,7 @@ public class Utility
 			}
 		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString(language+".ReplacerBlock.Item")))
 		{
-			if(player.hasPermission(PERMBYPASSITEM))
+			if(player.hasPermission(PERMBYPASSITEM+"."+channel.toLowerCase()))
 			{
 				if(Utility.itemname.containsKey(player.getUniqueId().toString())
 						&& Utility.item.containsKey(player.getUniqueId().toString()))
@@ -566,9 +568,13 @@ public class Utility
 	}
 	
 	public List<BaseComponent> getTCinLine(TextComponent channel, List<BaseComponent> prefix, TextComponent player, 
-			List<BaseComponent> suffix, List<BaseComponent> msg)
+			List<BaseComponent> suffix, List<BaseComponent> msg, boolean time, TextComponent timevalue)
 	{
 		List<BaseComponent> list = new ArrayList<>();
+		if(time)
+		{
+			list.add(timevalue);
+		}
 		list.add(channel);
 		for(BaseComponent bcp : prefix)
 		{
@@ -586,9 +592,14 @@ public class Utility
 		return list;
 	}
 	
-	public List<BaseComponent> getTCinLinePN(TextComponent channel, TextComponent player, TextComponent player2, List<BaseComponent> msg)
+	public List<BaseComponent> getTCinLinePN(TextComponent channel, TextComponent player, TextComponent player2,
+			List<BaseComponent> msg, boolean time, TextComponent timevalue)
 	{
 		List<BaseComponent> list = new ArrayList<>();
+		if(time)
+		{
+			list.add(timevalue);
+		}
 		list.add(channel);
 		list.add(player);
 		list.add(player2);
@@ -888,6 +899,22 @@ public class Utility
 	{
 		String µ = "µ";
 		String Category = "item";
+        String PlayerUUID = p.getUniqueId().toString();
+		String message = Category+µ+PlayerUUID+µ+itemname+µ+msg;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(stream);
+        try {
+			out.writeUTF(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        p.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
+    }
+	
+	public void sendBungeeItemClearMessage(Player p, String itemname, String msg)  //FIN
+	{
+		String µ = "µ";
+		String Category = "itemclear";
         String PlayerUUID = p.getUniqueId().toString();
 		String message = Category+µ+PlayerUUID+µ+itemname+µ+msg;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

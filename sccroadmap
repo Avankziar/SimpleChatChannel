@@ -1,5 +1,23 @@
+Build 36 ================================================================================================
 - Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
-- /scc bungee entfernen
+- logging korrekt alles anzeigen
+- Befehl "/scc safeitem <Zahl> " einführen um mehrfach items auf den Spieler zu registrieren zu können => <item1> <item2> etc.
+=========================================================================================================
+
+Build 35 =================================================================================================
+- +/scc bungee entfernen
+- +Api Methode "PlayerToChatEditor" hinzugefügt. Returns false for remove and true for adding
+- +Neue Bypass scc.channels.bypass.itemupload, dass überhaupt das Item hochgeladen wird.
+- +Perm scc.channels.bypass.item wird zu scc.channels.bypass.item.<channelname>
+- +fehler in der language
+- +Permissionfehler bei /scc team gefixt
+- +Cmd: /scc updateplayer <playername> | Updated alle aktiven channels des Spielers nach seinen perms.
+- +@r fix
+==========================================================================================================
+
+Build 34 =================================================================================================
+- Bugfix Tabcompleter, /scc tc/pcinvite
+==========================================================================================================
 
 Build 33 ==================================================================================================
 - +Ignorelist und Ignore gefixt
@@ -37,18 +55,18 @@ Build 33 =======================================================================
 - +Neue Commands:
   */scc tcinvite <Spieler> | Lädt den Spieler in deinen Temporären Channel ein (Mit Cooldown) | scc.cmd.tc.invite
   */scc bungeereload | Lädt die Yaml und die Mysql neu
-  */scc pcban <spieler> | Bannt den Spieler aus dem PChannel (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.ban
-  */scc pcchangepassword <pw> | Ändert das Passwort. Nur Ersteller oder Stellvertreter | scc.cmd.pc.changepassword
+  */scc pcban <ChannelName> <spieler> | Bannt den Spieler aus dem PChannel (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.ban
+  */scc pcchangepassword <ChannelName> <pw> | Ändert das Passwort. Nur Ersteller oder Stellvertreter | scc.cmd.pc.changepassword
   */scc pccreate <ChannelName> [Pw] | Erstellt einen PChannel, der ausführende Spieler ist somit für immer Ersteller | scc.cmd.pc.create
-  */scc pcinfo | Zeigt alle Infos des Channels (Passwort nur für Ersteller und Stellvertreter sichtbar) | scc.cmd.pc.info
-  */scc pcinvite <spieler> | Lädt den Spieler in deinen channel ein (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.invite
+  */scc pcinfo <ChannelName> | Zeigt alle Infos des Channels (Passwort nur für Ersteller und Stellvertreter sichtbar) | scc.cmd.pc.info
+  */scc pcinvite <ChannelName> <spieler> | Lädt den Spieler in deinen channel ein (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.invite
   */scc pcjoin <Channelname> [pw] | Joint dem Channel (Passwort muss natürlich übereinstimmen) | scc.cmd.pc.join
-  */scc pckick <spieler> | Kickt den Spieler aus dem Channel (Nur für Ersteller & Stellvertreter). Dabei kann der Ersteller
+  */scc pckick <ChannelName> <spieler> | Kickt den Spieler aus dem Channel (Nur für Ersteller & Stellvertreter). Dabei kann der Ersteller
   die Stellvertreter kicken aber nicht umgekehrt. | scc.cmd.pc.kick
   */scc pcleave [bestätigen] | Verlässt den Channel. Ersteller müssen bestätigen. Bei Bestätigung wird der gesamte Channel
   gelöscht und alle Mitglieder verlassen diesen | scc.cmd.pc.leave
-  */scc pcunban <spieler> | Begnadigt den Spieler. ABER er wird kein Mitglied dadurch, falls er vorher eins war | scc.cmd.pc.unban
-  */scc pcvice <spieler> | Befördert oder degradiert einen Spieler zum Stellvertreter oder zum Mitglied.
+  */scc pcunban <ChannelName> <spieler> | Begnadigt den Spieler. ABER er wird kein Mitglied dadurch, falls er vorher eins war | scc.cmd.pc.unban
+  */scc pcvice <ChannelName> <spieler> | Befördert oder degradiert einen Spieler zum Stellvertreter oder zum Mitglied.
   */scc pcchatcolor <Channelname> <Farben> | Ändert die Farben, die für den Channel im chat benutzt werden | scc.cmd.pc.chatcolor
   */scc pcnamecolor <channelname> <Farben> | Ändert die Farben, die für den Channelnamen benutzt werden | scc.cmd.pc.namecolor
   */scc pcsymbol <channelname> <Symbol> | Ändert das Symbol, welches benutzt wird um den Channel zu erreichen.

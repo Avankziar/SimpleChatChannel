@@ -1,6 +1,6 @@
 name: SimpleChatChannels
 main: main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels
-version: 33
+version: 35
 author: Avankziar
 api-version: 1.15
 description: A Chat Plugin
@@ -76,9 +76,6 @@ permissions:
     default: false
   scc.cmd.ignorelist:
     description: Gives access to /scc ignorlist, which shows you your list of ignored players.
-    default: false
-  scc.cmd.bungee:
-    description: Gives access to /scc bungee, which switch scc to the bungeecord settings.
     default: false
   scc.cmd.mute:
     description: Gives access to /scc mute <player> [min], mute a player for x minutes.

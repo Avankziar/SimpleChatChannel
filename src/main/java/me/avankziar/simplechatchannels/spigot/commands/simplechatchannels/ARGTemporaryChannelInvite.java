@@ -37,7 +37,7 @@ public class ARGTemporaryChannelInvite extends CommandModule
 			player.spigot().sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannel"));
 			return;
 		}
-		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()>inviteCooldown.get(player))
+		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()<inviteCooldown.get(player))
 		{
 			player.spigot().sendMessage(utility.tctlYaml(language+scc+"TCInvite.Cooldown"));
 			return;
@@ -61,10 +61,10 @@ public class ARGTemporaryChannelInvite extends CommandModule
 				.replace("%player%", player.getName()).replace("%channel%", cc.getName()), ClickEvent.Action.RUN_COMMAND, cmd, false));
 		if(inviteCooldown.containsKey(player))
 		{
-			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("TCInviteCooldown"));
+			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("TCInviteCooldown", 60));
 		} else
 		{
-			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("TCInviteCooldown"));
+			inviteCooldown.put(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("TCInviteCooldown", 60));
 		}
 		return;
 	}

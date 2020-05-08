@@ -335,6 +335,10 @@ German:
     ServerListener:
       BungeeOff: '&7BungeeCord für SCC wurde &7deaktiviert!'
       BungeeOn: '&7BungeeCord für SCC wurde &7aktiviert!'
+    UpdatePlayer:
+      IsUpdated: '&eDu hast den Spieler &f%player% &eneu bewerten lassen! Seine aktiven Channels sind nach seinen Permission neu eingestellt worden.'
+      YouWasUpdated: '&eDer Spieler &f%player% &ehat deine aktiven Channels nach deinen Permission neu einstellen lassen.'
+      Error: '&cEs ist ein Fehler aufgetaucht!'
     Wordfilter:
       Added: '&7Das Wort %word% wurde dem Wortfilter hinzugefügt!'
       Removed: '&7Das Wort %word% wurde aus dem Wortfilter entfernt!'
@@ -440,7 +444,7 @@ English:
     Group: '&r&oGroup&r'
     Local: '&8Local'
     Perma: '&5Perma&fnent'
-    PrivateMessage: '&ePrivate Message
+    PrivateMessage: '&ePrivate Message'
     Spy: '&4Spy'
     Support: '&dSupport'
     Team: '&3Team'
@@ -679,6 +683,10 @@ English:
     Serverlistener:
       BungeeOff: '&7BungeeCord for SCC has been deactivated!'
       BungeeOn: '&7BungeeCord for SCC was activated!'
+    UpdatePlayer:
+      IsUpdated: '&eYou had the player &f%player% &ere-rated! His active channels have been reset after his permission.'
+      YouWasUpdated: '&eThe player &f%player% &ehas had your active channels reset after your permission.'
+      Error: '&cThere's been a mistake!'
     Wordfilter:
       Added: '&7Word %word% has been added to the word filter!'
       Removed: '&7The word %word% has been removed from the word filter!' 

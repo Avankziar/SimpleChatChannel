@@ -150,12 +150,10 @@ public class EVENTChat implements Listener
 			}
 			Location pyloc = player.getLocation();
 			
-			TextComponent MSG = null;
-			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
-			else {MSG = utility.tc("");}
+			TextComponent MSG = utility.tc("");
 			
 			MSG.setExtra(utility.getAllTextComponentForChannels(
-					player, event.getMessage(), "Local", symbol, symbol.length()));
+					player, event.getMessage(), "Local", symbol, symbol.length(), timeofdays, timeofdaysoutput));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -210,7 +208,7 @@ public class EVENTChat implements Listener
 			
 			MSG.setExtra(utility.getAllTextComponentForChannels(
 					player, event.getMessage(), "World", yamlHandler.getSymbol("World"),
-					yamlHandler.getSymbol("World").length()));
+					yamlHandler.getSymbol("World").length(), timeofdays, timeofdaysoutput));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -255,7 +253,7 @@ public class EVENTChat implements Listener
 			else {MSG = utility.tc("");}
 			
 			MSG.setExtra(utility.getAllTextComponentForChannels(
-					player, event.getMessage(), channel, symbol, symbol.length()));
+					player, event.getMessage(), channel, symbol, symbol.length(), timeofdays, timeofdaysoutput));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -314,7 +312,7 @@ public class EVENTChat implements Listener
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -354,6 +352,14 @@ public class EVENTChat implements Listener
 				player.spigot().sendMessage(utility.tctlYaml(language+".PCSymbol.ChannelUnknow"));
 				return;
 			}
+			
+			if(!cc.getMembers().contains(player.getUniqueId().toString()))
+			{
+				///Du bist in keinem Permanenten Channel!
+				player.spigot().sendMessage(utility.tctlYaml(language+".ChannelGeneral.NotInAChannelII"));
+				return;
+			}
+			
 			symbol = symbol+cc.getSymbolExtra();
 			
 			if(event.getMessage().length()>=symbol.length() 
@@ -384,7 +390,7 @@ public class EVENTChat implements Listener
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -462,7 +468,7 @@ public class EVENTChat implements Listener
 			if(timeofdays == true) {MSG = utility.tc(timeofdaysoutput);}
 			else {MSG = utility.tc("");}
 			
-			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg));
+			MSG.setExtra(utility.getTCinLine(channels, prefix, playertext, suffix, msg, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			SimpleChatChannels.log.info(MSG.toLegacyText()); //Console
 			
@@ -558,9 +564,11 @@ public class EVENTChat implements Listener
 			else {MSG2 = utility.tc("");}
 			
 			MSG1.setExtra(utility.getTCinLinePN(channel1, playertext, player2text, 
-					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			MSG2.setExtra(utility.getTCinLinePN(channel2, playertext, player2text, 
-					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,symbol.length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			
@@ -597,7 +605,7 @@ public class EVENTChat implements Listener
 			}
 			
 			tr.spigot().sendMessage(MSG1);
-			
+			player.spigot().sendMessage(MSG2);
 			utility.spy(MSG1);
 			reply.put(pl, trl);
 			reply.put(trl, pl);
@@ -665,9 +673,11 @@ public class EVENTChat implements Listener
 			else {MSG2 = utility.tc("");}
 			
 			MSG1.setExtra(utility.getTCinLinePN(channel1, playertext, player2text, 
-					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			MSG2.setExtra(utility.getTCinLinePN(channel2, playertext, player2text, 
-					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())));
+					utility.msgLater(player,targets[0].length(),"PrivateMessage", event.getMessage())
+					, timeofdays, utility.tc(timeofdaysoutput)));
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			

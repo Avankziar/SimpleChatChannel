@@ -51,33 +51,41 @@ public class BackgroundTask
 			@Override
 			public void run()
 			{
+				Utility.item.clear();
+				Utility.itemname.clear();
 				for(Player player : Bukkit.getOnlinePlayers())
 				{
 					if(player.getInventory().getItemInMainHand()!=null)
 					{
 						if(player.getInventory().getItemInMainHand().getType()!=Material.AIR)
 						{
-							ItemStack i = player.getInventory().getItemInMainHand();
-							String is = plugin.getUtility().convertItemStackToJson(player.getInventory().getItemInMainHand());
-							String itemnames = "";
-							if(i.hasItemMeta() && i.getItemMeta().hasDisplayName())
+							if(player.hasPermission(Utility.PERMBYPASSITEMUPLOAD))
 							{
-								itemnames = i.getItemMeta().getDisplayName();
+								ItemStack i = player.getInventory().getItemInMainHand();
+								String is = plugin.getUtility().convertItemStackToJson(player.getInventory().getItemInMainHand());
+								String itemnames = "";
+								if(i.hasItemMeta() && i.getItemMeta().hasDisplayName())
+								{
+									itemnames = i.getItemMeta().getDisplayName();
+								} else
+								{
+									itemnames = "&o"+i.getType();
+								}
+								plugin.getUtility().sendBungeeItemMessage(player, itemnames, is);
+								String uuid = player.getUniqueId().toString();
+								if(Utility.item.containsKey(uuid) 
+										&& Utility.itemname.containsKey(uuid))
+								{
+									Utility.item.replace(uuid, is);
+									Utility.itemname.replace(uuid, itemnames);
+								} else
+								{
+									Utility.item.put(uuid,is);
+									Utility.itemname.put(uuid,itemnames);
+								}
 							} else
 							{
-								itemnames = "&o"+i.getType();
-							}
-							plugin.getUtility().sendBungeeItemMessage(player, itemnames, is);
-							String uuid = player.getUniqueId().toString();
-							if(Utility.item.containsKey(uuid) 
-									&& Utility.itemname.containsKey(uuid))
-							{
-								Utility.item.replace(uuid, is);
-								Utility.itemname.replace(uuid, itemnames);
-							} else
-							{
-								Utility.item.put(uuid,is);
-								Utility.itemname.put(uuid,itemnames);
+								plugin.getUtility().sendBungeeItemClearMessage(player, "none", "none");
 							}
 						}
 					}

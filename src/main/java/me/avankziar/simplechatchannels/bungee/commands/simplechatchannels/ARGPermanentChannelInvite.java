@@ -46,7 +46,7 @@ public class ARGPermanentChannelInvite extends CommandModule
 			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotChannelViceII"));
 			return;
 		}
-		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()>inviteCooldown.get(player))
+		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()<inviteCooldown.get(player))
 		{
 			player.sendMessage(utility.tctlYaml(language+scc+"PCInvite.Cooldown"));
 			return;
@@ -71,10 +71,10 @@ public class ARGPermanentChannelInvite extends CommandModule
 				ClickEvent.Action.RUN_COMMAND, cmd, false));
 		if(inviteCooldown.containsKey(player))
 		{
-			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("PCInviteCooldown"));
+			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("PCInviteCooldown", 60));
 		} else
 		{
-			inviteCooldown.replace(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("PCInviteCooldown"));
+			inviteCooldown.put(player, System.currentTimeMillis()+1000L*plugin.getYamlHandler().get().getInt("PCInviteCooldown", 60));
 		}
 		return;
 	}

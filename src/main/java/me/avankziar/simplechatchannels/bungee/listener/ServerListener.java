@@ -82,6 +82,17 @@ public class ServerListener implements Listener
 					}
 					return;
 				}
+				if(category.equals("itemclear"))
+				{
+					if(Utility.item.containsKey(playerUUID))
+					{
+						Utility.item.remove(playerUUID);
+					}
+					if(Utility.itemname.containsKey(playerUUID))
+					{
+						Utility.itemname.remove(playerUUID);
+					}
+				}
 			} catch (IOException e) 
 		    {
 				e.printStackTrace();
