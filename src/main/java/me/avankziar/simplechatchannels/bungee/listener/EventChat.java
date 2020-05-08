@@ -542,7 +542,7 @@ public class EventChat implements Listener
 					HoverEvent.Action.SHOW_TEXT, yamlHandler.getL().getString(language+".ChannelExtra.Hover.PrivateMessage")
 					.replace("%player%", tr.getName()), false);
 			
-			if(event.getMessage().substring(targets[0].length()+symbol.length()).length()<0)
+			if(event.getMessage().substring(targets[0].length()).length()<0)
 			{
 				///Die Nachricht ist nicht lang genug!
 				player.sendMessage(utility.tctlYaml(language+".EventChat.MessageToShort"));
