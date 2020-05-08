@@ -20,7 +20,6 @@ public class ServerListener  implements PluginMessageListener
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] bytes) 
 	{
-		String language = plugin.getUtility().getLanguage();
 		if(channel.equals("simplechatchannels:sccbungee")) 
 		{
         	ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
@@ -28,25 +27,7 @@ public class ServerListener  implements PluginMessageListener
             try {
             	String[] s = in.readUTF().split("µ");
             	final String Category = s[0];
-            	if(Category.equalsIgnoreCase("bungeeswitch"))
-            	{
-            		boolean boo = plugin.getYamlHandler().get().getBoolean("bungee", false);
-            		if(boo)
-            		{
-            			plugin.getYamlHandler().get().set("Bungee", false);
-            			plugin.getYamlHandler().saveConfig();
-        				player.spigot().sendMessage(plugin.getUtility().tctl(
-        						plugin.getYamlHandler().getL().getString(language+".CmdScc.ServerListener.BungeeOff")));
-        				return;
-            		} else
-            		{
-            			plugin.getYamlHandler().get().set("Bungee", true);
-            			plugin.getYamlHandler().saveConfig();
-        				player.spigot().sendMessage(plugin.getUtility().tctl(
-        						plugin.getYamlHandler().getL().getString(language+".CmdScc.Serverlistener.BungeeOn")));
-        				return;
-            		}
-            	} else if(Category.equalsIgnoreCase("editor"))
+            	if(Category.equalsIgnoreCase("editor"))
             	{
             		String playername= s[1];
             		String i = s[2];

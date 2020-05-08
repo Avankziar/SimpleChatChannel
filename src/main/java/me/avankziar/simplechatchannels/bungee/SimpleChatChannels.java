@@ -290,8 +290,6 @@ public class SimpleChatChannels extends Plugin
             return false;
 		}
 		afkrecord = AfkRecord.getPlugin();
-		//utility.existMethod(afkrecord.getClass(), "isAfk", utility.AFKRECORDISAFK);
-		//utility.existMethod(afkrecord.getClass(), "softSave", utility.AFKRECORDSOFTSAVE);
 		return true;
 	}
 	
@@ -310,10 +308,14 @@ public class SimpleChatChannels extends Plugin
 		if(editorplayers.contains(playername))
 		{
 			editorplayers.remove(playername);
+			String message = "editor"+"µ"+playername+"µ"+"remove";
+			utility.sendSpigotMessage("simplechatchannels:sccbungee", message);
 			return false;
 		} else if(!editorplayers.contains(playername))
 		{
 			editorplayers.add(playername);
+			String message = "editor"+"µ"+playername+"µ"+"add";
+			utility.sendSpigotMessage("simplechatchannels:sccbungee", message);
 			return true;
 		}
 		return false;

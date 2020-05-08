@@ -5,13 +5,14 @@ Build 36 =======================================================================
 =========================================================================================================
 
 Build 35 =================================================================================================
-- +/scc bungee entfernen
+- +/scc bungee wurde entfernen
 - +Api Methode "PlayerToChatEditor" hinzugefügt. Returns false for remove and true for adding
 - +Neue Bypass scc.channels.bypass.itemupload, dass überhaupt das Item hochgeladen wird.
 - +Perm scc.channels.bypass.item wird zu scc.channels.bypass.item.<channelname>
 - +fehler in der language
 - +Permissionfehler bei /scc team gefixt
-- +Cmd: /scc updateplayer <playername> | Updated alle aktiven channels des Spielers nach seinen perms.
+- +Cmd: /scc updateplayer <playername> | Updated alle aktiven channels des Spielers nach seinen perms. | scc.cmd.updateplayer
+  | new language path!
 - +@r fix
 ==========================================================================================================
 
