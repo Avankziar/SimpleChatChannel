@@ -39,12 +39,12 @@ public class ARGUpdatePlayer extends CommandModule
 			mi.updateDataI(player, player.hasPermission("scc.channels.temp"), "channel_temp");
 			mi.updateDataI(player, player.hasPermission("scc.channels.perma"), "channel_perma");
 			mi.updateDataI(player, player.hasPermission("scc.option.spy"), "spy");
-			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".CmdScc.IsUpdated")
+			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".CmdScc.UpdatePlayer.IsUpdated")
 					.replace("%player%", playername)));
 			if(plugin.getProxy().getPlayer(playername) != null)
 			{
 				ProxiedPlayer target = plugin.getProxy().getPlayer(playername);
-				target.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".CmdScc.YouWasUpdated")
+				target.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".CmdScc.UpdatePlayer.YouWasUpdated")
 						.replace("%player%", playername)));
 			}
 			return;

@@ -686,7 +686,7 @@ English:
     UpdatePlayer:
       IsUpdated: '&eYou had the player &f%player% &ere-rated! His active channels have been reset after his permission.'
       YouWasUpdated: '&eThe player &f%player% &ehas had your active channels reset after your permission.'
-      Error: '&cThere's been a mistake!'
+      Error: '&cThere is been a mistake!'
     Wordfilter:
       Added: '&7Word %word% has been added to the word filter!'
       Removed: '&7The word %word% has been removed from the word filter!' 
