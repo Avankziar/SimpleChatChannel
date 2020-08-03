@@ -3,18 +3,20 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGPermanentChannelUnban extends CommandModule
+public class ARGPermanentChannelUnban extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelUnban(SimpleChatChannels plugin)
+	public ARGPermanentChannelUnban(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcunban","scc.cmd.pc.unban",SimpleChatChannels.sccarguments,3,3,"pcentbannen");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,13 +24,12 @@ public class ARGPermanentChannelUnban extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
-			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
 					.replace("%channel%", args[1])));
 			return;
 		}
@@ -36,33 +37,34 @@ public class ARGPermanentChannelUnban extends CommandModule
 				&& !cc.getVice().contains(player.getUniqueId().toString()))
 		{
 			///Du bist weder der Ersteller noch ein Stellvertreter im &5perma&fnenten &cChannel &f%channel%&c!
-			player.spigot().sendMessage(utility.tctl(language+"ChannelGeneral.NotChannelViceII"));
+			player.spigot().sendMessage(ChatApi.tctl(language+"ChannelGeneral.NotChannelViceII"));
 			return;
 		}
-		if(plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name") == null)
+		String targetuuid = Utility.convertNameToUUID(args[2]).toString();
+		if(targetuuid == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
 			return;
 		}
-		String targetuuid = (String) plugin.getMysqlHandler().getDataI(args[2], "player_uuid", "player_name");
+		
 		if(!cc.getBanned().contains(targetuuid))
 		{
 			///Der Spieler ist nicht auf der Bannliste!
-			player.spigot().sendMessage(utility.tctlYaml(language+"PCUnban.PlayerNotBanned"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCUnban.PlayerNotBanned")));
 			return;
 		}
 		cc.removeBanned(targetuuid);
 		plugin.getUtility().updatePermanentChannels(cc);
 		///Du hast &f%player% &efür den CustomChannel entbannt!
-		player.spigot().sendMessage(utility.tctl(
+		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCUnban.YouUnbanPlayer")
 				.replace("%player%", args[2])));
 		if(plugin.getServer().getPlayer(args[2]) != null)
 		{
 			Player target = plugin.getServer().getPlayer(args[2]);
 			///Du wurdest vom CustomChannel %channel% gebannt!
-			target.spigot().sendMessage(utility.tctl(
+			target.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"PCUnban.CreatorUnbanPlayer")
 					.replace("%player%", args[2])
 					.replace("%channel%", cc.getNameColor()+cc.getName())));
@@ -72,7 +74,7 @@ public class ARGPermanentChannelUnban extends CommandModule
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
 				///Der Spieler &f%player% &ewurde für den CustomChannel entbannt.
-				members.spigot().sendMessage(utility.tctl(
+				members.spigot().sendMessage(ChatApi.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCUnban.CreatorUnbanPlayer")
 						.replace("%player%", args[2])
 						.replace("%channel%", cc.getNameColor()+cc.getName())));

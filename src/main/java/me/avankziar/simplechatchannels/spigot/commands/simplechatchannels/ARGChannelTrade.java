@@ -4,16 +4,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGChannelTrade extends CommandModule
+public class ARGChannelTrade extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGChannelTrade(SimpleChatChannels plugin)
+	public ARGChannelTrade(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("trade",
-				"scc.channels.trade",SimpleChatChannels.sccarguments,1,1,"handel");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 

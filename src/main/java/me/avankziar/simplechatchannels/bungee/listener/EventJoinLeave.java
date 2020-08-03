@@ -1,8 +1,15 @@
 package main.java.me.avankziar.simplechatchannels.bungee.listener;
 
+import java.util.ArrayList;
+
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
+import main.java.me.avankziar.simplechatchannels.objects.ConvertHandler;
+import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -27,43 +34,61 @@ public class EventJoinLeave implements Listener
 	{
 		ProxiedPlayer player = event.getPlayer();
 		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
 		String pn = player.getName();
-		utility.controlChannelSaves(player);
-		String oldplayername = (String) plugin.getMysqlHandler().getDataI(
-				player.getUniqueId().toString(), "player_name", "player_uuid");
+		ChatUser cu = utility.controlChannelSaves(player);
 		//Names Aktualisierung
-		if(!oldplayername.equals(pn))
+		if(!cu.getName().equals(pn))
 		{
-			plugin.getMysqlHandler().updateDataI(player, pn, "player_name");
+			cu.setName(pn);
+			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+					"`player_uuid` = ?", cu.getUUID());
+			ChatUser.addChatUser(cu);
+			int end = plugin.getMysqlHandler().lastID(MysqlHandler.Type.IGNOREOBJECT);
+			ArrayList<IgnoreObject> iolist = ConvertHandler.convertListII(
+					plugin.getMysqlHandler().getTop(MysqlHandler.Type.IGNOREOBJECT, "`id`", true, 0, end));
+			for(IgnoreObject io : iolist)
+			{
+				if(io.getIgnoreUUID().equals(player.getUniqueId().toString()))
+				{
+					IgnoreObject newio = io;
+					newio.setIgnoreName(pn);
+					plugin.getMysqlHandler().updateData(MysqlHandler.Type.IGNOREOBJECT, newio,
+							"`player_uuid` = ? AND `ignore_uuid` = ?",
+							io.getUUID(), io.getIgnoreUUID());
+				}
+			}
 		}
-		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
+		if(cu.isOptionJoinMessage())
 		{
-			player.sendMessage(utility.tctl(utility.getActiveChannels(player)));
+			player.sendMessage(ChatApi.tctl(utility.getActiveChannels(cu)));
 			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
-			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(
-					language+".EventJoinLeave.Welcome").replace("%player%", pn)));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(
+					"EventJoinLeave.Welcome").replace("%player%", pn)));
 		}
-		plugin.getMysqlHandler().updateDataII(player, pn, "ignore_name", "ignore_uuid");
 		Boolean globaljoin = plugin.getYamlHandler().get().getBoolean("ShowJoinMessageGlobal", true);
 		if(globaljoin==false)
 		{
 			return;
 		}
-		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
+		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
-			if(!all.getName().equals(pn))
+			if(!all.getName().equals(player.getName()))
 			{
-				if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
+				ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+				if(allcu != null)
 				{
-					///%player% &6hat den Server betreten!
-					TextComponent msg = utility.apichat(
-							plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.PlayerEnter").replace("%player%", pn), 
-							ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" ", 
-							HoverEvent.Action.SHOW_TEXT, 
-							plugin.getYamlHandler().getL().getString(language+".ChannelExtra.Hover.Message").replace("%player%", pn), 
-							false);
-					all.sendMessage(msg);
+					if(allcu.isOptionJoinMessage())
+					{
+						///%player% &6hat den Server betreten!
+						TextComponent msg = ChatApi.apiChat(
+								plugin.getYamlHandler().getL().getString("EventJoinLeave.PlayerEnter")
+								.replace("%player%", pn), 
+								ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" ", 
+								HoverEvent.Action.SHOW_TEXT, 
+								plugin.getYamlHandler().getL().getString("ChannelExtra.Hover.Message")
+								.replace("%player%", pn));
+						all.sendMessage(msg);
+					}
 				}
 			}
 		}
@@ -75,9 +100,8 @@ public class EventJoinLeave implements Listener
 	{
 		ProxiedPlayer player = event.getPlayer();
 		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
 		String pn = player.getName();
-		String scc = ".CmdScc.";
+		String scc = "CmdScc.";
 		if(plugin.editorplayers.contains(pn))
 		{
 			plugin.editorplayers.remove(pn);
@@ -103,29 +127,34 @@ public class EventJoinLeave implements Listener
     			///Du wurdest der neue Ersteller der CustomChannels %channel%
     			if(newcreator!=null)
     			{
-    				newcreator.sendMessage(utility.tctl(
-        					plugin.getYamlHandler().getL().getString(language+scc+"CCLeave.NewCreator")
+    				newcreator.sendMessage(ChatApi.tctl(
+        					plugin.getYamlHandler().getL().getString(scc+"CCLeave.NewCreator")
         					.replace("%channel%", cc.getName())));
     			}
 			}
-		}
-		if(!plugin.getMysqlHandler().hasAccount(player))
-		{
-			plugin.getMysqlHandler().createAccount(player);
 		}
 		Boolean globalleave = plugin.getYamlHandler().get().getBoolean("ShowLeaveMessageGlobal", false);
 		if(globalleave==false)
 		{
 			return;
 		}
+		ChatUser cu = ChatUser.getChatUser(player.getUniqueId().toString());
+		if(cu != null)
+		{
+			ChatUser.removeChatUser(cu);
+		}
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
-			if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
+			ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+			if(allcu != null)
 			{
-				///%player% &4hat den Server verlassen!
-				String msg = plugin.getYamlHandler().getL().getString(
-						language+".EventJoinLeave.PlayerQuit").replace("%player%", pn);
-				all.sendMessage(utility.tctl(msg));
+				if(allcu.isOptionJoinMessage())
+				{
+					///%player% &4hat den Server verlassen!
+					String msg = plugin.getYamlHandler().getL().getString(
+							"EventJoinLeave.PlayerQuit").replace("%player%", pn);
+					all.sendMessage(ChatApi.tctl(msg));
+				}
 			}
 		}
 		return;

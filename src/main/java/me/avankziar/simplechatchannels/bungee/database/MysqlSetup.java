@@ -85,12 +85,12 @@ public class MysqlSetup
 		      {	        
 		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameI
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY, player_uuid char(36) NOT NULL UNIQUE, player_name varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
-		        		+ " can_chat boolean, mutetime LONG,"
+		        		+ " can_chat boolean, mutetime BIGINT,"
 		        		+ " channel_global boolean, channel_trade boolean, channel_auction boolean, channel_support boolean,"
 		        		+ " channel_local boolean, channel_world boolean,"
 		        		+ " channel_team boolean, channel_admin boolean,"
 		        		+ " channel_group boolean, channel_pm boolean, channel_temp boolean, channel_perma boolean,"
-		        		+ " spy boolean, joinmessage boolean);";
+		        		+ " channel_event boolean, spy boolean, joinmessage boolean);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
 		      } catch (SQLException e) 

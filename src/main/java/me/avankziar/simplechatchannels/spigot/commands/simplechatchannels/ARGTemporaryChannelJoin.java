@@ -3,18 +3,20 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 
-public class ARGTemporaryChannelJoin extends CommandModule
+public class ARGTemporaryChannelJoin extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelJoin(SimpleChatChannels plugin)
+	public ARGTemporaryChannelJoin(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tcjoin","scc.cmd.tc.join",SimpleChatChannels.sccarguments,2,3,"tcbeitreten");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -23,7 +25,7 @@ public class ARGTemporaryChannelJoin extends CommandModule
 	{
 		Player player = (Player) sender;
 		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		String name = null;
 		String password = null;
 		if(args.length==2)
@@ -43,13 +45,13 @@ public class ARGTemporaryChannelJoin extends CommandModule
 		if(oldcc!=null)
 		{
 			///Du bist schon in einem anderen Channel gejoint, verlasse erst diesen!
-			player.spigot().sendMessage(utility.tctlYaml(language+"TCJoin.AlreadyInAChannel"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.AlreadyInAChannel")));
 			return;
 		}
 		if(cc==null)
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
-			player.spigot().sendMessage(utility.tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCJoin.UnknowChannel")
 					.replace("%name%", name)));
 			return;
@@ -57,7 +59,7 @@ public class ARGTemporaryChannelJoin extends CommandModule
 		if(cc.getBanned().contains(player))
 		{
 			///Du bist in diesem CustomChannel gebannt und darfst nicht joinen!
-			player.spigot().sendMessage(utility.tctlYaml(language+"TCJoin.Banned"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.Banned")));
 			return;
 		}
 		if(password==null)
@@ -65,7 +67,8 @@ public class ARGTemporaryChannelJoin extends CommandModule
 			if(cc.getPassword()!=null)
 			{
 				///Der CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!
-				player.spigot().sendMessage(utility.tctlYaml(language+"TCJoin.ChannelHasPassword"));
+				player.spigot().sendMessage(
+						ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.ChannelHasPassword")));
 				return;
 			}
 		} else
@@ -73,24 +76,26 @@ public class ARGTemporaryChannelJoin extends CommandModule
 			if(cc.getPassword()==null)
 			{
 				///Es ist kein Passwort angegeben, du kannst so joinen!
-				player.spigot().sendMessage(utility.tctlYaml(language+"TCJoin.ChannelHasNoPassword"));
+				player.spigot().sendMessage(
+						ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.ChannelHasNoPassword")));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
 				///Das angegebene Passwort ist nicht korrekt!
-				player.spigot().sendMessage(utility.tctlYaml(language+"TCJoin.PasswordIncorrect"));
+				player.spigot().sendMessage(
+						ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.PasswordIncorrect")));
 				return;
 			}
 		}
 		cc.addMembers(player);
 		///Du bist dem CustomChannel &f%channel% &agejoint!
-		player.spigot().sendMessage(utility.tctl(
+		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(language+"TCJoin.ChannelJoined")
 				.replace("%channel%", cc.getName())));
 		for(Player members : cc.getMembers())
 		{
-			members.spigot().sendMessage(plugin.getUtility().tctl(
+			members.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCJoin.PlayerIsJoined")
 					.replace("%player%", player.getName())));
 		}

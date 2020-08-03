@@ -1,8 +1,8 @@
 package main.java.me.avankziar.simplechatchannels.spigot.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -10,53 +10,202 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.CommandConstructor;
 
 public class TABCompletion implements TabCompleter
 {	
-	public TABCompletion()
+	private SimpleChatChannels plugin;
+	
+	public TABCompletion(SimpleChatChannels plugin)
 	{
-		
+		this.plugin = plugin;
 	}
-
+	
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String lable, String[] args) 
+	public List<String> onTabComplete(CommandSender sender, Command cmd,
+			 String lable, String[] args)
 	{
-		Player player = (Player)sender;
-		HashMap<String, CommandModule> commandList = SimpleChatChannels.sccarguments;
-		List<String> list = new ArrayList<String>();
-		if(cmd.getName().equalsIgnoreCase("scc") && args.length == 0)
+		if(!(sender instanceof Player))
 		{
-			for (String commandString : commandList.keySet()) 
+			return null;
+		}
+		Player player = (Player) sender;
+		CommandConstructor cc = plugin.getCommandFromPath(cmd.getName());
+		if(cc == null)
+		{
+			cc = plugin.getCommandFromPath(cmd.getName());
+		}
+		if(cc == null)
+		{
+			return null;
+		}
+		int length = args.length-1;
+		ArrayList<ArgumentConstructor> aclist = cc.subcommands;
+		debug(player, "====================================");
+		debug(player, "CC: "+cc.getName()+" "+cc.getPath()+" | "+Arrays.toString(args)+" "+length);
+		ArrayList<String> OneArgumentBeforeList = new ArrayList<>();
+		ArgumentConstructor lastAc = null;
+		for(ArgumentConstructor ac : aclist)
+		{
+			OneArgumentBeforeList.add(ac.getName());
+		}
+		boolean isBreak = false;
+		for(int i = 0; i <= length; i++)
+		{
+			//ACHTUNG! Ausnahmefall msg!!
+			if(cmd.getName().equalsIgnoreCase(SimpleChatChannels.baseCommandIVName) && length == 0)
 			{
-				CommandModule mod = commandList.get(commandString);
-				if (player.hasPermission(mod.permission)) 
-				{
-					list.add(commandString);
-				}
+				return getReturnTabList(plugin.getPlayers(), args[length]);
 			}
-			Collections.sort(list);
-			return list;
-		} else if (cmd.getName().equalsIgnoreCase("scc") && args.length == 1) 
-		{
-			if (!args[0].equals("")) 
+			//ACHTUNG! Ausnahmefall!!
+			
+			isBreak = false;
+			debug(player, "Tab: i "+i+" "+length);
+			for(int j = 0; j <= aclist.size()-1; j++)
 			{
-				for (String commandString : commandList.keySet()) 
+				//debug(player, "Tab: j "+j+" "+(aclist.size()-1));
+				ArgumentConstructor ac = aclist.get(j);
+				debug(player, "Tab: i="+i+" "+ac.getName()+" '"+args[i]+"'");
+				if(args[i].isEmpty()) //Wenn egalweches argument leer ist
 				{
-					CommandModule mod = commandList.get(commandString);
-					if (player.hasPermission(mod.permission))
+					//debug(player, "Tab: string is empty");
+					return getReturnList(ac, args[i], i, player, OneArgumentBeforeList, false);
+				} else
+				{
+					//debug(player, "Tab: args[i] else "+ac.argument+" '"+args[i]+"'");
+					if(i == length)
 					{
-						if (commandString.startsWith(args[0])) 
+						if(!args[i].equals(""))
 						{
-							list.add(commandString);
+							debug(player, "Tab: string not empty");
+							return getReturnList(ac, args[i], i, player, OneArgumentBeforeList, true);
+						} else
+						{
+							debug(player, "Tab: string empty");
+							return getReturnList(ac, args[i], i, player, OneArgumentBeforeList, false);
+						}
+					} else
+					{
+						if(args[i].equals(ac.getName()))
+						{
+							debug(player, "Tab: args[i] equals && i != length => ac.subargument++");
+							OneArgumentBeforeList.clear();
+							OneArgumentBeforeList.addAll(ac.tabList.get(i));
+							//Subargument um ein erhöhen
+							aclist = ac.subargument;
+							isBreak = true;
+							lastAc = ac;
+							break;
+						}
+						if(j == aclist.size()-1)
+						{
+							aclist = new ArrayList<>(); //Wenn keins der Argumente an der spezifischen Position gepasst hat, abbrechen.
+							debug(player, "Tab: args[i] Not Equal Any AcList.Ac => Set Empty list");
 						}
 					}
 				}
-				Collections.sort(list);
-				return list;
+			}
+			if(!isBreak)
+			{
+				debug(player, "isBreak");
+				if(lastAc != null)
+				{
+					debug(player, "lastAc != null");
+					return getReturnTabList(lastAc.tabList.get(length), args[length]);
+					//Return null, wenn die Tabliste nicht existiert! Aka ein halbes break;
+				}
+				if(i == length || aclist.isEmpty()) //Wenn das ende erreicht ist oder die aclist vorher leer gesetzt worden ist
+				{
+					debug(player, "==> Breaking!");
+					break;
+				}
 			}
 		}
 		return null;
+	}
+	
+	private List<String> getReturnTabList(ArrayList<String> tabList, String argsi)
+	{
+		ArrayList<String> list = new ArrayList<>();
+		if(tabList != null && argsi != null)
+		{
+			for(String s : tabList)
+			{
+				if(s.startsWith(argsi)) //TODO argsi oder tabList anscheinend null
+				{
+					list.add(s);
+				}
+			}
+		}
+		Collections.sort(list);
+		return list;
+	}
+	
+	private List<String> getReturnList(ArgumentConstructor ac, String args, int i, Player player,
+			List<String> OneArgumentBeforeList, boolean startsWith)
+	{
+		debug(player, "getReturnList() "+i+" "+startsWith);
+		List<String> returnlist = new ArrayList<String>();
+		debug(player, "OABL: "+OneArgumentBeforeList.toString());
+		for(String argc : OneArgumentBeforeList)
+		{
+			//debug(player, "Loop: argc => "+argc);
+			if(startsWith)
+			{
+				if(argc.startsWith(args))
+				{
+					ArgumentConstructor argcon = ac.getSubArgument(argc);
+					if(argcon != null)
+					{
+						debug(player, "Loop: argcon "+argcon.getPermission());
+						if(player.hasPermission(argcon.getPermission()))
+						{
+							returnlist.add(argc);
+						}
+					} else
+					{
+						returnlist.add(argc);
+					}
+					debug(player, "Loop: argcon => "+(argcon!=null));
+				}
+			} else
+			{
+				ArgumentConstructor argcon = ac.getSubArgument(argc);
+				if(argcon != null)
+				{
+					debug(player, "Loop: argcon "+argcon.getPermission());
+					if(player.hasPermission(argcon.getPermission()))
+					{
+						returnlist.add(argc);
+					}
+				} else
+				{
+					returnlist.add(argc);
+				}
+				debug(player, "Loop: argcon => "+(argcon!=null));
+			}
+		}
+		Collections.sort(returnlist);
+		debug(player, returnlist.toString());
+		return returnlist;
+	}
+	
+	private void debug(Player player, String s)
+	{
+		boolean bo = false;
+		if(bo)
+		{
+			player.spigot().sendMessage(ChatApi.tctl(s));
+		}
+	}
+	
+	public String[] AddToStringArray(String[] oldArray, String newString)
+	{
+	    String[] newArray = Arrays.copyOf(oldArray, oldArray.length+1);
+	    newArray[oldArray.length] = newString;
+	    return newArray;
 	}
 }

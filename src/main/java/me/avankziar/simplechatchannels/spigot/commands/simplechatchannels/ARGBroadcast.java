@@ -4,18 +4,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class ARGBroadcast extends CommandModule
+public class ARGBroadcast extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGBroadcast(SimpleChatChannels plugin)
+	public ARGBroadcast(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("broadcast","scc.cmd.broadcast",SimpleChatChannels.sccarguments,2,Integer.MAX_VALUE,"ausstrahlung");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -24,7 +26,6 @@ public class ARGBroadcast extends CommandModule
 	{
 		Player player = (Player) sender;
 		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
 		String msg = "";
 		for (int i = 1; i < args.length; i++) 
         {
@@ -33,11 +34,12 @@ public class ARGBroadcast extends CommandModule
 		if(plugin.getUtility().getWordfilter(msg))
 		{
 			///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+".EventChat.Wordfilter"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("EventChat.Wordfilter")));
 			return;
 		}
-		TextComponent MSG = utility.tc("");
-		MSG.setExtra(utility.broadcast(player, 0, "Global", msg, utility.tctlYaml(language+".CmdScc.Broadcast.Intro")));
+		TextComponent MSG = ChatApi.tc("");
+		MSG.setExtra(utility.broadcast(player, 0, "Global", msg, 
+				ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.Broadcast.Intro"))));
 		for(Player all : Bukkit.getOnlinePlayers())
 		{
 			all.spigot().sendMessage(MSG);

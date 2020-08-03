@@ -1,6 +1,6 @@
 name: SimpleChatChannels
 main: main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels
-version: 35
+version: 36
 author: Avankziar
 api-version: 1.15
 description: A Chat Plugin
@@ -13,6 +13,8 @@ commands:
     aliases: [clch]
   scceditor:
     description: A Scceditor Command
+  msg:
+    description: A Message Command
 permissions:
   scc.channels.global:
     description: Enable global channel rights, to read and write and use /scc global.
@@ -22,6 +24,9 @@ permissions:
     default: true
   scc.channels.auction:
     description: Enable auction channel rights, to read and write and use /scc auction.
+    default: true
+  scc.channels.event:
+    description: Enable event channel rights, to read and write and use /scc auction.
     default: true
   scc.channels.local:
     description: Enable local channel rights, to read and write and use /scc local.
@@ -183,6 +188,9 @@ permissions:
     description: Gives access to bypass the ignoring from a player.
     default: false
   scc.channels.bypass.item:
+    description: Gives access to use hoverevent to show a item in the chat for the replacer <item>.
+    default: false
+  scc.channels.bypass.itemupload:
     description: Gives access to use hoverevent to show a item in the chat for the replacer <item>.
     default: false
   scc.channels.bypass.privacy:

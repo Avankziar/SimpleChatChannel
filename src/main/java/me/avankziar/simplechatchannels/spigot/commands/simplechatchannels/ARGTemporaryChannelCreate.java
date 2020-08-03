@@ -5,17 +5,19 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 
-public class ARGTemporaryChannelCreate extends CommandModule
+public class ARGTemporaryChannelCreate extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelCreate(SimpleChatChannels plugin)
+	public ARGTemporaryChannelCreate(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tccreate","scc.cmd.tc.create",SimpleChatChannels.sccarguments,2,3,"tcerschaffen");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -23,12 +25,12 @@ public class ARGTemporaryChannelCreate extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc!=null)
 		{
 			///Du bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.
-			player.spigot().sendMessage(plugin.getUtility().tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.AlreadyInAChannel")
 					.replace("%channel%", cc.getName())));
 			return;
@@ -50,13 +52,13 @@ public class ARGTemporaryChannelCreate extends CommandModule
 		if(password==null)
 		{
 			///Du hast den Custom Channel &f%channel% &eerstellt!
-			player.spigot().sendMessage(plugin.getUtility().tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithoutPassword")
 					.replace("%channel%", cc.getName())));
 		} else
 		{
 			///Du hast den Custom Channel &f%channel% &emit dem Passwort &f%password% &eerstellt!
-			player.spigot().sendMessage(plugin.getUtility().tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getName())
 					.replace("%password%", password)));

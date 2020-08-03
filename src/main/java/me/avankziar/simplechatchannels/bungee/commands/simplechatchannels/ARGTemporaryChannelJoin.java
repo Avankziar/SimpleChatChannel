@@ -1,20 +1,21 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGTemporaryChannelJoin extends CommandModule
+public class ARGTemporaryChannelJoin extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelJoin(SimpleChatChannels plugin)
+	public ARGTemporaryChannelJoin(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tcjoin","scc.cmd.tc.join",SimpleChatChannels.sccarguments,2,3,"tcbeitreten",
-				"<Channelname>;[Password]".split(";"));
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -23,7 +24,7 @@ public class ARGTemporaryChannelJoin extends CommandModule
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		String name = null;
 		String password = null;
 		if(args.length==2)
@@ -43,13 +44,13 @@ public class ARGTemporaryChannelJoin extends CommandModule
 		if(oldcc!=null)
 		{
 			///Du bist schon in einem anderen Channel gejoint, verlasse erst diesen!
-			player.sendMessage(utility.tctlYaml(language+"TCJoin.AlreadyInAChannel"));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.AlreadyInAChannel")));
 			return;
 		}
 		if(cc==null)
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
-			player.sendMessage(utility.tctl(
+			player.sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCJoin.UnknownChannel")
 					.replace("%name%", name)));
 			return;
@@ -57,7 +58,7 @@ public class ARGTemporaryChannelJoin extends CommandModule
 		if(cc.getBanned().contains(player))
 		{
 			///Du bist in diesem CustomChannel gebannt und darfst nicht joinen!
-			player.sendMessage(utility.tctlYaml(language+"TCJoin.Banned"));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.Banned")));
 			return;
 		}
 		if(password==null)
@@ -65,7 +66,7 @@ public class ARGTemporaryChannelJoin extends CommandModule
 			if(cc.getPassword()!=null)
 			{
 				///Der CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!
-				player.sendMessage(utility.tctlYaml(language+"TCJoin.ChannelHasPassword"));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.ChannelHasPassword")));
 				return;
 			}
 		} else
@@ -73,24 +74,24 @@ public class ARGTemporaryChannelJoin extends CommandModule
 			if(cc.getPassword()==null)
 			{
 				///Es ist kein Passwort angegeben, du kannst so joinen!
-				player.sendMessage(utility.tctlYaml(language+"TCJoin.ChannelHasNoPassword"));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.ChannelHasNoPassword")));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
 				///Das angegebene Passwort ist nicht korrekt!
-				player.sendMessage(utility.tctlYaml(language+"TCJoin.PasswordIncorrect"));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCJoin.PasswordIncorrect")));
 				return;
 			}
 		}
 		cc.addMembers(player);
 		///Du bist dem CustomChannel &f%channel% &agejoint!
-		player.sendMessage(utility.tctl(
+		player.sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(language+"TCJoin.ChannelJoined")
 				.replace("%channel%", cc.getName())));
 		for(ProxiedPlayer members : cc.getMembers())
 		{
-			members.sendMessage(plugin.getUtility().tctl(
+			members.sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCJoin.PlayerIsJoined")
 					.replace("%player%", player.getName())));
 		}

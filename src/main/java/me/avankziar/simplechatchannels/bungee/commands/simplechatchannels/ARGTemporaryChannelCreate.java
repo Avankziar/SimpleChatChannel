@@ -3,19 +3,20 @@ package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchan
 import java.util.ArrayList;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGTemporaryChannelCreate extends CommandModule
+public class ARGTemporaryChannelCreate extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelCreate(SimpleChatChannels plugin)
+	public ARGTemporaryChannelCreate(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tccreate","scc.cmd.tc.create",SimpleChatChannels.sccarguments,2,3,"tcerschaffen",
-				"<Channelname>;[Password]".split(";"));
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -23,12 +24,12 @@ public class ARGTemporaryChannelCreate extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = plugin.getUtility().getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc!=null)
 		{
 			///Du bist schon in dem Channel %channel%! Um einen neuen Channel zu eröffnen, müsst du den vorigen erst schließen.
-			player.sendMessage(plugin.getUtility().tctl(
+			player.sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.AlreadyInAChannel")
 					.replace("%channel%", cc.getName())));
 			return;
@@ -50,13 +51,13 @@ public class ARGTemporaryChannelCreate extends CommandModule
 		if(password==null)
 		{
 			///Du hast den Custom Channel &f%channel% &eerstellt!
-			player.sendMessage(plugin.getUtility().tctl(
+			player.sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithoutPassword")
 					.replace("%channel%", cc.getName())));
 		} else
 		{
 			///Du hast den Custom Channel &f%channel% &emit dem Passwort &f%password% &eerstellt!
-			player.sendMessage(plugin.getUtility().tctl(
+			player.sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCCreate.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getName())
 					.replace("%password%", password)));

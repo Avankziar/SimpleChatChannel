@@ -3,18 +3,19 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGPermanentChannelSymbol extends CommandModule
+public class ARGPermanentChannelSymbol extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelSymbol(SimpleChatChannels plugin)
+	public ARGPermanentChannelSymbol(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcsymbol","scc.cmd.pc.symbol",SimpleChatChannels.sccarguments,3,3);
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,27 +23,27 @@ public class ARGPermanentChannelSymbol extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
-			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
 					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotTheCreatorII"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotTheCreatorII")));
 			return;
 		}
 		String symbol = args[2];
 		PermanentChannel other = PermanentChannel.getChannelFromSymbol(symbol);
 		if(other != null)
 		{
-			player.spigot().sendMessage(plugin.getUtility().tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"PCSymbol.SymbolAlreadyExist")
 					.replace("%symbol%", other.getSymbolExtra())
 					.replace("%channel%", other.getNameColor()+other.getName())));
@@ -54,7 +55,7 @@ public class ARGPermanentChannelSymbol extends CommandModule
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.spigot().sendMessage(plugin.getUtility().tctl(
+				members.spigot().sendMessage(ChatApi.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCSymbol.NewSymbol")
 						.replace("%symbol%", plugin.getYamlHandler().getSymbol("Perma")+cc.getSymbolExtra())
 						.replace("%channel%", cc.getNameColor()+cc.getName())));

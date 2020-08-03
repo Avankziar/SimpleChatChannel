@@ -2,7 +2,7 @@ Language: 'English'
 Prefix: '&7[&eS&6c&cc&7] &r'
 Bungee: false
 Denizen_Active: false
-GetLocaleRadius: 50
+GetLocalRadius: 50
 WordFilter:
 - arschloch
 - asshole

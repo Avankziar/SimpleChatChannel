@@ -4,16 +4,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGChannelPrivateMessage extends CommandModule
+public class ARGChannelPrivateMessage extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGChannelPrivateMessage(SimpleChatChannels plugin)
+	public ARGChannelPrivateMessage(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pm",
-				"scc.channels.pm",SimpleChatChannels.sccarguments,1,1,"pn");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 

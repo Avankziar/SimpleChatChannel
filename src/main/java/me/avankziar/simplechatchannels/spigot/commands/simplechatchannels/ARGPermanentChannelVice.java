@@ -3,18 +3,19 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGPermanentChannelVice extends CommandModule
+public class ARGPermanentChannelVice extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelVice(SimpleChatChannels plugin)
+	public ARGPermanentChannelVice(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcvice","scc.cmd.pc.vice",SimpleChatChannels.sccarguments,3,3,"pcstellvertreter");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,33 +23,35 @@ public class ARGPermanentChannelVice extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
-			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
 					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotTheCreatorII"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotTheCreatorII")));
 			return;
 		}
 		if(plugin.getServer().getPlayer(args[2])==null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
 			return;
 		}
 		Player target = plugin.getServer().getPlayer(args[2]); 
 		if(!cc.getMembers().contains(target.getUniqueId().toString()))
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotChannelMemberII"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotChannelMemberII")));
 			return;
 		}
 		if(cc.getVice().contains(target.getUniqueId().toString()))
@@ -60,7 +63,7 @@ public class ARGPermanentChannelVice extends CommandModule
 				if(cc.getMembers().contains(members.getUniqueId().toString()))
 				{
 					///Der Spieler &f%player% &ewurde zum Mitglied im &5perma&fnenten &eChannel &f%channel% &cdegradiert&e!
-					members.spigot().sendMessage(utility.tctl(
+					members.spigot().sendMessage(ChatApi.tctl(
 							plugin.getYamlHandler().getL().getString(language+"PCVice.Degraded")
 							.replace("%player%", args[2]).replace("%channel%", cc.getNameColor()+cc.getName())));
 				}
@@ -74,7 +77,7 @@ public class ARGPermanentChannelVice extends CommandModule
 				if(cc.getMembers().contains(members.getUniqueId().toString()))
 				{
 					///Der Spieler &f%player% &ewurde zum Stellvertreter im &5perma&fnenten &eChannel &f%channel% &abefördert&e!
-					members.spigot().sendMessage(utility.tctl(
+					members.spigot().sendMessage(ChatApi.tctl(
 							plugin.getYamlHandler().getL().getString(language+"PCVice.Promoted")
 							.replace("%player%", args[2]).replace("%channel%", cc.getNameColor()+cc.getName())));
 				}

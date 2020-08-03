@@ -5,17 +5,20 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 
-public class ARGPermanentChannelCreate extends CommandModule
+public class ARGPermanentChannelCreate extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelCreate(SimpleChatChannels plugin)
+	public ARGPermanentChannelCreate(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pccreate","scc.cmd.pc.create",SimpleChatChannels.sccarguments,2,3,"pcerschaffen");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -23,7 +26,7 @@ public class ARGPermanentChannelCreate extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		String language = plugin.getUtility().getLanguage() + ".CmdScc.";		
+		String language = "CmdScc.";		
 		String name = null;
 		String password = null;
 		if(args.length==2)
@@ -38,7 +41,8 @@ public class ARGPermanentChannelCreate extends CommandModule
 		if(check != null)
 		{
 			///&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"PCCreate.ChannelNameAlreadyExist"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCCreate.ChannelNameAlreadyExist")));
 			return;
 		}
 		int amount = 0;
@@ -52,7 +56,7 @@ public class ARGPermanentChannelCreate extends CommandModule
 		if(plugin.getYamlHandler().get().getInt("PermanentChannelAmountPerPlayer") <= amount)
 		{
 			///&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!
-			player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+"PCCreate.MaximumAmount"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCCreate.MaximumAmount")));
 			return;
 		}
 		String symbol = name;
@@ -69,26 +73,27 @@ public class ARGPermanentChannelCreate extends CommandModule
 				}
 			}
 		}
-		String color = plugin.getYamlHandler().getL().getString(plugin.getUtility().getLanguage()+".ChannelColor.Perma");
+		String color = plugin.getYamlHandler().getL().getString("ChannelColor.Perma");
 		ArrayList<String> members = new ArrayList<String>();
 		members.add(player.getUniqueId().toString());
 		PermanentChannel cc = new PermanentChannel(0, name, player.getUniqueId().toString(), new ArrayList<String>(), 
 				members, password, new ArrayList<String>(),
 				symbol, color, color);
-		plugin.getMysqlHandler().createChannel(cc);
-		cc.setId(plugin.getMysqlHandler().getLastIDIII());
+		plugin.getMysqlHandler().create(MysqlHandler.Type.PERMANENTCHANNEL, cc);
+		int last = plugin.getMysqlHandler().lastID(MysqlHandler.Type.PERMANENTCHANNEL);
+		cc.setId(last);
 		PermanentChannel.addCustomChannel(cc);
 		if(password==null)
 		{
 			///Du hast den permanenten Channel %channel% erstellt!
-			player.spigot().sendMessage(plugin.getUtility().tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"PCCreate.ChannelCreateWithoutPassword")
 					.replace("%channel%", cc.getNameColor()+cc.getName())
 					.replace("%symbol%", plugin.getYamlHandler().getSymbol("Perma")+symbol)));
 		} else
 		{
 			///Du hast den permanenten Channel %channel% mit dem Passwort %password% erstellt!
-			player.spigot().sendMessage(plugin.getUtility().tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"PCCreate.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getNameColor()+cc.getName())
 					.replace("%password%", password)

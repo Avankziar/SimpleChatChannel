@@ -1,19 +1,20 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGTemporaryChannelInfo extends CommandModule
+public class ARGTemporaryChannelInfo extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelInfo(SimpleChatChannels plugin)
+	public ARGTemporaryChannelInfo(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tcinfo","scc.cmd.tc.info",SimpleChatChannels.sccarguments,1,1,null);
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -21,38 +22,36 @@ public class ARGTemporaryChannelInfo extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
-		String scc = ".CmdScc.";
+		String scc = "CmdScc.";
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotInAChannel"));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotInAChannel")));
 			return;
 		}
 		///&e=====&5[&fCustomChannel &6%channel%&5]&e=====
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Headline")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"TCInfo.Headline")
 				.replace("%channel%", cc.getName())));
 		///Channel Ersteller: &f%creator%
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Creator")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"TCInfo.Creator")
 				.replace("%creator%", cc.getCreator().getName())));
 		///Channel Mitglieder: &f%members%
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Members")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"TCInfo.Members")
 				.replace("%members%", cc.getMembers().toString())));
 		if(cc.getPassword()!=null)
 		{
 			///Channel Passwort: &f%password%
-			player.sendMessage(utility.tctl(
-					plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Password")
+			player.sendMessage(ChatApi.tctl(
+					plugin.getYamlHandler().getL().getString(scc+"TCInfo.Password")
 					.replace("%password%", cc.getPassword())));
 		}
 		///Channel Gebannte Spieler: &f%banned%
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"TCInfo.Banned")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"TCInfo.Banned")
 				.replace("%banned%", cc.getBanned().toString())));
 		return;
 	}

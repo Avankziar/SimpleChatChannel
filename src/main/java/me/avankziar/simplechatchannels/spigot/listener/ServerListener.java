@@ -11,12 +11,12 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
 public class ServerListener  implements PluginMessageListener
 {
-	private SimpleChatChannels plugin;
 	
 	public ServerListener(SimpleChatChannels plugin)
 	{
-		this.plugin = plugin;
+		
 	}
+	
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] bytes) 
 	{

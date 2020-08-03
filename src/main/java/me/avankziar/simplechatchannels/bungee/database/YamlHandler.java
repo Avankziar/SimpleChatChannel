@@ -13,12 +13,26 @@ import net.md_5.bungee.config.YamlConfiguration;
 public class YamlHandler 
 {
 	private SimpleChatChannels plugin;
-	private Configuration cfg;
-	private Configuration lgg;
+	private Configuration cfg = null;
+	private Configuration com = null;
+	private Configuration wfi = null;
+	private Configuration ara = null;
+	private Configuration dut = null;
+	private Configuration eng = null;
+	private Configuration fre = null;
+	private Configuration ger = null;
+	private Configuration hin = null;
+	private Configuration ita = null;
+	private Configuration jap = null;
+	private Configuration mad = null;
+	private Configuration rus = null;
+	private Configuration spa = null;
+	private Configuration lang = null;
 	private String languages;
 	private String symbolglobal;
 	private String symboltrade;
 	private String symbolauction;
+	private String symbolevent;
 	private String symbollocal;
 	private String symbolworld;
 	private String symbolsupport;
@@ -38,120 +52,443 @@ public class YamlHandler
 	
 	public boolean loadYamlHandler()
 	{
+		if(!mkdirGeneralFiles())
+		{
+			return false;
+		}
+		if(!loadGeneralFiles())
+		{
+			return false;
+		}
 		if(!mkdir())
 		{
 			return false;
 		}
-		if(!loadYaml())
+		if(!loadYamls())
 		{
 			return false;
 		}
 		languages = cfg.getString("Language", "English");
-		symbolglobal = lgg.getString(languages+".ChannelSymbol.Global", "");
-		symboltrade = lgg.getString(languages+".ChannelSymbol.Trade", "$");
-		symbolauction = lgg.getString(languages+".ChannelSymbol.Auction", "!");
-		symbollocal = lgg.getString(languages+".ChannelSymbol.Local", ",");
-		symbolworld = lgg.getString(languages+".ChannelSymbol.World", "°");
-		symbolsupport = lgg.getString(languages+".ChannelSymbol.Support", "?");
-		symbolteam = lgg.getString(languages+".ChannelSymbol.Team", "+");
-		symboladmin = lgg.getString(languages+".ChannelSymbol.Admin", "#");
-		symbolpm = lgg.getString(languages+".ChannelSymbol.PrivateMessage", "@");
-		symbolpmre = lgg.getString(languages+".ChannelSymbol.PrivateMessageRe", "@r");
-		symbolgroup = lgg.getString(languages+".ChannelSymbol.Group", "@*");
-		symboltemp = lgg.getString(languages+".ChannelSymbol.Temp", ";");
-		symbolperma = lgg.getString(languages+".ChannelSymbol.Perma", ".");
+		initGetL();
+		symbolglobal = lang.getString("ChannelSymbol.Global", "");
+		symboltrade = lang.getString("ChannelSymbol.Trade", "$");
+		symbolauction = lang.getString("ChannelSymbol.Auction", "!");
+		symbolevent = lang.getString("ChannelSymbol.Event", "%");
+		symbollocal = lang.getString("ChannelSymbol.Local", ",");
+		symbolworld = lang.getString("ChannelSymbol.World", "°");
+		symbolsupport = lang.getString("ChannelSymbol.Support", "?");
+		symbolteam = lang.getString("ChannelSymbol.Team", "+");
+		symboladmin = lang.getString("ChannelSymbol.Admin", "#");
+		symbolpm = lang.getString("ChannelSymbol.PrivateMessage", "@");
+		symbolpmre = lang.getString("ChannelSymbol.PrivateMessageRe", "@r");
+		symbolgroup = lang.getString("ChannelSymbol.Group", "@*");
+		symboltemp = lang.getString("ChannelSymbol.Temp", ";");
+		symbolperma = lang.getString("ChannelSymbol.Perma", ".");
+		return true;
+	}
+	 
+	public Configuration get()
+	{
+		return cfg;
+	}
+	
+	public Configuration getCom()
+	{
+		return com;
+	}
+	
+	public Configuration getWord()
+	{
+		return wfi;
+	}
+	
+	public Configuration getL()
+	{
+		return lang;
+	}
+	
+	public boolean saveWordfilter() 
+	{
+		try 
+		 {
+			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(wfi, new File(plugin.getDataFolder(), "wordfilter.yml"));
+		 } catch (IOException e) 
+		 {
+			 e.printStackTrace();
+			 return false;
+		 }
+		 return true;
+	}
+	
+	public boolean saveCommands() 
+	{
+		try 
+		 {
+			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(com, new File(plugin.getDataFolder(), "commands.yml"));
+		 } catch (IOException e) 
+		 {
+			 e.printStackTrace();
+			 return false;
+		 }
+		 return true;
+	}
+	
+	public void initGetL()
+	{
+		if(languages.equalsIgnoreCase("Arabic"))
+		{
+			lang = ara;
+		} else if(languages.equalsIgnoreCase("Dutch"))
+		{
+			lang = dut;
+		} else if(languages.equalsIgnoreCase("French"))
+		{
+			lang = fre;
+		} else if(languages.equalsIgnoreCase("German"))
+		{
+			lang = ger;
+		} else if(languages.equalsIgnoreCase("Hindi"))
+		{
+			lang = hin;
+		} else if(languages.equalsIgnoreCase("Italian"))
+		{
+			lang = ita;
+		} else if(languages.equalsIgnoreCase("Japanese"))
+		{
+			lang = jap;
+		} else if(languages.equalsIgnoreCase("Mandarin"))
+		{
+			lang = mad;
+		} else if(languages.equalsIgnoreCase("Russian"))
+		{
+			lang = rus;
+		} else if(languages.equalsIgnoreCase("Spanish"))
+		{
+			lang = spa;
+		} else
+		{
+			lang = eng;
+		}
+	}
+	
+	public boolean mkdirGeneralFiles()
+	{
+		File config = new File(plugin.getDataFolder(), "bungeeconfig.yml");  
+	    if (!config.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("bungeeconfig.yml")) 
+	    	{       
+	    		Files.copy(in, config.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File commands = new File(plugin.getDataFolder(), "commands.yml");  
+	    if (!commands.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("commands.yml")) 
+	    	{       
+	    		Files.copy(in, commands.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File wordfilter = new File(plugin.getDataFolder(), "wordfilter.yml");  
+	    if (!wordfilter.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("wordfilter.yml")) 
+	    	{       
+	    		Files.copy(in, wordfilter.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
 		return true;
 	}
 	
-	public boolean loadYaml()
-	 {
-		 try 
-		 {
-			 cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(plugin.getDataFolder(), "bungeeconfig.yml"));
-		 } catch (IOException e) 
-		 {
-			 e.printStackTrace();
-			 return false;
-		 }
-		 try 
-		 {
-			 lgg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(plugin.getDataFolder(), "language.yml"));
-		 } catch (IOException e) 
-		 {
-			 e.printStackTrace();
-			 return false;
-		 }
-		 return true;
-	 }
-		
-	 public boolean saveConfig()
-	 {
-		 try 
-		 {
-			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(cfg, new File(plugin.getDataFolder(), "bungeeconfig.yml"));
-		 } catch (IOException e) 
-		 {
-			 e.printStackTrace();
-			 return false;
-		 }
-		 return true;
-	 }
-	 
-	 public boolean saveLanguage()
-	 {
-		 try 
-		 {
-			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(lgg, new File(plugin.getDataFolder(), "language.yml"));
-		 } catch (IOException e) 
-		 {
-			 e.printStackTrace();
-			 return false;
-		 }
-		 return true;
-	 }
-	 
-	 public boolean mkdir()
-	 {
-		 if (!plugin.getDataFolder().exists())
-		 {
-			 plugin.getDataFolder().mkdir();
-		 } 
-	     File c = new File(plugin.getDataFolder(), "bungeeconfig.yml");  
-	     if (!c.exists()) 
-	     {
-	    	 try (InputStream in = plugin.getResourceAsStream("bungeeconfig.yml")) 
-	    	 {       
-	    		 Files.copy(in, c.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-	     }
-	     File l = new File(plugin.getDataFolder(), "language.yml");  
-	     if (!l.exists()) 
-	     {
-	    	 try (InputStream in = plugin.getResourceAsStream("language.yml")) 
-	    	 {       
-	    		 Files.copy(in, l.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-	     }
-	     return true;
-	 }
-	 
-	 public Configuration get()
-	 {
-		 return cfg;
-	 }
-	 
-	 public Configuration getL()
-	 {
-		 return lgg;
-	 }
+	private boolean loadGeneralFiles()
+	{
+		try 
+		{
+			cfg = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder(), "bungeeconfig.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			com = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder(), "commands.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			wfi = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder(), "wordfilter.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean mkdir()
+	{
+		File directory = new File(plugin.getDataFolder()+"/Languages/");
+		if(!directory.exists())
+		{
+			directory.mkdir();
+		}
+		File arabic = new File(directory.toPath().toString(), "arabic.yml");  
+	    if (!arabic.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("arabic.yml")) 
+	    	{       
+	    		Files.copy(in, arabic.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File dutch = new File(directory.toPath().toString(), "dutch.yml");  
+	    if (!dutch.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("dutch.yml")) 
+	    	{       
+	    		Files.copy(in, dutch.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File english = new File(directory.toPath().toString(), "english.yml");  
+	    if (!english.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("english.yml")) 
+	    	{       
+	    		Files.copy(in, english.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File french = new File(directory.toPath().toString(), "french.yml");  
+	    if (!french.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("french.yml")) 
+	    	{       
+	    		Files.copy(in, french.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File german = new File(directory.toPath().toString(), "german.yml");  
+	    if (!german.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("german.yml")) 
+	    	{       
+	    		Files.copy(in, german.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File hindi = new File(directory.toPath().toString(), "hindi.yml");  
+	    if (!hindi.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("hindi.yml")) 
+	    	{       
+	    		Files.copy(in, hindi.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File italian = new File(directory.toPath().toString(), "italian.yml");  
+	    if (!italian.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("italian.yml")) 
+	    	{       
+	    		Files.copy(in, italian.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File japanese = new File(directory.toPath().toString(), "japanese.yml");  
+	    if (!japanese.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("japanese.yml")) 
+	    	{       
+	    		Files.copy(in, japanese.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File mandarin = new File(directory.toPath().toString(), "mandarin.yml");  
+	    if (!mandarin.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("mandarin.yml")) 
+	    	{       
+	    		Files.copy(in, mandarin.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File russian = new File(directory.toPath().toString(), "russian.yml");  
+	    if (!russian.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("russian.yml")) 
+	    	{       
+	    		Files.copy(in, russian.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+	    File spanish = new File(directory.toPath().toString(), "spanish.yml");  
+	    if (!spanish.exists()) 
+	    {
+	    	try (InputStream in = plugin.getResourceAsStream("spanish.yml")) 
+	    	{       
+	    		Files.copy(in, spanish.toPath());
+	    	} catch (IOException e) 
+	    	{
+	    		e.printStackTrace();
+	       	 	return false;
+	    	}
+	    }
+		return true;
+	}
+	
+	public boolean loadYamls()
+	{
+		try 
+		{
+			ara = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "arabic.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			dut = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "dutch.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			eng = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "english.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			fre = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "french.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			ger = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "german.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			hin = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "hindi.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			ita = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "italian.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			jap = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "japanese.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			mad = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "mandarin.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			rus = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "russian.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		try 
+		{
+			spa = ConfigurationProvider.getProvider(YamlConfiguration.class)
+					.load(new File(plugin.getDataFolder()+"/Languages/", "spanish.yml"));
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 	 
 	 public String getChannel(String channelwithoutsymbol, String msg)
 	 {
@@ -175,6 +512,13 @@ public class YamlHandler
 			 if(msg.startsWith(symbolauction))
 			 {
 				 return "Auction";
+			 }
+		 }
+		 if(!cws.equalsIgnoreCase("Event"))
+		 {
+			 if(msg.startsWith(symbolevent))
+			 {
+				 return "Event";
 			 }
 		 }
 		 if(!cws.equalsIgnoreCase("Local"))
@@ -261,6 +605,9 @@ public class YamlHandler
 		} else if(channel.equals("Auction"))
 		{
 			return symbolauction;
+		} else if(channel.equals("Event"))
+		{
+			return symbolevent;
 		} else if(channel.equals("Local"))
 		{
 			return symbollocal;
@@ -293,10 +640,5 @@ public class YamlHandler
 			 return symbolpm;
 		}
 		return symbolglobal;
-	 }
-	 
-	 public String getLanguages()
-	 {
-	    return languages;
 	 }
 }

@@ -3,18 +3,19 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 
-public class ARGTemporaryChannelLeave extends CommandModule
+public class ARGTemporaryChannelLeave extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelLeave(SimpleChatChannels plugin)
+	public ARGTemporaryChannelLeave(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tcleave","scc.cmd.tc.leave",SimpleChatChannels.sccarguments,1,1,"tcverlassen");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,13 +23,13 @@ public class ARGTemporaryChannelLeave extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannel"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotInAChannel")));
 			return;
 		}
 		final String name = cc.getName();
@@ -47,7 +48,7 @@ public class ARGTemporaryChannelLeave extends CommandModule
 			{
 				cc.setCreator(newcreator);
 				///Du wurdest der neue Erstelle der CustomChannels &f%channel%
-    			newcreator.spigot().sendMessage(utility.tctl(
+    			newcreator.spigot().sendMessage(ChatApi.tctl(
     					plugin.getYamlHandler().getL().getString(language+"TCLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			} else 
@@ -58,7 +59,7 @@ public class ARGTemporaryChannelLeave extends CommandModule
 			
 		}
 		///Du hast den CustomChannel &f%channel% &everlassen!
-		player.spigot().sendMessage(utility.tctl(
+		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(language+"TCLeave.YouLeft")
 				.replace("%channel%", name)));
 		return;

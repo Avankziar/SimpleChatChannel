@@ -1,5 +1,7 @@
 package main.java.me.avankziar.simplechatchannels.spigot.listener;
 
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,9 +10,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
+import main.java.me.avankziar.simplechatchannels.objects.ConvertHandler;
+import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -23,35 +29,47 @@ public class EVENTJoinLeave implements Listener
 	{
 		this.plugin = plugin;
 	}
+	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event)
 	{
+		Player player = event.getPlayer();
+		ChatUser cu = plugin.getUtility().controlChannelSaves(player);
+		event.setJoinMessage("");
 		if(plugin.getYamlHandler().get().getBoolean("Bungee", false))
 		{
-			event.setJoinMessage("");
 			return;
 		}
-		event.setJoinMessage("");
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
-		Player player = event.getPlayer();
 		String pn = player.getName();
-		utility.controlChannelSaves(player);
-		String oldplayername = (String) plugin.getMysqlHandler().getDataI(
-				player.getUniqueId().toString(), "player_name", "player_uuid");
 		//Names Aktualisierung
-		if(!oldplayername.equals(pn))
+		if(!cu.getName().equals(pn))
 		{
-			plugin.getMysqlHandler().updateDataI(player, pn, "player_name");
+			cu.setName(pn);
+			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+					"`player_uuid` = ?", cu.getUUID());
+			ChatUser.addChatUser(cu);
+			int end = plugin.getMysqlHandler().lastID(MysqlHandler.Type.IGNOREOBJECT);
+			ArrayList<IgnoreObject> iolist = ConvertHandler.convertListII(
+					plugin.getMysqlHandler().getTop(MysqlHandler.Type.IGNOREOBJECT, "`id`", true, 0, end));
+			for(IgnoreObject io : iolist)
+			{
+				if(io.getIgnoreUUID().equals(player.getUniqueId().toString()))
+				{
+					IgnoreObject newio = io;
+					newio.setIgnoreName(pn);
+					plugin.getMysqlHandler().updateData(MysqlHandler.Type.IGNOREOBJECT, newio,
+							"`player_uuid` = ? AND `ignore_uuid` = ?",
+							io.getUUID(), io.getIgnoreUUID());
+				}
+			}
 		}
-		if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
+		if(cu.isOptionJoinMessage())
 		{
-			player.spigot().sendMessage(utility.tctl(utility.getActiveChannels(player)));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu)));
 			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
-			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(
-					language+".EventJoinLeave.Welcome").replace("%player%", pn)));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(
+					"EventJoinLeave.Welcome").replace("%player%", pn)));
 		}
-		plugin.getMysqlHandler().updateDataII(player, pn, "ignore_name", "ignore_uuid");
 		Boolean globaljoin = plugin.getYamlHandler().get().getBoolean("ShowJoinMessageGlobal", true);
 		if(globaljoin==false)
 		{
@@ -61,16 +79,21 @@ public class EVENTJoinLeave implements Listener
 		{
 			if(!all.getName().equals(player.getName()))
 			{
-				if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
+				ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+				if(allcu != null)
 				{
-					///%player% &6hat den Server betreten!
-					TextComponent msg = utility.apichat(
-							plugin.getYamlHandler().getL().getString(language+".EventJoinLeave.PlayerEnter").replace("%player%", pn), 
-							ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" ", 
-							HoverEvent.Action.SHOW_TEXT, 
-							plugin.getYamlHandler().getL().getString(language+".ChannelExtra.Hover.Message").replace("%player%", pn), 
-							false);
-					all.spigot().sendMessage(msg);
+					if(allcu.isOptionJoinMessage())
+					{
+						///%player% &6hat den Server betreten!
+						TextComponent msg = ChatApi.apiChat(
+								plugin.getYamlHandler().getL().getString("EventJoinLeave.PlayerEnter")
+								.replace("%player%", pn), 
+								ClickEvent.Action.SUGGEST_COMMAND, "@"+player.getName()+" ", 
+								HoverEvent.Action.SHOW_TEXT, 
+								plugin.getYamlHandler().getL().getString("ChannelExtra.Hover.Message")
+								.replace("%player%", pn));
+						all.spigot().sendMessage(msg);
+					}
 				}
 			}
 		}
@@ -92,9 +115,7 @@ public class EVENTJoinLeave implements Listener
 			event.setQuitMessage("");
 			return;
 		}
-		Utility utility = plugin.getUtility();
-		String scc = ".CmdScc.";
-		String language = utility.getLanguage();
+		String scc = "CmdScc.";
 		
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(event.getPlayer());
 		if(cc!=null)
@@ -112,8 +133,8 @@ public class EVENTJoinLeave implements Listener
     			}
     			cc.setCreator(newcreator);
     			///Du wurdest der neue Ersteller der CustomChannels %channel%
-    			newcreator.spigot().sendMessage(utility.tctl(
-    					plugin.getYamlHandler().getL().getString(language+scc+"CCLeave.NewCreator")
+    			newcreator.spigot().sendMessage(ChatApi.tctl(
+    					plugin.getYamlHandler().getL().getString(scc+"CCLeave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			}
 		}
@@ -127,12 +148,16 @@ public class EVENTJoinLeave implements Listener
 		}
 		for(Player all : Bukkit.getOnlinePlayers())
 		{
-			if((boolean) plugin.getMysqlHandler().getDataI(player.getUniqueId().toString(), "joinmessage", "player_uuid"))
+			ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+			if(allcu != null)
 			{
-				///%player% &4hat den Server verlassen!
-				String msg = plugin.getYamlHandler().getL().getString(
-						language+".EventJoinLeave.PlayerQuit").replace("%player%", pn);
-				all.spigot().sendMessage(utility.tctl(msg));
+				if(allcu.isOptionJoinMessage())
+				{
+					///%player% &4hat den Server verlassen!
+					String msg = plugin.getYamlHandler().getL().getString(
+							"EventJoinLeave.PlayerQuit").replace("%player%", pn);
+					all.spigot().sendMessage(ChatApi.tctl(msg));
+				}
 			}
 		}
 		return;

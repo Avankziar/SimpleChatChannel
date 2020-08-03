@@ -4,16 +4,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGChannelLocal extends CommandModule
+public class ARGChannelLocal extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGChannelLocal(SimpleChatChannels plugin)
+	public ARGChannelLocal(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("local",
-				"scc.channels.local",SimpleChatChannels.sccarguments,1,1,"lokal");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 

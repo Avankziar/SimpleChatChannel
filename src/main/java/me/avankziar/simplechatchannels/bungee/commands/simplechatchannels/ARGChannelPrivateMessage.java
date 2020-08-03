@@ -1,18 +1,18 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGChannelPrivateMessage extends CommandModule
+public class ARGChannelPrivateMessage extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGChannelPrivateMessage(SimpleChatChannels plugin)
+	public ARGChannelPrivateMessage(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pm",
-				"scc.channels.pm",SimpleChatChannels.sccarguments,1,1,"pn");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 

@@ -1,39 +1,53 @@
 package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 
-public class ARGUnmute extends CommandModule
+public class ARGUnmute extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGUnmute(SimpleChatChannels plugin)
+	public ARGUnmute(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("unmute","scc.cmd.unmute",SimpleChatChannels.sccarguments,2,2,"entstummen");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		String target = args[1];
-		if(Bukkit.getPlayer(target)== null)
+		OfflinePlayer t = Bukkit.getOfflinePlayer(target);
+		ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,
+				"`player_name` = ?", target);
+		if(cu == null)
 		{
-			player.spigot().sendMessage(utility.tctl(language+"NoPlayerExist"));
+			///Der Spieler ist nicht online oder existiert nicht!
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
 			return;
 		}
-		Player t = Bukkit.getPlayer(target);
-		plugin.getMysqlHandler().updateDataI(player, true, "can_chat");
-		plugin.getMysqlHandler().updateDataI(player, 0L, "mutetime");
-		t.spigot().sendMessage(utility.tctlYaml(language+"Mute.Unmute"));
+		cu.setCanChat(true);
+		cu.setMuteTime(0);
+		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
+		if(t.getPlayer() != null)
+		{
+			ChatUser.addChatUser(cu);
+			t.getPlayer().spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"Mute.Unmute")));
+		}
+		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getL().getString(language+"Mute.HasUnMute")
+				.replace("%player%", t.getName())));
 		return;
 	}
 }

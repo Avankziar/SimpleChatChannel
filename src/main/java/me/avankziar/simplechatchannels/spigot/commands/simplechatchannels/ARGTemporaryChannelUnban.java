@@ -3,18 +3,19 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 
-public class ARGTemporaryChannelUnban extends CommandModule
+public class ARGTemporaryChannelUnban extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelUnban(SimpleChatChannels plugin)
+	public ARGTemporaryChannelUnban(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tcunban","scc.cmd.tc.unban",SimpleChatChannels.sccarguments,2,2,"tcentbannen");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,44 +23,46 @@ public class ARGTemporaryChannelUnban extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannel"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotInAChannel")));
 			return;
 		}
 		Player creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.spigot().sendMessage(utility.tctl(language+"ChannelGeneral.NotTheCreator"));
+			player.spigot().sendMessage(ChatApi.tctl(language+"ChannelGeneral.NotTheCreator"));
 			return;
 		}
 		if(plugin.getServer().getPlayer(args[1])==null)
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.spigot().sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
 			return;
 		}
 		Player target = plugin.getServer().getPlayer(args[1]); 
 		if(!cc.getBanned().contains(target))
 		{
 			///Der Spieler ist nicht auf der Bannliste!
-			player.spigot().sendMessage(utility.tctlYaml(language+"TCUnban.PlayerNotBanned"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCUnban.PlayerNotBanned")));
 			return;
 		}
 		cc.removeBanned(target);
 		///Du hast &f%player% &efür den CustomChannel entbannt!
-		player.spigot().sendMessage(utility.tctl(
+		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(language+"TCUnban.YouUnbanPlayer")
 				.replace("%player%", target.getName())));
 		for(Player members : cc.getMembers())
 		{
 			///Der Spieler &f%player% &ewurde für den CustomChannel entbannt.
-			members.spigot().sendMessage(utility.tctl(
+			members.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCUnban.CreatorUnbanPlayer")
 					.replace("%player%", target.getName())));
 		}

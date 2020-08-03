@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
+import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -55,9 +57,13 @@ public class ServerListener implements Listener
 					}
 			        for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
 			        {
-			        	if((boolean) plugin.getMysqlHandler().getDataI(pp.getUniqueId().toString(), "spy", "player_uuid"))
+			        	ChatUser cu = ChatUser.getChatUser(pp.getUniqueId().toString());
+			        	if(cu != null)
 			        	{
-			        		pp.sendMessage(plugin.getUtility().tctl(Delivery));
+			        		if(cu.isOptionSpy())
+				        	{
+				        		pp.sendMessage(ChatApi.tctl(Delivery));
+				        	}
 			        	}
 			        }
 			        return;

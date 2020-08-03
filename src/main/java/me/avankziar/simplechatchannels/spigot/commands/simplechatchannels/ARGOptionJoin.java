@@ -3,17 +3,20 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 
-public class ARGOptionJoin extends CommandModule
+public class ARGOptionJoin extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGOptionJoin(SimpleChatChannels plugin)
+	public ARGOptionJoin(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("join",
-				"scc.option.join", SimpleChatChannels.sccarguments,1,1,"joinmessage","eintrittsnachricht");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -21,7 +24,32 @@ public class ARGOptionJoin extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		plugin.getCommandHelper().optiontoggle(player, "join", "joinmessage", "Join Message");
+		ChatUser cu = ChatUser.getChatUser(player.getUniqueId());
+		if(cu == null)
+		{
+			return;
+		}
+		if(cu.isOptionJoinMessage())
+		{
+			cu.setOptionJoinMessage(false);
+			ChatUser.addChatUser(cu);
+			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+					"`player_uuid` = ?", player.getUniqueId().toString());
+			///Du hast den Channel %channel% &causgeblendet!
+			player.spigot().sendMessage(ChatApi.tctl(
+					plugin.getYamlHandler().getL().getString("CmdScc.ChannelToggle.ChannelOff")
+					.replace("%channel%", "Join Message")));
+		} else
+		{
+			cu.setOptionJoinMessage(true);
+			ChatUser.addChatUser(cu);
+			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+					"`player_uuid` = ?", player.getUniqueId().toString());
+			///Du hast den Channel %channel% &aeingeblendet!
+			player.spigot().sendMessage(ChatApi.tctl(
+					plugin.getYamlHandler().getL().getString("CmdScc.ChannelToggle.ChannelOn")
+					.replace("%channel%", "Join Message")));
+		}
 		return;
 	}
 }

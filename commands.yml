@@ -1,0 +1,236 @@
+Bypass:
+  Color: 'scc.channels.bypass.color'
+  Command: 'scc.channels.bypass.command'
+  Ignore: 'scc.channels.bypass.ignore'
+  Item: 'scc.channels.bypass.item'
+  ItemUpload: 'scc.channels.bypass.itemupload'
+  Privacy: 'scc.channel.bypass.privacy'
+  Website: 'scc.channels.bypass.website'
+  PermanentChannel: 'scc.cmd.bypass.permanentchannel'
+Custom:
+  Prefix: 'scc.prefix.'
+  Suffix: 'scc.suffix.'
+scc:
+  Name: 'scc'
+  Permission: 'scc.cmd.scc.scc'
+  Suggestion: '/scc'
+clch:
+  Name: 'clch'
+  Permission: 'scc.cmd.clch.clch'
+  Suggestion: '/clch'
+scceditor:
+  Name: 'scceditor'
+  Permission: 'scc.cmd.scceditor.scceditor'
+  Suggestion: '/scceditor'
+msg:
+  Name: 'msg'
+  Permission: 'scc.cmd.msg.msg'
+  Suggestion: '/msg'
+scc_broadcast:
+  Argument: 'broadcast'
+  Permission: 'scc.cmd.broadcast'
+  Suggestion: '/scc broadcast <Message>'
+scc_admin:
+  Argument: 'admin'
+  Permission: 'scc.channels.admin'
+  Suggestion: '/scc admin'
+scc_auction:
+  Argument: 'auction'
+  Permission: 'scc.channels.auction'
+  Suggestion: '/scc auction'
+scc_event:
+  Argument: 'event'
+  Permission: 'scc.channels.event'
+  Suggestion: '/scc event'
+scc_global:
+  Argument: 'global'
+  Permission: 'scc.channels.global'
+  Suggestion: '/scc global'
+scc_group:
+  Argument: 'group'
+  Permission: 'scc.channels.group'
+  Suggestion: '/scc group'
+scc_local:
+  Argument: 'local'
+  Permission: 'scc.channels.local'
+  Suggestion: '/scc local'
+scc_perma:
+  Argument: 'perma'
+  Permission: 'scc.channels.perma'
+  Suggestion: '/scc perma'
+scc_pm:
+  Argument: 'pm'
+  Permission: 'scc.channels.pm'
+  Suggestion: '/scc pm'
+scc_support:
+  Argument: 'support'
+  Permission: 'scc.channels.support'
+  Suggestion: '/scc support'
+scc_team:
+  Argument: 'team'
+  Permission: 'scc.channels.team'
+  Suggestion: '/scc team'
+scc_temp:
+  Argument: 'temp'
+  Permission: 'scc.channels.temp'
+  Suggestion: '/scc temp'
+scc_trade:
+  Argument: 'trade'
+  Permission: 'scc.channels.trade'
+  Suggestion: '/scc trade'
+scc_world:
+  Argument: 'world'
+  Permission: 'scc.channels.world'
+  Suggestion: '/scc world'
+scc_grouplist:
+  Argument: 'grouplist'
+  Permission: 'scc.cmd.grouplist'
+  Suggestion: '/scc grouplist [Searchstring]'
+scc_ignore:
+  Argument: 'ignore'
+  Permission: 'scc.cmd.ignore'
+  Suggestion: '/scc ignore [Playername]'
+scc_ignorelist:
+  Argument: 'ignorelist'
+  Permission: 'scc.cmd.ignorelist'
+  Suggestion: '/scc ignorelist'
+scc_mute:
+  Argument: 'mute'
+  Permission: 'scc.cmd.mute'
+  Suggestion: '/scc mute'
+scc_join:
+  Argument: 'join'
+  Permission: 'scc.option.join'
+  Suggestion: '/scc join'
+scc_spy:
+  Argument: 'spy'
+  Permission: 'scc.option.spy'
+  Suggestion: '/scc spy'
+scc_pcban:
+  Argument: 'pcban'
+  Permission: 'scc.cmd.pc.ban'
+  Suggestion: '/scc pcban '
+scc_pcchangepassword:
+  Argument: 'pcchangepassword'
+  Permission: 'scc.cmd.pc.changepassword'
+  Suggestion: '/scc pcchangepassword <PermanentChannel> <Password>'
+scc_pcchannels:
+  Argument: 'pcchannels'
+  Permission: 'scc.cmd.pc.channels'
+  Suggestion: '/scc pcchannels'
+scc_pcchatcolor:
+  Argument: 'pcchatcolor'
+  Permission: 'scc.cmd.pc.chatcolor'
+  Suggestion: '/scc pcchatcolor <PermanentChannel> <ChatColorCode>'
+scc_pccreate:
+  Argument: 'pccreate'
+  Permission: 'scc.cmd.pc.create'
+  Suggestion: '/scc pccreate <Name> [Password]'
+scc_pcdelete:
+  Argument: 'pcdelete'
+  Permission: 'scc.cmd.pc.delete'
+  Suggestion: '/scc pcdelete <PermanentChannel> [confirm]'
+scc_pcinfo:
+  Argument: 'pcinfo'
+  Permission: 'scc.cmd.pc.info'
+  Suggestion: '/scc pcinfo [PermanentChannel]'
+scc_pcinherit:
+  Argument: 'pcinherit'
+  Permission: 'scc.cmd.pc.inherit'
+  Suggestion: '/scc pcinherit <PermenantChannel> <Playername>'
+scc_pcinvite:
+  Argument: 'pcinvite'
+  Permission: 'scc.cmd.pc.invite'
+  Suggestion: '/scc pcinvite <PermanentChannel> <Playername>'
+scc_pcjoin:
+  Argument: 'pcjoin'
+  Permission: 'scc.cmd.pc.join'
+  Suggestion: '/scc pcjoin <PermanentChannel> [Password]'
+scc_pckick:
+  Argument: 'pckick'
+  Permission: 'scc.cmd.pc.kick'
+  Suggestion: '/scc pckick <PermanentChannel> <Playername>'
+scc_pcleave:
+  Argument: 'pcleave'
+  Permission: 'scc.cmd.pc.leave'
+  Suggestion: '/scc pcleave <PermanetChannel> [Confirm]'
+scc_pcnamecolor:
+  Argument: 'pcnamecolor'
+  Permission: 'scc.cmd.pc.namecolor'
+  Suggestion: '/scc pcnamecolor <PermanentChannel> <NameColor>'
+scc_pcplayer:
+  Argument: 'pcplayer'
+  Permission: 'scc.cmd.pc.player'
+  Suggestion: '/scc pcplayer [Playername]'
+scc_pcrename:
+  Argument: 'pcrename'
+  Permission: 'scc.cmd.pc.rename'
+  Suggestion: '/scc pcrename <PermanentChannel> <NewName>'
+scc_pcsymbol:
+  Argument: 'pcsymbol'
+  Permission: 'scc.cmd.pc.symbol'
+  Suggestion: '/scc pcsymbol <PermanentChannel> <NewSymbol>'
+scc_pcunban:
+  Argument: 'pcunban'
+  Permission: 'scc.cmd.pc.unban'
+  Suggestion: '/scc pcunban <PermanentChannel> <Playername>'
+scc_pcvice:
+  Argument: 'pcvice'
+  Permission: 'scc.cmd.pc.vice'
+  Suggestion: '/scc pcvice <PermanentChannel> <Playername>'
+scc_playerlist:
+  Argument: 'playerlist'
+  Permission: 'scc.cmd.playerlist'
+  Suggestion: '/scc playerlist <SearchString>'
+scc_reload:
+  Argument: 'reload'
+  Permission: 'scc.cmd.reload'
+  Suggestion: '/scc reload'
+scc_tcban:
+  Argument: 'tcban'
+  Permission: 'scc.cmd.tc.ban'
+  Suggestion: '/scc tcban <Playername>'
+scc_tcchangepassword:
+  Argument: 'tcchangepassword'
+  Permission: 'scc.cmd.tc.changepassword'
+  Suggestion: '/scc tcchangepassword <NewPassword>'
+scc_tccreate:
+  Argument: 'tccreate'
+  Permission: 'scc.cmd.tc.create'
+  Suggestion: '/scc tccreate <Name> [Password]'
+scc_tcinfo:
+  Argument: 'tcinfo'
+  Permission: 'scc.cmd.tc.info'
+  Suggestion: '/scc tcinfo'
+scc_tcinvite:
+  Argument: 'tcinvite'
+  Permission: 'scc.cmd.tc.invite'
+  Suggestion: '/scc tcinvite <Playername>'
+scc_tcjoin:
+  Argument: 'tcjoin'
+  Permission: 'scc.cmd.tc.join'
+  Suggestion: '/scc tcjoin <TemporaryChannel> [Password]'
+scc_tckick:
+  Argument: 'tckick'
+  Permission: 'scc.cmd.tc.kick'
+  Suggestion: '/scc tckick <Playername>'
+scc_tcleave:
+  Argument: 'tcleave'
+  Permission: 'scc.cmd.tc.leave'
+  Suggestion: '/scc tcleave'
+scc_tcunban:
+  Argument: 'tcunban'
+  Permission: 'scc.cmd.tc.unban'
+  Suggestion: '/scc tcunban <Playername>'
+scc_unmute:
+  Argument: 'unmute'
+  Permission: 'scc.cmd.unmute'
+  Suggestion: '/scc unmute <Playername>'
+scc_updateplayer:
+  Argument: 'updateplayer'
+  Permission: 'scc.cmd.updateplayer'
+  Suggestion: '/scc updateplayer <Playername>'
+scc_wordfilter:
+  Argument: 'wordfilter'
+  Permission: 'scc.cmd.wordfilter'
+  Suggestion: '/scc wordfilter <Word>'

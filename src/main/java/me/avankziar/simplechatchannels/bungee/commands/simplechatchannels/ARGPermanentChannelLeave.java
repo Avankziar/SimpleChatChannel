@@ -1,22 +1,23 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGPermanentChannelLeave extends CommandModule
+public class ARGPermanentChannelLeave extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelLeave(SimpleChatChannels plugin)
+	public ARGPermanentChannelLeave(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcleave","scc.cmd.pc.leave",SimpleChatChannels.sccarguments,2,3,"pcverlassen",
-				"<Channelname>".split(";"));
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -24,13 +25,12 @@ public class ARGPermanentChannelLeave extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
-			player.sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
 					.replace("%channel%", args[1])));
 			return;
 		}
@@ -38,8 +38,8 @@ public class ARGPermanentChannelLeave extends CommandModule
 		{
 			if(cc.getCreator().equals(player.getUniqueId().toString()))
 			{
-				player.sendMessage(plugin.getUtility().clickEvent(language+"PCLeave.Confirm",
-						ClickEvent.Action.SUGGEST_COMMAND, "/scc pcleave "+args[1]+" confirm", true));
+				player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getL().getString(language+"PCLeave.Confirm"),
+						ClickEvent.Action.SUGGEST_COMMAND, "/scc pcleave "+args[1]+" confirm"));
 				return;
 			} else
 			{
@@ -47,7 +47,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 				cc.removeVice(player.getUniqueId().toString());
 				plugin.getUtility().updatePermanentChannels(cc);
 				///Du hast den CustomChannel &f%channel% &everlassen!
-				player.sendMessage(utility.tctl(
+				player.sendMessage(ChatApi.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCLeave.YouLeft")
 						.replace("%channel%", cc.getNameColor()+cc.getName())));
 				for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
@@ -55,7 +55,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 					if(cc.getMembers().contains(members.getUniqueId().toString()))
 					{
 						///Der Spieler &f%player% &chat den &5perma&fnenten &cChannel &f%channel% &cverlassen!
-						members.sendMessage(utility.tctl(
+						members.sendMessage(ChatApi.tctl(
 								plugin.getYamlHandler().getL().getString(language+"PCLeave.PlayerLeft")
 								.replace("%player%", player.getName()).replace("%channel%", cc.getNameColor()+cc.getName())));
 					}
@@ -72,12 +72,12 @@ public class ARGPermanentChannelLeave extends CommandModule
 					{
 						if(cc.getMembers().contains(members.getUniqueId().toString()))
 						{
-							members.sendMessage(utility.tctl(
+							members.sendMessage(ChatApi.tctl(
 									plugin.getYamlHandler().getL().getString(language+"PCLeave.CreatorLeft")
 									.replace("%channel%", cc.getNameColor()+cc.getName())));
 						}
 					}
-					plugin.getMysqlHandler().deleteDataIII(cc.getId());
+					plugin.getMysqlHandler().deleteData(MysqlHandler.Type.PERMANENTCHANNEL, "`id` = ?", cc.getId());
 					PermanentChannel.removeCustomChannel(cc);
 					return;
 				} else
@@ -86,7 +86,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 					cc.removeVice(player.getUniqueId().toString());
 					plugin.getUtility().updatePermanentChannels(cc);
 					///Du hast den CustomChannel &f%channel% &everlassen!
-					player.sendMessage(utility.tctl(
+					player.sendMessage(ChatApi.tctl(
 							plugin.getYamlHandler().getL().getString(language+"PCLeave.YouLeft")
 							.replace("%channel%", cc.getNameColor()+cc.getName())));
 					for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
@@ -94,7 +94,7 @@ public class ARGPermanentChannelLeave extends CommandModule
 						if(cc.getMembers().contains(members.getUniqueId().toString()))
 						{
 							///Der Spieler &f%player% &chat den &5perma&fnenten &cChannel &f%channel% &cverlassen!
-							members.sendMessage(utility.tctl(
+							members.sendMessage(ChatApi.tctl(
 									plugin.getYamlHandler().getL().getString(language+"PCLeave.PlayerLeft")
 									.replace("%player%", player.getName()).replace("%channel%", cc.getNameColor()+cc.getName())));
 						}
@@ -104,8 +104,8 @@ public class ARGPermanentChannelLeave extends CommandModule
 			} else
 			{
 				///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-				player.sendMessage(plugin.getUtility().clickEvent(language+".CmdScc.InputIsWrong",
-						ClickEvent.Action.RUN_COMMAND, "/scc", true));
+				player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getL().getString(language+".CmdScc.InputIsWrong"),
+						ClickEvent.Action.RUN_COMMAND, "/scc"));
 				return;
 			}
 		}

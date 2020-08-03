@@ -5,18 +5,20 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGPermanentChannelPlayer extends CommandModule
+public class ARGPermanentChannelPlayer extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelPlayer(SimpleChatChannels plugin)
+	public ARGPermanentChannelPlayer(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcplayer","scc.cmd.pc.player",SimpleChatChannels.sccarguments,1,2,"pcspieler");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -24,9 +26,7 @@ public class ARGPermanentChannelPlayer extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
-		String scc = ".CmdScc.";
+		String scc = "CmdScc.";
 		String uuid = "";
 		String name = "";
 		if(args.length == 1)
@@ -38,10 +38,16 @@ public class ARGPermanentChannelPlayer extends CommandModule
 			if(!player.hasPermission(Utility.PERMBYPASSPCDELETE))
 			{
 				///Du hast dafür keine Rechte!
-				player.spigot().sendMessage(plugin.getUtility().tctlYaml(language+".CmdScc.NoPermission"));
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPermission")));
 				return;
 			}
-			uuid = (String) plugin.getMysqlHandler().getDataI(args[1], "player_uuid", "player_name");
+			uuid = Utility.convertNameToUUID(args[1]).toString();
+			if(uuid == null)
+			{
+				///Der Spieler ist nicht online oder existiert nicht!
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"NoPlayerExist")));
+				return;
+			}
 			name = args[1];
 		}
 		int creators = 0;
@@ -152,20 +158,20 @@ public class ARGPermanentChannelPlayer extends CommandModule
 		}
 		banned += "&r]";
 		///&e=====&5[&fCustomChannel &6%channel%&5]&e=====
-		player.spigot().sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Headline")
+		player.spigot().sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Headline")
 				.replace("%player%", name)));
-		player.spigot().sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Creator")
+		player.spigot().sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Creator")
 				.replace("%creator%", creator)));
-		player.spigot().sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Vice")
+		player.spigot().sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Vice")
 				.replace("%vice%", vice)));
-		player.spigot().sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Member")
+		player.spigot().sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Member")
 				.replace("%member%", member)));
-		player.spigot().sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Banned")
+		player.spigot().sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Banned")
 				.replace("%banned%", banned)));
 		return;
 	}

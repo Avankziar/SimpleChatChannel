@@ -3,18 +3,19 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGPermanentChannelChangePassword extends CommandModule
+public class ARGPermanentChannelChangePassword extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelChangePassword(SimpleChatChannels plugin)
+	public ARGPermanentChannelChangePassword(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcchangepassword","scc.cmd.pc.changepassword",SimpleChatChannels.sccarguments,3,3,"pcpasswortändern");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,28 +23,26 @@ public class ARGPermanentChannelChangePassword extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
-		String scc = ".CmdScc.";
+		String scc = "CmdScc.";
 		PermanentChannel cc = PermanentChannel.getChannelFromName(args[1]);
 		if(cc==null)
 		{
 			///Du bist in keinem permanenten Channel!
-			player.spigot().sendMessage(utility.tctl(plugin.getYamlHandler().getL().getString(language+scc+"ChannelGeneral.ChannelNotExistII")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.ChannelNotExistII")
 					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()))
 		{
 			///Du bist nicht der Ersteller des permanenten Channel!
-			player.spigot().sendMessage(utility.tctlYaml(language+scc+"ChannelGeneral.NotTheCreatorII"));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotTheCreatorII")));
 			return;
 		}
 		cc.setPassword(args[2]);
 		plugin.getUtility().updatePermanentChannels(cc);
 		///Du hast das Passwort zu &f%password% &egeändert!
-		player.spigot().sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCChangepassword.PasswordChange")
+		player.spigot().sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCChangepassword.PasswordChange")
 				.replace("%password%", args[2])));
 		return;
 	}

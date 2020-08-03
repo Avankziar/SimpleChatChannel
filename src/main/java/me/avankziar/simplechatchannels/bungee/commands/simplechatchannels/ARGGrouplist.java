@@ -4,22 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGGrouplist extends CommandModule
+public class ARGGrouplist extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 
-	public ARGGrouplist(SimpleChatChannels plugin)
+	public ARGGrouplist(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("grouplist",
-				"scc.cmd.grouplist",SimpleChatChannels.sccarguments,1,2,"gruppenliste");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -28,27 +29,25 @@ public class ARGGrouplist extends CommandModule
 	{
 		//All needed vars
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
 		List<BaseComponent> list = new ArrayList<>();
 		int i = 1;
-		int groupamount = Integer.parseInt(plugin.getYamlHandler().getL().getString(language+".PrefixSuffixAmount"));
+		int groupamount = Integer.parseInt(plugin.getYamlHandler().getL().getString("PrefixSuffixAmount"));
 		ArrayList<String> groups = new ArrayList<>();
 		while(i<=groupamount)
 		{
-			if(plugin.getYamlHandler().getL().getString(language+".Prefix."+i).contains("&"))
+			if(plugin.getYamlHandler().getL().getString("Prefix."+i).contains("&"))
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".Prefix."+i).substring(2));
+				groups.add(plugin.getYamlHandler().getL().getString("Prefix."+i).substring(2));
 			} else
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".Prefix."+i));
+				groups.add(plugin.getYamlHandler().getL().getString("Prefix."+i));
 			}
-			if(plugin.getYamlHandler().getL().getString(language+".Suffix"+i).contains("&"))
+			if(plugin.getYamlHandler().getL().getString("Suffix"+i).contains("&"))
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".Suffix"+i).substring(2));
+				groups.add(plugin.getYamlHandler().getL().getString("Suffix"+i).substring(2));
 			} else
 			{
-				groups.add(plugin.getYamlHandler().getL().getString(language+".Suffix"+i));
+				groups.add(plugin.getYamlHandler().getL().getString("Suffix"+i));
 			}
 			i++;
 		}
@@ -56,8 +55,8 @@ public class ARGGrouplist extends CommandModule
 		{
 			for(String g : groups)
     		{
-				TextComponent prefix = utility.clickEvent("&6"+g+" ", 
-						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+g+" ", false);
+				TextComponent prefix = ChatApi.clickEvent("&6"+g+" ", 
+						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+g+" ");
 				list.add(prefix);
     		}
 		} else if(args.length==2)
@@ -67,8 +66,8 @@ public class ARGGrouplist extends CommandModule
     		{
 				if(Utility.containsIgnoreCase(s, g))
 				{
-					TextComponent prefix = utility.clickEvent("&6"+g+" ", 
-							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+g+" ", false);
+					TextComponent prefix = ChatApi.clickEvent("&6"+g+" ", 
+							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("Group")+g+" ");
     				list.add(prefix);	
 				}
     		}

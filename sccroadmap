@@ -1,7 +1,25 @@
-Build 36 ================================================================================================
+Build 37 ===============================================================================================
 - Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
 - logging korrekt alles anzeigen
 - Befehl "/scc safeitem <Zahl> " einführen um mehrfach items auf den Spieler zu registrieren zu können => <item1> <item2> etc.
+- Neuer replacer <book> einfügen, um per Click und Hover Event das Buch direkt lesen zu können.
+- Vault unterstützung anbieten um pauschal oder per Charakter geld abzuziehen, channel spezifisch.
+- Werbungsmöglichkeit implementieren.
+- /scc => nach permission abfragen
+- scc.cmd.unmute auf spigot seite aufführen
+- Base Command custom machen per config.yml
+- Befehl einführen um sich Texte zu speichern
+- Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
+
+Build 36 ================================================================================================
+- +/ignore => gibt es einen null fehler
+- +wordfilter.yml erstellen
+- +/msg
+- +HexColor
+- +commands.yml
+- +event Channel
+- +11 Language Files
+
 =========================================================================================================
 
 Build 35 =================================================================================================

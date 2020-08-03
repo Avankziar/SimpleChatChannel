@@ -1,20 +1,20 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGTemporaryChannelUnban extends CommandModule
+public class ARGTemporaryChannelUnban extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGTemporaryChannelUnban(SimpleChatChannels plugin)
+	public ARGTemporaryChannelUnban(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("tcunban","scc.cmd.tc.unban",SimpleChatChannels.sccarguments,2,2,"tcentbannen",
-				"<Player>".split(";"));
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,44 +22,43 @@ public class ARGTemporaryChannelUnban extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc==null)
 		{
 			///Du bist in keinem CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"ChannelGeneral.NotInAChannel"));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotInAChannel")));
 			return;
 		}
 		ProxiedPlayer creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(utility.tctl(language+"ChannelGeneral.NotTheCreator"));
+			player.sendMessage(ChatApi.tctl(language+"ChannelGeneral.NotTheCreator"));
 			return;
 		}
 		if(plugin.getProxy().getPlayer(args[1])==null)
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.sendMessage(utility.tctlYaml(language+"NoPlayerExist"));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
 			return;
 		}
 		ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]); 
 		if(!cc.getBanned().contains(target))
 		{
 			///Der Spieler ist nicht auf der Bannliste!
-			player.sendMessage(utility.tctlYaml(language+"TCUnban.PlayerNotBanned"));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"TCUnban.PlayerNotBanned")));
 			return;
 		}
 		cc.removeBanned(target);
 		///Du hast &f%player% &efür den CustomChannel entbannt!
-		player.sendMessage(utility.tctl(
+		player.sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(language+"TCUnban.YouUnbanPlayer")
 				.replace("%player%", target.getName())));
 		for(ProxiedPlayer members : cc.getMembers())
 		{
 			///Der Spieler &f%player% &ewurde für den CustomChannel entbannt.
-			members.sendMessage(utility.tctl(
+			members.sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"TCUnban.CreatorUnbanPlayer")
 					.replace("%player%", target.getName())));
 		}

@@ -3,20 +3,21 @@ package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchan
 import java.util.ArrayList;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.bungee.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGPermanentChannelPlayer extends CommandModule
+public class ARGPermanentChannelPlayer extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelPlayer(SimpleChatChannels plugin)
+	public ARGPermanentChannelPlayer(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcplayer","scc.cmd.pc.player",SimpleChatChannels.sccarguments,1,2,"pcspieler",
-				"[Spieler]".split(";"));
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -24,9 +25,7 @@ public class ARGPermanentChannelPlayer extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage();
-		String scc = ".CmdScc.";
+		String scc = "CmdScc.";
 		String uuid = "";
 		String name = "";
 		if(args.length == 1)
@@ -38,10 +37,16 @@ public class ARGPermanentChannelPlayer extends CommandModule
 			if(!player.hasPermission(Utility.PERMBYPASSPCDELETE))
 			{
 				///Du hast dafür keine Rechte!
-				player.sendMessage(plugin.getUtility().tctlYaml(language+".CmdScc.NoPermission"));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPermission")));
 				return;
 			}
-			uuid = (String) plugin.getMysqlHandler().getDataI(args[1], "player_uuid", "player_name");
+			uuid = Utility.convertNameToUUID(args[1]).toString();
+			if(uuid == null)
+			{
+				///Der Spieler ist nicht online oder existiert nicht!
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"NoPlayerExist")));
+				return;
+			}
 			name = args[1];
 		}
 		int creators = 0;
@@ -152,20 +157,20 @@ public class ARGPermanentChannelPlayer extends CommandModule
 		}
 		banned += "&r]";
 		///&e=====&5[&fCustomChannel &6%channel%&5]&e=====
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Headline")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Headline")
 				.replace("%player%", name)));
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Creator")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Creator")
 				.replace("%creator%", creator)));
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Vice")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Vice")
 				.replace("%vice%", vice)));
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Member")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Member")
 				.replace("%member%", member)));
-		player.sendMessage(utility.tctl(
-				plugin.getYamlHandler().getL().getString(language+scc+"PCPlayer.Banned")
+		player.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString(scc+"PCPlayer.Banned")
 				.replace("%banned%", banned)));
 		return;
 	}

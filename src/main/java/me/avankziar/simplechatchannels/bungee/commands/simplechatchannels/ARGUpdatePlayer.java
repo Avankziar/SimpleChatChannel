@@ -1,57 +1,59 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGUpdatePlayer extends CommandModule
+public class ARGUpdatePlayer extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGUpdatePlayer(SimpleChatChannels plugin)
+	public ARGUpdatePlayer(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("updateplayer",
-				"scc.cmd.updateplayer",SimpleChatChannels.sccarguments,2,2,"aktualisierungplayer");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		ProxiedPlayer players = (ProxiedPlayer) sender;
 		String playername = args[1];
-		String language = plugin.getYamlHandler().getLanguages();
-		if(plugin.getMysqlHandler().hasAccount(playername))
+		ProxiedPlayer target = plugin.getProxy().getPlayer(playername);
+		ChatUser cuo = ChatUser.getChatUser(args[1]);
+		if(cuo == null || target == null)
 		{
-			MysqlHandler mi = plugin.getMysqlHandler();
-			mi.updateDataI(player, player.hasPermission("scc.channels.global"), "channel_global");
-			mi.updateDataI(player, player.hasPermission("scc.channels.local"), "channel_local");
-			mi.updateDataI(player, player.hasPermission("scc.channels.auction"), "channel_auction");
-			mi.updateDataI(player, player.hasPermission("scc.channels.trade"), "channel_trade");
-			mi.updateDataI(player, player.hasPermission("scc.channels.support"), "channel_support");
-			mi.updateDataI(player, player.hasPermission("scc.channels.team"), "channel_team");
-			mi.updateDataI(player, player.hasPermission("scc.channels.admin"), "channel_admin");
-			mi.updateDataI(player, player.hasPermission("scc.channels.world"), "channel_world");
-			mi.updateDataI(player, player.hasPermission("scc.channels.group"), "channel_group");
-			mi.updateDataI(player, player.hasPermission("scc.channels.pm"), "channel_pm");
-			mi.updateDataI(player, player.hasPermission("scc.channels.temp"), "channel_temp");
-			mi.updateDataI(player, player.hasPermission("scc.channels.perma"), "channel_perma");
-			mi.updateDataI(player, player.hasPermission("scc.option.spy"), "spy");
-			player.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".CmdScc.UpdatePlayer.IsUpdated")
-					.replace("%player%", playername)));
-			if(plugin.getProxy().getPlayer(playername) != null)
-			{
-				ProxiedPlayer target = plugin.getProxy().getPlayer(playername);
-				target.sendMessage(plugin.getUtility().tctl(plugin.getYamlHandler().getL().getString(language+".CmdScc.UpdatePlayer.YouWasUpdated")
-						.replace("%player%", playername)));
-			}
+			players.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPlayerExist")));
 			return;
 		}
-		player.sendMessage(plugin.getUtility().tctl(
-				plugin.getYamlHandler().getL().getString(
-						plugin.getUtility().getLanguage()+".CmdScc.UpdatePlayer.Error")));
+		cuo.setChannelGlobal(target.hasPermission("scc.channels.global"));
+		cuo.setChannelTrade(target.hasPermission("scc.channels.trade"));
+		cuo.setChannelAuction(target.hasPermission("scc.channels.auction"));
+		cuo.setChannelSupport(target.hasPermission("scc.channels.support"));
+		cuo.setChannelTeam(target.hasPermission("scc.channels.team"));
+		cuo.setChannelAdmin(target.hasPermission("scc.channels.admin"));
+		cuo.setChannelEvent(target.hasPermission("scc.channels.event"));
+		cuo.setChannelLocal(target.hasPermission("scc.channels.local"));
+		cuo.setChannelWorld(target.hasPermission("scc.channels.world"));
+		cuo.setChannelGroup(target.hasPermission("scc.channels.group"));
+		cuo.setChannelPrivateMessage(target.hasPermission("scc.channels.pm"));
+		cuo.setChannelTemporary(target.hasPermission("scc.channels.pm"));
+		cuo.setChannelPermanent(target.hasPermission("scc.channels.pm"));
+		cuo.setOptionSpy(target.hasPermission("scc.option.spy"));
+		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cuo, "`player_uuid` = ?", cuo.getUUID());
+		ChatUser.addChatUser(cuo);
+		
+		players.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString("CmdScc.Updatetarget.IsUpdated")
+				.replace("%target%", playername)));
+		target.sendMessage(ChatApi.tctl(
+				plugin.getYamlHandler().getL().getString("CmdScc.Updatetarget.YouWasUpdated")
+				.replace("%target%", target.getName())));
 		return;
 	}
 }

@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGPlayerlist extends CommandModule
+public class ARGPlayerlist extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPlayerlist(SimpleChatChannels plugin)
+	public ARGPlayerlist(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("playerlist",
-				"scc.cmd.playerlist", SimpleChatChannels.sccarguments,1,2,"spielerliste",
-				"[Players]".split(";"));
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -35,8 +35,9 @@ public class ARGPlayerlist extends CommandModule
 		{
 			for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
     		{
-				TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
-						ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);
+				TextComponent prefix = ChatApi.clickEvent("&e"+pp.getName()+" ", 
+						ClickEvent.Action.SUGGEST_COMMAND,
+						plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ");
 				list.add(prefix);
     		}
 		} else if(args.length==2)
@@ -46,8 +47,9 @@ public class ARGPlayerlist extends CommandModule
     		{
 				if(Utility.containsIgnoreCase(pp.getName(), s))
 				{
-					TextComponent prefix = utility.clickEvent("&e"+pp.getName()+" ", 
-							ClickEvent.Action.SUGGEST_COMMAND, plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ", false);
+					TextComponent prefix = ChatApi.clickEvent("&e"+pp.getName()+" ", 
+							ClickEvent.Action.SUGGEST_COMMAND,
+							plugin.getYamlHandler().getSymbol("PrivateMessage")+pp.getName()+" ");
     				list.add(prefix);
 				}
     		}

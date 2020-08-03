@@ -3,18 +3,19 @@ package main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchan
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.spigot.Utility;
-import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandModule;
-import main.java.me.avankziar.simplechatchannels.spigot.interfaces.PermanentChannel;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 
-public class ARGPermanentChannelJoin extends CommandModule
+public class ARGPermanentChannelJoin extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGPermanentChannelJoin(SimpleChatChannels plugin)
+	public ARGPermanentChannelJoin(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("pcjoin","scc.cmd.pc.join",SimpleChatChannels.sccarguments,2,3,"pcbeitreten");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -22,8 +23,7 @@ public class ARGPermanentChannelJoin extends CommandModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		Utility utility = plugin.getUtility();
-		String language = utility.getLanguage() + ".CmdScc.";
+		String language = "CmdScc.";
 		String name = null;
 		String password = null;
 		if(args.length==2)
@@ -38,7 +38,7 @@ public class ARGPermanentChannelJoin extends CommandModule
 		if(cc==null)
 		{
 			///Es gibt keinen CustomChannel mit dem Namen &f%name%&c!
-			player.spigot().sendMessage(utility.tctl(
+			player.spigot().sendMessage(ChatApi.tctl(
 					plugin.getYamlHandler().getL().getString(language+"PCJoin.UnknowChannel")
 					.replace("%name%", name)));
 			return;
@@ -46,13 +46,15 @@ public class ARGPermanentChannelJoin extends CommandModule
 		if(cc.getBanned().contains(player.getUniqueId().toString()))
 		{
 			///Du bist in diesem CustomChannel gebannt und darfst nicht joinen!
-			player.spigot().sendMessage(utility.tctlYaml(language+"PCJoin.Banned"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCJoin.Banned")));
 			return;
 		}
 		if(cc.getMembers().contains(player.getUniqueId().toString()))
 		{
 			///Du bist schon diesem permanenten Channel beigetreten!
-			player.spigot().sendMessage(utility.tctlYaml(language+"PCJoin.AlreadyInTheChannel"));
+			player.spigot().sendMessage(
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCJoin.AlreadyInTheChannel")));
 			return;
 		}
 		if(password==null)
@@ -60,7 +62,8 @@ public class ARGPermanentChannelJoin extends CommandModule
 			if(cc.getPassword()!=null)
 			{
 				///Der CustomChannel hat ein Passwort, bitte gebe die beim Joinen an!
-				player.spigot().sendMessage(utility.tctlYaml(language+"PCJoin.ChannelHasPassword"));
+				player.spigot().sendMessage(
+						ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCJoin.ChannelHasPassword")));
 				return;
 			}
 		} else
@@ -68,13 +71,15 @@ public class ARGPermanentChannelJoin extends CommandModule
 			if(cc.getPassword()==null)
 			{
 				///Es ist kein Passwort angegeben, du kannst so joinen!
-				player.spigot().sendMessage(utility.tctlYaml(language+"PCJoin.ChannelHasNoPassword"));
+				player.spigot().sendMessage(
+						ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCJoin.ChannelHasNoPassword")));
 				return;
 			}
 			if(!cc.getPassword().equals(password))
 			{
 				///Das angegebene Passwort ist nicht korrekt!
-				player.spigot().sendMessage(utility.tctlYaml(language+"PCJoin.PasswordIncorrect"));
+				player.spigot().sendMessage(
+						ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCJoin.PasswordIncorrect")));
 				return;
 			}
 		}
@@ -82,7 +87,7 @@ public class ARGPermanentChannelJoin extends CommandModule
 		plugin.getUtility().updatePermanentChannels(cc);
 		
 		///Du bist dem CustomChannel &f%channel% &agejoint!
-		player.spigot().sendMessage(utility.tctl(
+		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(language+"PCJoin.ChannelJoined")
 				.replace("%channel%", cc.getNameColor()+cc.getName())
 				.replace("%symbol%", plugin.getYamlHandler().getSymbol("Perma")+cc.getSymbolExtra())));
@@ -90,7 +95,7 @@ public class ARGPermanentChannelJoin extends CommandModule
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.spigot().sendMessage(plugin.getUtility().tctl(
+				members.spigot().sendMessage(ChatApi.tctl(
 						plugin.getYamlHandler().getL().getString(language+"PCJoin.PlayerIsJoined")
 						.replace("%player%", player.getName())
 						.replace("%channel%", cc.getNameColor()+cc.getName())));

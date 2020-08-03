@@ -1,18 +1,18 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.CommandModule;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ARGChannelTrade extends CommandModule
+public class ARGChannelTrade extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGChannelTrade(SimpleChatChannels plugin)
+	public ARGChannelTrade(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super("trade",
-				"scc.channels.trade",SimpleChatChannels.sccarguments,1,1,"handel");
+		super(plugin, argumentConstructor);
 		this.plugin = plugin;
 	}
 
