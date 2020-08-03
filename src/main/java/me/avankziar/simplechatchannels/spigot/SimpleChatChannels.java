@@ -93,6 +93,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.database.YamlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.listener.EVENTChat;
 import main.java.me.avankziar.simplechatchannels.spigot.listener.EVENTJoinLeave;
 import main.java.me.avankziar.simplechatchannels.spigot.listener.ServerListener;
+import main.java.me.avankziar.simplechatchannels.spigot.metrics.Metrics;
 import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 
 public class SimpleChatChannels extends JavaPlugin
@@ -159,6 +160,7 @@ public class SimpleChatChannels extends JavaPlugin
 		setupStrings();
 		setupCommandTree();
 		ListenerSetup();
+		setupBstats();
 	}
 	
 	public void onDisable()
@@ -620,5 +622,11 @@ public class SimpleChatChannels extends JavaPlugin
 		}
 	 
 		return commandMap;
+	}
+	
+	public void setupBstats()
+	{
+		int pluginId = 8402;
+        new Metrics(this, pluginId);
 	}
 }

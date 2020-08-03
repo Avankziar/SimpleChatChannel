@@ -77,6 +77,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventChat;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.EventJoinLeave;
 import main.java.me.avankziar.simplechatchannels.bungee.listener.ServerListener;
+import main.java.me.avankziar.simplechatchannels.bungee.metrics.Metrics;
 import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.objects.ConvertHandler;
@@ -144,6 +145,7 @@ public class SimpleChatChannels extends Plugin
 		setupStrings();
 		setupCommandTree();
 		ListenerSetup();
+		setupBstats();
 	}
 	
 	public void onDisable()
@@ -548,5 +550,11 @@ public class SimpleChatChannels extends Plugin
 			cus.add(chus.getName());	
 		}
 		setPlayers(cus);
+	}
+	
+	public void setupBstats()
+	{
+		int pluginId = 8403;
+        new Metrics(this, pluginId);
 	}
 }
