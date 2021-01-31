@@ -4,6 +4,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import net.md_5.bungee.api.CommandSender;
@@ -25,10 +26,10 @@ public class ARGUpdatePlayer extends ArgumentModule
 		ProxiedPlayer players = (ProxiedPlayer) sender;
 		String playername = args[1];
 		ProxiedPlayer target = plugin.getProxy().getPlayer(playername);
-		ChatUser cuo = ChatUser.getChatUser(args[1]);
+		ChatUser cuo = ChatUserHandler.getChatUser(args[1]);
 		if(cuo == null || target == null)
 		{
-			players.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPlayerExist")));
+			players.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPlayerExist")));
 			return;
 		}
 		cuo.setChannelGlobal(target.hasPermission("scc.channels.global"));
@@ -49,11 +50,11 @@ public class ARGUpdatePlayer extends ArgumentModule
 		ChatUser.addChatUser(cuo);
 		
 		players.sendMessage(ChatApi.tctl(
-				plugin.getYamlHandler().getL().getString("CmdScc.Updatetarget.IsUpdated")
-				.replace("%target%", playername)));
+				plugin.getYamlHandler().getL().getString("CmdScc.UpdatePlayer.IsUpdated")
+				.replace("%player%", playername)));
 		target.sendMessage(ChatApi.tctl(
-				plugin.getYamlHandler().getL().getString("CmdScc.Updatetarget.YouWasUpdated")
-				.replace("%target%", target.getName())));
+				plugin.getYamlHandler().getL().getString("CmdScc.UpdatePlayer.YouWasUpdated")
+				.replace("%player%", target.getName())));
 		return;
 	}
 }

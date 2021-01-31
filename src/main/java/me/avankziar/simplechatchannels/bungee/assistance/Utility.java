@@ -16,11 +16,13 @@ import javax.annotation.Nullable;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -271,8 +273,13 @@ public class Utility
 		return list;
 	}
 	
-	public List<BaseComponent> broadcast(ProxiedPlayer player, int ss, String channel, String msg, TextComponent intro)
+	public List<BaseComponent> broadcast(CommandSender sender, int ss, String channel, String msg, TextComponent intro)
 	{
+		ProxiedPlayer player = null;
+		if(sender instanceof ProxiedPlayer)
+		{
+			player = (ProxiedPlayer) sender;
+		}
 		String rawmsg = msg.substring(ss);
 		List<BaseComponent> list = new ArrayList<>();
 		list.add(intro);
@@ -282,7 +289,7 @@ public class Utility
 		for(String splitmsg : fullmsg)
 		{
 			String colorFreeWord = removeColor(splitmsg);
-			if(player.hasPermission(PERMBYPASSCOLOR))
+			if(player == null)
 			{
 				if(hasColor(splitmsg))
 				{
@@ -304,44 +311,83 @@ public class Utility
 				}
 			} else
 			{
-				TextComponent word = ChatApi.tctl(colorFreeWord+" ");
-				list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
-			}
-			
+				if(player.hasPermission(PERMBYPASSCOLOR))
+				{
+					if(hasColor(splitmsg))
+					{
+						if(safeColor==null)
+						{
+							safeColor = cc;
+						}
+						TextComponent word = ChatApi.tctl(safeColor+splitmsg+" ");
+						safeColor = getSafeColor(splitmsg);
+						list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
+					} else
+					{
+						if(safeColor==null)
+						{
+							safeColor = cc;
+						}
+						TextComponent word = ChatApi.tctl(safeColor+splitmsg+" ");
+						list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
+					}
+				} else
+				{
+					TextComponent word = ChatApi.tctl(colorFreeWord+" ");
+					list.add(addFunctions(player, splitmsg, colorFreeWord, word, cc, channel));
+				}
+			}			
 		}
 		return list;
 	}
 	
 	
 	@SuppressWarnings("deprecation")
-	private BaseComponent addFunctions(ProxiedPlayer player, String splitmsg, String colorFreeWord, TextComponent word, String cc,
+	private BaseComponent addFunctions(CommandSender sender, String splitmsg, String colorFreeWord, TextComponent word, String cc,
 			String channel)
 	{
+		ProxiedPlayer player = null;
+		if(sender instanceof ProxiedPlayer)
+		{
+			player = (ProxiedPlayer) sender;
+		}
 		if(splitmsg.contains("http"))
 		{
-			if(player.hasPermission(PERMBYPASSWEBSITE))
+			if(player == null)
 			{
 				word = ChatApi.tctl(removeColor(colorFreeWord));
 				word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
 						colorFreeWord));
 				word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString("ReplacerColor.Website")));
+			} else
+			{
+				if(player.hasPermission(PERMBYPASSWEBSITE))
+				{
+					word = ChatApi.tctl(removeColor(colorFreeWord));
+					word.setClickEvent( new ClickEvent(ClickEvent.Action.OPEN_URL,
+							colorFreeWord));
+					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString("ReplacerColor.Website")));
+				}
 			}
 		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString("ReplacerBlock.Item")))
 		{
-			if(player.hasPermission(PERMBYPASSITEM+"."+channel.toLowerCase()))
+			if(player != null)
 			{
-				if(Utility.itemname.containsKey(player.getUniqueId().toString())
-						&& Utility.item.containsKey(player.getUniqueId().toString()))
+				if(player.hasPermission(PERMBYPASSITEM+"."+channel.toLowerCase()))
 				{
-					word = ChatApi.tctl(Utility.itemname.get(player.getUniqueId().toString())+" ");
-					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString("ReplacerColor.Item")));
-					word.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
-							new BaseComponent[]{new TextComponent(Utility.item.get(player.getUniqueId().toString()))}));
+					if(Utility.itemname.containsKey(player.getUniqueId().toString())
+							&& Utility.item.containsKey(player.getUniqueId().toString()))
+					{
+						word = ChatApi.tctl(Utility.itemname.get(player.getUniqueId().toString())+" ");
+						word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString("ReplacerColor.Item")));
+						word.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
+								new BaseComponent[]{new TextComponent(Utility.item.get(player.getUniqueId().toString()))}));
+					}
 				}
 			}
 		} else if(splitmsg.contains(plugin.getYamlHandler().getL().getString("ReplacerBlock.Command")))
 		{
-			if(player.hasPermission(PERMBYPASSCOMMAND))
+			if(player == null)
 			{
 				word = ChatApi.tctl(colorFreeWord
 						.replace(plugin.getYamlHandler().getL().getString("ReplacerBlock.CommandArgSeperator"), " ")
@@ -355,6 +401,23 @@ public class Utility
 				word.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
 						new ComponentBuilder(ChatApi.tl(
 						plugin.getYamlHandler().getL().getString("ReplacerBlock.CommandHover"))).create()));
+			} else
+			{
+				if(player.hasPermission(PERMBYPASSCOMMAND))
+				{
+					word = ChatApi.tctl(colorFreeWord
+							.replace(plugin.getYamlHandler().getL().getString("ReplacerBlock.CommandArgSeperator"), " ")
+							.replace(plugin.getYamlHandler().getL().getString("ReplacerBlock.Command"), 
+									plugin.getYamlHandler().getL().getString("ReplacerBlock.CommandChatOutput"))
+							+" ");
+					word.setColor(getFristUseColor(plugin.getYamlHandler().getL().getString("ReplacerColor.Command")));
+					word.setClickEvent( new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+							colorFreeWord.replace(plugin.getYamlHandler().getL().getString("ReplacerBlock.CommandArgSeperator"), " ")
+							.replace(plugin.getYamlHandler().getL().getString("ReplacerBlock.Command"), "/")));
+					word.setHoverEvent( new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
+							new ComponentBuilder(ChatApi.tl(
+							plugin.getYamlHandler().getL().getString("ReplacerBlock.CommandHover"))).create()));
+				}
 			}
 		} else
 		{
@@ -590,7 +653,7 @@ public class Utility
 	{
 		for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers())
 		{
-			ChatUser allcu = ChatUser.getChatUser(player.getUniqueId());
+			ChatUser allcu = ChatUserHandler.getChatUser(player.getUniqueId());
 			if(allcu != null)
 			{
 				if(allcu.isOptionSpy())
@@ -667,7 +730,7 @@ public class Utility
 	
 	public boolean hasChannelRights(ProxiedPlayer player, String mysql_channel)
 	{
-		ChatUser allcu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser allcu = ChatUserHandler.getChatUser(player.getUniqueId());
 		if(allcu != null)
 		{
 			if(!ChatUser.getBoolean(allcu, mysql_channel))
@@ -684,7 +747,7 @@ public class Utility
 	{
 		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
-			ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 			if(allcu != null)
 			{
 				if(ChatUser.getBoolean(allcu, mysql_channel))

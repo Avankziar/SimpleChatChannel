@@ -13,6 +13,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 
 public class ARGPermanentChannelInfo extends ArgumentModule
 {
@@ -67,10 +68,12 @@ public class ARGPermanentChannelInfo extends ArgumentModule
 		///Channel Stellvertreter: &f%vice%
 		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(scc+"PCInfo.Vice")
+				.replace("%amount%", String.valueOf(cc.getVice().size()))
 				.replace("%vice%", getPlayers(cc.getVice()))));
 		///Channel Mitglieder: &f%members%
 		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(scc+"PCInfo.Members")
+				.replace("%amount%", String.valueOf(cc.getMembers().size()))
 				.replace("%members%", getPlayers(cc.getMembers()))));
 		if(cc.getPassword()!=null)
 		{
@@ -99,13 +102,14 @@ public class ARGPermanentChannelInfo extends ArgumentModule
 		///Channel Gebannte Spieler: &f%banned%
 		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(scc+"PCInfo.Banned")
+				.replace("%amount%", String.valueOf(cc.getBanned().size()))
 				.replace("%banned%", getPlayers(cc.getBanned()))));
 		return;
 	}
 	
 	private String getPlayer(String uuid)
 	{
-		ChatUser cu = ChatUser.getChatUser(UUID.fromString(uuid));
+		ChatUser cu = ChatUserHandler.getChatUser(UUID.fromString(uuid));
 		return cu.getName();
 	}
 	
@@ -116,18 +120,24 @@ public class ARGPermanentChannelInfo extends ArgumentModule
 		{
 			for(int i = 0; i < uuids.size(); i++)
 			{
-				String uuid = uuids.get(i);
-				ChatUser cuu = ChatUser.getChatUser(UUID.fromString(uuid));
-				if(!uuid.equals("null") 
-						&& cuu != null)
+				try
 				{
-					if(uuids.size()-1 == i)
+					String uuid = uuids.get(i);
+					ChatUser cuu = ChatUserHandler.getChatUser(UUID.fromString(uuid));
+					if(!uuid.equals("null") 
+							&& cuu != null)
 					{
-						s += cuu.getName();
-					} else
-					{
-						s += cuu.getName()+",";
+						if(uuids.size()-1 == i)
+						{
+							s += cuu.getName();
+						} else
+						{
+							s += cuu.getName()+", ";
+						}
 					}
+				} catch(IllegalArgumentException e)
+				{
+					continue;
 				}
 			}
 		}

@@ -1,7 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.objects;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class ChatUser
 {
@@ -287,34 +286,6 @@ public class ChatUser
 		{
 			ChatUser.getAllChatUser().remove(cu);
 		}
-	}
-	
-	public static ChatUser getChatUser(UUID uuid)
-	{
-		ChatUser cu = null;
-		for(ChatUser chatuser : ChatUser.getAllChatUser())
-		{
-			if(chatuser.getUUID().equalsIgnoreCase(uuid.toString()))
-			{
-				cu = chatuser;
-				break;
-			}
-		}
-		return cu;
-	}
-	
-	public static ChatUser getChatUser(String name)
-	{
-		ChatUser cu = null;
-		for(ChatUser chatuser : ChatUser.getAllChatUser())
-		{
-			if(chatuser.getName().equalsIgnoreCase(name))
-			{
-				cu = chatuser;
-				break;
-			}
-		}
-		return cu;
 	}
 	
 	public static boolean getBoolean(ChatUser chatuser, String mysql_channel)

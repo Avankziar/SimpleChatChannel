@@ -11,6 +11,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 
 public class ARGUpdatePlayer extends ArgumentModule
 {
@@ -29,10 +30,10 @@ public class ARGUpdatePlayer extends ArgumentModule
 		Player player = (Player) sender;
 		String playername = args[1];
 		OfflinePlayer target = Bukkit.getOfflinePlayer(playername);
-		ChatUser cuo = ChatUser.getChatUser(args[1]);
+		ChatUser cuo = ChatUserHandler.getChatUser(args[1]);
 		if(cuo == null || target.getPlayer() == null)
 		{
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPlayerExist")));
 			return;
 		}
 		cuo.setChannelGlobal(target.getPlayer().hasPermission("scc.channels.global"));
@@ -53,11 +54,11 @@ public class ARGUpdatePlayer extends ArgumentModule
 		ChatUser.addChatUser(cuo);
 		
 		player.getPlayer().spigot().sendMessage(ChatApi.tctl(
-				plugin.getYamlHandler().getL().getString("CmdScc.Updatetarget.IsUpdated")
-				.replace("%target%", playername)));
+				plugin.getYamlHandler().getL().getString("CmdScc.UpdatePlayer.IsUpdated")
+				.replace("%player%", playername)));
 		target.getPlayer().spigot().sendMessage(ChatApi.tctl(
-				plugin.getYamlHandler().getL().getString("CmdScc.Updatetarget.YouWasUpdated")
-				.replace("%target%", target.getName())));
+				plugin.getYamlHandler().getL().getString("CmdScc.UpdatePlayer.YouWasUpdated")
+				.replace("%player%", target.getName())));
 		return;
 	}
 }

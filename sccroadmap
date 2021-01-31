@@ -1,15 +1,20 @@
-Build 37 ===============================================================================================
+Future ===============================================================================================
 - Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
 - logging korrekt alles anzeigen
 - Befehl "/scc safeitem <Zahl> " einführen um mehrfach items auf den Spieler zu registrieren zu können => <item1> <item2> etc.
 - Neuer replacer <book> einfügen, um per Click und Hover Event das Buch direkt lesen zu können.
 - Vault unterstützung anbieten um pauschal oder per Charakter geld abzuziehen, channel spezifisch.
 - Werbungsmöglichkeit implementieren.
-- /scc => nach permission abfragen
-- scc.cmd.unmute auf spigot seite aufführen
-- Base Command custom machen per config.yml
 - Befehl einführen um sich Texte zu speichern
 - Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
+- Load Before Essential
+- /w <Spieler> <Nachricht..>, dediziert nur console machen. Bungee & spigot
+- /msg <Spieler>, so einstellen dass auch kurze Namensabschnitte benutzt werden könnten. Aka anstatt /msg Avankziar einfach /msg Avan oder /msg avan
+
+Build 38 =================================================================================================
+- +broadcast consolenfähig machen (Bungee)
+- +/scc => nach permission abfragen
+- +CommandTree, commands.yml etc.
 
 Build 36 ================================================================================================
 - +/ignore => gibt es einen null fehler
@@ -19,8 +24,7 @@ Build 36 =======================================================================
 - +commands.yml
 - +event Channel
 - +11 Language Files
-
-=========================================================================================================
+- +Bstats
 
 Build 35 =================================================================================================
 - +/scc bungee wurde entfernen
@@ -32,11 +36,9 @@ Build 35 =======================================================================
 - +Cmd: /scc updateplayer <playername> | Updated alle aktiven channels des Spielers nach seinen perms. | scc.cmd.updateplayer
   | new language path!
 - +@r fix
-==========================================================================================================
 
 Build 34 =================================================================================================
 - Bugfix Tabcompleter, /scc tc/pcinvite
-==========================================================================================================
 
 Build 33 ==================================================================================================
 - +Ignorelist und Ignore gefixt

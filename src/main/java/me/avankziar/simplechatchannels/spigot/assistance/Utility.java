@@ -28,6 +28,7 @@ import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -589,7 +590,7 @@ public class Utility
 	{
 		for(Player player : plugin.getServer().getOnlinePlayers())
 		{
-			ChatUser allcu = ChatUser.getChatUser(player.getUniqueId());
+			ChatUser allcu = ChatUserHandler.getChatUser(player.getUniqueId());
 			if(allcu != null)
 			{
 				if(allcu.isOptionSpy())
@@ -666,7 +667,7 @@ public class Utility
 	
 	public boolean hasChannelRights(Player player, String mysql_channel)
 	{
-		ChatUser allcu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser allcu = ChatUserHandler.getChatUser(player.getUniqueId());
 		if(plugin.getYamlHandler().get().getBoolean("Bungee", false))
 		{
 			allcu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER, 
@@ -688,7 +689,7 @@ public class Utility
 	{
 		for(Player all : plugin.getServer().getOnlinePlayers())
 		{
-			ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 			if(allcu != null)
 			{
 				if(plugin.getYamlHandler().get().getBoolean("Bungee", false))

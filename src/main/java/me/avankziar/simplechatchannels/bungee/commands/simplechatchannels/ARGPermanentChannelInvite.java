@@ -41,7 +41,8 @@ public class ARGPermanentChannelInvite extends ArgumentModule
 				&& !cc.getVice().contains(player.getUniqueId().toString()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotChannelViceII")));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotChannelViceII")
+					.replace("%channel%", cc.getName())));
 			return;
 		}
 		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()<inviteCooldown.get(player))

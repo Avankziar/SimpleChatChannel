@@ -9,6 +9,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 
 public class ARGOptionSpy extends ArgumentModule
 {
@@ -24,7 +25,7 @@ public class ARGOptionSpy extends ArgumentModule
 	public void run(CommandSender sender, String[] args)
 	{
 		Player player = (Player) sender;
-		ChatUser cu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
 		if(cu == null)
 		{
 			return;

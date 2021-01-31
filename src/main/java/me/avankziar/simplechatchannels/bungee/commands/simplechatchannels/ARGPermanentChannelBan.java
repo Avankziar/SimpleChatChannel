@@ -3,6 +3,7 @@ package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchan
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
@@ -42,7 +43,7 @@ public class ARGPermanentChannelBan extends ArgumentModule
 					.replace("%channel%", cc.getName())));
 			return;
 		}
-		ChatUser cut = ChatUser.getChatUser(args[2]);
+		ChatUser cut = ChatUserHandler.getChatUser(args[2]);
 		if(cut == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!

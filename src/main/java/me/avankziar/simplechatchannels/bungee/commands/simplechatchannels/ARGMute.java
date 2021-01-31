@@ -7,6 +7,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentMo
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -36,7 +37,7 @@ public class ARGMute extends ArgumentModule
 			return;
 		}
 		ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
-		ChatUser cu = ChatUser.getChatUser(t.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(t.getUniqueId());
 		if(cu == null)
 		{
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));

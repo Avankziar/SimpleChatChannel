@@ -7,6 +7,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
@@ -65,10 +66,12 @@ public class ARGPermanentChannelInfo extends ArgumentModule
 		///Channel Stellvertreter: &f%vice%
 		player.sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(scc+"PCInfo.Vice")
+				.replace("%amount%", String.valueOf(cc.getVice().size()))
 				.replace("%vice%", getPlayers(cc.getVice()))));
 		///Channel Mitglieder: &f%members%
 		player.sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(scc+"PCInfo.Members")
+				.replace("%amount%", String.valueOf(cc.getMembers().size()))
 				.replace("%members%", getPlayers(cc.getMembers()))));
 		if(cc.getPassword()!=null)
 		{
@@ -97,14 +100,14 @@ public class ARGPermanentChannelInfo extends ArgumentModule
 		///Channel Gebannte Spieler: &f%banned%
 		player.sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getL().getString(scc+"PCInfo.Banned")
+				.replace("%amount%", String.valueOf(cc.getBanned().size()))
 				.replace("%banned%", getPlayers(cc.getBanned()))));
 		return;
 	}
 	
 	private String getPlayer(String uuid)
 	{
-		ChatUser cu = ChatUser.getChatUser(UUID.fromString(uuid));
-		return cu.getName();
+		return (ChatUserHandler.getChatUser(UUID.fromString(uuid)) != null) ? ChatUserHandler.getChatUser(UUID.fromString(uuid)).getName() : uuid;
 	}
 	
 	private String getPlayers(ArrayList<String> uuids)
@@ -115,17 +118,22 @@ public class ARGPermanentChannelInfo extends ArgumentModule
 			for(int i = 0; i < uuids.size(); i++)
 			{
 				String uuid = uuids.get(i);
-				ChatUser cuu = ChatUser.getChatUser(UUID.fromString(uuid));
-				if(!uuid.equals("null") 
-						&& cuu != null)
+				try
 				{
-					if(uuids.size()-1 == i)
+					ChatUser cuu = ChatUserHandler.getChatUser(UUID.fromString(uuid));
+					if(cuu != null && !uuid.equals("null"))
 					{
-						s += cuu.getName();
-					} else
-					{
-						s += cuu.getName()+",";
+						if(uuids.size()-1 == i)
+						{
+							s += cuu.getName();
+						} else
+						{
+							s += cuu.getName()+", ";
+						}
 					}
+				} catch(IllegalArgumentException e)
+				{
+					continue;
 				}
 			}
 		}

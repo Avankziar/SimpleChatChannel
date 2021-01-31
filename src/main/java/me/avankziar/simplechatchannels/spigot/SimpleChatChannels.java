@@ -19,7 +19,6 @@ import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import main.java.de.avankziar.afkrecord.spigot.AfkRecord;
-import main.java.de.avankziar.afkrecord.spigot.command.TABCompleter;
 import main.java.de.avankziar.punisher.main.Punisher;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelPerma;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
@@ -32,6 +31,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.commands.CommandHelper;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.MessageCommandExecutor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.SccCommandExecutor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.SccEditorCommandExecutor;
+import main.java.me.avankziar.simplechatchannels.spigot.commands.TABCompletion;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGBroadcast;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelAdmin;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.simplechatchannels.ARGChannelAuction;
@@ -332,7 +332,7 @@ public class SimpleChatChannels extends JavaPlugin
 		
 		registerCommand(scc.getPath(), scc.getName());
 		getCommand(scc.getName()).setExecutor(new SccCommandExecutor(plugin, scc));
-		getCommand(scc.getName()).setTabCompleter(new TABCompleter());
+		getCommand(scc.getName()).setTabCompleter(new TABCompletion(plugin));
 		
 		registerCommand(scceditor.getPath(), scceditor.getName());
 		getCommand(scceditor.getName()).setExecutor(new SccEditorCommandExecutor(plugin, scceditor));
@@ -341,12 +341,8 @@ public class SimpleChatChannels extends JavaPlugin
 		getCommand(clch.getName()).setExecutor(new ClickChatCommandExecutor(plugin, clch));
 		
 		registerCommand(msg.getPath(), msg.getName());
-		getCommand(
-				msg.getName())
-		.setExecutor(new MessageCommandExecutor(
-				plugin,
-				msg));
-		getCommand(msg.getName()).setTabCompleter(new TABCompleter());
+		getCommand(msg.getName()).setExecutor(new MessageCommandExecutor(plugin,msg));
+		getCommand(msg.getName()).setTabCompleter(new TABCompletion(plugin));
 		
 		addingHelps(scc, broadcast,
 				admin, auction, event, global, group, local, perma, pn, support, team, temp, trade, world,
@@ -356,7 +352,7 @@ public class SimpleChatChannels extends JavaPlugin
 				playerlist, reload,
 				tcban, tcchangepassword, tccreate, tcinfo, tcinvite, tcjoin, tckick, tcleave, tcunban,
 				unmute, updateplayer, wordfilter,
-				clch, scceditor);
+				clch, scceditor, msg);
 		
 		new ARGBroadcast(plugin, broadcast);
 		

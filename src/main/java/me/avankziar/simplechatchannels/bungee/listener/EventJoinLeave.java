@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
@@ -74,7 +75,7 @@ public class EventJoinLeave implements Listener
 		{
 			if(!all.getName().equals(player.getName()))
 			{
-				ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+				ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 				if(allcu != null)
 				{
 					if(allcu.isOptionJoinMessage())
@@ -138,14 +139,14 @@ public class EventJoinLeave implements Listener
 		{
 			return;
 		}
-		ChatUser cu = ChatUser.getChatUser(player.getUniqueId().toString());
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId().toString());
 		if(cu != null)
 		{
 			ChatUser.removeChatUser(cu);
 		}
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
-			ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 			if(allcu != null)
 			{
 				if(allcu.isOptionJoinMessage())

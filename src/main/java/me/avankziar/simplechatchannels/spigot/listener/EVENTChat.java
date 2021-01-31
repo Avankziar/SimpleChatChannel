@@ -21,6 +21,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.database.YamlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -89,7 +90,7 @@ public class EVENTChat implements Listener
 		
 		event.setCancelled(true);	
 		String pl = player.getUniqueId().toString();
-		ChatUser cu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
 		boolean bungee = plugin.getYamlHandler().get().getBoolean("Bungee", false);
 		if(bungee)
 		{
@@ -179,7 +180,7 @@ public class EVENTChat implements Listener
 				{
 					if(tl.distance(pyloc) <= blockDistance) 
 					{
-						ChatUser cut = ChatUser.getChatUser(t.getUniqueId());
+						ChatUser cut = ChatUserHandler.getChatUser(t.getUniqueId());
 						if(cut != null)
 						{
 							if(bungee)
@@ -240,7 +241,7 @@ public class EVENTChat implements Listener
 				World tw = t.getWorld();
 				if(tw.getName().equals(player.getWorld().getName()))
 				{
-					ChatUser cut = ChatUser.getChatUser(t.getUniqueId());
+					ChatUser cut = ChatUserHandler.getChatUser(t.getUniqueId());
 					if(cut != null)
 					{
 						if(bungee)
@@ -358,7 +359,7 @@ public class EVENTChat implements Listener
 			
 			for(Player members : cc.getMembers())
 			{
-				ChatUser cume = ChatUser.getChatUser(members.getUniqueId());
+				ChatUser cume = ChatUserHandler.getChatUser(members.getUniqueId());
 				if(cume != null)
 				{
 					if(bungee)
@@ -388,7 +389,7 @@ public class EVENTChat implements Listener
 			if(cc==null)
 			{
 				///Der permanente Channel %symbol% existiert nicht.
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PCSymbol.ChannelUnknow")));
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PCSymbol.ChannelUnknow")));
 				return;
 			}
 			
@@ -447,7 +448,7 @@ public class EVENTChat implements Listener
 			{
 				if(cc.getMembers().contains(all.getUniqueId().toString()))
 				{
-					ChatUser allcu = ChatUser.getChatUser(player.getUniqueId());
+					ChatUser allcu = ChatUserHandler.getChatUser(player.getUniqueId());
 					if(allcu != null)
 					{
 						if(bungee)
@@ -535,7 +536,7 @@ public class EVENTChat implements Listener
 			{
 				if(!all.getUniqueId().toString().equals(player.getUniqueId().toString()))
 				{
-					ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+					ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 					if(allcu != null)
 					{
 						if(bungee)
@@ -575,7 +576,7 @@ public class EVENTChat implements Listener
 			if(plugin.getServer().getPlayer(UUID.fromString(target)) == null)
 			{
 				///Der Spieler ist nicht online oder existiert nicht!
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPlayerExist")));
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPlayerExist")));
 				return;
 			}
 			Player tr = plugin.getServer().getPlayer(UUID.fromString(target));
@@ -636,7 +637,7 @@ public class EVENTChat implements Listener
 				return;
 			}
 			
-			ChatUser cut = ChatUser.getChatUser(tr.getUniqueId());
+			ChatUser cut = ChatUserHandler.getChatUser(tr.getUniqueId());
 			if(cut != null)
 			{
 				if(!cut.isChannelPrivateMessage())
@@ -684,7 +685,7 @@ public class EVENTChat implements Listener
 			if(plugin.getServer().getPlayer(target) == null)
 			{
 				///Der Spieler ist nicht online oder existiert nicht!
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPlayerExist")));
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPlayerExist")));
 				return;
 			}
 			Player tr = plugin.getServer().getPlayer(target);
@@ -743,7 +744,7 @@ public class EVENTChat implements Listener
 			
 			SimpleChatChannels.log.info(MSG1.toLegacyText()); //Console
 			
-			ChatUser cut = ChatUser.getChatUser(tr.getUniqueId());
+			ChatUser cut = ChatUserHandler.getChatUser(tr.getUniqueId());
 			if(cut != null)
 			{
 				if(!cut.isChannelPrivateMessage())

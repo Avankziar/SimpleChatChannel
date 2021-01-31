@@ -4,6 +4,7 @@ import java.util.List;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -176,7 +177,7 @@ public class CommandHelper
 	
 	public void channeltoggle(ProxiedPlayer player, String channel, String replacer)
 	{
-		ChatUser cu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
 		if(cu != null)
 		{
 			if(ChatUser.getBoolean(cu, channel))

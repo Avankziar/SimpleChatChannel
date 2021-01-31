@@ -8,6 +8,7 @@ import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -177,7 +178,7 @@ public class CommandHelper
 	
 	public void channeltoggle(Player player, String channel, String replacer)
 	{
-		ChatUser cu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
 		if(cu != null)
 		{
 			if(ChatUser.getBoolean(cu, channel))

@@ -9,13 +9,14 @@ public class CommandConstructor extends BaseConstructor
     public ArrayList<ArgumentConstructor> subcommands;
     public ArrayList<String> tablist;
 
-	public CommandConstructor(SimpleChatChannels plugin, String path,
+	public CommandConstructor(SimpleChatChannels plugin, String path, boolean canConsoleAccess,
     		ArgumentConstructor...argumentConstructors)
     {
 		super(plugin.getYamlHandler().getCom().getString(path+".Name"),
 				path,
 				plugin.getYamlHandler().getCom().getString(path+".Permission"),
-				plugin.getYamlHandler().getCom().getString(path+".Suggestion"));
+				plugin.getYamlHandler().getCom().getString(path+".Suggestion"),
+				canConsoleAccess);
         this.subcommands = new ArrayList<>();
         this.tablist = new ArrayList<>();
         for(ArgumentConstructor ac : argumentConstructors)

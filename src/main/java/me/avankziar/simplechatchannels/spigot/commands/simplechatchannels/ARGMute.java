@@ -11,6 +11,7 @@ import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.ArgumentModule;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 
 public class ARGMute extends ArgumentModule
 {
@@ -36,7 +37,7 @@ public class ARGMute extends ArgumentModule
 			return;
 		}
 		Player t = Bukkit.getPlayer(target);
-		ChatUser cu = ChatUser.getChatUser(t.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(t.getUniqueId());
 		if(cu == null)
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));

@@ -22,7 +22,7 @@ public class ARGBroadcast extends ArgumentModule
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		//ProxiedPlayer player = (ProxiedPlayer) sender;
 		String msg = "";
 		for (int i = 1; i < args.length; i++) 
         {
@@ -31,11 +31,11 @@ public class ARGBroadcast extends ArgumentModule
 		if(plugin.getUtility().getWordfilter(msg))
 		{
 			///Einer deiner geschriebenen Woerter &cist im Wortfilter enthalten, &cbitte unterlasse sowelche Ausdrücke!
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("EventChat.Wordfilter")));
+			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("EventChat.Wordfilter")));
 			return;
 		}
 		TextComponent MSG = ChatApi.tc("");
-		MSG.setExtra(plugin.getUtility().broadcast(player, 0, "Global", msg, 
+		MSG.setExtra(plugin.getUtility().broadcast(sender, 0, "Global", msg, 
 				ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.Broadcast.Intro"))));
 		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{

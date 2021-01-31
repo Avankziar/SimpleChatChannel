@@ -16,6 +16,7 @@ import main.java.me.avankziar.simplechatchannels.objects.ConvertHandler;
 import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.spigot.objects.TemporaryChannel;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -79,7 +80,7 @@ public class EVENTJoinLeave implements Listener
 		{
 			if(!all.getName().equals(player.getName()))
 			{
-				ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+				ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 				if(allcu != null)
 				{
 					if(allcu.isOptionJoinMessage())
@@ -148,7 +149,7 @@ public class EVENTJoinLeave implements Listener
 		}
 		for(Player all : Bukkit.getOnlinePlayers())
 		{
-			ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 			if(allcu != null)
 			{
 				if(allcu.isOptionJoinMessage())

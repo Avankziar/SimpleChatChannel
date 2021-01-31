@@ -235,69 +235,69 @@ public class SimpleChatChannels extends Plugin
 		
 		PluginManager pm = getProxy().getPluginManager();
 		
-		ArgumentConstructor broadcast = new ArgumentConstructor(yamlHandler, baseCommandI+"_broadcast", 0, 1, 1024, null);
+		ArgumentConstructor broadcast = new ArgumentConstructor(yamlHandler, baseCommandI+"_broadcast", 0, 1, 9999, true, null);
 		
-		ArgumentConstructor admin = new ArgumentConstructor(yamlHandler, baseCommandI+"_admin", 0, 0, 0, null);
-		ArgumentConstructor auction = new ArgumentConstructor(yamlHandler, baseCommandI+"_auction", 0, 0, 0, null);
-		ArgumentConstructor event = new ArgumentConstructor(yamlHandler, baseCommandI+"_event", 0, 0, 0, null);
-		ArgumentConstructor global = new ArgumentConstructor(yamlHandler, baseCommandI+"_global", 0, 0, 0, null);
-		ArgumentConstructor group = new ArgumentConstructor(yamlHandler, baseCommandI+"_group", 0, 0, 0, null);
-		ArgumentConstructor local = new ArgumentConstructor(yamlHandler, baseCommandI+"_local", 0, 0, 0, null);
-		ArgumentConstructor perma = new ArgumentConstructor(yamlHandler, baseCommandI+"_perma", 0, 0, 0, null);
-		ArgumentConstructor pn = new ArgumentConstructor(yamlHandler, baseCommandI+"_pm", 0, 0, 0, null);
-		ArgumentConstructor support = new ArgumentConstructor(yamlHandler, baseCommandI+"_support", 0, 0, 0, null);
-		ArgumentConstructor team = new ArgumentConstructor(yamlHandler, baseCommandI+"_team", 0, 0, 0, null);
-		ArgumentConstructor temp = new ArgumentConstructor(yamlHandler, baseCommandI+"_temp", 0, 0, 0, null);
-		ArgumentConstructor trade = new ArgumentConstructor(yamlHandler, baseCommandI+"_trade", 0, 0, 0, null);
-		ArgumentConstructor world = new ArgumentConstructor(yamlHandler, baseCommandI+"_world", 0, 0, 0, null);
+		ArgumentConstructor admin = new ArgumentConstructor(yamlHandler, baseCommandI+"_admin", 0, 0, 0, false, null);
+		ArgumentConstructor auction = new ArgumentConstructor(yamlHandler, baseCommandI+"_auction", 0, 0, 0, false, null);
+		ArgumentConstructor event = new ArgumentConstructor(yamlHandler, baseCommandI+"_event", 0, 0, 0, false, null);
+		ArgumentConstructor global = new ArgumentConstructor(yamlHandler, baseCommandI+"_global", 0, 0, 0, false, null);
+		ArgumentConstructor group = new ArgumentConstructor(yamlHandler, baseCommandI+"_group", 0, 0, 0, false, null);
+		ArgumentConstructor local = new ArgumentConstructor(yamlHandler, baseCommandI+"_local", 0, 0, 0, false, null);
+		ArgumentConstructor perma = new ArgumentConstructor(yamlHandler, baseCommandI+"_perma", 0, 0, 0, false, null);
+		ArgumentConstructor pn = new ArgumentConstructor(yamlHandler, baseCommandI+"_pm", 0, 0, 0, false, null);
+		ArgumentConstructor support = new ArgumentConstructor(yamlHandler, baseCommandI+"_support", 0, 0, 0, false, null);
+		ArgumentConstructor team = new ArgumentConstructor(yamlHandler, baseCommandI+"_team", 0, 0, 0, false, null);
+		ArgumentConstructor temp = new ArgumentConstructor(yamlHandler, baseCommandI+"_temp", 0, 0, 0, false, null);
+		ArgumentConstructor trade = new ArgumentConstructor(yamlHandler, baseCommandI+"_trade", 0, 0, 0, false, null);
+		ArgumentConstructor world = new ArgumentConstructor(yamlHandler, baseCommandI+"_world", 0, 0, 0, false, null);
 		
-		ArgumentConstructor grouplist = new ArgumentConstructor(yamlHandler, baseCommandI+"_grouplist", 0, 0, 1, null);
+		ArgumentConstructor grouplist = new ArgumentConstructor(yamlHandler, baseCommandI+"_grouplist", 0, 0, 1, false, null);
 		
-		ArgumentConstructor ignore = new ArgumentConstructor(yamlHandler, baseCommandI+"_ignore", 0, 1, 1, playerMap);
-		ArgumentConstructor ignorelist = new ArgumentConstructor(yamlHandler, baseCommandI+"_ignorelist", 0, 0, 0, null);
+		ArgumentConstructor ignore = new ArgumentConstructor(yamlHandler, baseCommandI+"_ignore", 0, 1, 1, false, playerMap);
+		ArgumentConstructor ignorelist = new ArgumentConstructor(yamlHandler, baseCommandI+"_ignorelist", 0, 0, 0,false,  null);
 		
-		ArgumentConstructor mute = new ArgumentConstructor(yamlHandler, baseCommandI+"_mute", 0, 1, 2, null);
+		ArgumentConstructor mute = new ArgumentConstructor(yamlHandler, baseCommandI+"_mute", 0, 1, 2, false, null);
 		
-		ArgumentConstructor join = new ArgumentConstructor(yamlHandler, baseCommandI+"_join", 0, 0, 0, null);
-		ArgumentConstructor spy = new ArgumentConstructor(yamlHandler, baseCommandI+"_spy", 0, 0, 0, null);
+		ArgumentConstructor join = new ArgumentConstructor(yamlHandler, baseCommandI+"_join", 0, 0, 0, false, null);
+		ArgumentConstructor spy = new ArgumentConstructor(yamlHandler, baseCommandI+"_spy", 0, 0, 0, false, null);
 		
-		ArgumentConstructor pcban = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcban", 0, 2, 2, pcPlayerMap);
-		ArgumentConstructor pcchangepassword = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcchangepassword", 0, 2, 2, pcMap);
-		ArgumentConstructor pcchannels = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcchannels", 0, 0, 0, null);
-		ArgumentConstructor pcchatcolor = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcchatcolor", 0, 2, 2, pcMap);
-		ArgumentConstructor pccreate = new ArgumentConstructor(yamlHandler, baseCommandI+"_pccreate", 0, 1, 2, null);
-		ArgumentConstructor pcdelete = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcdelete", 0, 1, 2, pcMap);
-		ArgumentConstructor pcinfo = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcinfo", 0, 0, 1, pcMap);
-		ArgumentConstructor pcinherit = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcinherit", 0, 2, 2, pcPlayerMap);
-		ArgumentConstructor pcinvite = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcinvite", 0, 2, 2, pcPlayerMap);
-		ArgumentConstructor pcjoin = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcjoin", 0, 1, 2, pcMap);
-		ArgumentConstructor pckick = new ArgumentConstructor(yamlHandler, baseCommandI+"_pckick", 0, 2, 2, pcPlayerMap);
-		ArgumentConstructor pcleave = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcleave", 0, 1, 2, pcMap);
-		ArgumentConstructor pcnamecolor = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcnamecolor", 0, 2, 2, pcMap);
-		ArgumentConstructor pcplayer = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcplayer", 0, 0, 1, playerMap);
-		ArgumentConstructor pcrename = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcrename", 0, 2, 2, pcMap);
-		ArgumentConstructor pcsymbol = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcsymbol", 0, 2, 2, pcMap);
-		ArgumentConstructor pcunban = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcunban", 0, 2, 2, pcPlayerMap);
-		ArgumentConstructor pcvice = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcvice", 0, 2, 2, pcPlayerMap);
+		ArgumentConstructor pcban = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcban", 0, 2, 2, false, pcPlayerMap);
+		ArgumentConstructor pcchangepassword = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcchangepassword", 0, 2, 2, false, pcMap);
+		ArgumentConstructor pcchannels = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcchannels", 0, 0, 0, false, null);
+		ArgumentConstructor pcchatcolor = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcchatcolor", 0, 2, 2, false, pcMap);
+		ArgumentConstructor pccreate = new ArgumentConstructor(yamlHandler, baseCommandI+"_pccreate", 0, 1, 2, false, null);
+		ArgumentConstructor pcdelete = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcdelete", 0, 1, 2, false, pcMap);
+		ArgumentConstructor pcinfo = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcinfo", 0, 0, 1, false, pcMap);
+		ArgumentConstructor pcinherit = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcinherit", 0, 2, 2, false, pcPlayerMap);
+		ArgumentConstructor pcinvite = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcinvite", 0, 2, 2, false, pcPlayerMap);
+		ArgumentConstructor pcjoin = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcjoin", 0, 1, 2, false, pcMap);
+		ArgumentConstructor pckick = new ArgumentConstructor(yamlHandler, baseCommandI+"_pckick", 0, 2, 2, false, pcPlayerMap);
+		ArgumentConstructor pcleave = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcleave", 0, 1, 2, false, pcMap);
+		ArgumentConstructor pcnamecolor = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcnamecolor", 0, 2, 2, false, pcMap);
+		ArgumentConstructor pcplayer = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcplayer", 0, 0, 1, false, playerMap);
+		ArgumentConstructor pcrename = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcrename", 0, 2, 2, false, pcMap);
+		ArgumentConstructor pcsymbol = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcsymbol", 0, 2, 2, false, pcMap);
+		ArgumentConstructor pcunban = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcunban", 0, 2, 2, false, pcPlayerMap);
+		ArgumentConstructor pcvice = new ArgumentConstructor(yamlHandler, baseCommandI+"_pcvice", 0, 2, 2, false, pcPlayerMap);
 		
-		ArgumentConstructor playerlist = new ArgumentConstructor(yamlHandler, baseCommandI+"_playerlist", 0, 0, 1, null);
-		ArgumentConstructor reload = new ArgumentConstructor(yamlHandler, baseCommandI+"_reload", 0, 0, 0, null);
+		ArgumentConstructor playerlist = new ArgumentConstructor(yamlHandler, baseCommandI+"_playerlist", 0, 0, 1, false, null);
+		ArgumentConstructor reload = new ArgumentConstructor(yamlHandler, baseCommandI+"_reload", 0, 0, 0, false, null);
 		
-		ArgumentConstructor tcban = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcban", 0, 1, 1, playerMap);
-		ArgumentConstructor tcchangepassword = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcchangepassword", 0, 1, 1, null);
-		ArgumentConstructor tccreate = new ArgumentConstructor(yamlHandler, baseCommandI+"_tccreate", 0, 1, 2, null);
-		ArgumentConstructor tcinfo = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcinfo", 0, 1, 1, null);
-		ArgumentConstructor tcinvite = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcinvite", 0, 1, 1, playerMap);
-		ArgumentConstructor tcjoin = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcjoin", 0, 1, 2, tcMap);
-		ArgumentConstructor tckick = new ArgumentConstructor(yamlHandler, baseCommandI+"_tckick", 0, 1, 1, playerMap);
-		ArgumentConstructor tcleave = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcleave", 0, 0, 0, null);
-		ArgumentConstructor tcunban = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcunban", 0, 1, 1, playerMap);
+		ArgumentConstructor tcban = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcban", 0, 1, 1, false, playerMap);
+		ArgumentConstructor tcchangepassword = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcchangepassword", 0, 1, 1, false, null);
+		ArgumentConstructor tccreate = new ArgumentConstructor(yamlHandler, baseCommandI+"_tccreate", 0, 1, 2, false, null);
+		ArgumentConstructor tcinfo = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcinfo", 0, 1, 1, false, null);
+		ArgumentConstructor tcinvite = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcinvite", 0, 1, 1, false, playerMap);
+		ArgumentConstructor tcjoin = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcjoin", 0, 1, 2, false, tcMap);
+		ArgumentConstructor tckick = new ArgumentConstructor(yamlHandler, baseCommandI+"_tckick", 0, 1, 1, false, playerMap);
+		ArgumentConstructor tcleave = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcleave", 0, 0, 0, false, null);
+		ArgumentConstructor tcunban = new ArgumentConstructor(yamlHandler, baseCommandI+"_tcunban", 0, 1, 1, false, playerMap);
 		
-		ArgumentConstructor unmute = new ArgumentConstructor(yamlHandler, baseCommandI+"_unmute", 0, 1, 1, null);
-		ArgumentConstructor updateplayer = new ArgumentConstructor(yamlHandler, baseCommandI+"_updateplayer", 0, 1, 1, playerMap);
-		ArgumentConstructor wordfilter = new ArgumentConstructor(yamlHandler, baseCommandI+"_wordfilter", 0, 1, 1, null);
+		ArgumentConstructor unmute = new ArgumentConstructor(yamlHandler, baseCommandI+"_unmute", 0, 1, 1, false, null);
+		ArgumentConstructor updateplayer = new ArgumentConstructor(yamlHandler, baseCommandI+"_updateplayer", 0, 1, 1, false, playerMap);
+		ArgumentConstructor wordfilter = new ArgumentConstructor(yamlHandler, baseCommandI+"_wordfilter", 0, 1, 1, false, null);
 		
-		CommandConstructor scc = new CommandConstructor(plugin, baseCommandI,
+		CommandConstructor scc = new CommandConstructor(plugin, baseCommandI, true,
 				broadcast,
 				admin, auction, event, global, group, local, perma, pn, support, team, temp, trade, world,
 				grouplist, ignore, ignorelist, mute, join, spy,
@@ -307,11 +307,11 @@ public class SimpleChatChannels extends Plugin
 				tcban, tcchangepassword, tccreate, tcinfo, tcinvite, tcjoin, tckick, tcleave, tcunban,
 				unmute, updateplayer, wordfilter);
 		
-		CommandConstructor clch = new CommandConstructor(plugin, baseCommandII); 
+		CommandConstructor clch = new CommandConstructor(plugin, baseCommandII, true); 
 		
-		CommandConstructor scceditor = new CommandConstructor(plugin, baseCommandIII); 
+		CommandConstructor scceditor = new CommandConstructor(plugin, baseCommandIII, false); 
 		
-		CommandConstructor msg = new CommandConstructor(plugin, baseCommandIV);
+		CommandConstructor msg = new CommandConstructor(plugin, baseCommandIV, false);
 		
 		pm.registerCommand(plugin, new SccCommandExecutor(plugin, scc));
 		pm.registerCommand(plugin, new ClickChatCommandExecutor(plugin, clch));
@@ -326,7 +326,7 @@ public class SimpleChatChannels extends Plugin
 				playerlist, reload,
 				tcban, tcchangepassword, tccreate, tcinfo, tcinvite, tcjoin, tckick, tcleave, tcunban,
 				unmute, updateplayer, wordfilter,
-				clch, scceditor);
+				clch, scceditor, msg);
 		
 		new ARGBroadcast(plugin, broadcast);
 		
@@ -556,5 +556,10 @@ public class SimpleChatChannels extends Plugin
 	{
 		int pluginId = 8403;
         new Metrics(this, pluginId);
+	}
+	
+	public static SimpleChatChannels getPlugin()
+	{
+		return plugin;
 	}
 }

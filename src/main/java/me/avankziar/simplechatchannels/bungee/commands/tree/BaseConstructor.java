@@ -6,13 +6,15 @@ public class BaseConstructor
 	private String path;
 	private String permission;
 	private String suggestion;
+	private boolean canConsoleAccess;
 	
-	public BaseConstructor(String name, String path, String permission, String suggestion)
+	public BaseConstructor(String name, String path, String permission, String suggestion, boolean canConsoleAccess)
 	{
 		setName(name);
 		setPath(path);
 		setPermission(permission);
 		setSuggestion(suggestion);
+		setCanConsoleAccess(canConsoleAccess);
 	}
 
 	public String getName()
@@ -53,6 +55,16 @@ public class BaseConstructor
 	public void setSuggestion(String suggestion)
 	{
 		this.suggestion = suggestion;
+	}
+
+	public boolean canConsoleAccess()
+	{
+		return canConsoleAccess;
+	}
+
+	public void setCanConsoleAccess(boolean canConsoleAccess)
+	{
+		this.canConsoleAccess = canConsoleAccess;
 	}
 
 }

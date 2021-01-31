@@ -43,7 +43,7 @@ public class ARGPermanentChannelKick extends ArgumentModule
 			return;
 		}
 		ChatUser cuoffline = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,
-				"´player_name´ = ?", args[2]);
+				"`player_name` = ?", args[2]);
 		if(cuoffline == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!

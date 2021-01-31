@@ -6,6 +6,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentMo
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -23,7 +24,7 @@ public class ARGOptionJoin extends ArgumentModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		ChatUser cu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
 		if(cu == null)
 		{
 			return;

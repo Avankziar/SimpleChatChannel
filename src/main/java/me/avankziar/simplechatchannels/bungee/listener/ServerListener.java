@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -57,7 +58,7 @@ public class ServerListener implements Listener
 					}
 			        for(ProxiedPlayer pp : plugin.getProxy().getPlayers())
 			        {
-			        	ChatUser cu = ChatUser.getChatUser(pp.getUniqueId().toString());
+			        	ChatUser cu = ChatUserHandler.getChatUser(pp.getUniqueId().toString());
 			        	if(cu != null)
 			        	{
 			        		if(cu.isOptionSpy())

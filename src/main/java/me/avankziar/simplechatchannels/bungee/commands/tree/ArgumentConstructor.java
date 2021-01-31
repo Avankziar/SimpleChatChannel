@@ -16,14 +16,15 @@ public class ArgumentConstructor extends BaseConstructor
 
     public ArgumentConstructor(
     		YamlHandler yamlHandler,
-    		String path, int position, int minArgs, int maxArgs,
+    		String path, int position, int minArgs, int maxArgs, boolean canConsoleAccess,
     		LinkedHashMap<Integer, ArrayList<String>> tablistAddingOtherValue,
     		ArgumentConstructor...argumentConstructors)
     {
     	super(yamlHandler.getCom().getString(path+".Argument"),
     			path,
     			yamlHandler.getCom().getString(path+".Permission"),
-    			yamlHandler.getCom().getString(path+".Suggestion"));
+    			yamlHandler.getCom().getString(path+".Suggestion"),
+    			canConsoleAccess);
         this.minArgsConstructor = minArgs;
         this.maxArgsConstructor = maxArgs;
         this.minArgsTablist = minArgs;

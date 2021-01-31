@@ -8,6 +8,7 @@ import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.bungee.objects.TemporaryChannel;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
@@ -106,7 +107,7 @@ public class EventChat implements Listener
 		}
 		event.setCancelled(true);
 		String pl = player.getUniqueId().toString();
-		ChatUser cu = ChatUser.getChatUser(player.getUniqueId());
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
 		
 		boolean canchat = cu.isCanChat();
 		if(!canchat)
@@ -181,14 +182,14 @@ public class EventChat implements Listener
 				return;
 			}
 			
-			if(TemporaryChannel.getCustomChannel(player)==null)
+			TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
+			
+			if(cc == null)
 			{
 				///Du bist in keinem CustomChannel!
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.ChannelGeneral.NotInAChannel")));
 				return;
 			}
-			
-			TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 			
 			if(event.getMessage().length()>=symbol.length() 
 					&& utility.getWordfilter(event.getMessage().substring(symbol.length()))) //Wordfilter
@@ -234,7 +235,7 @@ public class EventChat implements Listener
 			
 			for(ProxiedPlayer members : cc.getMembers())
 			{
-				ChatUser cume = ChatUser.getChatUser(members.getUniqueId());
+				ChatUser cume = ChatUserHandler.getChatUser(members.getUniqueId());
 				if(cume != null)
 				{
 					if(cume.isChannelTemporary())
@@ -255,18 +256,33 @@ public class EventChat implements Listener
 			}
 			
 			String[] space = event.getMessage().split(" ");
-			PermanentChannel cc = PermanentChannel.getChannelFromSymbol(space[0].substring(symbol.length()));
-			if(cc==null)
+			
+			if(space.length < 2)
+			{
+				//If ".." or ".test" is used without another text
+				return;
+			}
+			
+			PermanentChannel cc = null;
+			
+			//If not empty String is used
+			String s = space[0].substring(symbol.length());
+			if(s.length() > 0);
+			{
+				cc = PermanentChannel.getChannelFromSymbol(space[0].substring(symbol.length()));
+			}
+			
+			if(cc == null)
 			{
 				///Der permanente Channel %symbol% existiert nicht.
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PCSymbol.ChannelUnknown")));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PCSymbol.ChannelUnknown")));
 				return;
 			}
 			
 			if(!cc.getMembers().contains(player.getUniqueId().toString()))
 			{
 				///Du bist in keinem Permanenten Channel!
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("ChannelGeneral.NotInAChannelII")));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.ChannelGeneral.NotInAChannelII")));
 				return;
 			}
 			
@@ -318,7 +334,7 @@ public class EventChat implements Listener
 			{
 				if(cc.getMembers().contains(all.getUniqueId().toString()))
 				{
-					ChatUser allcu = ChatUser.getChatUser(player.getUniqueId());
+					ChatUser allcu = ChatUserHandler.getChatUser(player.getUniqueId());
 					if(allcu != null)
 					{
 						if(allcu.isChannelPermanent())
@@ -401,7 +417,7 @@ public class EventChat implements Listener
 			{
 				if(!all.getUniqueId().toString().equals(player.getUniqueId().toString()))
 				{
-					ChatUser allcu = ChatUser.getChatUser(all.getUniqueId());
+					ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 					if(allcu != null)
 					{
 						if(allcu.isChannelGroup())
@@ -436,7 +452,7 @@ public class EventChat implements Listener
 			if(ProxyServer.getInstance().getPlayer(UUID.fromString(target)) == null)
 			{
 				///Der Spieler ist nicht online oder existiert nicht!
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPlayerExist")));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPlayerExist")));
 				return;
 			}
 			ProxiedPlayer tr = ProxyServer.getInstance().getPlayer(UUID.fromString(target));
@@ -497,7 +513,7 @@ public class EventChat implements Listener
 				return;
 			}
 			
-			ChatUser cut = ChatUser.getChatUser(tr.getUniqueId());
+			ChatUser cut = ChatUserHandler.getChatUser(tr.getUniqueId());
 			if(cut != null)
 			{
 				if(!cut.isChannelPrivateMessage())
@@ -545,7 +561,7 @@ public class EventChat implements Listener
 			if(ProxyServer.getInstance().getPlayer(target) == null)
 			{
 				///Der Spieler ist nicht online oder existiert nicht!
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPlayerExist")));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPlayerExist")));
 				return;
 			}
 			ProxiedPlayer tr = ProxyServer.getInstance().getPlayer(target);
@@ -606,7 +622,7 @@ public class EventChat implements Listener
 			
 			plugin.getProxy().getConsole().sendMessage(MSG1); //Console
 			
-			ChatUser cut = ChatUser.getChatUser(tr.getUniqueId());
+			ChatUser cut = ChatUserHandler.getChatUser(tr.getUniqueId());
 			if(cut != null)
 			{
 				if(!cut.isChannelPrivateMessage())
