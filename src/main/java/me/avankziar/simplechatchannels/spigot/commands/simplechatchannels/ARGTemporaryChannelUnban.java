@@ -29,21 +29,21 @@ public class ARGTemporaryChannelUnban extends ArgumentModule
 		{
 			///Du bist in keinem CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotInAChannel")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.YouAreNotInAChannel")));
 			return;
 		}
 		Player creator = cc.getCreator();
 		if(!creator.getName().equals(player.getName()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.spigot().sendMessage(ChatApi.tctl(language+"ChannelGeneral.NotTheCreator"));
+			player.spigot().sendMessage(ChatApi.tctl("CmdScc.TemporaryChannel.YouAreNotTheOwner"));
 			return;
 		}
 		if(plugin.getServer().getPlayer(args[1])==null)
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		Player target = plugin.getServer().getPlayer(args[1]); 

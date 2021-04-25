@@ -34,7 +34,7 @@ public class ARGTemporaryChannelInvite extends ArgumentModule
 		{
 			///Du bist in keinem CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotInAChannel")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.YouAreNotInAChannel")));
 			return;
 		}
 		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()<inviteCooldown.get(player))
@@ -47,7 +47,7 @@ public class ARGTemporaryChannelInvite extends ArgumentModule
 		if(plugin.getServer().getPlayer(t) == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		Player target = plugin.getServer().getPlayer(t);

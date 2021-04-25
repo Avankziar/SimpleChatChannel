@@ -29,7 +29,7 @@ public class ARGTemporaryChannelLeave extends ArgumentModule
 		{
 			///Du bist in keinem CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotInAChannel")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.YouAreNotInAChannel")));
 			return;
 		}
 		final String name = cc.getName();

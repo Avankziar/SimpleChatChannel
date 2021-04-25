@@ -7,9 +7,40 @@ Future =========================================================================
 - Werbungsmöglichkeit implementieren.
 - Befehl einführen um sich Texte zu speichern
 - Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
+- Mailfunktion
 - Load Before Essential
 - /w <Spieler> <Nachricht..>, dediziert nur console machen. Bungee & spigot
 - /msg <Spieler>, so einstellen dass auch kurze Namensabschnitte benutzt werden könnten. Aka anstatt /msg Avankziar einfach /msg Avan oder /msg avan
+- Emojis und andere Replacer 
+  >> https://github.com/RadBuilder/EmojiChat/blob/c1791262e4c01f4cb68e9377329535d4952a2370/plugin/src/main/java/io/github/radbuilder/emojichat/utils/EmojiHandler.java#L76
+  >> https://www.spigotmc.org/resources/chatemojis.88027/
+- Spigot Seitig, per gui bis zu 54 items speichern können, um diese per <item0> etc. aufrufen zu können.
+  - Diese Items eventuell manipulierbar machen, lore etc.
+- Weitere Replacer:
+  - <pos> Sendet die Spielerposition
+- Die tabbbaren Spieler bei /msg und /r mal tweaken in wie weit tabbbar gemacht werden kann.
+  - /eventuell /msg, alle OnlineSpieler, /re alle Spieler mit denen man geschrieben hat, und /r ohne zusatz, dem letzten Schreiben.
+- Ein Gui (Spigotseitig), welche alle Channel anzeigt ob die aktiv sind oder nicht. Mit Klick darauf ändert man die boolean des Channels.
+- der Spigot broadcast befehl auch auf bungee führen.
+- Spieler direkt und per Zeiteinheit löschen. (Spieler die länger x Tage nicht da sind).
+  
+Build 40 ==================================================================================================
+- Spam Schutz. Einmal durch einen Zeitinterval und einmal durch die Prüfung, ob es die gleiche Nachricht ist.
+- Dynamische Channel
+- Dynamische ChatTitel (Pre- und Suffix)
+- ChatFormat pro Channel möglich.
+- ItemReplacer mit mysql und Namen erweitert.
+- BookReplacer mit RunCommand eingefügt.
+- CommandReplacer ist aufgeteilt auf Run. & SuggestCommandReplacer
+- WebseitenReplacer verbessert
+- EmojiReplacer eingefügt.
+- SpielerErwähnung eingefügt.
+- PositionsReplacer eingefügt.
+- /msg <Spieler>, nur noch mit allen OnlinePlayer als Tab
+- /re <Spieler>, hinzugefügt. Hat als Tab nur noch die Spieler, mit denen man zur laufzeit geschrieben hat.
+- /r, hinzugefügt. Schreibt nur direkt der zu letzt geschriebenen Person.
+- /w <Spieler>, hinzugefügt. Dediziertes /msg für die Console.
+- CommandTree update eingebaut.
 
 Build 38 =================================================================================================
 - +broadcast consolenfähig machen (Bungee)

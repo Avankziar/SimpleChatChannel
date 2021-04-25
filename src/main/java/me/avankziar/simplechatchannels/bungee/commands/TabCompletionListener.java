@@ -5,10 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.CommandConstructor;
-import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -58,16 +57,18 @@ public class TabCompletionListener implements Listener
 			}
 		}
 		String[] args = Arrays.copyOfRange(tabArgs, 1, tabArgs.length); //Löscht den cmd aus dem Array
-		debug(player, "cS:"+countSpace+" | "+Arrays.toString(args));
 		if(countSpace > args.length) //Sind mehr leerzeichen als Values in dem Array vorhanden, fügt man eines hinzu.
 		{
 			args = AddToStringArray(args, "");
 		}
-		debug(player, "cS:"+countSpace+" | "+Arrays.toString(args));
+		
+		/*
+		 * ------
+		 * Ab hier wie Spigot
+		 */
+		
 		int length = args.length-1;
 		ArrayList<ArgumentConstructor> aclist = cc.subcommands;
-		debug(player, "====================================");
-		debug(player, "CC: "+cc.getName()+" "+cc.getPath()+" | "+Arrays.toString(args)+" "+length);
 		ArrayList<String> OneArgumentBeforeList = new ArrayList<>();
 		ArgumentConstructor lastAc = null;
 		for(ArgumentConstructor ac : aclist)
@@ -77,81 +78,89 @@ public class TabCompletionListener implements Listener
 		boolean isBreak = false;
 		for(int i = 0; i <= length; i++)
 		{
-			//ACHTUNG! Ausnahmefall msg!!
-			if(cmd.equalsIgnoreCase(SimpleChatChannels.baseCommandIVName) && length == 0)
+			//ACHTUNG! Ausnahmefall msg & re !!
+			if((cmd.equalsIgnoreCase(SimpleChatChannels.baseCommandIVName)
+					|| cmd.equalsIgnoreCase(SimpleChatChannels.baseCommandVName)) && length == 0)
 			{
-				event.getSuggestions().clear();
-				event.getSuggestions().addAll(getReturnTabList(plugin.getPlayers(), args[length]));
-				return;
+				if(cmd.equalsIgnoreCase(SimpleChatChannels.baseCommandVName)
+						&& SimpleChatChannels.rePlayers.containsKey(player.getUniqueId().toString()))
+				{
+					event.getSuggestions().clear();
+					event.getSuggestions().addAll(SimpleChatChannels.rePlayers.get(player.getUniqueId().toString()));
+				} else
+				{
+					event.getSuggestions().clear();
+					event.getSuggestions().addAll(getReturnTabList(SimpleChatChannels.onlinePlayers, args[length]));
+					return;
+				}
 			}
 			//ACHTUNG! Ausnahmefall!!
 			
 			isBreak = false;
-			debug(player, "Tab: i "+i+" "+length);
 			for(int j = 0; j <= aclist.size()-1; j++)
 			{
-				//debug(player, "Tab: j "+j+" "+(aclist.size()-1));
-				ArgumentConstructor ac = aclist.get(j);
-				debug(player, "Tab: i="+i+" "+ac.getName()+" '"+args[i]+"'");
-				if(args[i].isEmpty()) //Wenn egalweches argument leer ist
+				ArgumentConstructor ac = aclist.get(j);				
+				/*
+				 * Wenn das aktuelle Argument leer ist, so loop durch die aclist.
+				 */
+				if(args[i].isEmpty())
 				{
-					//debug(player, "Tab: string is empty");
 					event.getSuggestions().clear();
-					event.getSuggestions().addAll(getReturnList(ac, args[i], i, player, OneArgumentBeforeList, false));
-					return;
+					event.getSuggestions().addAll(listIfArgumentIsEmpty(aclist, player));
 				} else
+				/*
+				 * Wenn das aktuelle Argument NICHT leer ist, so loop durch die aclist und checke ob das Argument mit "xx" anfängt.
+				 */
 				{
-					//debug(player, "Tab: args[i] else "+ac.argument+" '"+args[i]+"'");
-					if(i == length)
+					int c = countHowMuchAreStartsWithIgnoreCase(aclist, args[i]);
+					if(c > 1)
 					{
-						if(!args[i].equals(""))
-						{
-							debug(player, "Tab: string not empty");
-							event.getSuggestions().clear();
-							event.getSuggestions().addAll(getReturnList(ac, args[i], i, player, OneArgumentBeforeList, true));
-							return;
-						} else
-						{
-							debug(player, "Tab: string empty");
-							event.getSuggestions().clear();
-							event.getSuggestions().addAll(getReturnList(ac, args[i], i, player, OneArgumentBeforeList, false));
-							return;
-						}
-					} else
+						/*
+						 * Wenn mehr als 1 Argument mit dem Chateintrag startet, so liefere eine Liste mit allen diesen zurück.
+						 */
+						event.getSuggestions().clear();
+						event.getSuggestions().addAll(listIfArgumentIsnotEmpty(aclist, args[i], player));
+					}
+					if(ac.getName().toLowerCase().startsWith(args[i].toLowerCase()))
 					{
-						if(args[i].equals(ac.getName()))
+						if(ac.getName().length() > args[i].length())
 						{
-							debug(player, "Tab: args[i] equals && i != length => ac.subargument++");
-							OneArgumentBeforeList.clear();
-							OneArgumentBeforeList.addAll(ac.tabList.get(i));
-							//Subargument um ein erhöhen
-							aclist = ac.subargument;
-							isBreak = true;
-							lastAc = ac;
-							break;
+							/*
+							 * Wenn das Argument noch nicht vollständig ausgeschrieben ist, so return das.
+							 */
+							ArrayList<String> list = new ArrayList<>();
+							list.add(ac.getName());
+							event.getSuggestions().clear();
+							event.getSuggestions().addAll(list);
 						}
-						if(j == aclist.size()-1)
-						{
-							aclist = new ArrayList<>(); //Wenn keins der Argumente an der spezifischen Position gepasst hat, abbrechen.
-							debug(player, "Tab: args[i] Not Equal Any AcList.Ac => Set Empty list");
-						}
+						/*
+						 * Das Argument startet mit dem Argumentenname. aclist mit den Subargumenten vom Argument setzten.
+						 * Sowie den innern Loop brechen.
+						 */
+						aclist = ac.subargument;
+						isBreak = true;
+						lastAc = ac;
+						break;
+					}
+					if(j == aclist.size()-1)
+					{
+						/*
+						 * Wenn keins der Argumente an der spezifischen Position gepasst hat, abbrechen. Und leere aclist setzten.
+						 */
+						aclist = new ArrayList<>();
 					}
 				}
 			}
 			if(!isBreak)
 			{
-				debug(player, "isBreak");
 				if(lastAc != null)
 				{
-					debug(player, "lastAc != null");
 					event.getSuggestions().clear();
 					event.getSuggestions().addAll(getReturnTabList(lastAc.tabList.get(length), args[length]));
 					//Return null, wenn die Tabliste nicht existiert! Aka ein halbes break;
-					return;
 				}
 				if(i == length || aclist.isEmpty()) //Wenn das ende erreicht ist oder die aclist vorher leer gesetzt worden ist
 				{
-					debug(player, "==> Breaking!");
 					break;
 				}
 			}
@@ -166,7 +175,7 @@ public class TabCompletionListener implements Listener
 		{
 			for(String s : tabList)
 			{
-				if(s.startsWith(argsi)) //TODO argsi oder tabList anscheinend null
+				if(s.startsWith(argsi))
 				{
 					list.add(s);
 				}
@@ -176,62 +185,52 @@ public class TabCompletionListener implements Listener
 		return list;
 	}
 	
-	private List<String> getReturnList(ArgumentConstructor ac, String args, int i, ProxiedPlayer player,
-			List<String> OneArgumentBeforeList, boolean startsWith)
+	private List<String> listIfArgumentIsEmpty(ArrayList<ArgumentConstructor> subarg, ProxiedPlayer player)
 	{
-		debug(player, "getReturnList() "+i+" "+startsWith);
 		List<String> returnlist = new ArrayList<String>();
-		debug(player, "OABL: "+OneArgumentBeforeList.toString());
-		for(String argc : OneArgumentBeforeList)
+		for(ArgumentConstructor ac : subarg)
 		{
-			//debug(player, "Loop: argc => "+argc);
-			if(startsWith)
+			if(ac != null)
 			{
-				if(argc.startsWith(args))
+				if(player.hasPermission(ac.getPermission()))
 				{
-					ArgumentConstructor argcon = ac.getSubArgument(argc);
-					if(argcon != null)
-					{
-						debug(player, "Loop: argcon "+argcon.getPermission());
-						if(player.hasPermission(argcon.getPermission()))
-						{
-							returnlist.add(argc);
-						}
-					} else
-					{
-						returnlist.add(argc);
-					}
-					debug(player, "Loop: argcon => "+(argcon!=null));
+					returnlist.add(ac.getName());
 				}
-			} else
-			{
-				ArgumentConstructor argcon = ac.getSubArgument(argc);
-				if(argcon != null)
-				{
-					debug(player, "Loop: argcon "+argcon.getPermission());
-					if(player.hasPermission(argcon.getPermission()))
-					{
-						returnlist.add(argc);
-					}
-				} else
-				{
-					returnlist.add(argc);
-				}
-				debug(player, "Loop: argcon => "+(argcon!=null));
 			}
 		}
-		Collections.sort(returnlist);
-		debug(player, returnlist.toString());
 		return returnlist;
 	}
 	
-	private void debug(ProxiedPlayer player, String s)
+	private List<String> listIfArgumentIsnotEmpty(ArrayList<ArgumentConstructor> subarg, String arg, ProxiedPlayer player)
 	{
-		boolean bo = false;
-		if(bo)
+		List<String> returnlist = new ArrayList<String>();
+		for(ArgumentConstructor ac : subarg)
 		{
-			player.sendMessage(ChatApi.tctl(s));
+			if(ac != null)
+			{
+				if(ac.getName().toLowerCase().startsWith(arg.toLowerCase()))
+				{
+					if(player.hasPermission(ac.getPermission()))
+					{
+						returnlist.add(ac.getName());
+					}
+				}
+			}
 		}
+		return returnlist;
+	}
+	
+	private int countHowMuchAreStartsWithIgnoreCase(ArrayList<ArgumentConstructor> subarg, String arg)
+	{
+		int i = 0;
+		for(ArgumentConstructor ac : subarg)
+		{
+			if(ac.getName().toLowerCase().startsWith(arg.toLowerCase()))
+			{
+				i++;
+			}
+		}
+		return i;
 	}
 	
 	public String[] AddToStringArray(String[] oldArray, String newString)

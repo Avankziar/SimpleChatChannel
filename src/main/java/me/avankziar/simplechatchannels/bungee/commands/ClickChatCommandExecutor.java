@@ -1,6 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.CommandConstructor;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
@@ -35,7 +35,7 @@ public class ClickChatCommandExecutor extends Command
 			if(!player.hasPermission(cc.getPermission()))
 			{
 				///Du hast dafür keine Rechte!
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPermission")));
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 				return;
 			}
 		}
@@ -55,7 +55,7 @@ public class ClickChatCommandExecutor extends Command
     	}
     	///Klicke hier um die %number%.te Antwortmöglichkeit zu nehmen!
 		t.sendMessage(ChatApi.apiChat(msg, ClickEvent.Action.RUN_COMMAND, args[1],
-				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString("CmdClickChat.ClickAnswer")
+				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("CmdClickChat.ClickAnswer")
 				.replace("%number%", args[1])));
     	return;
 	}

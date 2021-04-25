@@ -1,6 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.CommandConstructor;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
@@ -30,7 +30,7 @@ public class SccEditorCommandExecutor extends Command
     	String µ = "µ";
     	if(!player.hasPermission(cc.getPermission()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.NoPermission")));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.NoPermission")));
 			return;
 		}
     	if(args.length == 0)
@@ -38,13 +38,13 @@ public class SccEditorCommandExecutor extends Command
     		if(plugin.editorplayers.contains(player.getName()))
     		{
     			plugin.editorplayers.remove(player.getName());
-    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"Out")));
+    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString(scc+"Out")));
     			String message = "editor"+µ+player.getName()+µ+"remove";
     			plugin.getUtility().sendSpigotMessage("simplechatchannels:sccbungee", message);
     		} else
     		{
     			plugin.editorplayers.add(player.getName());
-    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"In")));
+    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString(scc+"In")));
     			String message = "editor"+µ+player.getName()+µ+"add";
     			plugin.getUtility().sendSpigotMessage("simplechatchannels:sccbungee", message);
     		}

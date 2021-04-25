@@ -33,7 +33,7 @@ public class ARGPermanentChannelInherit extends ArgumentModule
 		if(cuoffline == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		String uuid = cuoffline.getUUID();

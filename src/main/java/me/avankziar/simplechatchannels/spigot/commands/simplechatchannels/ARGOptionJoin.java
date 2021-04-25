@@ -30,9 +30,9 @@ public class ARGOptionJoin extends ArgumentModule
 		{
 			return;
 		}
-		if(cu.isOptionJoinMessage())
+		if(cu.isOptionChannelMessage())
 		{
-			cu.setOptionJoinMessage(false);
+			cu.setOptionChannelMessage(false);
 			ChatUser.addChatUser(cu);
 			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
 					"`player_uuid` = ?", player.getUniqueId().toString());
@@ -42,7 +42,7 @@ public class ARGOptionJoin extends ArgumentModule
 					.replace("%channel%", "Join Message")));
 		} else
 		{
-			cu.setOptionJoinMessage(true);
+			cu.setOptionChannelMessage(true);
 			ChatUser.addChatUser(cu);
 			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
 					"`player_uuid` = ?", player.getUniqueId().toString());

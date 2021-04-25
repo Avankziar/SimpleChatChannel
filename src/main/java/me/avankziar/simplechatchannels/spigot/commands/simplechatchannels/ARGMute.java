@@ -33,14 +33,14 @@ public class ARGMute extends ArgumentModule
 		String target = args[1];
 		if(Bukkit.getPlayer(target)== null)
 		{
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		Player t = Bukkit.getPlayer(target);
 		ChatUser cu = ChatUserHandler.getChatUser(t.getUniqueId());
 		if(cu == null)
 		{
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		if(args.length == 2)

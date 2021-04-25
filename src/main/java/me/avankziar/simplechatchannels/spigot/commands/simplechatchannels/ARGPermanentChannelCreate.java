@@ -53,7 +53,7 @@ public class ARGPermanentChannelCreate extends ArgumentModule
 				amount++;
 			}
 		}
-		if(plugin.getYamlHandler().get().getInt("PermanentChannelAmountPerPlayer") <= amount)
+		if(plugin.getYamlHandler().get().getInt(""PermanentChannel.AmountPerPlayer"") <= amount)
 		{
 			///&cDieser Name für &5perma&fnenten &cChannels ist schon vergeben!
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"PCCreate.MaximumAmount")));

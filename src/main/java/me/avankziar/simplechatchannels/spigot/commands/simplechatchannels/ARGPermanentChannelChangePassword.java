@@ -28,14 +28,14 @@ public class ARGPermanentChannelChangePassword extends ArgumentModule
 		if(cc==null)
 		{
 			///Du bist in keinem permanenten Channel!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.ChannelNotExistII")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", args[1])));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()))
 		{
 			///Du bist nicht der Ersteller des permanenten Channel!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotTheCreatorII")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PermanentChannel.YouAreNotTheOwnerOrVice")));
 			return;
 		}
 		cc.setPassword(args[2]);

@@ -29,7 +29,7 @@ public class ARGPermanentChannelUnban extends ArgumentModule
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", args[1])));
 			return;
 		}
@@ -37,14 +37,14 @@ public class ARGPermanentChannelUnban extends ArgumentModule
 				&& !cc.getVice().contains(player.getUniqueId().toString()))
 		{
 			///Du bist weder der Ersteller noch ein Stellvertreter im &5perma&fnenten &cChannel &f%channel%&c!
-			player.spigot().sendMessage(ChatApi.tctl(language+"ChannelGeneral.NotChannelViceII"));
+			player.spigot().sendMessage(ChatApi.tctl("CmdScc.PermanentChannel.YouAreNotTheOwnerOrVice"));
 			return;
 		}
 		String targetuuid = Utility.convertNameToUUID(args[2]).toString();
 		if(targetuuid == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		

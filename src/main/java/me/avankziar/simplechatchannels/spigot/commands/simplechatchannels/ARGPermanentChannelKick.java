@@ -29,7 +29,7 @@ public class ARGPermanentChannelKick extends ArgumentModule
 		if(cc==null)
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.ChannelNotExistII")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", args[1])));
 			return;
 		}
@@ -37,7 +37,7 @@ public class ARGPermanentChannelKick extends ArgumentModule
 				&& !cc.getVice().contains(player.getUniqueId().toString()))
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotChannelViceII")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PermanentChannel.YouAreNotTheOwnerOrVice")
 					.replace("%channel%", cc.getNameColor()+cc.getName())));
 			return;
 		}
@@ -46,7 +46,7 @@ public class ARGPermanentChannelKick extends ArgumentModule
 		if(cuoffline == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		String targetuuid = cuoffline.getUUID();
@@ -59,7 +59,7 @@ public class ARGPermanentChannelKick extends ArgumentModule
 		if(!cc.getMembers().contains(targetuuid))
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotChannelMemberII")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PermanentChannel.NotAChannelMember")));
 			return;
 		}
 		if(targetuuid.equals(player.getUniqueId().toString()))

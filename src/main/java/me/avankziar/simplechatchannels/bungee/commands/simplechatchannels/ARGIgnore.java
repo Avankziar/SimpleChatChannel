@@ -1,6 +1,6 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
@@ -16,7 +16,7 @@ public class ARGIgnore extends ArgumentModule
 	
 	public ARGIgnore(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super(plugin, argumentConstructor);
+		super(argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -24,38 +24,29 @@ public class ARGIgnore extends ArgumentModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String language = "CmdScc.";
-		String target = args[1];
-		if(ProxyServer.getInstance().getPlayer(target) == null)
+		String t = args[1];
+		if(ProxyServer.getInstance().getPlayer(t) == null)
 		{
-			///Der Spieler ist nicht online oder existiert nicht!
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
-		ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
+		ProxiedPlayer target = ProxyServer.getInstance().getPlayer(t);
 		IgnoreObject io = (IgnoreObject) plugin.getMysqlHandler().getData(MysqlHandler.Type.IGNOREOBJECT,
 				"`player_uuid` = ? AND `ignore_uuid` = ?",
-				player.getUniqueId().toString(), t.getUniqueId().toString());
+				player.getUniqueId().toString(), target.getUniqueId().toString());
 		if(io != null)
 		{
 			plugin.getMysqlHandler().deleteData(MysqlHandler.Type.IGNOREOBJECT,
 					"`player_uuid` = ? AND `ignore_uuid` = ?",
-					player.getUniqueId().toString(), t.getUniqueId().toString());
-			///Du hast den Spieler %player% von deiner Ignoreliste &7genommen!
-			player.sendMessage(ChatApi.tctl(
-					plugin.getYamlHandler().getL().getString(language+"Ignore.DontIgnore")
-					.replace("%player%", target)));
+					player.getUniqueId().toString(), target.getUniqueId().toString());
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Deactive")
+					.replace("%player%", t)));
 		} else
 		{
 			plugin.getMysqlHandler().create(MysqlHandler.Type.IGNOREOBJECT,
-					new IgnoreObject(
-							player.getUniqueId().toString(),
-							t.getUniqueId().toString(), target));
-			///Der Spieler %player% wird von dir ignoriert!
-			player.sendMessage(ChatApi.tctl(
-					plugin.getYamlHandler().getL().getString(language+"Ignore.DoIgnore")
-					.replace("%player%", target)));
+					new IgnoreObject(player.getUniqueId().toString(), target.getUniqueId().toString(), t));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Active")
+					.replace("%player%", t)));
 		}
-		return;
 	}
 }

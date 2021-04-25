@@ -2,8 +2,8 @@ package main.java.me.avankziar.simplechatchannels.bungee.objects;
 
 import java.util.UUID;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler.Type;
 
 public class ChatUserHandler

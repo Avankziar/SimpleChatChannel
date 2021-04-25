@@ -32,7 +32,7 @@ public class ARGPermanentChannelDelete extends ArgumentModule
 		{
 			///Der angegebene Channel &5perma&fnenten %channel% existiert nicht!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.ChannelNotExistII")
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", args[1])));
 			return;
 		}

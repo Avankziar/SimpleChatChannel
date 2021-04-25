@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.simplechatchannels.bungee.database.Language.ISO639_2B;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -13,632 +18,275 @@ import net.md_5.bungee.config.YamlConfiguration;
 public class YamlHandler 
 {
 	private SimpleChatChannels plugin;
-	private Configuration cfg = null;
-	private Configuration com = null;
-	private Configuration wfi = null;
-	private Configuration ara = null;
-	private Configuration dut = null;
-	private Configuration eng = null;
-	private Configuration fre = null;
-	private Configuration ger = null;
-	private Configuration hin = null;
-	private Configuration ita = null;
-	private Configuration jap = null;
-	private Configuration mad = null;
-	private Configuration rus = null;
-	private Configuration spa = null;
-	private Configuration lang = null;
-	private String languages;
-	private String symbolglobal;
-	private String symboltrade;
-	private String symbolauction;
-	private String symbolevent;
-	private String symbollocal;
-	private String symbolworld;
-	private String symbolsupport;
-	private String symbolteam;
-	private String symboladmin;
-	private String symbolpm;
-	private String symbolpmre;
-	private String symbolgroup;
-	private String symboltemp;
-	private String symbolperma;
+	private File config = null;
+	private Configuration cfg = new Configuration();
 	
+	private File commands = null;
+	private Configuration com = new Configuration();
+	
+	private String languages;
+	private File language = null;
+	private Configuration lang = new Configuration();
+	
+	private File chattitle = null;
+	private Configuration cti = new Configuration();
+	
+	private File channels = null;
+	private Configuration cha = new Configuration();
+	
+	private File emojis = null;
+	private Configuration eji = new Configuration();
+	
+	private File wordFilter = null;
+	private Configuration wfr = new Configuration();
+
 	public YamlHandler(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 		loadYamlHandler();
 	}
 	
-	public boolean loadYamlHandler()
-	{
-		if(!mkdirGeneralFiles())
-		{
-			return false;
-		}
-		if(!loadGeneralFiles())
-		{
-			return false;
-		}
-		if(!mkdir())
-		{
-			return false;
-		}
-		if(!loadYamls())
-		{
-			return false;
-		}
-		languages = cfg.getString("Language", "English");
-		initGetL();
-		symbolglobal = lang.getString("ChannelSymbol.Global", "");
-		symboltrade = lang.getString("ChannelSymbol.Trade", "$");
-		symbolauction = lang.getString("ChannelSymbol.Auction", "!");
-		symbolevent = lang.getString("ChannelSymbol.Event", "%");
-		symbollocal = lang.getString("ChannelSymbol.Local", ",");
-		symbolworld = lang.getString("ChannelSymbol.World", "°");
-		symbolsupport = lang.getString("ChannelSymbol.Support", "?");
-		symbolteam = lang.getString("ChannelSymbol.Team", "+");
-		symboladmin = lang.getString("ChannelSymbol.Admin", "#");
-		symbolpm = lang.getString("ChannelSymbol.PrivateMessage", "@");
-		symbolpmre = lang.getString("ChannelSymbol.PrivateMessageRe", "@r");
-		symbolgroup = lang.getString("ChannelSymbol.Group", "@*");
-		symboltemp = lang.getString("ChannelSymbol.Temp", ";");
-		symbolperma = lang.getString("ChannelSymbol.Perma", ".");
-		return true;
-	}
-	 
-	public Configuration get()
+	public Configuration getConfig()
 	{
 		return cfg;
 	}
 	
-	public Configuration getCom()
+	public Configuration getCommands()
 	{
 		return com;
 	}
 	
-	public Configuration getWord()
-	{
-		return wfi;
-	}
-	
-	public Configuration getL()
+	public Configuration getLang()
 	{
 		return lang;
 	}
 	
-	public boolean saveWordfilter() 
+	public Configuration getChatTitle()
 	{
-		try 
-		 {
-			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(wfi, new File(plugin.getDataFolder(), "wordfilter.yml"));
-		 } catch (IOException e) 
-		 {
-			 e.printStackTrace();
-			 return false;
-		 }
-		 return true;
+		return cti;
 	}
 	
-	public boolean saveCommands() 
+	public Configuration getChannels()
 	{
-		try 
-		 {
-			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(com, new File(plugin.getDataFolder(), "commands.yml"));
-		 } catch (IOException e) 
-		 {
-			 e.printStackTrace();
-			 return false;
-		 }
-		 return true;
+		return cha;
 	}
 	
-	public void initGetL()
+	public Configuration getEmojis()
 	{
-		if(languages.equalsIgnoreCase("Arabic"))
+		return eji;
+	}
+	
+	public Configuration getWordFilter()
+	{
+		return wfr;
+	}
+	
+	private Configuration loadYamlTask(File file, Configuration yaml)
+	{
+		Configuration y = null;
+		try 
 		{
-			lang = ara;
-		} else if(languages.equalsIgnoreCase("Dutch"))
+			yaml = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+			SimpleChatChannels.log.info("File "+file.getName()+" loaded!");
+		} catch (IOException e) 
 		{
-			lang = dut;
-		} else if(languages.equalsIgnoreCase("French"))
-		{
-			lang = fre;
-		} else if(languages.equalsIgnoreCase("German"))
-		{
-			lang = ger;
-		} else if(languages.equalsIgnoreCase("Hindi"))
-		{
-			lang = hin;
-		} else if(languages.equalsIgnoreCase("Italian"))
-		{
-			lang = ita;
-		} else if(languages.equalsIgnoreCase("Japanese"))
-		{
-			lang = jap;
-		} else if(languages.equalsIgnoreCase("Mandarin"))
-		{
-			lang = mad;
-		} else if(languages.equalsIgnoreCase("Russian"))
-		{
-			lang = rus;
-		} else if(languages.equalsIgnoreCase("Spanish"))
-		{
-			lang = spa;
-		} else
-		{
-			lang = eng;
+			SimpleChatChannels.log.severe(
+					"Could not load the %file% file! You need to regenerate the %file%! Error: ".replace("%file%", file.getName())
+					+ e.getMessage());
+			e.printStackTrace();
 		}
+		y = yaml;
+		return y;
 	}
 	
-	public boolean mkdirGeneralFiles()
+	private boolean writeFile(File file, Configuration yml, LinkedHashMap<String, Language> keyMap)
 	{
-		File config = new File(plugin.getDataFolder(), "bungeeconfig.yml");  
-	    if (!config.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("bungeeconfig.yml")) 
-	    	{       
-	    		Files.copy(in, config.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File commands = new File(plugin.getDataFolder(), "commands.yml");  
-	    if (!commands.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("commands.yml")) 
-	    	{       
-	    		Files.copy(in, commands.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File wordfilter = new File(plugin.getDataFolder(), "wordfilter.yml");  
-	    if (!wordfilter.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("wordfilter.yml")) 
-	    	{       
-	    		Files.copy(in, wordfilter.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
+		for(String key : keyMap.keySet())
+		{
+			Language languageObject = keyMap.get(key);
+			if(languageObject.languageValues.containsKey(plugin.getYamlManager().getLanguageType()) == true)
+			{
+				plugin.getYamlManager().setFileInput(yml, keyMap, key, plugin.getYamlManager().getLanguageType());
+			} else if(languageObject.languageValues.containsKey(plugin.getYamlManager().getDefaultLanguageType()) == true)
+			{
+				plugin.getYamlManager().setFileInput(yml, keyMap, key, plugin.getYamlManager().getDefaultLanguageType());
+			}
+		}
+		try
+		{
+			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(yml, file);
+			 SimpleChatChannels.log.info("File "+file.getName()+" saved!");
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 		return true;
 	}
 	
-	private boolean loadGeneralFiles()
+	public boolean loadYamlHandler()
 	{
-		try 
+		plugin.setYamlManager(new YamlManager());
+		if(!mkdirStaticFiles())
 		{
-			cfg = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder(), "bungeeconfig.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
 			return false;
 		}
-		try 
+		if(!mkdirDynamicFiles())
 		{
-			com = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder(), "commands.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			wfi = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder(), "wordfilter.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
 	
-	private boolean mkdir()
+	public boolean mkdirStaticFiles()
 	{
+		File directory = new File(plugin.getDataFolder()+"");
+		if(!directory.exists())
+		{
+			directory.mkdir();
+		}
+		config = new File(plugin.getDataFolder(), "config.yml");
+		if(!config.exists()) 
+		{
+			SimpleChatChannels.log.info("Create config.yml...");
+			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
+	    	 {       
+	    		 Files.copy(in, config.toPath());
+	         } catch (IOException e) 
+	    	 {
+	        	 e.printStackTrace();
+	        	 return false;
+	         }
+		}
+		cfg = loadYamlTask(config, cfg);
+		writeFile(config, cfg, plugin.getYamlManager().getConfigKey());
+		
+		languages = cfg.getString("Language", "ENG").toUpperCase();
+		
+		commands = new File(plugin.getDataFolder(), "commands.yml");
+		if(!commands.exists()) 
+		{
+			SimpleChatChannels.log.info("Create commands.yml...");
+			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
+	    	 {       
+	    		 Files.copy(in, commands.toPath());
+	         } catch (IOException e) 
+	    	 {
+	        	 e.printStackTrace();
+	        	 return false;
+	         }
+		}
+		com = loadYamlTask(commands, com);
+		writeFile(commands, com, plugin.getYamlManager().getCommandsKey());
+		
+		chattitle = new File(plugin.getDataFolder(), "chattitle.yml");
+		if(!chattitle.exists()) 
+		{
+			SimpleChatChannels.log.info("Create chattitle.yml...");
+			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
+	    	 {       
+	    		 Files.copy(in, chattitle.toPath());
+	         } catch (IOException e) 
+	    	 {
+	        	 e.printStackTrace();
+	        	 return false;
+	         }
+		}
+		cti = loadYamlTask(chattitle, cti);
+		writeFile(chattitle, cti, plugin.getYamlManager().getChatTitleKey());
+		
+		channels = new File(plugin.getDataFolder(), "channels.yml");
+		if(!channels.exists()) 
+		{
+			SimpleChatChannels.log.info("Create channels.yml...");
+			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
+	    	 {       
+	    		 Files.copy(in, channels.toPath());
+	         } catch (IOException e) 
+	    	 {
+	        	 e.printStackTrace();
+	        	 return false;
+	         }
+		}
+		cha = loadYamlTask(channels, cha);
+		writeFile(channels, cha, plugin.getYamlManager().getChannelsKey());
+		
+		emojis = new File(plugin.getDataFolder(), "emojis.yml");
+		if(!emojis.exists()) 
+		{
+			SimpleChatChannels.log.info("Create emojis.yml...");
+			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
+	    	 {       
+	    		 Files.copy(in, emojis.toPath());
+	         } catch (IOException e) 
+	    	 {
+	        	 e.printStackTrace();
+	        	 return false;
+	         }
+		}
+		eji = loadYamlTask(emojis, eji);
+		writeFile(emojis, eji, plugin.getYamlManager().getEmojiKey());
+		
+		wordFilter = new File(plugin.getDataFolder(), "wordfilter.yml");
+		if(!wordFilter.exists()) 
+		{
+			SimpleChatChannels.log.info("Create wordfilter.yml...");
+			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
+	    	 {       
+	    		 Files.copy(in, channels.toPath());
+	         } catch (IOException e) 
+	    	 {
+	        	 e.printStackTrace();
+	        	 return false;
+	         }
+		}
+		wfr = loadYamlTask(wordFilter, wfr);
+		writeFile(wordFilter, wfr, plugin.getYamlManager().getWordFilterKey());
+		return true;
+	}
+	
+	private boolean mkdirDynamicFiles()
+	{
+		List<Language.ISO639_2B> types = new ArrayList<Language.ISO639_2B>(EnumSet.allOf(Language.ISO639_2B.class));
+		ISO639_2B languageType = ISO639_2B.ENG;
+		for(ISO639_2B type : types)
+		{
+			if(type.toString().equals(languages))
+			{
+				languageType = type;
+				break;
+			}
+		}
+		plugin.getYamlManager().setLanguageType(languageType);
+		if(!mkdirLanguage())
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean mkdirLanguage()
+	{
+		String languageString = plugin.getYamlManager().getLanguageType().toString().toLowerCase();
 		File directory = new File(plugin.getDataFolder()+"/Languages/");
 		if(!directory.exists())
 		{
 			directory.mkdir();
 		}
-		File arabic = new File(directory.toPath().toString(), "arabic.yml");  
-	    if (!arabic.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("arabic.yml")) 
-	    	{       
-	    		Files.copy(in, arabic.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File dutch = new File(directory.toPath().toString(), "dutch.yml");  
-	    if (!dutch.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("dutch.yml")) 
-	    	{       
-	    		Files.copy(in, dutch.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File english = new File(directory.toPath().toString(), "english.yml");  
-	    if (!english.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("english.yml")) 
-	    	{       
-	    		Files.copy(in, english.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File french = new File(directory.toPath().toString(), "french.yml");  
-	    if (!french.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("french.yml")) 
-	    	{       
-	    		Files.copy(in, french.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File german = new File(directory.toPath().toString(), "german.yml");  
-	    if (!german.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("german.yml")) 
-	    	{       
-	    		Files.copy(in, german.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File hindi = new File(directory.toPath().toString(), "hindi.yml");  
-	    if (!hindi.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("hindi.yml")) 
-	    	{       
-	    		Files.copy(in, hindi.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File italian = new File(directory.toPath().toString(), "italian.yml");  
-	    if (!italian.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("italian.yml")) 
-	    	{       
-	    		Files.copy(in, italian.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File japanese = new File(directory.toPath().toString(), "japanese.yml");  
-	    if (!japanese.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("japanese.yml")) 
-	    	{       
-	    		Files.copy(in, japanese.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File mandarin = new File(directory.toPath().toString(), "mandarin.yml");  
-	    if (!mandarin.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("mandarin.yml")) 
-	    	{       
-	    		Files.copy(in, mandarin.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File russian = new File(directory.toPath().toString(), "russian.yml");  
-	    if (!russian.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("russian.yml")) 
-	    	{       
-	    		Files.copy(in, russian.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
-	    File spanish = new File(directory.toPath().toString(), "spanish.yml");  
-	    if (!spanish.exists()) 
-	    {
-	    	try (InputStream in = plugin.getResourceAsStream("spanish.yml")) 
-	    	{       
-	    		Files.copy(in, spanish.toPath());
-	    	} catch (IOException e) 
-	    	{
-	    		e.printStackTrace();
-	       	 	return false;
-	    	}
-	    }
+		language = new File(directory.getPath(), languageString+".yml");
+		if(!language.exists()) 
+		{
+			SimpleChatChannels.log.info("Create %lang%.yml...".replace("%lang%", languageString));
+			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
+	    	 {       
+	    		 Files.copy(in, language.toPath());
+	         } catch (IOException e) 
+	    	 {
+	        	 e.printStackTrace();
+	        	 return false;
+	         }
+		}
+		lang = loadYamlTask(language, lang);
+		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
 		return true;
 	}
-	
-	public boolean loadYamls()
-	{
-		try 
-		{
-			ara = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "arabic.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			dut = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "dutch.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			eng = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "english.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			fre = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "french.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			ger = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "german.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			hin = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "hindi.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			ita = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "italian.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			jap = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "japanese.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			mad = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "mandarin.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			rus = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "russian.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		try 
-		{
-			spa = ConfigurationProvider.getProvider(YamlConfiguration.class)
-					.load(new File(plugin.getDataFolder()+"/Languages/", "spanish.yml"));
-		} catch (IOException e) 
-		{
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
-	 
-	 public String getChannel(String channelwithoutsymbol, String msg)
-	 {
-		 String cws = channelwithoutsymbol;
-		 if(!cws.equalsIgnoreCase("Global"))
-		 {
-			 if(msg.startsWith(symbolglobal))
-			 {
-				 return "Global";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Trade"))
-		 {
-			 if(msg.startsWith(symboltrade))
-			 {
-				 return "Trade";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Auction"))
-		 {
-			 if(msg.startsWith(symbolauction))
-			 {
-				 return "Auction";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Event"))
-		 {
-			 if(msg.startsWith(symbolevent))
-			 {
-				 return "Event";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Local"))
-		 {
-			 if(msg.startsWith(symbollocal))
-			 {
-				 return "Local";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("World"))
-		 {
-			 if(msg.startsWith(symbolworld))
-			 {
-				 return "World";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Support"))
-		 {
-			 if(msg.startsWith(symbolsupport))
-			 {
-				 return "Support";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Team"))
-		 {
-			 if(msg.startsWith(symbolteam))
-			 {
-				 return "Team";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Admin"))
-		 {
-			 if(msg.startsWith(symboladmin))
-			 {
-				 return "Admin";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Temp"))
-		 {
-			 if(msg.startsWith(symboltemp))
-			 {
-				 return "Temp";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Perma"))
-		 {
-			 if(msg.startsWith(symbolperma))
-			 {
-				 return "Perma";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("Group"))
-		 {
-			 if(msg.startsWith(symbolgroup))
-			 {
-				 return "Group";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("PrivateMessageRe"))
-		 {
-			 if(msg.startsWith(symbolpmre))
-			 {
-				 return "PrivateMessageRe";
-			 }
-		 }
-		 if(!cws.equalsIgnoreCase("PrivateMessage"))
-		 {
-			 if(msg.startsWith(symbolpm))
-			 {
-				 return "PrivateMessage";
-			 }
-		 }
-		return cws;
-	 }
-	 
-	 public String getSymbol(String channel)
-	 {
-		if(channel.equals("Global"))
-		{
-			return symbolglobal;
-		} else if(channel.equals("Trade"))
-		{
-			return symboltrade;
-		} else if(channel.equals("Auction"))
-		{
-			return symbolauction;
-		} else if(channel.equals("Event"))
-		{
-			return symbolevent;
-		} else if(channel.equals("Local"))
-		{
-			return symbollocal;
-		} else if(channel.equals("World"))
-		{
-			return symbolworld;
-		} else if(channel.equals("Support"))
-		{
-			 return symbolsupport;
-		} else if(channel.equals("Team"))
-		{
-			 return symbolteam;
-		} else if(channel.equals("Admin"))
-		{
-			 return symboladmin;
-		} else if(channel.equals("Temp"))
-		{
-			 return symboltemp;
-		} else if(channel.equals("Perma"))
-		{
-			 return symbolperma;
-		} else if(channel.equals("Group"))
-		{
-			return symbolgroup;
-		} else if(channel.equals("PrivateMessageRe"))
-		{
-			 return symbolpmre;
-		} else if(channel.equals("PrivateMessage"))
-		{
-			 return symbolpm;
-		}
-		return symbolglobal;
-	 }
 }

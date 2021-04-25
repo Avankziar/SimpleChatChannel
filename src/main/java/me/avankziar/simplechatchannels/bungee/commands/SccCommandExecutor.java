@@ -1,9 +1,10 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.BaseConstructor;
@@ -58,7 +59,7 @@ public class SccCommandExecutor extends Command
 					if(!player.hasPermission(cc.getPermission()))
 					{
 						///Du hast dafür keine Rechte!
-						player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPermission")));
+						player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 						return;
 					}
 					baseCommands(player, Integer.parseInt(args[0])); //Base and Info Command
@@ -75,7 +76,7 @@ public class SccCommandExecutor extends Command
 				if(!player.hasPermission(cc.getPermission()))
 				{
 					///Du hast dafür keine Rechte!
-					player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPermission")));
+					player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 					return;
 				}
 				baseCommands(player, 0); //Base and Info Command
@@ -97,7 +98,13 @@ public class SccCommandExecutor extends Command
 						{
 							if(am != null)
 							{
-								am.run(sender, args);
+								try
+								{
+									am.run(sender, args);
+								} catch (IOException e)
+								{
+									e.printStackTrace();
+								}
 							} else
 							{
 								SimpleChatChannels.log.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
@@ -110,7 +117,13 @@ public class SccCommandExecutor extends Command
 							{
 								if(am != null)
 								{
-									am.run(sender, args);
+									try
+									{
+										am.run(sender, args);
+									} catch (IOException e)
+									{
+										e.printStackTrace();
+									}
 								} else
 								{
 									SimpleChatChannels.log.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
@@ -124,7 +137,7 @@ public class SccCommandExecutor extends Command
 							} else
 							{
 								///Du hast dafür keine Rechte!
-								player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPermission")));
+								player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 								return;
 							}
 						} else
@@ -137,11 +150,11 @@ public class SccCommandExecutor extends Command
 					{
 						if(player == null)
 						{
-							SimpleChatChannels.log.warning(plugin.getYamlHandler().getL().getString("InputIsWrong"));
+							SimpleChatChannels.log.warning(plugin.getYamlHandler().getLang().getString("InputIsWrong"));
 						} else
 						{
 							///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-							player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getL().getString("InputIsWrong"),
+							player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
 									ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
 						}
 						return;
@@ -156,7 +169,7 @@ public class SccCommandExecutor extends Command
 		if (player != null) 
 		{
 			///Deine Eingabe ist fehlerhaft, klicke hier auf den Text um &cweitere Infos zu bekommen!
-			player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getL().getString("InputIsWrong"),
+			player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
 					ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
 		}
 		return;
@@ -168,7 +181,7 @@ public class SccCommandExecutor extends Command
 		int start = page*10;
 		int end = page*10+9;
 		int last = 0;
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString(
 				SimpleChatChannels.infoCommandPath+".BaseInfo.Headline")));
 		for(BaseConstructor bc : plugin.getHelpList())
 		{
@@ -193,9 +206,9 @@ public class SccCommandExecutor extends Command
 	private void sendInfo(CommandSender player, String path, String suggestion)
 	{
 		player.sendMessage(ChatApi.apiChat(
-				plugin.getYamlHandler().getL().getString(SimpleChatChannels.infoCommandPath+".BaseInfo."+path),
+				plugin.getYamlHandler().getLang().getString(SimpleChatChannels.infoCommandPath+".BaseInfo."+path),
 				ClickEvent.Action.SUGGEST_COMMAND, suggestion,
-				HoverEvent.Action.SHOW_TEXT,plugin.getYamlHandler().getL().getString("GeneralHover")));
+				HoverEvent.Action.SHOW_TEXT,plugin.getYamlHandler().getLang().getString("GeneralHover")));
 	}
 	
 	public void pastNextPage(CommandSender player, String path,
@@ -212,7 +225,7 @@ public class SccCommandExecutor extends Command
 		if(page!=0)
 		{
 			TextComponent msg2 = ChatApi.tctl(
-					plugin.getYamlHandler().getL().getString(path+".BaseInfo.Past"));
+					plugin.getYamlHandler().getLang().getString(path+".BaseInfo.Past"));
 			String cmd = cmdstring+" "+String.valueOf(j);
 			for(String o : objects)
 			{
@@ -224,7 +237,7 @@ public class SccCommandExecutor extends Command
 		if(!lastpage)
 		{
 			TextComponent msg1 = ChatApi.tctl(
-					plugin.getYamlHandler().getL().getString(path+".BaseInfo.Next"));
+					plugin.getYamlHandler().getLang().getString(path+".BaseInfo.Next"));
 			String cmd = cmdstring+" "+String.valueOf(i);
 			for(String o : objects)
 			{

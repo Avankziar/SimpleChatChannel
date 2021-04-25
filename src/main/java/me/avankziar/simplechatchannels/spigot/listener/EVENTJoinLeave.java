@@ -10,9 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import main.java.me.avankziar.simplechatchannels.handlers.ConvertHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
-import main.java.me.avankziar.simplechatchannels.objects.ConvertHandler;
 import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
@@ -64,7 +64,7 @@ public class EVENTJoinLeave implements Listener
 				}
 			}
 		}
-		if(cu.isOptionJoinMessage())
+		if(cu.isOptionChannelMessage())
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu)));
 			///Herzlich willkommen zurück &f%player% &6auf unserem Server &b[Bitte servername einfügen]
@@ -83,7 +83,7 @@ public class EVENTJoinLeave implements Listener
 				ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 				if(allcu != null)
 				{
-					if(allcu.isOptionJoinMessage())
+					if(allcu.isOptionChannelMessage())
 					{
 						///%player% &6hat den Server betreten!
 						TextComponent msg = ChatApi.apiChat(
@@ -152,7 +152,7 @@ public class EVENTJoinLeave implements Listener
 			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
 			if(allcu != null)
 			{
-				if(allcu.isOptionJoinMessage())
+				if(allcu.isOptionChannelMessage())
 				{
 					///%player% &4hat den Server verlassen!
 					String msg = plugin.getYamlHandler().getL().getString(

@@ -30,7 +30,7 @@ public class ARGIgnore extends ArgumentModule
 		if(Bukkit.getPlayer(target) == null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		Player t = Bukkit.getPlayer(target);

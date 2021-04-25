@@ -3,7 +3,7 @@ package main.java.me.avankziar.simplechatchannels.bungee.commands.tree;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 
 public class ArgumentConstructor extends BaseConstructor
 {
@@ -15,15 +15,16 @@ public class ArgumentConstructor extends BaseConstructor
     public LinkedHashMap<Integer, ArrayList<String>> tabList;
 
     public ArgumentConstructor(
-    		YamlHandler yamlHandler,
     		String path, int position, int minArgs, int maxArgs, boolean canConsoleAccess,
     		LinkedHashMap<Integer, ArrayList<String>> tablistAddingOtherValue,
     		ArgumentConstructor...argumentConstructors)
     {
-    	super(yamlHandler.getCom().getString(path+".Argument"),
+    	super(SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".Argument"),
     			path,
-    			yamlHandler.getCom().getString(path+".Permission"),
-    			yamlHandler.getCom().getString(path+".Suggestion"),
+    			SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".Permission"),
+    			SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".Suggestion"),
+    			SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".CommandString"),
+    			SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".HelpInfo"),
     			canConsoleAccess);
         this.minArgsConstructor = minArgs;
         this.maxArgsConstructor = maxArgs;

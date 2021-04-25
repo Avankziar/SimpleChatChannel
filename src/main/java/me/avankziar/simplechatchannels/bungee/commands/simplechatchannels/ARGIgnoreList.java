@@ -1,16 +1,23 @@
 package main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
-import main.java.me.avankziar.simplechatchannels.objects.ConvertHandler;
-import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.KeyHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.PluginSettings;
+import main.java.me.avankziar.simplechatchannels.handlers.ConvertHandler;
+import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGIgnoreList extends ArgumentModule
@@ -19,7 +26,7 @@ public class ARGIgnoreList extends ArgumentModule
 	
 	public ARGIgnoreList(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
-		super(plugin, argumentConstructor);
+		super(argumentConstructor);
 		this.plugin = plugin;
 	}
 
@@ -27,31 +34,47 @@ public class ARGIgnoreList extends ArgumentModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Utility utility = plugin.getUtility();
-		String language = "CmdScc.";
-		if(utility.rightArgs(player,args,1))
+		ArrayList<IgnoreObject> iolist = new ArrayList<>();
+		String name = player.getName();
+		if(args.length == 2)
 		{
-			return;
-		}
-		int end = plugin.getMysqlHandler().lastID(MysqlHandler.Type.IGNOREOBJECT);
-		ArrayList<IgnoreObject> iolist = ConvertHandler.convertListII(
-				plugin.getMysqlHandler().getList(MysqlHandler.Type.IGNOREOBJECT,
-						"`id`", true, 0, end, "`player_uuid` = ?", player.getUniqueId().toString()));
-		String list = "";
-		if(iolist == null)
+			String otherplayer = args[1];
+			UUID uuid = Utility.convertNameToUUID(otherplayer);
+			if(uuid == null)
+			{
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+				return;
+			}
+			name = otherplayer;
+			iolist = ConvertHandler.convertListII(
+					plugin.getMysqlHandler().getAllListAt(MysqlHandler.Type.IGNOREOBJECT,
+							"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
+		} else
 		{
-			list = "None";
+			iolist = ConvertHandler.convertListII(
+					plugin.getMysqlHandler().getAllListAt(MysqlHandler.Type.IGNOREOBJECT,
+							"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
 		}
 		if(iolist.isEmpty())
 		{
-			list = "None";
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.NoOne")));
+			return;
 		}
+		ArrayList<BaseComponent> bclist = new ArrayList<>();
 		for(IgnoreObject io : iolist)
 		{
-			list += io.getIgnoreName()+" &9| &r";
+			bclist.add(ChatApi.apiChat(
+					io.getIgnoreName()+" ",
+					ClickEvent.Action.RUN_COMMAND,
+					PluginSettings.settings.getCommands(KeyHandler.SCC_IGNORE)+io.getIgnoreName(),
+					HoverEvent.Action.SHOW_TEXT,
+					plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Hover")));
 		}
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"Ignore.List")
-				.replace("%il%", list)));
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Headline")
+				.replace("%player%", name)));
+		TextComponent tc = ChatApi.tc("");
+		tc.setExtra(bclist);
+		player.sendMessage(tc);
 		return;
 	}
 }

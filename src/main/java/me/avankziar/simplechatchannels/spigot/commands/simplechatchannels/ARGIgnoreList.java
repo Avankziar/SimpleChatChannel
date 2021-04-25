@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.simplechatchannels.handlers.ConvertHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
-import main.java.me.avankziar.simplechatchannels.objects.ConvertHandler;
 import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.assistance.Utility;

@@ -29,7 +29,7 @@ public class ARGTemporaryChannelChangePassword extends ArgumentModule
 		{
 			///Du bist in keinem CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotInAChannel")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.YouAreNotInAChannel")));
 			return;
 		}
 		Player creator = cc.getCreator();
@@ -37,7 +37,7 @@ public class ARGTemporaryChannelChangePassword extends ArgumentModule
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(scc+"ChannelGeneral.NotTheCreator")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.YouAreNotTheOwner")));
 			return;
 		}
 		cc.setPassword(args[1]);

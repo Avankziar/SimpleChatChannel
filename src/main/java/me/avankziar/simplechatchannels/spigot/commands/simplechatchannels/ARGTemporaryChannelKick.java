@@ -29,7 +29,7 @@ public class ARGTemporaryChannelKick extends ArgumentModule
 		{
 			///Du bist in keinem CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotInAChannel")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.YouAreNotInAChannel")));
 			return;
 		}
 		Player creator = cc.getCreator();
@@ -37,14 +37,14 @@ public class ARGTemporaryChannelKick extends ArgumentModule
 		{
 			///Du bist nicht der Ersteller des CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotTheCreator")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.YouAreNotTheOwner")));
 			return;
 		}
 		if(plugin.getServer().getPlayer(args[1])==null)
 		{
 			///Der Spieler ist nicht online oder existiert nicht!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"NoPlayerExist")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("PlayerNotExist")));
 			return;
 		}
 		Player target = plugin.getServer().getPlayer(args[1]); 
@@ -52,7 +52,7 @@ public class ARGTemporaryChannelKick extends ArgumentModule
 		{
 			///Der angegebene Spieler ist nicht Mitglied im CustomChannel!
 			player.spigot().sendMessage(
-					ChatApi.tctl(plugin.getYamlHandler().getL().getString(language+"ChannelGeneral.NotChannelMember")));
+					ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.TemporaryChannel.NotAChannelMember")));
 			return;
 		}
 		if(target.getName().equals(creator.getName()))

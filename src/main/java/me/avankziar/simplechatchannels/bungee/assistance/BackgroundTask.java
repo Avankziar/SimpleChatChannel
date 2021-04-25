@@ -3,8 +3,9 @@ package main.java.me.avankziar.simplechatchannels.bungee.assistance;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
@@ -60,21 +61,25 @@ public class BackgroundTask
 				{
 					ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER, "`player_uuid` = ?",
 							player.getUniqueId().toString());
-					if(cu.isCanChat() == false)
+					if(cu.getMuteTime() != 0)
 					{
 						long mutetime = cu.getMuteTime();
-						if(mutetime > 0L && mutetime < System.currentTimeMillis())
+						if(mutetime < System.currentTimeMillis())
 						{
-							cu.setCanChat(true);
 							cu.setMuteTime(0L);
 							plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?",
 									player.getUniqueId().toString());
-							player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("CmdScc.Mute.Unmute")));
+							ChatUser chu = ChatUserHandler.getChatUser(player.getUniqueId());
+							if(chu != null)
+							{
+								chu.setMuteTime(0L);
+							}
+							player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.Unmute")));
 						}
 					}
 				}
 			}
-		}, 1L, TimeUnit.SECONDS);
+		}, 15L, TimeUnit.SECONDS);
 	}
 	
 	public void initPermanentChannels()

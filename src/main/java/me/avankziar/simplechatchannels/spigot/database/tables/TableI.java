@@ -97,7 +97,7 @@ public interface TableI
 		        preparedStatement.setBoolean(16, cu.isChannelPermanent());
 		        preparedStatement.setBoolean(17, cu.isChannelEvent());
 		        preparedStatement.setBoolean(18, cu.isOptionSpy());
-		        preparedStatement.setBoolean(19, cu.isOptionJoinMessage());
+		        preparedStatement.setBoolean(19, cu.isOptionChannelMessage());
 		        
 		        preparedStatement.executeUpdate();
 		        return true;
@@ -165,7 +165,7 @@ public interface TableI
 		        preparedStatement.setBoolean(16, cu.isChannelPermanent());
 		        preparedStatement.setBoolean(17, cu.isChannelEvent());
 		        preparedStatement.setBoolean(18, cu.isOptionSpy());
-		        preparedStatement.setBoolean(19, cu.isOptionJoinMessage());
+		        preparedStatement.setBoolean(19, cu.isOptionChannelMessage());
 		        
 		        int i = 20;
 		        for(Object o : whereObject)

@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
-import main.java.me.avankziar.simplechatchannels.bungee.SimpleChatChannels;
 
 public interface TableII
 {
@@ -397,6 +397,68 @@ public interface TableII
 						+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        
+		        result = preparedStatement.executeQuery();
+		        ArrayList<IgnoreObject> list = new ArrayList<IgnoreObject>();
+		        while (result.next()) 
+		        {
+		        	IgnoreObject ep = new IgnoreObject(
+		        			result.getString("player_uuid"),
+		        			result.getString("ignore_uuid"),
+		        			result.getString("ignore_name"));
+		        	list.add(ep);
+		        }
+		        return list;
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return null;
+	}
+	
+	default ArrayList<IgnoreObject> getAllListAtII(SimpleChatChannels plugin, String orderByColumn,
+			boolean desc, String whereColumn, Object...whereObject)
+	{
+		PreparedStatement preparedStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "";
+				if(desc)
+				{
+					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameII
+							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
+				} else
+				{
+					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameII
+							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
+				}
+		        preparedStatement = conn.prepareStatement(sql);
+		        int i = 1;
+		        for(Object o : whereObject)
+		        {
+		        	preparedStatement.setObject(i, o);
+		        	i++;
+		        }
 		        result = preparedStatement.executeQuery();
 		        ArrayList<IgnoreObject> list = new ArrayList<IgnoreObject>();
 		        while (result.next()) 
