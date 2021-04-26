@@ -933,7 +933,6 @@ public class ChatHandler
 										new BaseComponent[]{new TextComponent(ij.getJsonString())}));
 					}
 					components.addAllComponents(tc);
-					continue;
 				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Start"))
 					&& f.endsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.End")))
@@ -981,7 +980,6 @@ public class ChatHandler
 										new BaseComponent[]{new TextComponent(ij.getJsonString())}));
 					}
 					components.addAllComponents(tc);
-					continue;
 				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
 					.getString("ChatReplacer.Command.RunCommandStart")))
@@ -1004,7 +1002,6 @@ public class ChatHandler
 							HoverEvent.Action.SHOW_TEXT,
 							plugin.getYamlHandler().getConfig().getString("ChatListener.CommandRunHover"));
 					components.addAllComponents(tc);
-					continue;
 				}				
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandStart")))
 			{
@@ -1026,7 +1023,6 @@ public class ChatHandler
 							HoverEvent.Action.SHOW_TEXT,
 							plugin.getYamlHandler().getConfig().getString("ChatListener.CommandSuggestHover"));
 					components.addAllComponents(tc);
-					continue;
 				}
 			} else if(f.startsWith("http") || f.endsWith(".de") || f.endsWith(".com") || f.endsWith(".net")
 					|| f.endsWith(".au") || f.endsWith(".io") || f.endsWith(".be"))
@@ -1053,7 +1049,6 @@ public class ChatHandler
 							plugin.getYamlHandler().getLang().getString("ChatListener.Website.NotAllowHover"));
 					components.addAllComponents(tc);
 				}
-				continue;
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
 					.getString("ChatReplacer.Emoji.Start"))
 					&& f.endsWith(plugin.getYamlHandler().getConfig()
@@ -1069,7 +1064,6 @@ public class ChatHandler
 					}
 					TextComponent tc = ChatApi.tctl(emoji);
 					components.addAllComponents(tc);
-					continue;
 				}				
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
 					.getString("ChatReplacer.Mention.Start")))
@@ -1103,7 +1097,6 @@ public class ChatHandler
 							plugin.getYamlHandler().getLang().getString("ChatListener.Mention.YouAreMentionHover")
 							.replace("%player%", player.getName()));
 					components.addAllComponents(tc).addMention(name);
-					continue;
 				}
 			} else if(isNotConsole && f.equalsIgnoreCase(plugin.getYamlHandler().getConfig().getString("ChatReplacer.PositionReplacer")))
 			{
@@ -1120,9 +1113,13 @@ public class ChatHandler
 								.replace("%y%", String.valueOf((int) sl.getY()))
 								.replace("%z%", String.valueOf((int) sl.getZ()))));
 						components.addAllComponents(tc);
-						continue;
 					}
 				}
+			} else if(f.equals(plugin.getYamlHandler().getConfig().getString("ChatReplacer.NewLine")))
+			{
+				components.addAllComponents(ChatApi.newLine());
+				//As only function, to NOT have a Space after it.
+				continue;
 			}
 			/*
 			 * Color Handling, if nothing is correct

@@ -41,6 +41,9 @@ import main.java.me.avankziar.scc.spigot.commands.scc.ARGBroadcast;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannel;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGIgnore;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGIgnoreList;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGItem;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGItem_Rename;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGItem_Replacers;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGMute;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption_Channel;
@@ -83,6 +86,8 @@ import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
 import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
 import main.java.me.avankziar.scc.spigot.database.MysqlSetup;
 import main.java.me.avankziar.scc.spigot.database.YamlHandler;
+import main.java.me.avankziar.scc.spigot.guihandling.GuiListener;
+import main.java.me.avankziar.scc.spigot.guihandling.GuiPreListener;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
 import main.java.me.avankziar.scc.spigot.listener.ChatListener;
 import main.java.me.avankziar.scc.spigot.listener.JoinLeaveListener;
@@ -301,7 +306,12 @@ public class SimpleChatChannels extends JavaPlugin
 		ArgumentConstructor channel = new ArgumentConstructor(baseCommandI+"_channel", 0, 1, 1, false, channelMap);
 
 		ArgumentConstructor ignore = new ArgumentConstructor(baseCommandI+"_ignore", 0, 1, 1, false, playerMap);
-		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1,false,  null);
+		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1, false,  null);
+		
+		ArgumentConstructor item_rename = new ArgumentConstructor(baseCommandI+"_item_rename", 1, 4, 4, false, null);
+		ArgumentConstructor item_replacers = new ArgumentConstructor(baseCommandI+"_item_replacers", 1, 1, 1, false, null);
+		ArgumentConstructor item = new ArgumentConstructor(baseCommandI+"_item", 0, 0, 0, false, null, 
+				item_rename, item_replacers);
 		
 		ArgumentConstructor mute = new ArgumentConstructor(baseCommandI+"_mute", 0, 1, 999, false, null);
 		ArgumentConstructor unmute = new ArgumentConstructor(baseCommandI+"_unmute", 0, 1, 1, false, null);
@@ -356,7 +366,9 @@ public class SimpleChatChannels extends JavaPlugin
 		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
 				broadcast, channel,
-				ignore, ignorelist, mute, option,
+				ignore, ignorelist, 
+				item,
+				mute, option,
 				pc, tc,
 				unmute, updateplayer, wordfilter);
 		
@@ -400,12 +412,14 @@ public class SimpleChatChannels extends JavaPlugin
 		
 		addingHelps(scc,
 				broadcast, channel,
-				ignore, ignorelist, mute,
+				ignore, ignorelist, 
+				item, item_rename, item_replacers,
+				mute, unmute,
 				option, option_channel, option_join, option_spy,
 				pc, pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite,
 					pc_join, pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice,
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban,
-				unmute, updateplayer, wordfilter,
+				updateplayer, wordfilter,
 			clch, //scceditor, 
 			msg, re, r, w);
 		
@@ -457,6 +471,10 @@ public class SimpleChatChannels extends JavaPlugin
 			new ARGTemporaryChannel_Leave(plugin, tc_leave);
 		}
 		
+		new ARGItem(plugin, item);
+		new ARGItem_Rename(plugin, item_rename);
+		new ARGItem_Replacers(plugin, item_replacers);
+		
 		//ADDME ArgsClassen hinzufügen
 	}
 	
@@ -468,6 +486,9 @@ public class SimpleChatChannels extends JavaPlugin
 		pm.registerEvents(new ChatListener(plugin), plugin);
 		pm.registerEvents(new JoinLeaveListener(plugin), plugin);
 		pm.registerEvents(new LocationUpdateListener(), plugin);
+		
+		pm.registerEvents(new GuiPreListener(), plugin);
+		pm.registerEvents(new GuiListener(plugin), plugin);
 	}
 	
 	public ArrayList<BaseConstructor> getHelpList()

@@ -302,6 +302,9 @@ public class YamlManager
 		configKeys.put("ChatReplacer.Position.Replace"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"&7[&9%server% &d%world% &e%x% %y% %z%&7]"}));
+		configKeys.put("ChatReplacer.NewLine"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"~!~"}));
 		
 	}
 	
@@ -381,6 +384,19 @@ public class YamlManager
 				"/scc option spy ", "/scc option spy ",
 				"&c/scc option spy &f| Aktiviert oder deaktiviert ob man Nachrichten sehen kann, welche einem sonst vorborgen wären.",
 				"&c/scc option spy &f| Enables or disables whether you can see messages that would otherwise be hidden from you.");
+		basePermission = "scc.cmd.scc.item.";
+		argumentInput(path+"item", "item", basePermission,
+				"/scc item ", "/scc item ",
+				"&c/scc item &f| Öffnet das Menü, wo man die Items für den Replacer einstellen kann.",
+				"&c/scc item &f| Opens the menu where you can set the items for the replacer.");
+		argumentInput(path+"item_rename", "rename", basePermission,
+				"/scc item rename <oldname> <newname> ", "/scc item rename ",
+				"&c/scc item rename <oldname> <newname> &f| Benennt das Item, welches auf den alten Namen hört, um.",
+				"&c/scc item rename <oldname> <newname> &f| Renames the item that goes by the old name.");
+		argumentInput(path+"item_replacers", "replacers", basePermission,
+				"/scc item replacers ", "/scc item replacers ",
+				"&c/scc item replacers &f| Zeigt alle Möglichen Replacer im Chat an, sowie dessen Item als Hover.",
+				"&c/scc item replacers &f| Displays all possible replacers in the chat, as well as their item as a hover.");
 		//INFO:PermanentChannel
 		basePermission = "scc.cmd.scc.";
 		argumentInput(path+"pc", "permanentchannel", basePermission,
@@ -502,8 +518,7 @@ public class YamlManager
 		argumentInput(path+"tc_leave", "leave", basePermission,
 				"/scc temporarychannel leave ", "/scc temporarychannel leave ",
 				"&c/scc temporarychannel leave &f| Verlässt einen temporären Channel.",
-				"&c/scc temporarychannel leave &f| Leaves a temporary channel.");
-		
+				"&c/scc temporarychannel leave &f| Leaves a temporary channel.");		
 		/*argumentInput(path+"", "", basePermission,
 				"/scc ", "/scc ",
 				"&c/scc &f| ",
@@ -515,6 +530,7 @@ public class YamlManager
 		String path = "Bypass.";
 		String normal = "scc.channel.";
 		String by = "scc.bypass.";
+		String cus = "scc.custom.";
 		commandsKeys.put(path+"Color.Channel"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				normal+"color"}));
@@ -581,6 +597,10 @@ public class YamlManager
 		commandsKeys.put(path+"permanentchannel"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				by+"permanentchannel"}));
+		path = "Custom.";
+		commandsKeys.put(path+"ItemReplacerStorage"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				cus+"itemreplacerstorage."}));
 	}
 	
 	private void commandsInput(String path, String name, String basePermission, 
@@ -645,6 +665,10 @@ public class YamlManager
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDer Spieler ist nicht online!",
 						"&cThe player is not online!"}));
+		languageKeys.put("NotNumber",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cEiner oder einige der Argumente muss eine Zahl sein!",
+						"&cOne or some of the arguments must be a number!"}));
 		
 		languageKeys.put("BaseInfo.Headline",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -782,9 +806,6 @@ public class YamlManager
 						"&eDu wurdest von &f%player% &eerwähnt!",
 						"&eYou have been &f%player% &mentioned!"}));
 		
-		/*
-		 * INFO:MSG Command
-		 */
 		languageKeys.put("CmdMsg.PrivateChannelsNotActive"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDer PrivateChannel ist global deaktiviert!",
@@ -899,6 +920,35 @@ public class YamlManager
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eDu siehst nun nur noch die Chatnachrichten, wozu du auch berechtig bist.",
 						"&eYou will now only see the chat messages that you are authorized to see."}));
+		//ItemReplacer
+		languageKeys.put("CmdScc.Item.InvTitle"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&c%player% &eReplacer &6Items",
+						"&c%player% &eReplacer &6Items"}));
+		languageKeys.put("CmdScc.Item.YouCannotSaveItems"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDu kannst keine Items vorspeicher!",
+						"&cYou can't pre-store items!"}));
+		languageKeys.put("CmdScc.Item.Rename.NotDefault"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDer alte oder neue Name darf nicht &fdefault &cheißen!",
+						"&cThe old or new name must not be &fdefault&c!"}));
+		languageKeys.put("CmdScc.Item.Rename.NameAlreadyExist"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDer Name ist schon vergeben!",
+						"&cThe name is already taken!"}));
+		languageKeys.put("CmdScc.Item.Rename.Renamed"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eDas Item mit dem Name &f%oldname% &ewurde in &f%newname% &eumbenannt!",
+						"&eThe item with the name &f%oldname% &has been renamed to &f%newname%!"}));
+		languageKeys.put("CmdScc.Item.Replacers.ListEmpty"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDu hast keine ItemReplacer!",
+						"&cYou have no ItemReplacer!"}));
+		languageKeys.put("CmdScc.Item.Replacers.Headline"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&e=====&7[&bItemReplacer&7]&e=====",
+						"&e=====&7[&bItemReplacer&7]&e====="}));
 		
 		//INFO:PermanentChannel
 		languageKeys.put("CmdScc.PermanentChannel.YouAreNotInAChannel"

@@ -30,6 +30,7 @@ Build 40 =======================================================================
 - EmojiReplacer eingefügt.
 - SpielerErwähnung eingefügt.
 - PositionsReplacer eingefügt.
+- Neue Linie Replacer eingefügt.
 - /msg <Spieler>, nur noch mit allen OnlinePlayer als Tab
 - /re <Spieler>, hinzugefügt. Hat als Tab nur noch die Spieler, mit denen man zur laufzeit geschrieben hat.
 - /r, hinzugefügt. Schreibt nur direkt der zu letzt geschriebenen Person.

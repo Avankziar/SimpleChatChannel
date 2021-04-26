@@ -31,6 +31,8 @@ public class BypassPermission
 	
 	public static String PERMBYPASSPC= "";
 	
+	public static String CUSTOM_ITEMREPLACERSTORAGE = "";
+	
 	public static void init(SimpleChatChannels plugin)
 	{
 		YamlConfiguration yml = plugin.getYamlHandler().getCommands();
@@ -61,6 +63,10 @@ public class BypassPermission
 		PERMBYPASSOFFLINECHANNEL = yml.getString(bp+"OfflineChannel", by+"offlinechannel");
 		
 		PERMBYPASSPC = yml.getString(bp+"PermanentChannel", by+"permanentchannel");
+		
+		String path = "Custom.";
+		String cus = "scc.custom.";
+		CUSTOM_ITEMREPLACERSTORAGE = yml.getString(path+"ItemReplacerStorage", cus+"itemreplacerstorage.");
 	}
 	
 	

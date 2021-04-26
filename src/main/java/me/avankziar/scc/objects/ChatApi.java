@@ -30,6 +30,11 @@ public class ChatApi
 		return new TextComponent(TextComponent.fromLegacyText(tl(s)));
 	}
 	
+	public static TextComponent newLine()
+	{
+		return new TextComponent(ComponentSerializer.parse("{text: \"\n\"}"));
+	}
+	
 	public static TextComponent TextWithExtra(String s, List<BaseComponent> list)
 	{
 		TextComponent tc = tctl(s);
@@ -123,7 +128,7 @@ public class ChatApi
 			String itemStringFromReflection)
 	{
 		TextComponent msg = tctl(text);
-		if(caction != null && cmd != null)
+		if(caction != null || cmd != null)
 		{
 			msg.setClickEvent( new ClickEvent(caction, cmd));
 		}
