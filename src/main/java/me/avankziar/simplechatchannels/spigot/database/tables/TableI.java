@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.ServerLocation;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
 public interface TableI
@@ -72,32 +73,18 @@ public interface TableI
 			try 
 			{
 				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameI 
-						+ "`(`player_uuid`, `player_name`, `can_chat`, `mutetime`,"
-						+ " `channel_global`,`channel_trade`, `channel_auction`, `channel_support`,"
-						+ " `channel_local`, `channel_world`, `channel_team`, `channel_admin`,"
-						+ " `channel_group`, `channel_pm`, `channel_temp`, `channel_perma`,"
-						+ " `channel_event`, `spy`, `joinmessage`) " 
-						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+						+ "`(`player_uuid`, `player_name`, `mutetime`,"
+						+ " `spy`, `channelmessage`, `lasttimejoined`, `joinmessage`, `serverlocation`) " 
+						+ "VALUES(?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
 		        preparedStatement.setString(1, cu.getUUID());
 		        preparedStatement.setString(2, cu.getName());
-		        preparedStatement.setBoolean(3, cu.isCanChat());
-		        preparedStatement.setLong(4, cu.getMuteTime());
-		        preparedStatement.setBoolean(5, cu.isChannelGlobal());
-		        preparedStatement.setBoolean(6, cu.isChannelTrade());
-		        preparedStatement.setBoolean(7, cu.isChannelAuction());
-		        preparedStatement.setBoolean(8, cu.isChannelSupport());
-		        preparedStatement.setBoolean(9, cu.isChannelLocal());
-		        preparedStatement.setBoolean(10, cu.isChannelWorld());
-		        preparedStatement.setBoolean(11, cu.isChannelTeam());
-		        preparedStatement.setBoolean(12, cu.isChannelAdmin());
-		        preparedStatement.setBoolean(13, cu.isChannelGroup());
-		        preparedStatement.setBoolean(14, cu.isChannelPrivateMessage());
-		        preparedStatement.setBoolean(15, cu.isChannelTemporary());
-		        preparedStatement.setBoolean(16, cu.isChannelPermanent());
-		        preparedStatement.setBoolean(17, cu.isChannelEvent());
-		        preparedStatement.setBoolean(18, cu.isOptionSpy());
-		        preparedStatement.setBoolean(19, cu.isOptionChannelMessage());
+		        preparedStatement.setLong(3, cu.getMuteTime());
+		        preparedStatement.setBoolean(4, cu.isOptionSpy());
+		        preparedStatement.setBoolean(5, cu.isOptionChannelMessage());
+		        preparedStatement.setLong(6, cu.getLastTimeJoined());
+		        preparedStatement.setBoolean(7, cu.isOptionJoinMessage());
+		        preparedStatement.setString(8, cu.serialized());
 		        
 		        preparedStatement.executeUpdate();
 		        return true;
@@ -140,34 +127,20 @@ public interface TableI
 			try 
 			{
 				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameI
-						+ "` SET `player_uuid` = ?, `player_name` = ?, `can_chat` = ?, `mutetime` = ?," 
-						+ " `channel_global` = ?,`channel_trade` = ?, `channel_auction` = ?, `channel_support` = ?," 
-						+ " `channel_local` = ?, `channel_world` = ?, `channel_team` = ?, `channel_admin` = ?," 
-						+ " `channel_group` = ?, `channel_pm` = ?, `channel_temp` = ?, `channel_perma` = ?," 
-						+ " `channel_event` = ?, `spy` = ?, `joinmessage` = ?" 
+						+ "` SET `player_uuid` = ?, `player_name` = ?, `mutetime` = ?," 
+						+ " `spy` = ?, `channelmessage` = ?, `lasttimejoined` = ?, `joinmessage` = ?, `serverlocation` = ?" 
 						+ " WHERE "+whereColumn;
 				preparedStatement = conn.prepareStatement(data);
 				preparedStatement.setString(1, cu.getUUID());
 		        preparedStatement.setString(2, cu.getName());
-		        preparedStatement.setBoolean(3, cu.isCanChat());
-		        preparedStatement.setLong(4, cu.getMuteTime());
-		        preparedStatement.setBoolean(5, cu.isChannelGlobal());
-		        preparedStatement.setBoolean(6, cu.isChannelTrade());
-		        preparedStatement.setBoolean(7, cu.isChannelAuction());
-		        preparedStatement.setBoolean(8, cu.isChannelSupport());
-		        preparedStatement.setBoolean(9, cu.isChannelLocal());
-		        preparedStatement.setBoolean(10, cu.isChannelWorld());
-		        preparedStatement.setBoolean(11, cu.isChannelTeam());
-		        preparedStatement.setBoolean(12, cu.isChannelAdmin());
-		        preparedStatement.setBoolean(13, cu.isChannelGroup());
-		        preparedStatement.setBoolean(14, cu.isChannelPrivateMessage());
-		        preparedStatement.setBoolean(15, cu.isChannelTemporary());
-		        preparedStatement.setBoolean(16, cu.isChannelPermanent());
-		        preparedStatement.setBoolean(17, cu.isChannelEvent());
-		        preparedStatement.setBoolean(18, cu.isOptionSpy());
-		        preparedStatement.setBoolean(19, cu.isOptionChannelMessage());
+		        preparedStatement.setLong(3, cu.getMuteTime());
+		        preparedStatement.setBoolean(4, cu.isOptionSpy());
+		        preparedStatement.setBoolean(5, cu.isOptionChannelMessage());
+		        preparedStatement.setLong(6, cu.getLastTimeJoined());
+		        preparedStatement.setBoolean(7, cu.isOptionChannelMessage());
+		        preparedStatement.setString(8, cu.serialized());
 		        
-		        int i = 20;
+		        int i = 9;
 		        for(Object o : whereObject)
 		        {
 		        	preparedStatement.setObject(i, o);
@@ -218,23 +191,12 @@ public interface TableI
 		        	return new ChatUser(
 		        			result.getString("player_uuid"),
 		        			result.getString("player_name"),
-		        			result.getBoolean("can_chat"),
 		        			result.getLong("mutetime"),
-		        			result.getBoolean("channel_global"),
-		        			result.getBoolean("channel_trade"),
-		        			result.getBoolean("channel_auction"),
-		        			result.getBoolean("channel_support"),
-		        			result.getBoolean("channel_local"),
-		        			result.getBoolean("channel_world"),
-		        			result.getBoolean("channel_team"),
-		        			result.getBoolean("channel_admin"),
-		        			result.getBoolean("channel_group"),
-		        			result.getBoolean("channel_event"),
-		        			result.getBoolean("channel_pm"),
-		        			result.getBoolean("channel_temp"),
-		        			result.getBoolean("channel_perma"),
 		        			result.getBoolean("spy"),
-		        			result.getBoolean("joinmessage"));
+		        			result.getBoolean("channelmessage"),
+		        			result.getLong("lasttimejoinded"),
+		        			result.getBoolean("joinmessage"),
+		        			ServerLocation.deserialized(result.getString("serverlocation")));
 		        }
 		    } catch (SQLException e) 
 			{
@@ -412,23 +374,12 @@ public interface TableI
 		        	ChatUser ep = new ChatUser(
 		        			result.getString("player_uuid"),
 		        			result.getString("player_name"),
-		        			result.getBoolean("can_chat"),
 		        			result.getLong("mutetime"),
-		        			result.getBoolean("channel_global"),
-		        			result.getBoolean("channel_trade"),
-		        			result.getBoolean("channel_auction"),
-		        			result.getBoolean("channel_support"),
-		        			result.getBoolean("channel_local"),
-		        			result.getBoolean("channel_world"),
-		        			result.getBoolean("channel_team"),
-		        			result.getBoolean("channel_admin"),
-		        			result.getBoolean("channel_group"),
-		        			result.getBoolean("channel_event"),
-		        			result.getBoolean("channel_pm"),
-		        			result.getBoolean("channel_temp"),
-		        			result.getBoolean("channel_perma"),
 		        			result.getBoolean("spy"),
-		        			result.getBoolean("joinmessage"));
+		        			result.getBoolean("channelmessage"),
+		        			result.getLong("lasttimejoinded"),
+		        			result.getBoolean("joinmessage"),
+		        			ServerLocation.deserialized(result.getString("serverlocation")));
 		        	list.add(ep);
 		        }
 		        return list;
@@ -476,23 +427,79 @@ public interface TableI
 		        	ChatUser ep = new ChatUser(
 		        			result.getString("player_uuid"),
 		        			result.getString("player_name"),
-		        			result.getBoolean("can_chat"),
 		        			result.getLong("mutetime"),
-		        			result.getBoolean("channel_global"),
-		        			result.getBoolean("channel_trade"),
-		        			result.getBoolean("channel_auction"),
-		        			result.getBoolean("channel_support"),
-		        			result.getBoolean("channel_local"),
-		        			result.getBoolean("channel_world"),
-		        			result.getBoolean("channel_team"),
-		        			result.getBoolean("channel_admin"),
-		        			result.getBoolean("channel_group"),
-		        			result.getBoolean("channel_event"),
-		        			result.getBoolean("channel_pm"),
-		        			result.getBoolean("channel_temp"),
-		        			result.getBoolean("channel_perma"),
 		        			result.getBoolean("spy"),
-		        			result.getBoolean("joinmessage"));
+		        			result.getBoolean("channelmessage"),
+		        			result.getLong("lasttimejoinded"),
+		        			result.getBoolean("joinmessage"),
+		        			ServerLocation.deserialized(result.getString("serverlocation")));
+		        	list.add(ep);
+		        }
+		        return list;
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return null;
+	}
+	
+	default ArrayList<ChatUser> getAllListAtI(SimpleChatChannels plugin, String orderByColumn,
+			boolean desc, String whereColumn, Object...whereObject)
+	{
+		PreparedStatement preparedStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "";
+				if(desc)
+				{
+					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI
+							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
+				} else
+				{
+					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI
+							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
+				}
+		        preparedStatement = conn.prepareStatement(sql);
+		        int i = 1;
+		        for(Object o : whereObject)
+		        {
+		        	preparedStatement.setObject(i, o);
+		        	i++;
+		        }
+		        result = preparedStatement.executeQuery();
+		        ArrayList<ChatUser> list = new ArrayList<ChatUser>();
+		        while (result.next()) 
+		        {
+		        	ChatUser ep = new ChatUser(
+		        			result.getString("player_uuid"),
+		        			result.getString("player_name"),
+		        			result.getLong("mutetime"),
+		        			result.getBoolean("spy"),
+		        			result.getBoolean("channelmessage"),
+		        			result.getLong("lasttimejoinded"),
+		        			result.getBoolean("joinmessage"),
+		        			ServerLocation.deserialized(result.getString("serverlocation")));
 		        	list.add(ep);
 		        }
 		        return list;

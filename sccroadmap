@@ -5,21 +5,14 @@ Future =========================================================================
 - Neuer replacer <book> einfügen, um per Click und Hover Event das Buch direkt lesen zu können.
 - Vault unterstützung anbieten um pauschal oder per Charakter geld abzuziehen, channel spezifisch.
 - Werbungsmöglichkeit implementieren.
+  - Eine Art Queue/Reihe machen, sodass jeder EINMAL dran kommt, und danach wechselt.
+  - Kosten pro Zeichen
+  - In mysql wird durch die Ersteinstellung (Zeit) bestimmt, wenn ein neuer Zyklus anfängt, wann welcher zuerststarten darf.
 - Befehl einführen um sich Texte zu speichern
 - Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
 - Mailfunktion
-- Load Before Essential
-- /w <Spieler> <Nachricht..>, dediziert nur console machen. Bungee & spigot
-- /msg <Spieler>, so einstellen dass auch kurze Namensabschnitte benutzt werden könnten. Aka anstatt /msg Avankziar einfach /msg Avan oder /msg avan
-- Emojis und andere Replacer 
-  >> https://github.com/RadBuilder/EmojiChat/blob/c1791262e4c01f4cb68e9377329535d4952a2370/plugin/src/main/java/io/github/radbuilder/emojichat/utils/EmojiHandler.java#L76
-  >> https://www.spigotmc.org/resources/chatemojis.88027/
 - Spigot Seitig, per gui bis zu 54 items speichern können, um diese per <item0> etc. aufrufen zu können.
   - Diese Items eventuell manipulierbar machen, lore etc.
-- Weitere Replacer:
-  - <pos> Sendet die Spielerposition
-- Die tabbbaren Spieler bei /msg und /r mal tweaken in wie weit tabbbar gemacht werden kann.
-  - /eventuell /msg, alle OnlineSpieler, /re alle Spieler mit denen man geschrieben hat, und /r ohne zusatz, dem letzten Schreiben.
 - Ein Gui (Spigotseitig), welche alle Channel anzeigt ob die aktiv sind oder nicht. Mit Klick darauf ändert man die boolean des Channels.
 - der Spigot broadcast befehl auch auf bungee führen.
 - Spieler direkt und per Zeiteinheit löschen. (Spieler die länger x Tage nicht da sind).
@@ -29,6 +22,7 @@ Build 40 =======================================================================
 - Dynamische Channel
 - Dynamische ChatTitel (Pre- und Suffix)
 - ChatFormat pro Channel möglich.
+- PrivateChat, kann pro SpielerPaar die Farbe darstellen. Per Config einstellbar.
 - ItemReplacer mit mysql und Namen erweitert.
 - BookReplacer mit RunCommand eingefügt.
 - CommandReplacer ist aufgeteilt auf Run. & SuggestCommandReplacer

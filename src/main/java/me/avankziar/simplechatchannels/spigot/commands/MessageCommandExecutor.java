@@ -1,16 +1,14 @@
 package main.java.me.avankziar.simplechatchannels.spigot.commands;
 
-import java.util.Arrays;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.CommandConstructor;
+import main.java.me.avankziar.simplechatchannels.spigot.handler.ChatHandler;
 
 public class MessageCommandExecutor implements CommandExecutor
 {
@@ -28,36 +26,43 @@ public class MessageCommandExecutor implements CommandExecutor
 	{
 		if (!(sender instanceof Player)) 
 		{
-			SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+			SimpleChatChannels.log.info("/%cmd% is only for ProxiedPlayer!".replace("%cmd%", cc.getName()));
 			return false;
 		}
 		Player player = (Player) sender;
-		if(cc == null)
+		if(!player.hasPermission(cc.getPermission()))
 		{
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 			return false;
 		}
-		if(cc.getPermission() != null)
+		if(args.length <= 1)
 		{
-			if(!player.hasPermission(cc.getPermission()))
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.PleaseEnterAMessage")));
+			return false;
+		}
+		String otherPlayer = args[0];
+		Player other = plugin.getServer().getPlayer(otherPlayer);
+		if(other == null)
+		{
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotOnline")));
+			return false;
+		}
+		String message = "";
+		int i = 1;
+		while(i < args.length)
+		{
+			message += args[i];
+			if(i < (args.length-1))
 			{
-				///Du hast dafür keine Rechte!
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPermission")));
-				return false;
+				message += " ";
 			}
 		}
-		if(args.length < 2)
+		ChatHandler ch = new ChatHandler(plugin);
+		if(ch.prePreCheck(player, message))
 		{
 			return false;
 		}
-		String toPlayer = args[0];
-		if(plugin.getServer().getPlayer(toPlayer) == null)
-		{
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPlayerExist")));
-			return false;
-		}
-		String[] argss = Arrays.copyOfRange(args, 1, args.length);
-		String message = "@"+toPlayer+" "+String.join(" ", argss);
-		plugin.getServer().getPluginManager().callEvent(new AsyncPlayerChatEvent(true, player, message, null));
+		ch.startPrivateChat(player, other, message);
 		return true;
 	}
 

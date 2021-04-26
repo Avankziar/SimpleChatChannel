@@ -6,16 +6,19 @@ import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
 public class CommandConstructor extends BaseConstructor
 {
-    public ArrayList<ArgumentConstructor> subcommands;
+	public ArrayList<ArgumentConstructor> subcommands;
     public ArrayList<String> tablist;
 
-	public CommandConstructor(SimpleChatChannels plugin, String path,
+	public CommandConstructor(String path, boolean canConsoleAccess,
     		ArgumentConstructor...argumentConstructors)
     {
-		super(plugin.getYamlHandler().getCom().getString(path+".Name"),
+		super(SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".Name"),
 				path,
-				plugin.getYamlHandler().getCom().getString(path+".Permission"),
-				plugin.getYamlHandler().getCom().getString(path+".Suggestion"));
+				SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".Permission"),
+				SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".Suggestion"),
+				SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".CommandString"),
+				SimpleChatChannels.getPlugin().getYamlHandler().getCommands().getString(path+".HelpInfo"),
+				canConsoleAccess);
         this.subcommands = new ArrayList<>();
         this.tablist = new ArrayList<>();
         for(ArgumentConstructor ac : argumentConstructors)
@@ -23,6 +26,6 @@ public class CommandConstructor extends BaseConstructor
         	this.subcommands.add(ac);
         	this.tablist.add(ac.getName());
         }
-        plugin.getCommandTree().add(this);
+        SimpleChatChannels.getPlugin().getCommandTree().add(this);
     }
 }

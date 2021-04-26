@@ -2,7 +2,7 @@ package main.java.me.avankziar.simplechatchannels.spigot.objects;
 
 import java.util.UUID;
 
-import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.ChatUser;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler.Type;
 

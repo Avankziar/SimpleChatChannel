@@ -1,18 +1,13 @@
 package main.java.me.avankziar.simplechatchannels.spigot.assistance;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -21,25 +16,33 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
-import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
-import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
-import main.java.me.avankziar.simplechatchannels.objects.IgnoreObject;
-import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
+import main.java.me.avankziar.scc.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.KeyHandler;
+import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.objects.ServerLocation;
+import main.java.me.avankziar.scc.objects.chat.Channel;
+import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
+import main.java.me.avankziar.scc.objects.chat.UsedChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.database.MysqlHandler.Type;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.BypassPermission;
 import main.java.me.avankziar.simplechatchannels.spigot.objects.ChatUserHandler;
+import main.java.me.avankziar.simplechatchannels.spigot.objects.PluginSettings;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class Utility 
 {
 	private static SimpleChatChannels plugin;
-	public static LinkedHashMap<String, String> item = new LinkedHashMap<>(); //Playeruuid, ItemJason
+	public static ArrayList<String> onlineplayers = new ArrayList<>();
+	public static LinkedHashMap<String, LinkedHashMap<String, UsedChannel>> playerUsedChannels = new LinkedHashMap<>();
+	/*public static LinkedHashMap<String, String> item = new LinkedHashMap<>(); //Playeruuid, ItemJason
 	public static LinkedHashMap<String, String> itemname = new LinkedHashMap<>(); //Playeruuid, Itemname
 	
 	private String prefix;
@@ -125,15 +128,6 @@ public class Utility
 		this.prefix = prefix;
 	}
 	
-	/**
-	 * <ul><b><u>getDurationInSeconds</u></b>
-	 * <pre><p><i>String tl</i></pre>
-	 * <p><b>Deutsch:</b> Gibt einen String zurück, wo &x Zeichenpaare in den ChatColor umgewandelt wird. 
-	 * tl steht für das translate als Abkürzung.
-	 * @return String
-	 * @author Avankziar
-	 */
-	
 	public TextComponent TextWithExtra(String s, List<BaseComponent> list)
 	{
 		TextComponent tc = ChatApi.tctl(s);
@@ -141,9 +135,6 @@ public class Utility
 		return tc;
 	}
 	
-	/*
-	 * itemStringFromReflection see {@link RefectionUtil}
-	 */
 	@SuppressWarnings("deprecation")
 	public TextComponent apiChatItem(@Nonnull String text, @Nullable ClickEvent.Action caction, @Nullable String cmd,
 			@Nonnull String itemStringFromReflection)
@@ -720,68 +711,222 @@ public class Utility
     	{
     		return false;
     	}
-    }
+    }*/
 	
-	public String getActiveChannels(ChatUser cu)
-	{		
-		String comma = plugin.getYamlHandler().getL().getString("Join.Comma");
+	public String removeColor(String msg)
+	{
+		return ChatColor.stripColor(msg);
+	}
+	
+	public boolean isSimliarText(String text, String comparison, double percentOfSimilarity)
+	{
+		int i = 0;
+		int matches = 0;
+		while(i < text.length())
+		{
+			char c = text.charAt(i);
+			if(i < comparison.length())
+			{
+				char c2 = comparison.charAt(i);
+				if(c == c2)
+				{
+					matches++;
+				}
+			} else
+			{
+				break;
+			}
+			i++;
+		}
+		double percent = (((double) matches) / ((double) comparison.length()))*100.0 ;
+		if(percent <= percentOfSimilarity)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean getIgnored(Player target, Player player, boolean privatechat)
+	{
+		IgnoreObject io = (IgnoreObject) plugin.getMysqlHandler().getData(MysqlHandler.Type.IGNOREOBJECT,
+				"`player_uuid` = ? AND `ignore_uuid` = ?",
+				target.getUniqueId().toString(), player.getUniqueId().toString());
+		if(io != null)
+		{
+			if(privatechat)
+			{
+				if(player.hasPermission(BypassPermission.PERMBYPASSIGNORE))
+				{
+					player.spigot().sendMessage(ChatApi.tctl(
+							plugin.getYamlHandler().getLang().getString("ChatListener.PlayerIgnoreYou")));
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public long getMutedTime(Player player)
+	{
+		ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
+		if(cu == null)
+		{
+			return 0L;
+		}
+		return cu.getMuteTime();
+	}
+	
+	public String getActiveChannels(ChatUser cu, ArrayList<UsedChannel> usedChannels)
+	{
+		String comma = plugin.getYamlHandler().getLang().getString("JoinListener.Comma");
 		
 		String ac = "";
-		///Du hast zurzeit kein Recht im Chat zu schreiben!
-		if(!cu.isCanChat()) {ac = plugin.getYamlHandler().getL().getString("EventJoinLeave.NoRight"); return ac;}
-		ac += plugin.getYamlHandler().getL().getString("Join.Info");
-		if(cu.isChannelGlobal()) {ac += plugin.getYamlHandler().getL().getString("Join.Global")+comma;}
-		if(cu.isChannelLocal()) {ac += plugin.getYamlHandler().getL().getString("Join.Local")+comma;}
-		if(cu.isChannelAuction()) {ac += plugin.getYamlHandler().getL().getString("Join.Auction")+comma;}
-		if(cu.isChannelEvent()) {ac += plugin.getYamlHandler().getL().getString("Join.Event")+comma;}
-		if(cu.isChannelTrade()) {ac += plugin.getYamlHandler().getL().getString("Join.Trade")+comma;}
-		if(cu.isChannelSupport()) {ac += plugin.getYamlHandler().getL().getString("Join.Support")+comma;}
-		if(cu.isChannelWorld()) {ac += plugin.getYamlHandler().getL().getString("Join.World")+comma;}
-		if(cu.isChannelTeam()) {ac += plugin.getYamlHandler().getL().getString("Join.Team")+comma;}
-		if(cu.isChannelAdmin()) {ac += plugin.getYamlHandler().getL().getString("Join.Admin")+comma;}
-		if(cu.isChannelGroup()) {ac += plugin.getYamlHandler().getL().getString("Join.Group")+comma;}
-		if(cu.isChannelPrivateMessage()) {ac += plugin.getYamlHandler().getL().getString("Join.PrivateMessage")+comma;}
-		if(cu.isChannelTemporary()) {ac += plugin.getYamlHandler().getL().getString("Join.Temp")+comma;}
-		if(cu.isChannelPermanent()) {ac += plugin.getYamlHandler().getL().getString("Join.Perma")+comma;}
-		if(cu.isOptionSpy()) {ac += plugin.getYamlHandler().getL().getString("Join.Spy")+comma;}
+		if(cu.getMuteTime() > System.currentTimeMillis()) 
+		{
+			ac = plugin.getYamlHandler().getLang().getString("JoinListener.YouMuted"); 
+			return ac;
+		}
+		ac += plugin.getYamlHandler().getLang().getString("JoinListener.Pretext");
+		for(UsedChannel uc : usedChannels)
+		{
+			if(uc.isUsed())
+			{
+				Channel c = SimpleChatChannels.channels.get(uc.getUniqueIdentifierName());
+				if(c == null)
+				{
+					if(SimpleChatChannels.nullChannel.getUniqueIdentifierName().equals(uc.getUniqueIdentifierName()))
+					{
+						c = SimpleChatChannels.nullChannel;
+					} else
+					{
+						continue;
+					}
+				}
+				ac +=  c.getJoinPart()+comma;
+			}
+		}
+		if(cu.isOptionSpy()) {ac += plugin.getYamlHandler().getLang().getString("Join.Spy")+comma;}
 		return ac.substring(0, ac.length()-2);
 	}
 	
-	public ChatUser controlChannelSaves(Player player)
+	public boolean containsBadWords(String message)
 	{
-		ChatUser cu = new ChatUser(
-				player.getUniqueId().toString(),
-				player.getName(),
-				true, 
-				0,
-				player.hasPermission(PERMGLOBAL),
-				player.hasPermission(PERMTRADE),
-				player.hasPermission(PERMAUCTION),
-				player.hasPermission(PERMSUPPORT),
-				player.hasPermission(PERMLOCAL),
-				player.hasPermission(PERMWORLD),
-				player.hasPermission(PERMTEAM),
-				player.hasPermission(PERMADMIN),
-				player.hasPermission(PERMGROUP),
-				player.hasPermission(PERMEVENT),
-				player.hasPermission(PERMPM),
-				player.hasPermission(PERMTEMP),
-				player.hasPermission(PERMPERMA),
-				false, true);
+		List<String> list = plugin.getYamlHandler().getWordFilter().getStringList("WordFilter");
+		for(String s : list)
+		{
+			if(containsIgnoreCase(message, s))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public ChatUser controlUsedChannels(Player player)
+	{
+		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(), 0L, false, true, System.currentTimeMillis(), true,
+				new ServerLocation(PluginSettings.settings.getServer(), "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
 		if(!plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString()))
 		{
 			plugin.getMysqlHandler().create(MysqlHandler.Type.CHATUSER, cu);
+			for(Channel c : SimpleChatChannels.channels.values())
+			{
+				if(player.hasPermission(c.getPermission()))
+				{
+					UsedChannel uc = new UsedChannel(c.getUniqueIdentifierName(), player.getUniqueId().toString(), true);
+					plugin.getMysqlHandler().create(Type.USEDCHANNEL, uc);
+				}
+			}
 		} else
 		{
 			cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER, 
 					"`player_uuid` = ?", player.getUniqueId().toString());
+			updateUsedChannels(player);
 		}
-		ChatUser.addChatUser(cu);
 		return cu;
 	}
 	
-	public boolean existMethod(Class<?> externclass, String method)
+	public void updateUsedChannels(Player player)
+	{
+		ArrayList<UsedChannel> usedChannels = ConvertHandler.convertListV(plugin.getMysqlHandler().getAllListAt(Type.USEDCHANNEL,
+				"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
+		for(UsedChannel uc : usedChannels)
+		{
+			Channel c = SimpleChatChannels.channels.get(uc.getUniqueIdentifierName());
+			if(!player.hasPermission(c.getPermission()))
+			{
+				plugin.getMysqlHandler().deleteData(Type.USEDCHANNEL, "`uniqueidentifiername` = ? AND `player_uuid` = ?",
+						c.getUniqueIdentifierName(), player.getUniqueId().toString());
+			}
+		}
+	}
+	
+	public String getChannelSuggestion(String uniqueIdentifierName, PermanentChannel pc)
+	{
+		Channel c = SimpleChatChannels.channels.get(uniqueIdentifierName);
+		if(c == null)
+		{
+			if(SimpleChatChannels.nullChannel.getUniqueIdentifierName().equals(uniqueIdentifierName))
+			{
+				c = SimpleChatChannels.nullChannel;
+			} else
+			{
+				return "";
+			}
+		}
+		return getChannelSuggestion(c, pc);
+	}
+	
+	public String getChannelSuggestion(Channel c, PermanentChannel pc)
+	{
+		/*
+		 * Temporary not used in check, there only a player can access one temp channel at time.
+		 */
+		if(pc != null)
+		{
+			return c.getSymbol()+pc.getSymbolExtra();
+		} else
+		{
+			return c.getSymbol();
+		}
+	}
+	
+	public String getChannelHover(String uniqueIdentifierName)
+	{
+		Channel c = SimpleChatChannels.channels.get(uniqueIdentifierName);
+		if(c == null)
+		{
+			if(SimpleChatChannels.nullChannel.getUniqueIdentifierName().equals(uniqueIdentifierName))
+			{
+				c = SimpleChatChannels.nullChannel;
+			} else
+			{
+				return "/";
+			}
+		}
+		return getChannelHover(c);
+	}
+	
+	public String getChannelHover(Channel c)
+	{
+		return plugin.getYamlHandler().getLang().getString("ChatListener.ChannelHover")
+				.replace("%channel%", c.getUniqueIdentifierName())
+				.replace("%channelcolor%", c.getInChatColorMessage());
+	}
+	
+	public String getPlayerMsgCommand(String playername)
+	{
+		return PluginSettings.settings.getCommands(KeyHandler.MSG)+playername;
+	}
+	
+	public String getPlayerHover(String playername)
+	{
+		return plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover").replace("%player%", playername);
+	}
+	
+	/*public boolean existMethod(Class<?> externclass, String method)
 	{
 	    try 
 	    {
@@ -799,33 +944,7 @@ public class Utility
 	    {
 	    	return false;
 	    }
-	}
-	
-	public void isAfk(Player player, Player targed)
-	{
-		if(plugin.getAfkRecord() != null)
-		{
-			if(existMethod(plugin.getAfkRecord().getClass(), "isAfk"))
-			{
-				if(plugin.getAfkRecord().isAfk(targed))
-				{
-					///Der Spieler ist afk!
-					player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("AfkRecord.IsAfk")));	
-				}
-			}
-		}
-	}
-	
-	public void saveAfkTimes(Player player)
-	{
-		if(plugin.getAfkRecord() != null)
-		{
-			if(existMethod(plugin.getAfkRecord().getClass(), "softSave"))
-			{
-				plugin.getAfkRecord().softSave(player);
-			}
-		}
-	}
+	}*/
 	
 	public void updatePermanentChannels(PermanentChannel pc)
 	{
@@ -833,7 +952,6 @@ public class Utility
 		{
 			plugin.getMysqlHandler().updateData(MysqlHandler.Type.PERMANENTCHANNEL, pc, "`id` = ?", pc.getId());
 		}
-		PermanentChannel.addCustomChannel(pc);
 	}
 	
 	public static boolean containsIgnoreCase(String message, String searchStr)     
@@ -854,71 +972,29 @@ public class Utility
 	    return false;
 	}
 	
-	public void sendBungeeSpyMessage(Player player, String server, String msg)  //FIN
+	public static String convertUUIDToName(String uuid)
 	{
-		String µ = "µ";
-		String Category = "spy";
-        String PlayerUUID = player.getUniqueId().toString();
-        String ToServer = server;
-		String message = Category+µ+PlayerUUID+µ+ToServer+µ+msg;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(stream);
-        try {
-			out.writeUTF(message);
-		} catch (IOException e) {
-			e.printStackTrace();
+		String name = null;
+		if(plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER, "player_uuid = ?", uuid))
+		{
+			name = ((ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,
+					"player_uuid = ?", uuid)).getName();
+			return name;
 		}
-        player.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
-    }
+		return null;
+	}
 	
-	public void sendBungeeMessage(Player player, String server, String msg)  //FIN
+	public static UUID convertNameToUUID(String playername)
 	{
-		String µ = "µ";
-		String Category = "spy";
-        String PlayerUUID = player.getUniqueId().toString();
-        String ToServer = server;
-		String message = Category+µ+PlayerUUID+µ+ToServer+µ+msg;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(stream);
-        try {
-			out.writeUTF(message);
-		} catch (IOException e) {
-			e.printStackTrace();
+		UUID uuid = null;
+		if(plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER, "player_name = ?", playername))
+		{
+			uuid = UUID.fromString(((ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,
+					"player_name = ?", playername)).getUUID());
+			return uuid;
 		}
-        plugin.getServer().sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
-    }
-	
-	public void sendBungeeItemMessage(Player p, String itemname, String msg)  //FIN
-	{
-		String µ = "µ";
-		String Category = "item";
-        String PlayerUUID = p.getUniqueId().toString();
-		String message = Category+µ+PlayerUUID+µ+itemname+µ+msg;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(stream);
-        try {
-			out.writeUTF(message);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        p.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
-    }
-	
-	public void sendBungeeItemClearMessage(Player p, String itemname, String msg)  //FIN
-	{
-		String µ = "µ";
-		String Category = "itemclear";
-        String PlayerUUID = p.getUniqueId().toString();
-		String message = Category+µ+PlayerUUID+µ+itemname+µ+msg;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(stream);
-        try {
-			out.writeUTF(message);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        p.sendPluginMessage(plugin, "simplechatchannels:sccbungee", stream.toByteArray());
-    }
+		return null;
+	}
 	
 	@SuppressWarnings("deprecation")
 	public String convertItemStackToJson(ItemStack itemStack) //FIN
@@ -1003,27 +1079,30 @@ public class Utility
     	return true;
     }
 	
-	public static String convertUUIDToName(String uuid)
-	{
-		String name = null;
-		if(plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER, "player_uuid = ?", uuid))
-		{
-			name = ((ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,
-					"player_uuid = ?", uuid)).getName();
-			return name;
-		}
-		return null;
-	}
-	
-	public static UUID convertNameToUUID(String playername)
-	{
-		UUID uuid = null;
-		if(plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER, "player_name = ?", playername))
-		{
-			uuid = UUID.fromString(((ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,
-					"player_name = ?", playername)).getUUID());
-			return uuid;
-		}
-		return null;
-	}
+	public String toBase64itemStack(ItemStack item) throws IllegalStateException
+    {
+    	try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+            dataOutput.writeObject(item);
+            dataOutput.close();
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to save item stacks.", e);
+        }
+    }
+    
+    public ItemStack fromBase64itemStack(String data) throws IOException
+    {
+    	try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            ItemStack item = (ItemStack) dataInput.readObject();
+            dataInput.close();
+            return item;
+        } catch (ClassNotFoundException e) 
+    	{
+            throw new IOException("Unable to decode class type.", e);
+        }
+    }
 }

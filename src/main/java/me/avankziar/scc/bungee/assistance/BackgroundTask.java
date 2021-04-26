@@ -1,0 +1,102 @@
+package main.java.me.avankziar.scc.bungee.assistance;
+
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
+import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
+import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.PermanentChannel;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+public class BackgroundTask 
+{
+	private SimpleChatChannels plugin;
+	private ArrayList<String> players;
+	
+	public BackgroundTask(SimpleChatChannels plugin)
+	{
+		this.plugin = plugin;
+		players = new ArrayList<String>();
+		runTask();
+		initPermanentChannels();
+		unmuteTask();
+	}
+	
+	public ArrayList<String> getPlayers()
+	{
+		return players;
+	}
+	
+	private void runTask()
+	{
+		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
+		{
+			
+			@Override
+			public void run() 
+			{
+				for(ProxiedPlayer player : plugin.getProxy().getPlayers())
+				{
+					if(!players.contains(player.getName()))
+					{
+						players.add(player.getName());
+					}
+				}
+			}
+		}, 15L, TimeUnit.SECONDS);	
+	}
+	
+	public void unmuteTask()
+	{
+		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
+		{
+			
+			@Override
+			public void run() 
+			{
+				for(ProxiedPlayer player : plugin.getProxy().getPlayers())
+				{
+					ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER, "`player_uuid` = ?",
+							player.getUniqueId().toString());
+					if(cu.getMuteTime() != 0)
+					{
+						long mutetime = cu.getMuteTime();
+						if(mutetime < System.currentTimeMillis())
+						{
+							cu.setMuteTime(0L);
+							plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?",
+									player.getUniqueId().toString());
+							ChatUser chu = ChatUserHandler.getChatUser(player.getUniqueId());
+							if(chu != null)
+							{
+								chu.setMuteTime(0L);
+							}
+							player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.Unmute")));
+						}
+					}
+				}
+			}
+		}, 15L, TimeUnit.SECONDS);
+	}
+	
+	public void initPermanentChannels()
+	{
+		int lastid = plugin.getMysqlHandler().lastID(MysqlHandler.Type.PERMANENTCHANNEL);
+		if(lastid == 0)
+		{
+			return;
+		}
+		for(int i = 1; i <= lastid; i++)
+		{
+			if(plugin.getMysqlHandler().exist(MysqlHandler.Type.PERMANENTCHANNEL, "`id` = ?", i))
+			{
+				PermanentChannel pc = (PermanentChannel) plugin.getMysqlHandler().getData(MysqlHandler.Type.PERMANENTCHANNEL,
+						"`id` = ?", i);
+				PermanentChannel.addCustomChannel(pc);
+			}
+		}
+	}
+}

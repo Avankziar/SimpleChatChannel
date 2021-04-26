@@ -7,77 +7,78 @@ import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
 import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
-import main.java.me.avankziar.simplechatchannels.bungee.assistance.BackgroundTask;
-import main.java.me.avankziar.simplechatchannels.bungee.assistance.Utility;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.ClickChatCommandExecutor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.MessageCommandExecutor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.RCommandExecutor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.ReCommandExecutor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.SccCommandExecutor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.SccEditorCommandExecutor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.TabCompletionListener;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.WCommandExecutor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands._CommandHelper;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGBroadcast;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGChannel;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGIgnore;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGIgnoreList;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGMute;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOption;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOption_Channel;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOption_Join;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGOption_Spy;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Ban;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_ChangePassword;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Channels;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_ChatColor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Create;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Delete;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Info;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Inherit;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Invite;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Join;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Kick;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Leave;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_NameColor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Player;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Rename;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Symbol;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Unban;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGPermanentChannel_Vice;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Ban;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_ChangePassword;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Create;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Info;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Invite;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Join;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Kick;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Leave;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGTemporaryChannel_Unban;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGUnmute;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.simplechatchannels.ARGUpdatePlayer;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentConstructor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.BaseConstructor;
-import main.java.me.avankziar.simplechatchannels.bungee.commands.tree.CommandConstructor;
-import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlHandler;
-import main.java.me.avankziar.simplechatchannels.bungee.database.MysqlSetup;
-import main.java.me.avankziar.simplechatchannels.bungee.database.YamlHandler;
-import main.java.me.avankziar.simplechatchannels.bungee.database.YamlManager;
-import main.java.me.avankziar.simplechatchannels.bungee.listener.EventJoinLeave;
-import main.java.me.avankziar.simplechatchannels.bungee.listener._EventChat;
-import main.java.me.avankziar.simplechatchannels.bungee.listener._ServerListener;
-import main.java.me.avankziar.simplechatchannels.bungee.metrics.Metrics;
-import main.java.me.avankziar.simplechatchannels.bungee.objects.KeyHandler;
-import main.java.me.avankziar.simplechatchannels.bungee.objects.PluginSettings;
-import main.java.me.avankziar.simplechatchannels.bungee.objects.chat.Channel;
-import main.java.me.avankziar.simplechatchannels.bungee.objects.chat.ChatTitle;
-import main.java.me.avankziar.simplechatchannels.bungee.objects.chat.TemporaryChannel;
-import main.java.me.avankziar.simplechatchannels.handlers.ConvertHandler;
-import main.java.me.avankziar.simplechatchannels.objects.ChatUser;
-import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
+import main.java.me.avankziar.scc.bungee.assistance.BackgroundTask;
+import main.java.me.avankziar.scc.bungee.assistance.Utility;
+import main.java.me.avankziar.scc.bungee.commands.ClickChatCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.MessageCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.RCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.ReCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.SccCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.TabCompletionListener;
+import main.java.me.avankziar.scc.bungee.commands.WCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcast;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannel;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGIgnore;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGIgnoreList;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGMute;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption_Channel;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption_Join;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption_Spy;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGUnmute;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGUpdatePlayer;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Ban;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_ChangePassword;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Channels;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_ChatColor;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Create;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Delete;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Info;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Inherit;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Invite;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Join;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Kick;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Leave;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_NameColor;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Player;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Rename;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Symbol;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Unban;
+import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel_Vice;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Ban;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_ChangePassword;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Create;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Info;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Invite;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Join;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Kick;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Leave;
+import main.java.me.avankziar.scc.bungee.commands.scc.tc.ARGTemporaryChannel_Unban;
+import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.scc.bungee.commands.tree.BaseConstructor;
+import main.java.me.avankziar.scc.bungee.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
+import main.java.me.avankziar.scc.bungee.database.MysqlSetup;
+import main.java.me.avankziar.scc.bungee.database.YamlHandler;
+import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
+import main.java.me.avankziar.scc.bungee.listener.ChatListener;
+import main.java.me.avankziar.scc.bungee.listener.JoinLeaveListener;
+import main.java.me.avankziar.scc.bungee.listener.ServerListener;
+import main.java.me.avankziar.scc.bungee.metrics.Metrics;
+import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
+import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
+import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
+import main.java.me.avankziar.scc.database.YamlManager;
+import main.java.me.avankziar.scc.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.KeyHandler;
+import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.objects.StaticValues;
+import main.java.me.avankziar.scc.objects.chat.Channel;
+import main.java.me.avankziar.scc.objects.chat.ChatTitle;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.config.Configuration;
@@ -93,7 +94,6 @@ public class SimpleChatChannels extends Plugin
 	private static MysqlHandler mysqlHandler;
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
-	private static _CommandHelper commandHelper;
 	private AfkRecord afkrecord;
 	
 	public ArrayList<String> editorplayers = new ArrayList<>();
@@ -141,9 +141,16 @@ public class SimpleChatChannels extends Plugin
 		plugin = this;
 		log = getLogger();
 		
+		//https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=SCC
+		log.info(" ███████╗ ██████╗ ██████╗ | Version: "+plugin.getDescription().getVersion());
+		log.info(" ██╔════╝██╔════╝██╔════╝ | Author: "+plugin.getDescription().getAuthor());
+		log.info(" ███████╗██║     ██║      | Plugin Website: https://www.spigotmc.org/resources/simple-chat-channels.35220/");
+		log.info(" ╚════██║██║     ██║      | Depend Plugins: "+plugin.getDescription().getDepends().toString());
+		log.info(" ███████║╚██████╗╚██████╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepends().toString());
+		log.info(" ╚══════╝ ╚═════╝ ╚═════╝ | Have Fun^^");
+		
 		yamlHandler = new YamlHandler(plugin);
 		utility = new Utility(plugin);
-		commandHelper = new _CommandHelper(plugin);
 		
 		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
 		{
@@ -154,6 +161,7 @@ public class SimpleChatChannels extends Plugin
 			log.severe("MySQL is not enabled! "+pluginName+" wont work correctly!");
 		}
 		PluginSettings.initSettings(plugin);
+		ChatHandler.initPrivateChatColors();
 		setupPlayers();
 		backgroundtask = new BackgroundTask(plugin);
 		setupStrings();
@@ -162,7 +170,7 @@ public class SimpleChatChannels extends Plugin
 		setupBstats();
 		setupChannels();
 		setupChatTitles();
-		setupBypassPermission();
+		BypassPermission.init(plugin);
 	}
 	
 	public void onDisable()
@@ -222,11 +230,6 @@ public class SimpleChatChannels extends Plugin
 		return backgroundtask;
 	}
 	
-	public _CommandHelper getCommandHelper()
-	{
-		return commandHelper;
-	}
-	
 	private void setupStrings()
 	{
 		//Hier baseCommands
@@ -279,8 +282,6 @@ public class SimpleChatChannels extends Plugin
 		
 		PluginManager pm = getProxy().getPluginManager();
 		
-		//ADDME Die Commandmap und KEyHandler für die Befehler hinzufügen.
-		
 		ArgumentConstructor book = new ArgumentConstructor(baseCommandI+"_book", 0, 1, 2, false, null);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_BOOK, book.getCommandString());
 		ArgumentConstructor broadcast = new ArgumentConstructor(baseCommandI+"_broadcast", 0, 1, 9999, true, null);
@@ -289,7 +290,7 @@ public class SimpleChatChannels extends Plugin
 		ArgumentConstructor ignore = new ArgumentConstructor(baseCommandI+"_ignore", 0, 1, 1, false, playerMap);
 		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1,false,  null);
 		
-		ArgumentConstructor mute = new ArgumentConstructor(baseCommandI+"_mute", 0, 1, 2, false, null);
+		ArgumentConstructor mute = new ArgumentConstructor(baseCommandI+"_mute", 0, 1, 999, false, null);
 		ArgumentConstructor unmute = new ArgumentConstructor(baseCommandI+"_unmute", 0, 1, 1, false, null);
 		
 		ArgumentConstructor option_channel = new ArgumentConstructor(baseCommandI+"_option_channel", 1, 1, 1, false, null);
@@ -348,7 +349,7 @@ public class SimpleChatChannels extends Plugin
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
-		CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
+		//CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
 		
 		CommandConstructor msg = new CommandConstructor(baseCommandIV, false);
 		
@@ -360,7 +361,7 @@ public class SimpleChatChannels extends Plugin
 		
 		pm.registerCommand(plugin, new SccCommandExecutor(plugin, scc));
 		pm.registerCommand(plugin, new ClickChatCommandExecutor(plugin, clch));
-		pm.registerCommand(plugin, new SccEditorCommandExecutor(plugin, scceditor));
+		//pm.registerCommand(plugin, new SccEditorCommandExecutor(plugin, scceditor));
 		pm.registerCommand(plugin, new MessageCommandExecutor(plugin, msg));
 		pm.registerCommand(plugin, new ReCommandExecutor(plugin, re));
 		pm.registerCommand(plugin, new RCommandExecutor(plugin, r));
@@ -374,7 +375,7 @@ public class SimpleChatChannels extends Plugin
 						pc_join, pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice,
 					tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban,
 					unmute, updateplayer, wordfilter,
-				clch, scceditor, 
+				clch, //scceditor, 
 				msg, re, r, w);
 		
 		new ARGBroadcast(plugin, broadcast);
@@ -428,11 +429,12 @@ public class SimpleChatChannels extends Plugin
 	
 	public void ListenerSetup()
 	{
-		getProxy().registerChannel("simplechatchannels:sccbungee");
+		getProxy().registerChannel(StaticValues.SCC_TOSPIGOT);
+		getProxy().registerChannel(StaticValues.SCC_TOBUNGEE);
 		PluginManager pm = getProxy().getPluginManager();
-		pm.registerListener(plugin, new _EventChat(plugin));
-		pm.registerListener(plugin, new EventJoinLeave(plugin));
-		pm.registerListener(plugin, new _ServerListener(plugin));
+		pm.registerListener(plugin, new ChatListener(plugin));
+		pm.registerListener(plugin, new JoinLeaveListener(plugin));
+		pm.registerListener(plugin, new ServerListener(plugin));
 		pm.registerListener(plugin, new TabCompletionListener(plugin));
 	}
 	
@@ -493,7 +495,7 @@ public class SimpleChatChannels extends Plugin
 		return afkrecord;
 	}
 	
-	public boolean PlayerToChatEditor(String playername)
+	/*public boolean PlayerToChatEditor(String playername)
 	{
 		if(editorplayers.contains(playername))
 		{
@@ -509,7 +511,7 @@ public class SimpleChatChannels extends Plugin
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	public ArrayList<String> getPlayers()
 	{
@@ -644,14 +646,15 @@ public class SimpleChatChannels extends Plugin
 		}
 	}
 	
-	public void setupBypassPermission()
-	{
-		//ADDME Bypassperm
-	}
-	
 	public void setupEmojis()
 	{
-		//ADDME
+		for(String e : yamlHandler.getEmojis().getKeys())
+		{
+			String emoji = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Emoji.Start")
+					+ e
+					+ plugin.getYamlHandler().getConfig().getString("ChatReplacer.Emoji.End");
+			ChatHandler.emojiList.put(emoji, yamlHandler.getEmojis().getString(e));
+		}
 	}
 	
 	public void setupBstats()

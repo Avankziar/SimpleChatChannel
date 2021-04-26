@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import main.java.me.avankziar.simplechatchannels.objects.PermanentChannel;
+import main.java.me.avankziar.scc.objects.PermanentChannel;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 
 public interface TableIII
@@ -476,7 +476,7 @@ public interface TableIII
 		return null;
 	}
 	
-	default ArrayList<Object> getTopIII(SimpleChatChannels plugin, String orderByColumn, boolean desc, int start, int end)
+	default ArrayList<PermanentChannel> getTopIII(SimpleChatChannels plugin, String orderByColumn, boolean desc, int start, int end)
 	{
 		PreparedStatement preparedStatement = null;
 		ResultSet result = null;
@@ -499,7 +499,91 @@ public interface TableIII
 		        preparedStatement = conn.prepareStatement(sql);
 		        
 		        result = preparedStatement.executeQuery();
-		        ArrayList<Object> list = new ArrayList<Object>();
+		        ArrayList<PermanentChannel> list = new ArrayList<>();
+		        while (result.next()) 
+		        {
+		        	ArrayList<String> vice = new ArrayList<>();
+					if(result.getString("vice") != null)
+					{
+						vice = new ArrayList<String>(Arrays.asList(result.getString("vice").split(";")));
+					}
+					ArrayList<String> members = new ArrayList<>();
+					if(result.getString("members") != null)
+					{
+						members = new ArrayList<String>(Arrays.asList(result.getString("members").split(";")));
+					}
+					ArrayList<String> banned = new ArrayList<>();
+					if(result.getString("banned") != null)
+					{
+						banned = new ArrayList<String>(Arrays.asList(result.getString("banned").split(";")));
+					}
+		        	PermanentChannel w = new PermanentChannel(
+		        			result.getInt("id"),
+		        			result.getString("channel_name"),
+		        			result.getString("creator"),
+		        			vice,
+		        			members,
+		        			result.getString("password"),
+		        			banned,
+		        			result.getString("symbolextra"),
+		        			result.getString("namecolor"),
+		        			result.getString("chatcolor"));
+		        	list.add(w);
+		        }
+		        return list;
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return null;
+	}
+	
+	default ArrayList<PermanentChannel> getAllListAtIII(SimpleChatChannels plugin, String orderByColumn,
+			boolean desc, String whereColumn, Object...whereObject)
+	{
+		PreparedStatement preparedStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{			
+				String sql = "";
+				if(desc)
+				{
+					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII
+							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
+				} else
+				{
+					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII
+							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
+				}
+		        preparedStatement = conn.prepareStatement(sql);
+		        int i = 1;
+		        for(Object o : whereObject)
+		        {
+		        	preparedStatement.setObject(i, o);
+		        	i++;
+		        }
+		        result = preparedStatement.executeQuery();
+		        ArrayList<PermanentChannel> list = new ArrayList<>();
 		        while (result.next()) 
 		        {
 		        	ArrayList<String> vice = new ArrayList<>();

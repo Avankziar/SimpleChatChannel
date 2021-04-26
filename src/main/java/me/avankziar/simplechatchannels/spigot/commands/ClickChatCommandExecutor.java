@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.simplechatchannels.objects.ChatApi;
+import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.simplechatchannels.spigot.SimpleChatChannels;
 import main.java.me.avankziar.simplechatchannels.spigot.commands.tree.CommandConstructor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -34,8 +34,7 @@ public class ClickChatCommandExecutor implements CommandExecutor
 		{
 			if(!player.hasPermission(cc.getPermission()))
 			{
-				///Du hast dafür keine Rechte!
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getL().getString("NoPermission")));
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 				return false;
 			}
 		}
@@ -53,9 +52,8 @@ public class ClickChatCommandExecutor implements CommandExecutor
     	{
     		msg += args[i]+" "; 
     	}
-    	///Klicke hier um die %number%.te Antwortmöglichkeit zu nehmen!
 		t.spigot().sendMessage(ChatApi.apiChat(msg, ClickEvent.Action.RUN_COMMAND, args[1],
-				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getL().getString("CmdClickChat.ClickAnswer")
+				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("CmdClickChat.ClickAnswer")
 				.replace("%number%", args[1])));
     	return false;
 	}

@@ -37,6 +37,14 @@ public class MysqlSetup
 		{
 			return false;
 		}
+		if(!setupDatabaseIV())
+		{
+			return false;
+		}
+		if(!setupDatabaseV())
+		{
+			return false;
+		}
 		return true;
 	}
 	
@@ -48,20 +56,20 @@ public class MysqlSetup
        	 	//Load Drivers
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
-            properties.setProperty("user", plugin.getYamlHandler().get().getString("Mysql.User"));
-            properties.setProperty("password", plugin.getYamlHandler().get().getString("Mysql.Password"));
+            properties.setProperty("user", plugin.getYamlHandler().getConfig().getString("Mysql.User"));
+            properties.setProperty("password", plugin.getYamlHandler().getConfig().getString("Mysql.Password"));
             properties.setProperty("autoReconnect", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.AutoReconnect", true) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.AutoReconnect", true) + "");
             properties.setProperty("verifyServerCertificate", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.VerifyServerCertificate", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.VerifyServerCertificate", false) + "");
             properties.setProperty("useSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             properties.setProperty("requireSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             //Connect to database
-            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().get().getString("Mysql.Host") 
-            		+ ":" + plugin.getYamlHandler().get().getInt("Mysql.Port", 3306) + "/" 
-            		+ plugin.getYamlHandler().get().getString("Mysql.DatabaseName"), properties);
+            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().getConfig().getString("Mysql.Host") 
+            		+ ":" + plugin.getYamlHandler().getConfig().getInt("Mysql.Port", 3306) + "/" 
+            		+ plugin.getYamlHandler().getConfig().getString("Mysql.DatabaseName"), properties);
            
           } catch (ClassNotFoundException e) 
 		{
@@ -87,13 +95,9 @@ public class MysqlSetup
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
 		        		+ " player_uuid char(36) NOT NULL UNIQUE,"
 		        		+ " player_name varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
-		        		+ " can_chat boolean, mutetime BIGINT,"
-		        		+ " channel_global boolean, channel_trade boolean,"
-		        		+ " channel_auction boolean, channel_support boolean,"
-		        		+ " channel_local boolean, channel_world boolean,"
-		        		+ " channel_team boolean, channel_admin boolean,"
-		        		+ " channel_group boolean, channel_pm boolean, channel_temp boolean, channel_perma boolean,"
-		        		+ " channel_event boolean, spy boolean, joinmessage boolean);";
+		        		+ " mutetime BIGINT,"
+		        		+ " spy boolean, channelmessage boolean, lasttimejoined BIGINT, joinmessage boolean,"
+		        		+ " serverlocation MEDIUMTEXT);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
 		      } catch (SQLException e) 
@@ -127,9 +131,7 @@ public class MysqlSetup
 		      try 
 		      {	        
 		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameII
-		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
-		        		+ " player_uuid char(36) NOT NULL,"
-		        		+ " ignore_uuid char(36) NOT NULL,"
+		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY, player_uuid char(36) NOT NULL, ignore_uuid char(36) NOT NULL,"
 		        		+ " ignore_name char(16) NOT NULL);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
@@ -164,16 +166,79 @@ public class MysqlSetup
 		      try 
 		      {	        
 		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameIII
+		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY, channel_name TEXT NOT NULL, "
+		        		+ " creator TEXT NOT NULL, vice MEDIUMTEXT, members MEDIUMTEXT, password TEXT, banned MEDIUMTEXT,"
+		        		+ " symbolextra TEXT, namecolor TEXT, chatcolor TEXT);";
+		        query = conn.prepareStatement(data);
+		        query.execute();
+		      } catch (SQLException e) 
+		      {
+		        e.printStackTrace();
+		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
+		        return false;
+		      } finally 
+		      {
+		    	  try 
+		    	  {
+		    		  if (query != null) 
+		    		  {
+		    			  query.close();
+		    		  }
+		    	  } catch (Exception e) 
+		    	  {
+		    		  e.printStackTrace();
+		    		  return false;
+		    	  }
+		      }
+		}
+		return true;
+	}
+	
+	public boolean setupDatabaseIV() 
+	{
+		if (conn != null) 
+		{
+			PreparedStatement query = null;
+		      try 
+		      {	        
+		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameIV
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
-		        		+ " channel_name TEXT NOT NULL, "
-		        		+ " creator TEXT NOT NULL,"
-		        		+ " vice MEDIUMTEXT,"
-		        		+ " members MEDIUMTEXT,"
-		        		+ " password TEXT,"
-		        		+ " banned MEDIUMTEXT,"
-		        		+ " symbolextra TEXT,"
-		        		+ " namecolor TEXT,"
-		        		+ " chatcolor TEXT);";
+		        		+ " owner TEXT, itemname TEXT, itemdisplayname TEXT, jsonstring MEDIUMTEXT, base64 MEDIUMTEXT);";
+		        query = conn.prepareStatement(data);
+		        query.execute();
+		      } catch (SQLException e) 
+		      {
+		        e.printStackTrace();
+		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
+		        return false;
+		      } finally 
+		      {
+		    	  try 
+		    	  {
+		    		  if (query != null) 
+		    		  {
+		    			  query.close();
+		    		  }
+		    	  } catch (Exception e) 
+		    	  {
+		    		  e.printStackTrace();
+		    		  return false;
+		    	  }
+		      }
+		}
+		return true;
+	}
+	
+	public boolean setupDatabaseV() 
+	{
+		if (conn != null) 
+		{
+			PreparedStatement query = null;
+		      try 
+		      {	        
+		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameV
+		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
+		        		+ " uniqueidentifiername TEXT, player_uuid TEXT, used BOOLEAN);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
 		      } catch (SQLException e) 
@@ -240,20 +305,20 @@ public class MysqlSetup
 		    SimpleChatChannels.log.info("Attempting to establish a connection to the MySQL server!");
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
-            properties.setProperty("user", plugin.getYamlHandler().get().getString("Mysql.User"));
-            properties.setProperty("password", plugin.getYamlHandler().get().getString("Mysql.Password"));
+            properties.setProperty("user", plugin.getYamlHandler().getConfig().getString("Mysql.User"));
+            properties.setProperty("password", plugin.getYamlHandler().getConfig().getString("Mysql.Password"));
             properties.setProperty("autoReconnect", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.AutoReconnect", true) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.AutoReconnect", true) + "");
             properties.setProperty("verifyServerCertificate", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.VerifyServerCertificate", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.VerifyServerCertificate", false) + "");
             properties.setProperty("useSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             properties.setProperty("requireSSL", 
-            		plugin.getYamlHandler().get().getBoolean("Mysql.SSLEnabled", false) + "");
+            		plugin.getYamlHandler().getConfig().getBoolean("Mysql.SSLEnabled", false) + "");
             //Connect to database
-            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().get().getString("Mysql.Host") 
-            		+ ":" + plugin.getYamlHandler().get().getInt("Mysql.Port", 3306) + "/" 
-            		+ plugin.getYamlHandler().get().getString("Mysql.DatabaseName"), properties);
+            conn = DriverManager.getConnection("jdbc:mysql://" + plugin.getYamlHandler().getConfig().getString("Mysql.Host") 
+            		+ ":" + plugin.getYamlHandler().getConfig().getInt("Mysql.Port", 3306) + "/" 
+            		+ plugin.getYamlHandler().getConfig().getString("Mysql.DatabaseName"), properties);
 		    end = System.currentTimeMillis();
 		    SimpleChatChannels.log.info("Connection to MySQL server established!");
 		    SimpleChatChannels.log.info("Connection took " + ((end - start)) + "ms!");
