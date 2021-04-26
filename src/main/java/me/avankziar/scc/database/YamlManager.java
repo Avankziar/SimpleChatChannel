@@ -335,6 +335,7 @@ public class YamlManager
 				"&c/w [playername] &f| Consolecommand for private message to player.");
 		String path = "scc_";
 		String basePermission = "scc.cmd.scc.";
+		//INFO:Argument Start
 		argumentInput(path+"broadcast", "broadcast", basePermission,
 				"/scc broadcast <message...>", "/scc broadcast ",
 				"&c/scc broadcast <Nachricht> &f| Zum Senden einer Broadcast Nachricht. Falls Bungeecord aktiviert ist, kann man auch von Spigot als Console, bungeecordübergreifend dies an alle Spieler senden.",
@@ -380,11 +381,13 @@ public class YamlManager
 				"/scc option spy ", "/scc option spy ",
 				"&c/scc option spy &f| Aktiviert oder deaktiviert ob man Nachrichten sehen kann, welche einem sonst vorborgen wären.",
 				"&c/scc option spy &f| Enables or disables whether you can see messages that would otherwise be hidden from you.");
-		basePermission = "scc.cmd.scc.pc.";
+		//INFO:PermanentChannel
+		basePermission = "scc.cmd.scc.";
 		argumentInput(path+"pc", "permanentchannel", basePermission,
 				"/scc permanentchannel ", "/scc permanentchannel ",
 				"&c/scc permanentchannel &f| Zwischenbefehl",
 				"&c/scc permanentchannel &f| Intermediate command");
+		basePermission = "scc.cmd.scc.pc.";
 		argumentInput(path+"pc_ban", "ban", basePermission,
 				"/scc permanentchannel ban <channelname> <playername> ", "/scc permanentchannel ban",
 				"&c/scc permanentchannel <Channelname> <Spielername> &f| Bannt einen Spieler von einem permanenten Channel.",
@@ -457,35 +460,54 @@ public class YamlManager
 				"/scc permanentchannel vice <channelname> <playername> ", "/scc permanentchannel vice ",
 				"&c/scc permanentchannel vice <Channelname> <Spielername> &f| Befördert oder degradiert einen Spieler innerhalb des permanenten Channels.",
 				"&c/scc permanentchannel vice <channelname> <playername> &f| Promotes or demotes a player within the permanent Channel.");
+		//INFO:TemporaryChannel
+		basePermission = "scc.cmd.scc.";
+		argumentInput(path+"tc", "temporarychannel", basePermission,
+				"/scc temporarychannel ", "/scc temporarychannel ",
+				"&c/scc temporarychannel &f| Zwischenbefehl",
+				"&c/scc temporarychannel &f| Intermediate command");
 		basePermission = "scc.cmd.scc.temporarychannel.";
-		argumentInput(path+"", "", basePermission,
+		argumentInput(path+"tc_ban", "ban", basePermission,
+				"/scc temporarychannel ban <playername> ", "/scc temporarychannel ban ",
+				"&c/scc temporarychannel ban <Spielername> &f| Bannt einen Spieler von einem temporären Channel.",
+				"&c/scc temporarychannel ban <playername> &f| Bans a player from a temporary channel.");
+		argumentInput(path+"tc_unban", "unban", basePermission,
+				"/scc temporarychannel unban <playername> ", "/scc temporarychannel unban ",
+				"&c/scc temporarychannel unban <Spielername> &f| Entbannt einen Spieler von einem temporären Channel.",
+				"&c/scc temporarychannel unban <playername> &f| Unbans a player from a temporary channel.");
+		argumentInput(path+"tc_changepassword", "changepassword", basePermission,
+				"/scc temporarychannel changepassword <password> ", "/scc temporarychannel changepassword ",
+				"&c/scc temporarychannel changepassword <Passwort> &f| Ändert das Passwort von einem temporären Channel.",
+				"&c/scc temporarychannel changepassword <password> &f| Changes the password of a temporary channel.");
+		argumentInput(path+"tc_create", "create", basePermission,
+				"/scc temporarychannel create <channelname> [password] ", "/scc temporarychannel create ",
+				"&c/scc temporarychannel create <Channelname> [Passwort] &f| Erstellt einen temporären Channel. Optional mit Passwort.",
+				"&c/scc temporarychannel create <channelname> [password] &f| Creates a temporary channel. Optionally with password.");
+		argumentInput(path+"tc_info", "info", basePermission,
+				"/scc temporarychannel info ", "/scc temporarychannel info ",
+				"&c/scc temporarychannel info &f| Zeigt alle Informationen bezüglich des temporären Channels an.",
+				"&c/scc temporarychannel info &f| Displays all information related to the temporary channel.");
+		argumentInput(path+"tc_invite", "invite", basePermission,
+				"/scc temporarychannel invite <playername> ", "/scc temporarychannel invite ",
+				"&c/scc temporarychannel invite <Spielername> &f| Lädt einen Spieler in den eigenen temporären Channel ein.",
+				"&c/scc temporarychannel invite <playername> &f| Invites a player to the own temporary channel.");
+		argumentInput(path+"tc_join", "join", basePermission,
+				"/scc temporarychannel join <channelname> [password] ", "/scc temporarychannel join ",
+				"&c/scc temporarychannel join <Channelname> [Passwort] &f| Betritt einem temporären Channel.",
+				"&c/scc temporarychannel join <channelname> [password] &f| Enter a temporary channel.");
+		argumentInput(path+"tc_kick", "kick", basePermission,
+				"/scc temporarychannel kick <playername> ", "/scc temporarychannel kick ",
+				"&c/scc temporarychannel kick <Spielername> &f| Kickt einen Spieler von einem temporären Channel.",
+				"&c/scc temporarychannel kick <playername> &f| Kicks a player from a temporary channel.");
+		argumentInput(path+"tc_leave", "leave", basePermission,
+				"/scc temporarychannel leave ", "/scc temporarychannel leave ",
+				"&c/scc temporarychannel leave &f| Verlässt einen temporären Channel.",
+				"&c/scc temporarychannel leave &f| Leaves a temporary channel.");
+		
+		/*argumentInput(path+"", "", basePermission,
 				"/scc ", "/scc ",
 				"&c/scc &f| ",
-				"&c/scc &f| ");
-		argumentInput(path+"", "", basePermission,
-				"/scc ", "/scc ",
-				"&c/scc &f| ",
-				"&c/scc &f| ");
-		argumentInput(path+"", "", basePermission,
-				"/scc ", "/scc ",
-				"&c/scc &f| ",
-				"&c/scc &f| ");
-		argumentInput(path+"", "", basePermission,
-				"/scc ", "/scc ",
-				"&c/scc &f| ",
-				"&c/scc &f| ");
-		argumentInput(path+"", "", basePermission,
-				"/scc ", "/scc ",
-				"&c/scc &f| ",
-				"&c/scc &f| ");
-		argumentInput(path+"", "", basePermission,
-				"/scc ", "/scc ",
-				"&c/scc &f| ",
-				"&c/scc &f| ");
-		argumentInput(path+"", "", basePermission,
-				"/scc ", "/scc ",
-				"&c/scc &f| ",
-				"&c/scc &f| ");
+				"&c/scc &f| ");*/
 	}
 	
 	private void comBypass() //INFO:ComBypass
