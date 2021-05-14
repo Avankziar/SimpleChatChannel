@@ -49,7 +49,7 @@ public class ARGPermanentChannel_Symbol extends ArgumentModule
 		}
 		cc.setSymbolExtra(symbol);
 		plugin.getUtility().updatePermanentChannels(cc);
-		Channel c = SimpleChatChannels.channels.get("Permanent");
+		Channel c = plugin.getChannel("Permanent");
 		String msg = plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Symbol.NewSymbol")
 				.replace("%symbol%", (c != null) ? c.getSymbol() : ""+cc.getSymbolExtra())
 				.replace("%channel%", cc.getNameColor()+cc.getName());

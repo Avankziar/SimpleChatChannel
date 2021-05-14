@@ -33,7 +33,11 @@ public class ARGUnmute extends ArgumentModule
 			return;
 		}
 		ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
-		
+		if(t == null)
+		{
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			return;
+		}
 		cu.setMuteTime(0);
 		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
 		if(t != null)

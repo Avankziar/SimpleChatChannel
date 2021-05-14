@@ -78,6 +78,7 @@ public class ChatApi
 		components.add(hoverMessage);
 		BaseComponent[] hoverToSend = (BaseComponent[])components.toArray(new BaseComponent[components.size()]); 
 		msg.setHoverEvent( new HoverEvent(haction, hoverToSend));
+		//msg.setHoverEvent(new HoverEvent(haction, new Text(hoverToSend))); //FIXME
 		return msg;
 	}
 	

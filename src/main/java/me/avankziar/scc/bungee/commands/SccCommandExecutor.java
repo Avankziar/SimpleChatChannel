@@ -143,7 +143,7 @@ public class SccCommandExecutor extends Command
 									+ "or Executor is Player and a other Error set place!"
 									.replace("%ac%", ac.getName()));
 						}
-					} else if(length > ac.maxArgsConstructor) 
+					}/* else if(length > ac.maxArgsConstructor) 
 					{
 						if(player == null)
 						{
@@ -154,7 +154,7 @@ public class SccCommandExecutor extends Command
 									ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
 						}
 						return;
-					} else
+					}*/ else
 					{
 						aclist = ac.subargument;
 						break;
@@ -162,11 +162,14 @@ public class SccCommandExecutor extends Command
 				}
 			}
 		}
-		if (player != null) 
+		if(player == null){
+			SimpleChatChannels.log.warning(plugin.getYamlHandler().getLang().getString("InputIsWrong"));
+		} else
 		{
 			player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
 					ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
 		}
+		return;
 	}
 	
 	public void baseCommands(final ProxiedPlayer player, int page)
@@ -204,7 +207,7 @@ public class SccCommandExecutor extends Command
 				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("GeneralHover")));
 	}
 	
-	public void pastNextPage(ProxiedPlayer player,
+	public static void pastNextPage(ProxiedPlayer player,
 			int page, boolean lastpage, String cmdstring, String...objects)
 	{
 		if(page==0 && lastpage)
@@ -218,7 +221,7 @@ public class SccCommandExecutor extends Command
 		if(page!=0)
 		{
 			TextComponent msg2 = ChatApi.tctl(
-					plugin.getYamlHandler().getLang().getString("BaseInfo.Past"));
+					SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Past"));
 			String cmd = cmdstring+" "+String.valueOf(j);
 			for(String o : objects)
 			{
@@ -230,7 +233,7 @@ public class SccCommandExecutor extends Command
 		if(!lastpage)
 		{
 			TextComponent msg1 = ChatApi.tctl(
-					plugin.getYamlHandler().getLang().getString("BaseInfo.Next"));
+					SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Next"));
 			String cmd = cmdstring+" "+String.valueOf(i);
 			for(String o : objects)
 			{

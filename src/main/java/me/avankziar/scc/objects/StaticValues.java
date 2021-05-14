@@ -7,4 +7,5 @@ public class StaticValues
 	public final static String SCC_TASK_LOCATIONUPDATE = "updatelocation";
 	public final static String SCC_TASK_PINGAPLAYER = "pingaplayer";
 	public final static String SCC_TASK_BROADCAST = "broadcast";
+	public final static String SCC_TASK_MYSQLPERFORMANCE = "mysqlperformance";
 }

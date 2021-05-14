@@ -13,4 +13,9 @@ public class KeyHandler
 	public static String SCC_PC_LEAVE = "SCC_PC_LEAVE";
 	
 	public static String SCC_TC_JOIN = "SCC_TC_JOIN";
+	
+	public static String MAIL = "MAIL";
+	public static String MAIL_READ = "MAIL_READ";
+	public static String MAIL_SEND = "MAIL_SEND";
+	public static String MAIL_LASTMAILS = "MAIL_LASTMAILS";
 }

@@ -3,6 +3,7 @@ package main.java.me.avankziar.scc.handlers;
 import java.util.ArrayList;
 
 import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.Mail;
 import main.java.me.avankziar.scc.objects.PermanentChannel;
 import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
 import main.java.me.avankziar.scc.objects.chat.ItemJson;
@@ -82,6 +83,22 @@ public class ConvertHandler
 			if(o instanceof UsedChannel)
 			{
 				el.add((UsedChannel) o);
+			} else
+			{
+				return null;
+			}
+		}
+		return el;
+	}
+	
+	public static ArrayList<Mail> convertListVI(ArrayList<?> list)
+	{
+		ArrayList<Mail> el = new ArrayList<>();
+		for(Object o : list)
+		{
+			if(o instanceof Mail)
+			{
+				el.add((Mail) o);
 			} else
 			{
 				return null;

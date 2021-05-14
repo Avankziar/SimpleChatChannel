@@ -33,7 +33,11 @@ public class ARGUnmute extends ArgumentModule
 			return;
 		}
 		Player t = plugin.getServer().getPlayer(target);
-		
+		if(t == null)
+		{
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			return;
+		}
 		cu.setMuteTime(0);
 		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
 		if(t != null)

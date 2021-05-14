@@ -50,7 +50,7 @@ public class ARGPermanentChannel_Info extends ArgumentModule
 				return;
 			}
 		}
-		Channel c = SimpleChatChannels.channels.get("Perma");
+		Channel c = plugin.getChannel("Permanent");
 		player.spigot().sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Headline")
 				.replace("%channel%", cc.getNameColor()+cc.getName())));

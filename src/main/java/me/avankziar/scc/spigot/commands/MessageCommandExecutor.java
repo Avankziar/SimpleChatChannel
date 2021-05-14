@@ -58,7 +58,7 @@ public class MessageCommandExecutor implements CommandExecutor
 			}
 		}
 		ChatHandler ch = new ChatHandler(plugin);
-		if(ch.prePreCheck(player, message))
+		if(!ch.prePreCheck(player, message))
 		{
 			return false;
 		}

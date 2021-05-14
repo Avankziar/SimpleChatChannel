@@ -1,8 +1,6 @@
 Future ===============================================================================================
 - Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
 - logging korrekt alles anzeigen
-- Befehl "/scc safeitem <Zahl> " einführen um mehrfach items auf den Spieler zu registrieren zu können => <item1> <item2> etc.
-- Neuer replacer <book> einfügen, um per Click und Hover Event das Buch direkt lesen zu können.
 - Vault unterstützung anbieten um pauschal oder per Charakter geld abzuziehen, channel spezifisch.
 - Werbungsmöglichkeit implementieren.
   - Eine Art Queue/Reihe machen, sodass jeder EINMAL dran kommt, und danach wechselt.
@@ -11,31 +9,34 @@ Future =========================================================================
 - Befehl einführen um sich Texte zu speichern
 - Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
 - Mailfunktion
-- Spigot Seitig, per gui bis zu 54 items speichern können, um diese per <item0> etc. aufrufen zu können.
-  - Diese Items eventuell manipulierbar machen, lore etc.
-- Ein Gui (Spigotseitig), welche alle Channel anzeigt ob die aktiv sind oder nicht. Mit Klick darauf ändert man die boolean des Channels.
 - der Spigot broadcast befehl auch auf bungee führen.
 - Spieler direkt und per Zeiteinheit löschen. (Spieler die länger x Tage nicht da sind).
   
 Build 40 ==================================================================================================
-- Spam Schutz. Einmal durch einen Zeitinterval und einmal durch die Prüfung, ob es die gleiche Nachricht ist.
-- Dynamische Channel
-- Dynamische ChatTitel (Pre- und Suffix)
-- ChatFormat pro Channel möglich.
-- PrivateChat, kann pro SpielerPaar die Farbe darstellen. Per Config einstellbar.
-- ItemReplacer mit mysql und Namen erweitert.
-- BookReplacer mit RunCommand eingefügt.
-- CommandReplacer ist aufgeteilt auf Run. & SuggestCommandReplacer
-- WebseitenReplacer verbessert
-- EmojiReplacer eingefügt.
-- SpielerErwähnung eingefügt.
-- PositionsReplacer eingefügt.
-- Neue Linie Replacer eingefügt.
-- /msg <Spieler>, nur noch mit allen OnlinePlayer als Tab
-- /re <Spieler>, hinzugefügt. Hat als Tab nur noch die Spieler, mit denen man zur laufzeit geschrieben hat.
-- /r, hinzugefügt. Schreibt nur direkt der zu letzt geschriebenen Person.
-- /w <Spieler>, hinzugefügt. Dediziertes /msg für die Console.
-- CommandTree update eingebaut.
+- +Spam Schutz. Einmal durch einen Zeitinterval und einmal durch die Prüfung, ob es die gleiche Nachricht ist.
+- +Dynamische Channel
+- +Dynamische ChatTitel (Pre- und Suffix)
+- +ChatFormat pro Channel möglich.
+- +PrivateChat, kann pro SpielerPaar die Farbe darstellen. Per Config einstellbar.
+- +ItemReplacer mit mysql und Namen erweitert.
+- +ItemReplacer Gui eingefügt. Anzahl an Item (Reihen im Inventar) mit Permission geregelt.
+- +BookReplacer mit RunCommand eingefügt.
+- +CommandReplacer ist aufgeteilt auf Run. & SuggestCommandReplacer
+- +WebseitenReplacer verbessert
+- +EmojiReplacer eingefügt.
+- +SpielerErwähnung eingefügt.
+- +PositionsReplacer eingefügt.
+- +Neue Linie Replacer eingefügt.
+- +/msg <Spieler>, nur noch mit allen OnlinePlayer als Tab
+- +/re <Spieler>, hinzugefügt. Hat als Tab nur noch die Spieler, mit denen man zur laufzeit geschrieben hat.
+- +/r, hinzugefügt. Schreibt nur direkt der zu letzt geschriebenen Person.
+- +/w <Spieler>, hinzugefügt. Dediziertes /msg für die Console.
+- +CommandTree update eingebaut.
+- +ChannelGui eingefügt.
+- +BackgroundTask CleanUp, welcher den Letzten Join abgleicht und diese nach der gegeben Zeit löscht.
+
+- Mysql:
+  - TableI: 
 
 Build 38 =================================================================================================
 - +broadcast consolenfähig machen (Bungee)

@@ -37,7 +37,7 @@ public class RCommandExecutor implements CommandExecutor
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 			return false;
 		}
-		if(args.length <= 1)
+		if(args.length <= 0)
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.PleaseEnterAMessage")));
 			return false;
@@ -62,9 +62,10 @@ public class RCommandExecutor implements CommandExecutor
 			{
 				message += " ";
 			}
+			i++;
 		}
 		ChatHandler ch = new ChatHandler(plugin);
-		if(ch.prePreCheck(player, message))
+		if(!ch.prePreCheck(player, message))
 		{
 			return false;
 		}

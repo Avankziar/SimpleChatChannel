@@ -1,5 +1,6 @@
 package main.java.me.avankziar.scc.spigot.guihandling;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
@@ -12,6 +13,8 @@ import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.chat.ItemJson;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannel;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannelGui;
 import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.guihandling.events.BottomGuiClickEvent;
 import main.java.me.avankziar.scc.spigot.guihandling.events.UpperGuiClickEvent;
@@ -61,7 +64,7 @@ public class GuiListener implements Listener
 	}
 	
 	@EventHandler
-	public void onUpperGui(UpperGuiClickEvent event)
+	public void onUpperGui(UpperGuiClickEvent event) throws IOException
 	{
 		if(!event.getPluginName().equals(GuiValues.PLUGINNAME))
 		{
@@ -70,19 +73,46 @@ public class GuiListener implements Listener
 		if(event.getInventoryIdentifier().equals(GuiValues.ITEM_REPLACER_INVENTORY))
 		{
 			itemReplacerHandling(event);
+		} else if(event.getInventoryIdentifier().equals(GuiValues.CHANNELGUI_INVENTORY))
+		{
+			channelGuiHandling(event);
 		}
 	}
 	
 	private void itemReplacerHandling(UpperGuiClickEvent event)
 	{
-		final int slot = event.getEvent().getSlot();
-		Inventory inv = event.getEvent().getView().getTopInventory();
-		inv.setItem(slot, null);
-		ArrayList<ItemJson> list = ConvertHandler.convertListIV(
-				plugin.getMysqlHandler().getAllListAt(Type.ITEMJSON, "`id`", false, "`owner` = ? AND `itemname` != ?",
-						event.getEvent().getWhoClicked().getUniqueId().toString(), "default"));
-		ItemJson ij = list.get(slot);
-		plugin.getMysqlHandler().deleteData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
-				ij.getOwner(), ij.getItemName());
+		if(event.getFunction().equals(GuiValues.ITEM_REPLACER_FUNCTION))
+		{
+			final int slot = event.getEvent().getSlot();
+			Inventory inv = event.getEvent().getView().getTopInventory();
+			inv.setItem(slot, null);
+			ArrayList<ItemJson> list = ConvertHandler.convertListIV(
+					plugin.getMysqlHandler().getAllListAt(Type.ITEMJSON, "`id`", false, "`owner` = ? AND `itemname` != ?",
+							event.getEvent().getWhoClicked().getUniqueId().toString(), "default"));
+			ItemJson ij = list.get(slot);
+			plugin.getMysqlHandler().deleteData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
+					ij.getOwner(), ij.getItemName());
+		}
+	}
+	
+	private void channelGuiHandling(UpperGuiClickEvent event) throws IOException
+	{
+		if(event.getFunction().startsWith(GuiValues.CHANNELGUI_FUNCTION)
+				&& event.getFunction().contains(":"))
+		{
+			String[] f = event.getFunction().split(":");
+			if(f.length != 2)
+			{
+				return;
+			}
+			String channel = f[1];
+			boolean boo = ARGChannel.updateUsedChannel(plugin, (Player) event.getEvent().getWhoClicked(), channel);
+			if(!boo)
+			{
+				event.getEvent().getWhoClicked().closeInventory();
+				return;
+			}
+			ARGChannelGui.openChannelGui(plugin, (Player) event.getEvent().getWhoClicked());
+		}
 	}
 }

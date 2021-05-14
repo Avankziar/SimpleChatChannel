@@ -269,7 +269,7 @@ public class ChatHandler
 	
 	private String getUsedChannelColor(Channel channel, String player1, String player2)
 	{
-		if(plugin.getYamlHandler().getConfig().getBoolean("PrivateChannel.UseDynamicColor", true))
+		if(!plugin.getYamlHandler().getConfig().getBoolean("PrivateChannel.UseDynamicColor", true))
 		{
 			return channel.getInChatColorMessage();
 		}
@@ -282,6 +282,7 @@ public class ChatHandler
 		} else
 		{
 			ArrayList<String> alreadyUsedColors = new ArrayList<>();
+			ArrayList<String> remainingColors = new ArrayList<>();
 			for(String playernames : privateChatColorPerPlayers.keySet())
 			{
 				if(playernames.contains(player1) || playernames.contains(player2))
@@ -289,16 +290,38 @@ public class ChatHandler
 					alreadyUsedColors.add(privateChatColorPerPlayers.get(playernames));
 				}
 			}
-			for(int i = 0; i < privateChatColor.size(); i++)
+			for(String c : privateChatColor)
 			{
-				if(i >= alreadyUsedColors.size() || !privateChatColor.get(i).equalsIgnoreCase(alreadyUsedColors.get(i)))
+				boolean unused = true;
+				for(String al : alreadyUsedColors)
 				{
-					return privateChatColor.get(i);
+					if(c.equals(al))
+					{
+						unused = false;
+					}
+				}
+				if(unused)
+				{
+					remainingColors.add(c);
 				}
 			}
 			Random r = new Random();
-			int i = r.nextInt(privateChatColor.size()-1);
-			return privateChatColor.get(i);
+			if(remainingColors.isEmpty())
+			{
+				/*
+				 * If all are in use, use a random color.
+				 */
+				int i = r.nextInt(privateChatColor.size()-1);
+				String color = privateChatColor.get(i);
+				privateChatColorPerPlayers.put(player1+player2, color);
+				return color;
+			} else
+			{
+				int i = r.nextInt(remainingColors.size()-1);
+				String color = remainingColors.get(i);
+				privateChatColorPerPlayers.put(player1+player2, color);
+				return color;
+			}
 		}
 	}
 	
@@ -311,8 +334,6 @@ public class ChatHandler
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
-		
-		
 		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
 			if(components.isMention(all.getName()))
@@ -320,7 +341,7 @@ public class ChatHandler
 				all.sendMessage(txc2);
 				if(all.hasPermission(BypassPermission.USE_SOUND))
 				{
-					sendMentionPing(all);
+					sendMentionPing(all, usedChannel.getMentionSound());
 				}
 			} else
 			{
@@ -369,10 +390,14 @@ public class ChatHandler
 		/*
 		 * Trim the orginal message, and if the message is empty, so return;
 		 */
-		if(message.length() <= usedChannel.getSymbol().length())
+		if(!usedChannel.getUniqueIdentifierName().equals(SimpleChatChannels.nullChannel.getUniqueIdentifierName())
+				&& !usedChannel.getUniqueIdentifierName().equals("Private"))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
-			return false;
+			if(message.length() <= usedChannel.getSymbol().length())
+			{
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
+				return false;
+			}
 		}
 		
 		/*
@@ -461,11 +486,12 @@ public class ChatHandler
 			TemporaryChannel tc, PermanentChannel pc,
 			ArrayList<ChatTitle> otherprefix, ArrayList<ChatTitle> othersuffix, String channelColor)
 	{
+		String s = "";
 		Components components = new Components();
+		String lastColor = "";
 		int i = 0;
 		while(i < chatFormt.length())
 		{
-			String s = "";
 			char c = chatFormt.charAt(i);
 			if(c == '&')
 			{
@@ -476,39 +502,50 @@ public class ChatHandler
 					{
 						if(chatFormt.length() > i+7)
 						{
-							s += c+c2
-									+chatFormt.charAt(i+2)+chatFormt.charAt(i+3)
-									+chatFormt.charAt(i+4)+chatFormt.charAt(i+5)
-									+chatFormt.charAt(i+6)+chatFormt.charAt(i+7);
+							char c3 = chatFormt.charAt(i+2);
+							char c4 = chatFormt.charAt(i+3);
+							char c5 = chatFormt.charAt(i+4);
+							char c6 = chatFormt.charAt(i+5);
+							char c7 = chatFormt.charAt(i+6);
+							char c8 = chatFormt.charAt(i+7);
+							if(!isHexChar(c3, c4, c5, c6, c7, c8))
+							{
+								i = i+8;
+								continue;
+							}
+							lastColor = "&#"
+									+c3+c4+c5+c6+c7+c8;
+							s += lastColor;
 							i = i+8;
-							components.addComponent(ChatApi.tctl(s));
-							components.addComponentWithMentions(ChatApi.tctl(s));
 							continue;
 						} else
 						{
-							s += c+c2;
-							i = i+2;
-							components.addComponent(ChatApi.tctl(s)).addComponentWithMentions(ChatApi.tctl(s));
+							i += 2;
 							continue;
 						}
 					} else
 					{
-						s += c+c2;
-						i++;
-						components.addComponent(ChatApi.tctl(s)).addComponentWithMentions(ChatApi.tctl(s));
+						lastColor = "&"+String.valueOf(c2);
+						s += lastColor;
+						i += 2;
 						continue;
 					}
 				} else
 				{
-					s += c;
+					s += String.valueOf(c);
 					i++;
-					components.addComponent(ChatApi.tctl(s)).addComponentWithMentions(ChatApi.tctl(s));
 					continue;
 				}
 			} else if(c == '%')
 			{
+				if(!s.isEmpty())
+				{
+					components.addAllComponents(ChatApi.tctl(s));
+					s = "";
+				}
 				int j = i+1;
-				String placeHolder = ""+c;
+				i++;
+				String placeHolder = String.valueOf(c);
 				while(j < chatFormt.length())
 				{
 					char c2 = chatFormt.charAt(j);
@@ -518,14 +555,20 @@ public class ChatHandler
 						break;
 					}
 					j++;
+					i++;
 				}
 				components.addAllComponents(getComponent(placeHolder, message, player,
 						other, prefix, suffix, usedChannel, tc, pc, otherprefix, othersuffix, channelColor));
 				i++;
 				continue;
+			} else if(c == ' ')
+			{
+				s+= " "+lastColor;
+				i++;
+				continue;
 			} else
 			{
-				components.addComponent(ChatApi.tctl(s)).addComponentWithMentions(ChatApi.tctl(s));
+				s += c;
 				i++;
 				continue;
 			}
@@ -544,13 +587,13 @@ public class ChatHandler
 	 */
 	private Components getComponent(String placeHolder, String message, CommandSender players, ProxiedPlayer otherplayer,
 			ArrayList<ChatTitle> prefixs, ArrayList<ChatTitle> suffixs,
-			Channel usedChannel,
-			TemporaryChannel tch, PermanentChannel pc,
+			final Channel usedChannel,
+			final TemporaryChannel tch, final PermanentChannel pc,
 			ArrayList<ChatTitle> otherprefixs, ArrayList<ChatTitle> othersuffixs, String channelColor)
 	{
 		boolean isNotConsole = false;
 		ProxiedPlayer player = null;
-		if(player instanceof ProxiedPlayer)
+		if(players instanceof ProxiedPlayer)
 		{
 			player = (ProxiedPlayer) players;
 			isNotConsole = true;
@@ -561,11 +604,12 @@ public class ChatHandler
 		switch(ph)
 		{
 		case CHANNEL:
+			String text = plugin.getUtility().getChannelHover(usedChannel);
 			tc = ChatApi.apiChat(usedChannel.getInChatName(),
 					ClickEvent.Action.SUGGEST_COMMAND,
 					plugin.getUtility().getChannelSuggestion(usedChannel, pc),
 					HoverEvent.Action.SHOW_TEXT, 
-					plugin.getUtility().getChannelHover(usedChannel));
+					text);
 			return components.addAllComponents(tc);
 		case MESSAGE:
 			return components.addAllComponents(getMessageParser(players, message, usedChannel, channelColor));
@@ -573,15 +617,24 @@ public class ChatHandler
 			if(isNotConsole)
 			{
 				tc = ChatApi.apiChat(player.getName(),
-						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+player.getName()+" ",
 						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 						.replace("%player%", player.getName()));
 			} else
 			{
-				tc = ChatApi.apiChat(console,
-						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+				tc = ChatApi.tctl(console);
+			}
+			return components.addAllComponents(tc);
+		case PLAYERNAME_WITH_CUSTOMCOLOR:
+			if(isNotConsole)
+			{
+				tc = ChatApi.apiChat(usedChannel.getPlayernameCustomColor()+player.getName(),
+						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+player.getName()+" ",
 						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
-						.replace("%player%", "Console"));
+						.replace("%player%", player.getName()));
+			} else
+			{
+				tc = ChatApi.tctl(usedChannel.getPlayernameCustomColor()+console);
 			}
 			return components.addAllComponents(tc);
 		case PLAYERNAME_WITH_PREFIXHIGHCOLORCODE:
@@ -590,22 +643,19 @@ public class ChatHandler
 				if(prefixs.size() > 0)
 				{
 					tc = ChatApi.apiChat(prefixs.get(0).getInChatColorCode()+player.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+player.getName()+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", player.getName()));
 				} else
 				{
 					tc = ChatApi.apiChat(player.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+player.getName()+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", player.getName()));
 				}
 			} else
 			{
-				tc = ChatApi.apiChat(console,
-						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
-						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
-						.replace("%player%", console));
+				tc = ChatApi.tctl(console);
 			}
 			return components.addAllComponents(tc);
 		case PLAYERNAME_WITH_SUFFIXHIGHCOLORCODE:
@@ -614,34 +664,45 @@ public class ChatHandler
 				if(suffixs.size() > 0)
 				{
 					tc = ChatApi.apiChat(suffixs.get(0).getInChatColorCode()+player.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG+otherplayer.getName()),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG+player.getName())+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", player.getName()));
 				} else
 				{
 					tc = ChatApi.apiChat(player.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+player.getName()+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", player.getName()));
 				}
 			} else
 			{
-				tc = ChatApi.apiChat(console,
-						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
-						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
-						.replace("%player%", console));
+				tc = ChatApi.tctl(console);
 			}
 			return components.addAllComponents(tc);
 		case PREFIXALL:
 			if(isNotConsole)
 			{
 				ArrayList<BaseComponent> bc = new ArrayList<>();
-				for(ChatTitle ctp : prefixs)
+				int i = 0;
+				int last = prefixs.size()-1;
+				for(ChatTitle cts : prefixs)
 				{
-					bc.add(ChatApi.hoverEvent(ctp.getInChatName(), HoverEvent.Action.SHOW_TEXT, ctp.getHover()));
+					if(i < last)
+					{
+						bc.add(ChatApi.hoverEvent(cts.getInChatName()+usedChannel.getSeperatorBetweenSuffix(), 
+								HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+					} else
+					{
+						bc.add(ChatApi.hoverEvent(cts.getInChatName(), HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+					}
+					
+					i++;
 				}
 				tc = ChatApi.tc("");
-				tc.setExtra(bc);
+				if(bc.size() > 0)
+				{
+					tc.setExtra(bc);
+				}
 			} else
 			{
 				tc = ChatApi.tc("");
@@ -679,12 +740,26 @@ public class ChatHandler
 			if(isNotConsole)
 			{
 				ArrayList<BaseComponent> bc = new ArrayList<>();
+				int i = 0;
+				int last = suffixs.size()-1;
 				for(ChatTitle cts : suffixs)
 				{
-					bc.add(ChatApi.hoverEvent(cts.getInChatName(), HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+					if(i < last)
+					{
+						bc.add(ChatApi.hoverEvent(cts.getInChatName()+usedChannel.getSeperatorBetweenSuffix(), 
+								HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+					} else
+					{
+						bc.add(ChatApi.hoverEvent(cts.getInChatName(), HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+					}
+					
+					i++;
 				}
 				tc = ChatApi.tc("");
-				tc.setExtra(bc);
+				if(bc.size() > 0)
+				{
+					tc.setExtra(bc);
+				}
 			} else
 			{
 				tc = ChatApi.tc("");
@@ -718,6 +793,20 @@ public class ChatHandler
 				tc = ChatApi.tc("");
 			}
 			return components.addAllComponents(tc);
+		case ROLEPLAYNAME:
+			if(isNotConsole)
+			{
+				ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
+				String name = (cu != null) ? cu.getRolePlayName() : player.getName();
+				tc = ChatApi.apiChat(name,
+						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+player.getName()+" ",
+						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
+						.replace("%player%", player.getName()));
+			} else
+			{
+				tc = ChatApi.tctl(console);
+			}
+			return components.addAllComponents(tc);
 		case OTHER_PLAYERNAME:
 			if(otherplayer == null)
 			{
@@ -725,7 +814,19 @@ public class ChatHandler
 			} else
 			{
 				tc = ChatApi.apiChat(otherplayer.getName(),
-						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName()+" ",
+						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
+						.replace("%player%", otherplayer.getName()));
+			}
+			return components.addAllComponents(tc);
+		case OTHER_PLAYERNAME_WITH_CUSTOMCOLOR:
+			if(otherplayer == null)
+			{
+				tc = ChatApi.tc("");
+			} else
+			{
+				tc = ChatApi.apiChat(usedChannel.getOtherplayernameCustomColor()+otherplayer.getName(),
+						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName()+" ",
 						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 						.replace("%player%", otherplayer.getName()));
 			}
@@ -739,13 +840,13 @@ public class ChatHandler
 				if(otherprefixs.size() > 0)
 				{
 					tc = ChatApi.apiChat(otherprefixs.get(0).getInChatColorCode()+otherplayer.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName()+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", otherplayer.getName()));
 				} else
 				{
 					tc = ChatApi.apiChat(otherplayer.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName()+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", otherplayer.getName()));
 				}
@@ -760,13 +861,13 @@ public class ChatHandler
 				if(othersuffixs.size() > 0)
 				{
 					tc = ChatApi.apiChat(othersuffixs.get(0).getInChatColorCode()+otherplayer.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName()+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", otherplayer.getName()));
 				} else
 				{
 					tc = ChatApi.apiChat(otherplayer.getName(),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName(),
+							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName()+" ",
 							HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
 							.replace("%player%", otherplayer.getName()));
 				}
@@ -858,11 +959,85 @@ public class ChatHandler
 				}
 			}
 			return components.addAllComponents(tc);
+		case OTHER_ROLEPLAYNAME:
+			if(otherplayer == null)
+			{
+				tc = ChatApi.tc("");
+			} else
+			{
+				ChatUser cu = ChatUserHandler.getChatUser(otherplayer.getUniqueId());
+				String name = (cu != null) ? cu.getRolePlayName() : otherplayer.getName();
+				tc = ChatApi.apiChat(name,
+						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.MSG)+otherplayer.getName()+" ",
+						HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("ChatListener.PrivateChatHover")
+						.replace("%player%", otherplayer.getName()));
+			}
+			return components.addAllComponents(tc);
+		case NEWLINE:
+			return components.addAllComponents(ChatApi.newLine());
+		case SERVER:
+			String server = "";
+			String cmd = "";
+			String hover = "";
+			if(isNotConsole)
+			{
+				server = player.getServer().getInfo().getName();
+			} else
+			{
+				server = "proxy";
+			}
+			String serverReplacer = "";
+			if(usedChannel.getServerReplacerMap().containsKey(server))
+			{
+				serverReplacer = usedChannel.getServerReplacerMap().get(server);
+			}
+			if(usedChannel.getServerCommandMap().containsKey(server))
+			{
+				cmd = usedChannel.getServerCommandMap().get(server);
+			}
+			if(usedChannel.getServerHoverMap().containsKey(server))
+			{
+				hover = usedChannel.getServerHoverMap().get(server);
+			}
+			tc = ChatApi.apiChat(serverReplacer,
+					ClickEvent.Action.SUGGEST_COMMAND, cmd,
+					HoverEvent.Action.SHOW_TEXT, hover);
+			return components.addAllComponents(tc);
+		case OTHER_SERVER:
+			
+			if(otherplayer == null)
+			{
+				tc = ChatApi.tc("");
+				return components.addAllComponents(tc);
+			} else
+			{
+				server = "proxy";
+			}
+			server = "";
+			cmd = "";
+			hover = "";
+			serverReplacer = "";
+			if(usedChannel.getServerReplacerMap().containsKey(server))
+			{
+				serverReplacer = usedChannel.getServerReplacerMap().get(server);
+			}
+			if(usedChannel.getServerCommandMap().containsKey(server))
+			{
+				cmd = usedChannel.getServerCommandMap().get(server);
+			}
+			if(usedChannel.getServerHoverMap().containsKey(server))
+			{
+				hover = usedChannel.getServerHoverMap().get(server);
+			}
+			tc = ChatApi.apiChat(serverReplacer,
+					ClickEvent.Action.SUGGEST_COMMAND, cmd,
+					HoverEvent.Action.SHOW_TEXT, hover);
+			return components.addAllComponents(tc);
 		case TIME:
-			tc = ChatApi.tctl(TimeHandler.getTime(System.currentTimeMillis()));
+			tc = ChatApi.tctl(usedChannel.getTimeColor()+TimeHandler.getTime(System.currentTimeMillis()));
 			return components.addAllComponents(tc);
 		case TIMES:
-			tc = ChatApi.tctl(TimeHandler.getTimes(System.currentTimeMillis()));
+			tc = ChatApi.tctl(usedChannel.getTimeColor()+TimeHandler.getTimes(System.currentTimeMillis()));
 			return components.addAllComponents(tc);
 		case UNDEFINE:
 			//ADDME PlaceHolderAPI?
@@ -872,15 +1047,12 @@ public class ChatHandler
 		return components.addAllComponents(tc);
 	}
 	
-	/*
-	 * FIXME Checke ob funktionen in Farbe gehen, wahrscheinlich aber nicht.
-	 */
 	@SuppressWarnings("deprecation")
 	public Components getMessageParser(CommandSender players, String message, Channel usedChannel, String channelColor)
 	{
 		boolean isNotConsole = false;
 		ProxiedPlayer player = null;
-		if(player instanceof ProxiedPlayer)
+		if(players instanceof ProxiedPlayer)
 		{
 			player = (ProxiedPlayer) players;
 			isNotConsole = true;
@@ -888,13 +1060,15 @@ public class ChatHandler
 		Components components = new Components();
 		String[] function = message.split(" ");
 		int count = -1;
+		int newlineCounter = 0;
+		String lastColor = channelColor;
 		for(String f : function)
 		{
 			++count;
 			if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Item.Start"))
 					&& f.endsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Item.End")))
 			{
-				if((usedChannel.isUseItemReplacer() && player.hasPermission(BypassPermission.USE_ITEM))
+				if(!isNotConsole || (usedChannel.isUseItemReplacer() && player.hasPermission(BypassPermission.USE_ITEM))
 					|| player.hasPermission(BypassPermission.USE_ITEM_BYPASS))
 				{
 					/*
@@ -935,11 +1109,17 @@ public class ChatHandler
 										new BaseComponent[]{new TextComponent(ij.getJsonString())}));
 					}
 					components.addAllComponents(tc);
+					if(count < function.length)
+					{
+						TextComponent tc2 = ChatApi.tc(" ");
+						components.addAllComponents(tc2);
+					}
+					continue;
 				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Start"))
 					&& f.endsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.End")))
 			{
-				if((usedChannel.isUseBookReplacer() && player.hasPermission(BypassPermission.USE_ITEM))
+				if(!isNotConsole || (usedChannel.isUseBookReplacer() && player.hasPermission(BypassPermission.USE_ITEM))
 					|| player.hasPermission(BypassPermission.USE_BOOK_BYPASS))
 				{
 					/*
@@ -982,14 +1162,20 @@ public class ChatHandler
 										new BaseComponent[]{new TextComponent(ij.getJsonString())}));
 					}
 					components.addAllComponents(tc);
+					if(count < function.length)
+					{
+						TextComponent tc2 = ChatApi.tc(" ");
+						components.addAllComponents(tc2);
+					}
+					continue;
 				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
-					.getString("ChatReplacer.Command.RunCommandStart")))
+					.getString("ChatReplacer.Command.RunCommandStart"))) //ADDME:Run und Suggest replacer farblich unterscheiden
 			{
 				/*
 				 * Run Commands
 				 */
-				if((usedChannel.isUseRunCommandReplacer() && player.hasPermission(BypassPermission.USE_RUNCOMMAND))
+				if(!isNotConsole || (usedChannel.isUseRunCommandReplacer() && player.hasPermission(BypassPermission.USE_RUNCOMMAND))
 						|| player.hasPermission(BypassPermission.USE_RUNCOMMAND_BYPASS))
 				{
 					String start = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.RunCommandStart");
@@ -997,20 +1183,26 @@ public class ChatHandler
 					String cmd = f.replace(start, "/").replace(spacereplacer, " ");
 					String textstart = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandStartReplacer");
 					String textend = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandEndReplacer");
-					String text = f.replace(start, textstart).replace(spacereplacer, " ")+textend;
+					String text = cmd.replace("/", textstart).replace(spacereplacer, " ")+textend;
 					TextComponent tc = ChatApi.apiChat(text,
 							ClickEvent.Action.RUN_COMMAND,
 							ChatColor.stripColor(cmd),
 							HoverEvent.Action.SHOW_TEXT,
 							plugin.getYamlHandler().getConfig().getString("ChatListener.CommandRunHover"));
 					components.addAllComponents(tc);
+					if(count < function.length)
+					{
+						TextComponent tc2 = ChatApi.tc(" ");
+						components.addAllComponents(tc2);
+					}
+					continue;
 				}				
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandStart")))
 			{
 				/*
 				 * Suggest Command
 				 */
-				if((usedChannel.isUseSuggestCommandReplacer() && player.hasPermission(BypassPermission.USE_SUGGESTCOMMAND))
+				if(!isNotConsole || (usedChannel.isUseSuggestCommandReplacer() && player.hasPermission(BypassPermission.USE_SUGGESTCOMMAND))
 						|| player.hasPermission(BypassPermission.USE_SUGGESTCOMMAND_BYPASS))
 				{
 					String start = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandStart");
@@ -1018,13 +1210,19 @@ public class ChatHandler
 					String cmd = f.replace(start, "/").replace(spacereplacer, " ");
 					String textstart = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandStartReplacer");
 					String textend = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandEndReplacer");
-					String text = f.replace(start, textstart).replace(spacereplacer, " ")+textend;
+					String text = cmd.replace("/", textstart).replace(spacereplacer, " ")+textend;
 					TextComponent tc = ChatApi.apiChat(text,
 							ClickEvent.Action.SUGGEST_COMMAND,
 							ChatColor.stripColor(cmd),
 							HoverEvent.Action.SHOW_TEXT,
 							plugin.getYamlHandler().getConfig().getString("ChatListener.CommandSuggestHover"));
 					components.addAllComponents(tc);
+					if(count < function.length)
+					{
+						TextComponent tc2 = ChatApi.tc(" ");
+						components.addAllComponents(tc2);
+					}
+					continue;
 				}
 			} else if(f.startsWith("http") || f.endsWith(".de") || f.endsWith(".com") || f.endsWith(".net")
 					|| f.endsWith(".au") || f.endsWith(".io") || f.endsWith(".be"))
@@ -1032,7 +1230,7 @@ public class ChatHandler
 				/*
 				 * Website
 				 */
-				if((usedChannel.isUseWebsiteReplacer() && player.hasPermission(BypassPermission.USE_WEBSITE))
+				if(!isNotConsole || (usedChannel.isUseWebsiteReplacer() && player.hasPermission(BypassPermission.USE_WEBSITE))
 						|| player.hasPermission(BypassPermission.USE_WEBSITE_BYPASS))
 				{
 					TextComponent tc = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("ChatListener.Website.Replacer"),
@@ -1042,6 +1240,12 @@ public class ChatHandler
 							plugin.getYamlHandler().getLang().getString("ChatListener.Website.Hover")
 							+ChatColor.stripColor(f));
 					components.addAllComponents(tc);
+					if(count < function.length)
+					{
+						TextComponent tc2 = ChatApi.tc(" ");
+						components.addAllComponents(tc2);
+					}
+					continue;
 				} else
 				{
 					TextComponent tc = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("ChatListener.Website.NotAllowReplacer"),
@@ -1056,7 +1260,7 @@ public class ChatHandler
 					&& f.endsWith(plugin.getYamlHandler().getConfig()
 							.getString("ChatReplacer.Emoji.End")))
 			{
-				if((usedChannel.isUseEmojiReplacer() && player.hasPermission(BypassPermission.USE_EMOJI))
+				if(!isNotConsole || (usedChannel.isUseEmojiReplacer() && player.hasPermission(BypassPermission.USE_EMOJI))
 						|| player.hasPermission(BypassPermission.USE_EMOJI_BYPASS))
 				{
 					String emoji = f;
@@ -1064,8 +1268,17 @@ public class ChatHandler
 					{
 						emoji = emojiList.get(f);
 					}
-					TextComponent tc = ChatApi.tctl(emoji);
+					TextComponent tc = ChatApi.hoverEvent(lastColor+emoji,
+							HoverEvent.Action.SHOW_TEXT,
+							plugin.getYamlHandler().getLang().getString("ChatListener.Emoji.Hover")
+							.replace("%emoji%", f));
 					components.addAllComponents(tc);
+					if(count < function.length)
+					{
+						TextComponent tc2 = ChatApi.tc(" ");
+						components.addAllComponents(tc2);
+					}
+					continue;
 				}				
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
 					.getString("ChatReplacer.Mention.Start")))
@@ -1074,7 +1287,7 @@ public class ChatHandler
 				 * Player mention with Start and End
 				 * Playermention not available for private msg.
 				 */
-				if((usedChannel.isUseMentionReplacer() && player.hasPermission(BypassPermission.USE_MENTION))
+				if(!isNotConsole || (usedChannel.isUseMentionReplacer() && player.hasPermission(BypassPermission.USE_MENTION))
 						|| player.hasPermission(BypassPermission.USE_MENTION_BYPASS))
 				{
 					boolean hasFindOne = false;
@@ -1099,8 +1312,14 @@ public class ChatHandler
 							plugin.getYamlHandler().getLang().getString("ChatListener.Mention.YouAreMentionHover")
 							.replace("%player%", player.getName()));
 					components.addAllComponents(tc).addMention(name);
+					if(count < function.length)
+					{
+						TextComponent tc2 = ChatApi.tc(" ");
+						components.addAllComponents(tc2);
+					}
+					continue;
 				}
-			} else if(isNotConsole && f.equalsIgnoreCase(plugin.getYamlHandler().getConfig().getString("ChatReplacer.PositionReplacer")))
+			} else if(isNotConsole && f.equalsIgnoreCase(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Position.Replacer")))
 			{
 				if((usedChannel.isUsePositionReplacer() && player.hasPermission(BypassPermission.USE_POSITION))
 						|| player.hasPermission(BypassPermission.USE_POSITION_BYPASS))
@@ -1110,18 +1329,28 @@ public class ChatHandler
 						ServerLocation sl = ChatListener.playerLocation.get(player.getUniqueId().toString());
 						TextComponent tc = ChatApi.tctl(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Position.Replace")
 								.replace("%server%", sl.getServer())
-								.replace("%world%", sl.getWordName()
+								.replace("%world%", sl.getWordName())
 								.replace("%x%", String.valueOf((int) sl.getX()))
 								.replace("%y%", String.valueOf((int) sl.getY()))
-								.replace("%z%", String.valueOf((int) sl.getZ()))));
+								.replace("%z%", String.valueOf((int) sl.getZ())));
 						components.addAllComponents(tc);
+						if(count < function.length)
+						{
+							TextComponent tc2 = ChatApi.tc(" ");
+							components.addAllComponents(tc2);
+						}
+						continue;
 					}
 				}
 			} else if(f.equals(plugin.getYamlHandler().getConfig().getString("ChatReplacer.NewLine")))
 			{
-				components.addAllComponents(ChatApi.newLine());
-				//As only function, to NOT have a Space after it.
-				continue;
+				if(newlineCounter <= 5)
+				{
+					components.addAllComponents(ChatApi.newLine());
+					//As only function, to NOT have a Space after it.
+					continue;
+				}
+				newlineCounter++;
 			}
 			/*
 			 * Color Handling, if nothing is correct
@@ -1132,7 +1361,87 @@ public class ChatHandler
 			{
 				canColor = true;
 			}
-			TextComponent tc = ChatApi.tctl(getColoredString(f, channelColor, canColor));
+			String string = f;
+			String s = "";
+			int i = 0;
+			while(i < string.length())
+			{
+				if(i == 0 && string.charAt(i) != '&')
+				{
+					s += lastColor;
+				}
+				char c = string.charAt(i);
+				if(c == '&')
+				{
+					if(string.length() > (i+1))
+					{
+						char c2 = string.charAt(i+1);
+						if(c2 == '#')
+						{
+							if(string.length() > i+7 && canColor)
+							{
+								char c3 = string.charAt(i+2);
+								char c4 = string.charAt(i+3);
+								char c5 = string.charAt(i+4);
+								char c6 = string.charAt(i+5);
+								char c7 = string.charAt(i+6);
+								char c8 = string.charAt(i+7);
+								if(!isHexChar(c3, c4, c5, c6, c7, c8))
+								{
+									i = i+8;
+									continue;
+								}
+								lastColor = "&#"
+										+c3+c4+c5+c6+c7+c8;
+								s += lastColor;
+								i = i+8;
+								continue;
+							} else if(string.length() > i+7 && !canColor)
+							{
+								i = i+8;
+								continue;
+							} else
+							{
+								i = i+2;
+								continue;
+							}
+						} else if(isColor(c2) && canColor)
+						{
+							lastColor = "&"+String.valueOf(c2);
+							s += lastColor;
+							i += 2;
+							continue;
+						} else
+						{
+							i += 2;
+							continue;
+						}
+					} else
+					{
+						s += c;
+						i++;
+						continue;
+					}
+				} else if(c == ' ')
+				{
+					if(canColor)
+					{
+						s+= " "+lastColor;
+						i++;
+						continue;
+					}
+					s += " "+channelColor;
+					i++;
+					continue;
+				} else
+				{
+					s += c;
+					i++;
+					continue;
+				}
+			}
+			//TextComponent tc = ChatApi.tctl(getColoredString(f, channelColor, canColor));
+			TextComponent tc = ChatApi.tctl(s);
 			components.addAllComponents(tc);
 			if(count < function.length)
 			{
@@ -1143,14 +1452,18 @@ public class ChatHandler
 		return components;
 	}
 	
-	//FIXME Geht das überhaupt so auf?
+	/*//INFO:Wird nicht mehr gebraucht
 	private String getColoredString(String string, String channelColor, boolean canColor)
 	{
 		String s = "";
-		String lastColor = "";
+		String lastColor = channelColor;
 		int i = 0;
 		while(i < string.length())
 		{
+			if(i == 0 && string.charAt(i) != '&')
+			{
+				s += lastColor;
+			}
 			char c = string.charAt(i);
 			if(c == '&')
 			{
@@ -1161,24 +1474,40 @@ public class ChatHandler
 					{
 						if(string.length() > i+7 && canColor)
 						{
-							lastColor += c+c2
-									+string.charAt(i+2)+string.charAt(i+3)
-									+string.charAt(i+4)+string.charAt(i+5)
-									+string.charAt(i+6)+string.charAt(i+7);
+							char c3 = string.charAt(i+2);
+							char c4 = string.charAt(i+3);
+							char c5 = string.charAt(i+4);
+							char c6 = string.charAt(i+5);
+							char c7 = string.charAt(i+6);
+							char c8 = string.charAt(i+7);
+							if(!isHexChar(c3, c4, c5, c6, c7, c8))
+							{
+								i = i+8;
+								continue;
+							}
+							lastColor = "&#"
+									+c3+c4+c5+c6+c7+c8;
 							s += lastColor;
+							i = i+8;
+							continue;
+						} else if(string.length() > i+7 && !canColor)
+						{
 							i = i+8;
 							continue;
 						} else
 						{
-							s += c;
 							i = i+2;
 							continue;
 						}
 					} else if(isColor(c2) && canColor)
 					{
-						lastColor += c+c2;
+						lastColor = "&"+String.valueOf(c2);
 						s += lastColor;
-						i++;
+						i += 2;
+						continue;
+					} else
+					{
+						i += 2;
 						continue;
 					}
 				} else
@@ -1206,7 +1535,7 @@ public class ChatHandler
 			}
 		}
 		return s;
-	}
+	}*/
 	
 	private boolean isColor(char c)
 	{
@@ -1218,6 +1547,20 @@ public class ChatHandler
 			return true;
 		}
 		return false;
+	}
+	
+	private boolean isHexChar(char...cc)
+	{
+		for(char c : cc)
+		{
+			if(c != '0' && c != '1' && c != '2' && c != '3' && c != '4' && c != '5' && c != '6' && c != '7' && c != '8' && c != '9'
+					 && c != 'a' && c != 'A' && c != 'b' && c != 'B' && c != 'c' && c != 'C'  && c != 'd'  && c != 'D' 
+					 && c != 'e'  && c != 'E'  && c != 'F'  && c != 'F')
+			{
+				return false;
+			}
+		}		
+		return true;
 	}
 	
 	private boolean isSameWorld(ProxiedPlayer p1, ProxiedPlayer p2)
@@ -1339,7 +1682,7 @@ public class ChatHandler
 				toMessage.sendMessage(txc2);
 				if(toMessage.hasPermission(BypassPermission.USE_SOUND))
 				{
-					sendMentionPing(toMessage);
+					sendMentionPing(toMessage, usedChannel.getMentionSound());
 				}
 			} else
 			{
@@ -1395,7 +1738,7 @@ public class ChatHandler
 		}
 		if(player.hasPermission(BypassPermission.USE_SOUND))
 		{
-			sendMentionPing(player);
+			sendMentionPing(player, usedChannel.getMentionSound());
 		}
 		sendedPlayer.add(player.getUniqueId().toString());
 		if(components.isMention(other.getName()))
@@ -1407,7 +1750,7 @@ public class ChatHandler
 		}
 		if(other.hasPermission(BypassPermission.USE_SOUND))
 		{
-			sendMentionPing(other);
+			sendMentionPing(other, usedChannel.getMentionSound());
 		}
 		sendedPlayer.add(other.getUniqueId().toString());
 		if(isIgnored)
@@ -1434,11 +1777,11 @@ public class ChatHandler
 		}
 		if(other.hasPermission(BypassPermission.USE_SOUND))
 		{
-			sendMentionPing(other);
+			sendMentionPing(other, usedChannel.getMentionSound());
 		}
 	}
 	
-	private void spy(ArrayList<String> sendedPlayer, Components components, TextComponent txc1, TextComponent txc2)
+	private void spy(ArrayList<String> sendedPlayer, final Components components, final TextComponent txc1, final TextComponent txc2)
 	{
 		//Spy Part
 		for(ProxiedPlayer spy : plugin.getProxy().getPlayers())
@@ -1446,8 +1789,8 @@ public class ChatHandler
 			ChatUser cu = ChatUserHandler.getChatUser(spy.getUniqueId());
 			if(spy == null
 					|| cu == null
-					|| !cu.isOptionSpy()
-					|| sendedPlayer.contains(cu.getUUID()))
+					|| sendedPlayer.contains(cu.getUUID())
+					|| !cu.isOptionSpy())
 			{
 				continue;
 			}
@@ -1461,7 +1804,7 @@ public class ChatHandler
 		}
 	}
 	
-	public void sendMentionPing(ProxiedPlayer player)
+	public void sendMentionPing(ProxiedPlayer player, String soundEnum)
 	{
 		if(player == null)
 		{
@@ -1472,7 +1815,13 @@ public class ChatHandler
         try {
         	out.writeUTF(StaticValues.SCC_TOSPIGOT);
 			out.writeUTF(player.getUniqueId().toString());
-			out.writeUTF(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Mention.SoundEnum"));
+			if(soundEnum == null)
+			{
+				out.writeUTF(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Mention.SoundEnum"));
+			} else
+			{
+				out.writeUTF(soundEnum);
+			}			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

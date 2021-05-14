@@ -1,22 +1,29 @@
 package main.java.me.avankziar.scc.objects.chat;
 
+import java.util.LinkedHashMap;
+
 public class Channel
 {
 	public enum ChatFormatPlaceholder
 	{
 		TIME("%time%"), TIMES("%times%"),
+		SERVER("%server%"), OTHER_SERVER("%other_server%"),
+		NEWLINE("%newline%"),
+		
 		CHANNEL("%channel%"),
 		PREFIXHIGH("%prefixhigh%"), PREFIXALL("%prefixall%"), PREFIXLOW("%prefixlow%"),
-		PLAYERNAME("%playername%"),
+		PLAYERNAME("%playername%"), PLAYERNAME_WITH_CUSTOMCOLOR("%playername_with_customcolor%"),
 		PLAYERNAME_WITH_PREFIXHIGHCOLORCODE("%playername_with_prefixhighcolorcode%"),
 		PLAYERNAME_WITH_SUFFIXHIGHCOLORCODE("%playername_with_suffixhighcolorcode%"),
 		SUFFIXHIGH("%suffixhigh%"), SUFFIXALL("%suffixall%"), SUFFIXLOW("%suffixlow%"),
+		ROLEPLAYNAME("%roleplayname%"),
 		
 		OTHER_PREFIXHIGH("%other_prefixhigh%"), OTHER_PREFIXALL("%other_prefixall%"), OTHER_PREFIXLOW("%other_prefixlow%"),
-		OTHER_PLAYERNAME("%other_playername%"),
+		OTHER_PLAYERNAME("%other_playername%"), OTHER_PLAYERNAME_WITH_CUSTOMCOLOR("%other_playername_with_customcolor%"),
 		OTHER_PLAYERNAME_WITH_PREFIXHIGHCOLORCODE("%other_playername_with_prefixhighcolorcode%"),
 		OTHER_PLAYERNAME_WITH_SUFFIXHIGHCOLORCODE("%other_playername_with_suffixhighcolorcode%"),
 		OTHER_SUFFIXHIGH("%other_suffixhigh%"), OTHER_SUFFIXALL("%other_suffixall%"), OTHER_SUFFIXLOW("%other_suffixlow%"),
+		OTHER_ROLEPLAYNAME("%other_roleplayname%"),
 		
 		MESSAGE("%message%"),
 		UNDEFINE("");
@@ -114,6 +121,24 @@ public class Channel
 	 */
 	private double percentOfSimilarity;
 	
+	private String timeColor;
+	
+	private String playernameCustomColor;
+	
+	private String otherplayernameCustomColor;
+	
+	private String seperatorBetweenPrefix;
+	
+	private String seperatorBetweenSuffix;
+	
+	private String mentionSound;
+	
+	private LinkedHashMap<String, String> serverReplacerMap;
+	
+	private LinkedHashMap<String, String> serverCommandMap;
+	
+	private LinkedHashMap<String, String> serverHoverMap;
+	
 	private boolean useColor;
 	
 	private boolean useItemReplacer;
@@ -136,6 +161,10 @@ public class Channel
 			String inChatName, String inChatColorMessage, String permission, String joinPart, String chatFormat,
 			boolean specificServer, boolean specificWorld, int blockRadius,
 			long timeBetweenMessages, long timeBetweenSameMessages, double percentOfSimilarity,
+			String timeColor, String playernameCustomColor, String otherplayernameCustomColor,
+			String seperatorBetweenPrefix, String seperatorBetweenSuffix, String mentionSound,
+			LinkedHashMap<String, String> serverReplacerMap, LinkedHashMap<String, String> serverCommandMap,
+			LinkedHashMap<String, String> serverHoverMap,
 			boolean useColor, boolean useItemReplacer, boolean useBookReplacer, boolean useRunCommandReplacer,
 			boolean useSuggestCommandReplacer, boolean useWebsiteReplacer,
 			boolean useEmojiReplacer, boolean useMentionReplacer, boolean usePositionReplacer)
@@ -153,6 +182,15 @@ public class Channel
 		setTimeBetweenMessages(timeBetweenMessages);
 		setTimeBetweenSameMessages(timeBetweenSameMessages);
 		setPercentOfSimilarity(percentOfSimilarity);
+		setTimeColor(timeColor);
+		setPlayernameCustomColor(otherplayernameCustomColor);
+		setOtherplayernameCustomColor(otherplayernameCustomColor);
+		setSeperatorBetweenPrefix(seperatorBetweenPrefix);
+		setSeperatorBetweenSuffix(seperatorBetweenSuffix);
+		setMentionSound(mentionSound);
+		setServerReplacerMap(serverReplacerMap);
+		setServerCommandMap(serverCommandMap);
+		setServerHoverMap(serverHoverMap);
 		setUseColor(useColor);
 		setUseItemReplacer(useItemReplacer);
 		setUseBookReplacer(useBookReplacer);
@@ -292,6 +330,96 @@ public class Channel
 	public void setPercentOfSimilarity(double percentOfSimilarity)
 	{
 		this.percentOfSimilarity = percentOfSimilarity;
+	}
+
+	public String getTimeColor()
+	{
+		return timeColor;
+	}
+
+	public void setTimeColor(String timeColor)
+	{
+		this.timeColor = timeColor;
+	}
+
+	public String getPlayernameCustomColor()
+	{
+		return playernameCustomColor;
+	}
+
+	public void setPlayernameCustomColor(String playernameCustomColor)
+	{
+		this.playernameCustomColor = playernameCustomColor;
+	}
+
+	public String getOtherplayernameCustomColor()
+	{
+		return otherplayernameCustomColor;
+	}
+
+	public void setOtherplayernameCustomColor(String otherplayernameCustomColor)
+	{
+		this.otherplayernameCustomColor = otherplayernameCustomColor;
+	}
+
+	public String getSeperatorBetweenPrefix()
+	{
+		return seperatorBetweenPrefix;
+	}
+
+	public void setSeperatorBetweenPrefix(String seperatorBetweenPrefix)
+	{
+		this.seperatorBetweenPrefix = seperatorBetweenPrefix;
+	}
+
+	public String getSeperatorBetweenSuffix()
+	{
+		return seperatorBetweenSuffix;
+	}
+
+	public void setSeperatorBetweenSuffix(String seperatorBetweenSuffix)
+	{
+		this.seperatorBetweenSuffix = seperatorBetweenSuffix;
+	}
+
+	public String getMentionSound()
+	{
+		return mentionSound;
+	}
+
+	public void setMentionSound(String mentionSound)
+	{
+		this.mentionSound = mentionSound;
+	}
+
+	public LinkedHashMap<String, String> getServerReplacerMap()
+	{
+		return serverReplacerMap;
+	}
+
+	public void setServerReplacerMap(LinkedHashMap<String, String> serverReplacerMap)
+	{
+		this.serverReplacerMap = serverReplacerMap;
+	}
+
+	public LinkedHashMap<String, String> getServerCommandMap()
+	{
+		return serverCommandMap;
+	}
+
+	public void setServerCommandMap(LinkedHashMap<String, String> serverCommandMap)
+	{
+		this.serverCommandMap = serverCommandMap;
+	}
+
+	public LinkedHashMap<String, String> getServerHoverMap()
+	{
+		return serverHoverMap;
+	}
+
+	public void setServerHoverMap(LinkedHashMap<String, String> serverHoverMap)
+	{
+		this.serverHoverMap = serverHoverMap;
 	}
 
 	public boolean isUseColor()

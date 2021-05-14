@@ -67,7 +67,7 @@ public class ARGPermanentChannel_Join extends ArgumentModule
 		cc.addMembers(player.getUniqueId().toString());
 		plugin.getUtility().updatePermanentChannels(cc);
 		
-		Channel c = SimpleChatChannels.channels.get("Permanent");
+		Channel c = plugin.getChannel("Permanent");
 		player.sendMessage(ChatApi.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.ChannelJoined")
 				.replace("%channel%", cc.getNameColor()+cc.getName())

@@ -12,7 +12,6 @@ import main.java.me.avankziar.scc.bungee.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.ChatUser;
 import main.java.me.avankziar.scc.objects.KeyHandler;
@@ -754,7 +753,7 @@ public class Utility
 		{
 			if(uc.isUsed())
 			{
-				Channel c = SimpleChatChannels.channels.get(uc.getUniqueIdentifierName());
+				Channel c = plugin.getChannel(uc.getUniqueIdentifierName());
 				if(c == null)
 				{
 					if(SimpleChatChannels.nullChannel.getUniqueIdentifierName().equals(uc.getUniqueIdentifierName()))
@@ -765,7 +764,7 @@ public class Utility
 						continue;
 					}
 				}
-				ac +=  c.getJoinPart()+comma;
+				ac += c.getJoinPart()+comma;
 			}
 		}
 		if(cu.isOptionSpy()) {ac += plugin.getYamlHandler().getLang().getString("Join.Spy")+comma;}
@@ -787,8 +786,11 @@ public class Utility
 	
 	public ChatUser controlUsedChannels(ProxiedPlayer player)
 	{
-		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(), 0L, false, true, System.currentTimeMillis(), true,
-				new ServerLocation(player.getServer().getInfo().getName(), "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
+		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(), "", 0L, 0L, false, true, System.currentTimeMillis(), true,
+				new ServerLocation(player
+						.getServer()
+						.getInfo()
+						.getName(), "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
 		if(!plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString()))
 		{
@@ -798,6 +800,15 @@ public class Utility
 				if(player.hasPermission(c.getPermission()))
 				{
 					UsedChannel uc = new UsedChannel(c.getUniqueIdentifierName(), player.getUniqueId().toString(), true);
+					plugin.getMysqlHandler().create(Type.USEDCHANNEL, uc);
+				}
+			}
+			Channel cnull = SimpleChatChannels.nullChannel;
+			if(cnull != null)
+			{
+				if(player.hasPermission(cnull.getPermission()))
+				{
+					UsedChannel uc = new UsedChannel(cnull.getUniqueIdentifierName(), player.getUniqueId().toString(), true);
 					plugin.getMysqlHandler().create(Type.USEDCHANNEL, uc);
 				}
 			}
@@ -812,22 +823,44 @@ public class Utility
 	
 	public void updateUsedChannels(ProxiedPlayer player)
 	{
-		ArrayList<UsedChannel> usedChannels = ConvertHandler.convertListV(plugin.getMysqlHandler().getAllListAt(Type.USEDCHANNEL,
-				"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
-		for(UsedChannel uc : usedChannels)
+		for(Channel c : SimpleChatChannels.channels.values())
 		{
-			Channel c = SimpleChatChannels.channels.get(uc.getUniqueIdentifierName());
-			if(!player.hasPermission(c.getPermission()))
+			if(player.hasPermission(c.getPermission()))
+			{
+				if(!plugin.getMysqlHandler().exist(Type.USEDCHANNEL, "`uniqueidentifiername` = ? AND `player_uuid` = ?",
+						c.getUniqueIdentifierName(), player.getUniqueId().toString()))
+				{
+					UsedChannel uc = new UsedChannel(c.getUniqueIdentifierName(), player.getUniqueId().toString(), true);
+					plugin.getMysqlHandler().create(Type.USEDCHANNEL, uc);
+				}
+			} else
 			{
 				plugin.getMysqlHandler().deleteData(Type.USEDCHANNEL, "`uniqueidentifiername` = ? AND `player_uuid` = ?",
 						c.getUniqueIdentifierName(), player.getUniqueId().toString());
+			}
+		}
+		Channel cnull = SimpleChatChannels.nullChannel;
+		if(cnull != null)
+		{
+			if(player.hasPermission(cnull.getPermission()))
+			{
+				if(!plugin.getMysqlHandler().exist(Type.USEDCHANNEL, "`uniqueidentifiername` = ? AND `player_uuid` = ?",
+						cnull.getUniqueIdentifierName(), player.getUniqueId().toString()))
+				{
+					UsedChannel uc = new UsedChannel(cnull.getUniqueIdentifierName(), player.getUniqueId().toString(), true);
+					plugin.getMysqlHandler().create(Type.USEDCHANNEL, uc);
+				}
+			} else
+			{
+				plugin.getMysqlHandler().deleteData(Type.USEDCHANNEL, "`uniqueidentifiername` = ? AND `player_uuid` = ?",
+						cnull.getUniqueIdentifierName(), player.getUniqueId().toString());
 			}
 		}
 	}
 	
 	public String getChannelSuggestion(String uniqueIdentifierName, PermanentChannel pc)
 	{
-		Channel c = SimpleChatChannels.channels.get(uniqueIdentifierName);
+		Channel c = plugin.getChannel(uniqueIdentifierName);
 		if(c == null)
 		{
 			if(SimpleChatChannels.nullChannel.getUniqueIdentifierName().equals(uniqueIdentifierName))
@@ -851,13 +884,17 @@ public class Utility
 			return c.getSymbol()+pc.getSymbolExtra();
 		} else
 		{
+			if(c.getSymbol().equalsIgnoreCase("null"))
+			{
+				return "";
+			}
 			return c.getSymbol();
 		}
 	}
 	
 	public String getChannelHover(String uniqueIdentifierName)
 	{
-		Channel c = SimpleChatChannels.channels.get(uniqueIdentifierName);
+		Channel c = plugin.getChannel(uniqueIdentifierName);
 		if(c == null)
 		{
 			if(SimpleChatChannels.nullChannel.getUniqueIdentifierName().equals(uniqueIdentifierName))
@@ -873,6 +910,10 @@ public class Utility
 	
 	public String getChannelHover(Channel c)
 	{
+		if(c == null)
+		{
+			return "";
+		}
 		return plugin.getYamlHandler().getLang().getString("ChatListener.ChannelHover")
 				.replace("%channel%", c.getUniqueIdentifierName())
 				.replace("%channelcolor%", c.getInChatColorMessage());
@@ -880,7 +921,7 @@ public class Utility
 	
 	public String getPlayerMsgCommand(String playername)
 	{
-		return PluginSettings.settings.getCommands(KeyHandler.MSG)+playername;
+		return PluginSettings.settings.getCommands(KeyHandler.MSG)+playername+" ";
 	}
 	
 	public String getPlayerHover(String playername)

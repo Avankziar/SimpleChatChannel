@@ -107,6 +107,7 @@ public class TabCompletionListener implements Listener
 				{
 					event.getSuggestions().clear();
 					event.getSuggestions().addAll(listIfArgumentIsEmpty(aclist, player));
+					return;
 				} else
 				/*
 				 * Wenn das aktuelle Argument NICHT leer ist, so loop durch die aclist und checke ob das Argument mit "xx" anfängt.
@@ -118,8 +119,10 @@ public class TabCompletionListener implements Listener
 						/*
 						 * Wenn mehr als 1 Argument mit dem Chateintrag startet, so liefere eine Liste mit allen diesen zurück.
 						 */
+						List<String> list = listIfArgumentIsnotEmpty(aclist, args[i], player);
 						event.getSuggestions().clear();
-						event.getSuggestions().addAll(listIfArgumentIsnotEmpty(aclist, args[i], player));
+						event.getSuggestions().addAll(list);
+						return;
 					}
 					if(ac.getName().toLowerCase().startsWith(args[i].toLowerCase()))
 					{
@@ -132,6 +135,7 @@ public class TabCompletionListener implements Listener
 							list.add(ac.getName());
 							event.getSuggestions().clear();
 							event.getSuggestions().addAll(list);
+							return;
 						}
 						/*
 						 * Das Argument startet mit dem Argumentenname. aclist mit den Subargumenten vom Argument setzten.
@@ -155,9 +159,11 @@ public class TabCompletionListener implements Listener
 			{
 				if(lastAc != null)
 				{
+					List<String> list = getReturnTabList(lastAc.tabList.get(length), args[length]);
 					event.getSuggestions().clear();
-					event.getSuggestions().addAll(getReturnTabList(lastAc.tabList.get(length), args[length]));
-					//Return null, wenn die Tabliste nicht existiert! Aka ein halbes break;
+					event.getSuggestions().addAll(list);
+					return;
+					//Return leer, wenn die Tabliste nicht existiert! Aka ein halbes break;
 				}
 				if(i == length || aclist.isEmpty()) //Wenn das ende erreicht ist oder die aclist vorher leer gesetzt worden ist
 				{
@@ -208,11 +214,15 @@ public class TabCompletionListener implements Listener
 		{
 			if(ac != null)
 			{
-				if(ac.getName().toLowerCase().startsWith(arg.toLowerCase()))
+				String acn = ac.getName();
+				if(acn.toLowerCase().startsWith(arg.toLowerCase()))
 				{
 					if(player.hasPermission(ac.getPermission()))
 					{
-						returnlist.add(ac.getName());
+						if(!returnlist.contains(acn))
+						{
+							returnlist.add(ac.getName());
+						}
 					}
 				}
 			}

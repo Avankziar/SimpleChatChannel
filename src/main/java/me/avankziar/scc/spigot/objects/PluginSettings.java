@@ -31,7 +31,7 @@ public class PluginSettings
 	public static void initSettings(SimpleChatChannels plugin)
 	{
 		YamlHandler yh = plugin.getYamlHandler();
-		boolean bungee = plugin.getYamlHandler().getConfig().getBoolean("Bungee", false);
+		boolean bungee = plugin.getYamlHandler().getConfig().getBoolean("IsBungeeActive", false);
 		boolean mysql = false;
 		if(plugin.getMysqlSetup().getConnection() != null)
 		{

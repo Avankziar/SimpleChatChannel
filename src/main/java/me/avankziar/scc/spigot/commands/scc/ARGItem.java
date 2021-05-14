@@ -43,7 +43,8 @@ public class ARGItem extends ArgumentModule
 			return;
 		}
 		GUIApi gapi = new GUIApi(GuiValues.PLUGINNAME, GuiValues.ITEM_REPLACER_INVENTORY, 
-				null, rows, plugin.getYamlHandler().getLang().getString("CmdScc.Item.InvTitle"));
+				null, rows, plugin.getYamlHandler().getLang().getString("CmdScc.Item.InvTitle")
+				.replace("%player%", player.getName()));
 		int i = 0;
 		for(ItemJson ij : list)
 		{

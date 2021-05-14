@@ -25,15 +25,15 @@ public class ARGChannel extends ArgumentModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String channelString = args[0];
-		if(!SimpleChatChannels.channels.containsKey(channelString))
+		String channelString = args[1];
+		Channel channel = plugin.getChannel(channelString);
+		if(channel == null)
 		{
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Channel.ChannelDontExist")));
 			return;
 		}
-		Channel channel = SimpleChatChannels.channels.get(channelString);
 		if(!Utility.playerUsedChannels.containsKey(player.getUniqueId().toString())
-				|| Utility.playerUsedChannels.get(player.getUniqueId().toString()).containsKey(channel.getUniqueIdentifierName()))
+				|| !Utility.playerUsedChannels.get(player.getUniqueId().toString()).containsKey(channel.getUniqueIdentifierName()))
 		{
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Channel.UsedChannelDontExist")));
 			return;
@@ -42,11 +42,13 @@ public class ARGChannel extends ArgumentModule
 		if(usedChannel.isUsed())
 		{
 			usedChannel.setUsed(false);
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Channel.Deactive")));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Channel.Deactive")
+					.replace("%channel%", usedChannel.getUniqueIdentifierName())));
 		} else
 		{
 			usedChannel.setUsed(true);
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Channel.Active")));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Channel.Active")
+					.replace("%channel%", usedChannel.getUniqueIdentifierName())));
 		}
 		Utility.playerUsedChannels.get(player.getUniqueId().toString()).replace(channel.getUniqueIdentifierName(), usedChannel);
 		plugin.getMysqlHandler().updateData(Type.USEDCHANNEL, usedChannel,

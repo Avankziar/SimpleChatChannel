@@ -44,6 +44,15 @@ public class Components
 		getComponentsWithMentions().add(bc);
 		return this;
 	}
+	public Components addAllComponents(BaseComponent... bc)
+	{
+		for(BaseComponent b : bc)
+		{
+			getComponents().add(b);
+			getComponentsWithMentions().add(b);
+		}
+		return this;
+	}
 	
 	public Components addComponent(BaseComponent bc)
 	{

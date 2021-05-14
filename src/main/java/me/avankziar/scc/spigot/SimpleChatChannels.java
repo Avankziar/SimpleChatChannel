@@ -31,14 +31,20 @@ import main.java.me.avankziar.scc.objects.chat.ChatTitle;
 import main.java.me.avankziar.scc.spigot.assistance.BackgroundTask;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
 import main.java.me.avankziar.scc.spigot.commands.ClickChatCommandExecutor;
+import main.java.me.avankziar.scc.spigot.commands.MailCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.MessageCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.RCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.ReCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.SccCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.TABCompletion;
 import main.java.me.avankziar.scc.spigot.commands.WCommandExecutor;
+import main.java.me.avankziar.scc.spigot.commands.mail.ARGLastMails;
+import main.java.me.avankziar.scc.spigot.commands.mail.ARGRead;
+import main.java.me.avankziar.scc.spigot.commands.mail.ARGSend;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGBook;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGBroadcast;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannel;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannelGui;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGIgnore;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGIgnoreList;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGItem;
@@ -49,6 +55,7 @@ import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption_Channel;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption_Join;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption_Spy;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGPerformance;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGUnmute;
 import main.java.me.avankziar.scc.spigot.commands.scc.pc.ARGPermanentChannel;
 import main.java.me.avankziar.scc.spigot.commands.scc.pc.ARGPermanentChannel_Ban;
@@ -100,7 +107,6 @@ import main.java.me.avankziar.scc.spigot.objects.TemporaryChannel;
 
 public class SimpleChatChannels extends JavaPlugin
 {
-	//REMOVEME Bungeeimporte
 	private static SimpleChatChannels plugin;
 	public static Logger log;
 	public static String pluginName = "SimpleChatChannels";
@@ -128,6 +134,7 @@ public class SimpleChatChannels extends JavaPlugin
 	public static String baseCommandV = "re";
 	public static String baseCommandVI = "r";
 	public static String baseCommandVII = "w";
+	public static String baseCommandVIII = "mail";
 	
 	public static String baseCommandIName = ""; //CustomCommand name
 	public static String baseCommandIIName = "";
@@ -136,6 +143,7 @@ public class SimpleChatChannels extends JavaPlugin
 	public static String baseCommandVName = "";
 	public static String baseCommandVIName = "";
 	public static String baseCommandVIIName = "";
+	public static String baseCommandVIIIName = "";
 	
 	public static String infoCommandPath = "CmdScc";
 	public static String infoCommand = "/"; //InfoComamnd
@@ -180,17 +188,14 @@ public class SimpleChatChannels extends JavaPlugin
 		PluginSettings.initSettings(plugin);
 		ChatHandler.initPrivateChatColors();
 		setupPlayers();
-		backgroundtask = new BackgroundTask(this);
-		setupStrings();
-		setupCommandTree();
-		ListenerSetup();
 		setupBstats();
 		setupChannels();
 		setupChatTitles();
-		BypassPermission.init(plugin);
+		backgroundtask = new BackgroundTask(this);
 		setupStrings();
 		setupCommandTree();
-		ListenerSetup();
+		ListenerSetup();		
+		BypassPermission.init(plugin);
 		setupBstats();
 	}
 	
@@ -300,12 +305,15 @@ public class SimpleChatChannels extends JavaPlugin
 		Collections.sort(tcarray);
 		tcMap.put(1, tcarray);
 		
+		//INFO:SCC
 		ArgumentConstructor book = new ArgumentConstructor(baseCommandI+"_book", 0, 1, 2, false, null);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_BOOK, book.getCommandString());
 		ArgumentConstructor broadcast = new ArgumentConstructor(baseCommandI+"_broadcast", 0, 1, 9999, true, null);
 		ArgumentConstructor channel = new ArgumentConstructor(baseCommandI+"_channel", 0, 1, 1, false, channelMap);
+		ArgumentConstructor channelgui = new ArgumentConstructor(baseCommandI+"_channelgui", 0, 0, 0, false, null);
 
 		ArgumentConstructor ignore = new ArgumentConstructor(baseCommandI+"_ignore", 0, 1, 1, false, playerMap);
+		PluginSettings.settings.addCommands(KeyHandler.SCC_IGNORE, ignore.getCommandString());
 		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1, false,  null);
 		
 		ArgumentConstructor item_rename = new ArgumentConstructor(baseCommandI+"_item_rename", 1, 4, 4, false, null);
@@ -316,11 +324,15 @@ public class SimpleChatChannels extends JavaPlugin
 		ArgumentConstructor mute = new ArgumentConstructor(baseCommandI+"_mute", 0, 1, 999, false, null);
 		ArgumentConstructor unmute = new ArgumentConstructor(baseCommandI+"_unmute", 0, 1, 1, false, null);
 		
+		ArgumentConstructor performance = new ArgumentConstructor(baseCommandI+"_performance", 0, 0, 0, true, null);
+		
 		ArgumentConstructor option_channel = new ArgumentConstructor(baseCommandI+"_option_channel", 1, 1, 1, false, null);
 		ArgumentConstructor option_join = new ArgumentConstructor(baseCommandI+"_option_join", 1, 1, 1, false, null);
 		ArgumentConstructor option_spy = new ArgumentConstructor(baseCommandI+"_option_spy", 1, 1, 1, false, null);
-		ArgumentConstructor option = new ArgumentConstructor(baseCommandI+"_optionchannel", 0, 0, 0, false, null,
+		ArgumentConstructor option = new ArgumentConstructor(baseCommandI+"_option", 0, 0, 0, false, null,
 				option_channel, option_join, option_spy);
+		
+		ArgumentConstructor updateplayer = new ArgumentConstructor(baseCommandI+"_updateplayer", 0, 1, 1, false, playerMap);
 		
 		ArgumentConstructor pc_ban = new ArgumentConstructor(baseCommandI+"_pc_ban", 1, 3, 3, false, pcPlayerMap);
 		ArgumentConstructor pc_changepassword = new ArgumentConstructor(baseCommandI+"_pc_changepassword", 1, 3, 3, false, pcMap);
@@ -361,22 +373,19 @@ public class SimpleChatChannels extends JavaPlugin
 		ArgumentConstructor tc = new ArgumentConstructor(baseCommandI+"_tc", 0, 0, 0, false, null,
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban);
 		
-		ArgumentConstructor updateplayer = new ArgumentConstructor(baseCommandI+"_updateplayer", 0, 1, 1, false, playerMap);
-		ArgumentConstructor wordfilter = new ArgumentConstructor(baseCommandI+"_wordfilter", 0, 1, 1, false, null);
-		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
-				broadcast, channel,
+				broadcast, channel, channelgui,
 				ignore, ignorelist, 
 				item,
-				mute, option,
-				pc, tc,
-				unmute, updateplayer, wordfilter);
+				mute, option, performance, unmute, updateplayer,
+				pc, tc);
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
 		//CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
 		
 		CommandConstructor msg = new CommandConstructor(baseCommandIV, false);
+		PluginSettings.settings.addCommands(KeyHandler.MSG, msg.getCommandString());
 		
 		CommandConstructor re = new CommandConstructor(baseCommandV, false);
 		
@@ -409,22 +418,19 @@ public class SimpleChatChannels extends JavaPlugin
 		registerCommand(w.getPath(), w.getName());
 		getCommand(w.getName()).setExecutor(new WCommandExecutor(plugin, w));
 		getCommand(w.getName()).setTabCompleter(new TABCompletion(plugin));
-		
+				
 		addingHelps(scc,
-				broadcast, channel,
+				book, broadcast, channel, channelgui,
 				ignore, ignorelist, 
 				item, item_rename, item_replacers,
-				mute, unmute,
-				option, option_channel, option_join, option_spy,
+				mute, unmute, performance,
+				option, option_channel, option_join, option_spy, updateplayer,
 				pc, pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite,
 					pc_join, pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice,
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban,
-				updateplayer, wordfilter,
 			clch, //scceditor, 
 			msg, re, r, w);
-		
-		new ARGBroadcast(plugin, broadcast);
-		
+				
 		//All Commands which are deactivated, if scc is active on bungeecord
 		if(!PluginSettings.settings.isBungee())
 		{
@@ -433,6 +439,8 @@ public class SimpleChatChannels extends JavaPlugin
 			new ARGIgnoreList(plugin, ignorelist);
 			new ARGMute(plugin, mute);
 			new ARGUnmute(plugin, unmute);
+			
+			new ARGPerformance(plugin, performance);
 			
 			new ARGOption(plugin, option);
 			new ARGOption_Channel(plugin, option_channel);
@@ -470,12 +478,38 @@ public class SimpleChatChannels extends JavaPlugin
 			new ARGTemporaryChannel_Kick(plugin, tc_kick);
 			new ARGTemporaryChannel_Leave(plugin, tc_leave);
 		}
-		
+		new ARGBook(plugin, book);
+		new ARGBroadcast(plugin, broadcast);
+		new ARGChannelGui(plugin, channelgui);
 		new ARGItem(plugin, item);
 		new ARGItem_Rename(plugin, item_rename);
 		new ARGItem_Replacers(plugin, item_replacers);
 		
-		//ADDME ArgsClassen hinzufügen
+		if(!PluginSettings.settings.isBungee() && plugin.getYamlHandler().getConfig().getBoolean("Use.Mail", true))
+		{			
+			//INFO:Mail
+			ArgumentConstructor mail_lastmails = new ArgumentConstructor(baseCommandVIII+"_lastmails", 0, 0, 2, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTMAILS, mail_lastmails.getCommandString());
+			ArgumentConstructor mail_read = new ArgumentConstructor(baseCommandVIII+"_read", 0, 1, 1, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_READ, mail_read.getCommandString());
+			ArgumentConstructor mail_send = new ArgumentConstructor(baseCommandVIII+"_send", 0, 3, 999, true, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_SEND, mail_send.getCommandString());
+			
+			CommandConstructor mail = new CommandConstructor(baseCommandVIII, true,
+					mail_read, mail_send, mail_lastmails);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL, mail.getCommandString());
+			
+			registerCommand(mail.getPath(), mail.getName());
+			getCommand(mail.getName()).setExecutor(new MailCommandExecutor(plugin, mail));
+			getCommand(mail.getName()).setTabCompleter(new TABCompletion(plugin));
+			
+			addingHelps(mail,
+							mail_lastmails, mail_read, mail_send);
+			
+			new ARGLastMails(plugin, mail_lastmails);
+			new ARGRead(plugin, mail_read);
+			new ARGSend(plugin, mail_send);
+		}
 	}
 	
 	public void ListenerSetup()
@@ -657,7 +691,7 @@ public class SimpleChatChannels extends JavaPlugin
 		}
 		chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
 		Collections.reverse(chatTitlesPrefix);
-		chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
+		chatTitlesSuffix.sort(Comparator.comparing(ChatTitle::getWeight));
 		Collections.reverse(chatTitlesSuffix);
 	}
 	
@@ -676,6 +710,27 @@ public class SimpleChatChannels extends JavaPlugin
 			{
 				continue;
 			}
+			LinkedHashMap<String, String> serverReplacerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> serverCommandMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> serverHoverMap = new LinkedHashMap<>();
+			if(cha.get(key+".ServerConverter") != null)
+			{
+				for(String s : cha.getStringList(key+".ServerConverter"))
+				{
+					if(!s.contains(";"))
+					{
+						continue;
+					}
+					String[] split = s.split(";");
+					if(split.length != 4)
+					{
+						continue;
+					}
+					serverReplacerMap.put(split[0], split[1]);
+					serverCommandMap.put(split[0], split[2]);
+					serverHoverMap.put(split[0], split[3]);
+				}
+			}
 			Channel c = new Channel(
 					cha.getString(key+".UniqueIdentifierName"),
 					cha.getString(key+".Symbol"),
@@ -690,6 +745,13 @@ public class SimpleChatChannels extends JavaPlugin
 					cha.getLong(key+".MinimumTimeBetweenMessages", 500),
 					cha.getLong(key+".MinimumTimeBetweenSameMessages", 1000),
 					cha.getDouble(key+".PercentOfSimiliarityOrLess", 75.0),
+					cha.getString(key+".TimeColor", "&r"),
+					cha.getString(key+".PlayernameCustomColor", "&r"),
+					cha.getString(key+".OtherPlayernameCustomColor", "&r"),
+					cha.getString(key+".SeperatorBetweenPrefix", ""),
+					cha.getString(key+".SeperatorBetweenSuffix", ""),
+					cha.getString(key+".MentionSound", "ENTITY_WANDERING_TRADER_REAPPEARED"),
+					serverReplacerMap, serverCommandMap, serverHoverMap,
 					cha.getBoolean(key+".UseColor", false),
 					cha.getBoolean(key+".UseItemReplacer", false),
 					cha.getBoolean(key+".UseBookReplacer", false),
@@ -709,7 +771,7 @@ public class SimpleChatChannels extends JavaPlugin
 					{
 						c.setSymbol(".");
 					}
-				}if(key.equalsIgnoreCase("temporary"))
+				} else if(key.equalsIgnoreCase("temporary"))
 				{
 					c.setUniqueIdentifierName("Temporary");
 					if(c.getSymbol().equalsIgnoreCase("NULL"))
@@ -721,9 +783,10 @@ public class SimpleChatChannels extends JavaPlugin
 					c.setUniqueIdentifierName("Private");
 					c.setUseMentionReplacer(false);
 				}
+				channels.put(c.getSymbol(), c);
 			} else
 			{
-				if(c.getSymbol().equalsIgnoreCase("null"))
+				if(c.getSymbol().equalsIgnoreCase("null") && nullChannel == null)
 				{
 					nullChannel = c;
 				} else
@@ -732,6 +795,22 @@ public class SimpleChatChannels extends JavaPlugin
 				}
 			}
 		}
+	}
+	
+	public Channel getChannel(String uniqueIdentifierName)
+	{
+		for(Channel ch : channels.values())
+		{
+			if(ch.getUniqueIdentifierName().equals(uniqueIdentifierName))
+			{
+				return ch;
+			}
+		}
+		if(nullChannel.getUniqueIdentifierName().equals(uniqueIdentifierName))
+		{
+			return nullChannel;
+		} 
+		return null;
 	}
 	
 	public void setupEmojis()

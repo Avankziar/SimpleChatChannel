@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
 import main.java.me.avankziar.scc.bungee.assistance.BackgroundTask;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.commands.ClickChatCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.MailCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.MessageCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.RCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.ReCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.SccCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.TabCompletionListener;
 import main.java.me.avankziar.scc.bungee.commands.WCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.mail.ARGLastMails;
+import main.java.me.avankziar.scc.bungee.commands.mail.ARGRead;
+import main.java.me.avankziar.scc.bungee.commands.mail.ARGSend;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcast;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannel;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGIgnore;
@@ -25,6 +30,7 @@ import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption_Channel;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption_Join;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption_Spy;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGPerformance;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGUnmute;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGUpdatePlayer;
 import main.java.me.avankziar.scc.bungee.commands.scc.pc.ARGPermanentChannel;
@@ -113,6 +119,7 @@ public class SimpleChatChannels extends Plugin
 	public static String baseCommandV = "re";
 	public static String baseCommandVI = "r";
 	public static String baseCommandVII = "w";
+	public static String baseCommandVIII = "mail";
 	
 	public static String baseCommandIName = ""; //CustomCommand name
 	public static String baseCommandIIName = "";
@@ -121,6 +128,7 @@ public class SimpleChatChannels extends Plugin
 	public static String baseCommandVName = "";
 	public static String baseCommandVIName = "";
 	public static String baseCommandVIIName = "";
+	public static String baseCommandVIIIName = "";
 	
 	public static String infoCommandPath = "CmdScc";
 	public static String infoCommand = "/"; //InfoComamnd
@@ -162,6 +170,9 @@ public class SimpleChatChannels extends Plugin
 		}
 		PluginSettings.initSettings(plugin);
 		ChatHandler.initPrivateChatColors();
+		setupChannels();
+		setupChatTitles();
+		setupEmojis();
 		setupPlayers();
 		backgroundtask = new BackgroundTask(plugin);
 		setupStrings();
@@ -170,6 +181,7 @@ public class SimpleChatChannels extends Plugin
 		setupBstats();
 		setupChannels();
 		setupChatTitles();
+		setupEmojis();
 		BypassPermission.init(plugin);
 	}
 	
@@ -250,13 +262,18 @@ public class SimpleChatChannels extends Plugin
 		LinkedHashMap<Integer, ArrayList<String>> pcPlayerMap = new LinkedHashMap<>();
 		LinkedHashMap<Integer, ArrayList<String>> pcMap = new LinkedHashMap<>();
 		LinkedHashMap<Integer, ArrayList<String>> tcMap = new LinkedHashMap<>();
-		LinkedHashMap<Integer, ArrayList<String>> playerMap = new LinkedHashMap<>();
+		LinkedHashMap<Integer, ArrayList<String>> playerMapII = new LinkedHashMap<>();
+		LinkedHashMap<Integer, ArrayList<String>> playerMapI = new LinkedHashMap<>();
 		LinkedHashMap<Integer, ArrayList<String>> channelMap = new LinkedHashMap<>();
 		
 		ArrayList<String> channelarray = new ArrayList<>();
 		for(Channel channel : channels.values())
 		{
 			channelarray.add(channel.getUniqueIdentifierName());
+		}
+		if(nullChannel != null)
+		{
+			channelarray.add(nullChannel.getUniqueIdentifierName());
 		}
 		channelMap.put(1, channelarray);
 		
@@ -271,7 +288,8 @@ public class SimpleChatChannels extends Plugin
 		ArrayList<String> playerarray = getPlayers();
 		Collections.sort(playerarray);
 		pcPlayerMap.put(3, playerarray);
-		playerMap.put(2, playerarray);
+		playerMapI.put(1, playerarray);
+		playerMapII.put(2, playerarray);
 		ArrayList<String> tcarray = new ArrayList<>();
 		for(TemporaryChannel tc : TemporaryChannel.getCustomChannel())
 		{
@@ -286,20 +304,31 @@ public class SimpleChatChannels extends Plugin
 		PluginSettings.settings.addCommands(KeyHandler.SCC_BOOK, book.getCommandString());
 		ArgumentConstructor broadcast = new ArgumentConstructor(baseCommandI+"_broadcast", 0, 1, 9999, true, null);
 		ArgumentConstructor channel = new ArgumentConstructor(baseCommandI+"_channel", 0, 1, 1, false, channelMap);
-
-		ArgumentConstructor ignore = new ArgumentConstructor(baseCommandI+"_ignore", 0, 1, 1, false, playerMap);
+		ArgumentConstructor channelgui = new ArgumentConstructor(baseCommandI+"_channelgui", 0, 0, 0, false, null);
+		
+		ArgumentConstructor ignore = new ArgumentConstructor(baseCommandI+"_ignore", 0, 1, 1, false, playerMapI);
+		PluginSettings.settings.addCommands(KeyHandler.SCC_IGNORE, ignore.getCommandString());
 		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1,false,  null);
 		
-		ArgumentConstructor mute = new ArgumentConstructor(baseCommandI+"_mute", 0, 1, 999, false, null);
-		ArgumentConstructor unmute = new ArgumentConstructor(baseCommandI+"_unmute", 0, 1, 1, false, null);
+		ArgumentConstructor item_rename = new ArgumentConstructor(baseCommandI+"_item_rename", 1, 4, 4, false, null);
+		ArgumentConstructor item_replacers = new ArgumentConstructor(baseCommandI+"_item_replacers", 1, 1, 1, false, null);
+		ArgumentConstructor item = new ArgumentConstructor(baseCommandI+"_item", 0, 0, 0, false, null, 
+				item_rename, item_replacers);
+		
+		ArgumentConstructor mute = new ArgumentConstructor(baseCommandI+"_mute", 0, 1, 999, false, playerMapI);
+		ArgumentConstructor unmute = new ArgumentConstructor(baseCommandI+"_unmute", 0, 1, 1, false, playerMapI);
+		
+		ArgumentConstructor performance = new ArgumentConstructor(baseCommandI+"_performance", 0, 0, 0, true, null);
 		
 		ArgumentConstructor option_channel = new ArgumentConstructor(baseCommandI+"_option_channel", 1, 1, 1, false, null);
 		ArgumentConstructor option_join = new ArgumentConstructor(baseCommandI+"_option_join", 1, 1, 1, false, null);
 		ArgumentConstructor option_spy = new ArgumentConstructor(baseCommandI+"_option_spy", 1, 1, 1, false, null);
-		ArgumentConstructor option = new ArgumentConstructor(baseCommandI+"_optionchannel", 0, 0, 0, false, null,
+		ArgumentConstructor option = new ArgumentConstructor(baseCommandI+"_option", 0, 0, 0, false, null,
 				option_channel, option_join, option_spy);
 		
-		ArgumentConstructor pc_ban = new ArgumentConstructor(baseCommandI+"_pcban", 1, 3, 3, false, pcPlayerMap);
+		ArgumentConstructor updateplayer = new ArgumentConstructor(baseCommandI+"_updateplayer", 0, 1, 1, false, playerMapI);
+		
+		ArgumentConstructor pc_ban = new ArgumentConstructor(baseCommandI+"_pc_ban", 1, 3, 3, false, pcPlayerMap);
 		ArgumentConstructor pc_changepassword = new ArgumentConstructor(baseCommandI+"_pc_changepassword", 1, 3, 3, false, pcMap);
 		ArgumentConstructor pc_channels = new ArgumentConstructor(baseCommandI+"_pc_channels", 1, 1, 1, false, null);
 		ArgumentConstructor pc_chatcolor = new ArgumentConstructor(baseCommandI+"_pc_chatcolor", 1, 3, 3, false, pcMap);
@@ -316,7 +345,7 @@ public class SimpleChatChannels extends Plugin
 		ArgumentConstructor pc_leave = new ArgumentConstructor(baseCommandI+"_pc_leave", 1, 2, 3, false, pcMap);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_PC_LEAVE, pc_leave.getCommandString());
 		ArgumentConstructor pc_namecolor = new ArgumentConstructor(baseCommandI+"_pc_namecolor", 1, 3, 3, false, pcMap);
-		ArgumentConstructor pc_player = new ArgumentConstructor(baseCommandI+"_pc_player", 1, 1, 2, false, playerMap);
+		ArgumentConstructor pc_player = new ArgumentConstructor(baseCommandI+"_pc_player", 1, 1, 2, false, playerMapII);
 		ArgumentConstructor pc_rename = new ArgumentConstructor(baseCommandI+"_pc_rename", 1, 3, 3, false, pcMap);
 		ArgumentConstructor pc_symbol = new ArgumentConstructor(baseCommandI+"_pc_symbol", 1, 3, 3, false, pcMap);
 		ArgumentConstructor pc_unban = new ArgumentConstructor(baseCommandI+"_pc_unban", 1, 3, 3, false, pcPlayerMap);
@@ -325,33 +354,30 @@ public class SimpleChatChannels extends Plugin
 				pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite, pc_join,
 				pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice);
 		
-		ArgumentConstructor tc_ban = new ArgumentConstructor(baseCommandI+"_tc_ban", 1, 2, 2, false, playerMap);
+		ArgumentConstructor tc_ban = new ArgumentConstructor(baseCommandI+"_tc_ban", 1, 2, 2, false, playerMapII);
 		ArgumentConstructor tc_changepassword = new ArgumentConstructor(baseCommandI+"_tc_changepassword", 1, 2, 2, false, null);
 		ArgumentConstructor tc_create = new ArgumentConstructor(baseCommandI+"_tc_create", 1, 2, 3, false, null);
 		ArgumentConstructor tc_info = new ArgumentConstructor(baseCommandI+"_tc_info", 1, 2, 2, false, null);
-		ArgumentConstructor tc_invite = new ArgumentConstructor(baseCommandI+"_tc_invite", 2, 2, 2, false, playerMap);
+		ArgumentConstructor tc_invite = new ArgumentConstructor(baseCommandI+"_tc_invite", 2, 2, 2, false, playerMapII);
 		ArgumentConstructor tc_join = new ArgumentConstructor(baseCommandI+"_tc_join", 1, 2, 3, false, tcMap);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_TC_JOIN, tc_join.getCommandString());
-		ArgumentConstructor tc_kick = new ArgumentConstructor(baseCommandI+"_tc_kick", 1, 2, 2, false, playerMap);
+		ArgumentConstructor tc_kick = new ArgumentConstructor(baseCommandI+"_tc_kick", 1, 2, 2, false, playerMapII);
 		ArgumentConstructor tc_leave = new ArgumentConstructor(baseCommandI+"_tc_leave", 1, 1, 1, false, null);
-		ArgumentConstructor tc_unban = new ArgumentConstructor(baseCommandI+"_tc_unban", 1, 2, 2, false, playerMap);
+		ArgumentConstructor tc_unban = new ArgumentConstructor(baseCommandI+"_tc_unban", 1, 2, 2, false, playerMapII);
 		ArgumentConstructor tc = new ArgumentConstructor(baseCommandI+"_tc", 0, 0, 0, false, null,
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban);
 		
-		ArgumentConstructor updateplayer = new ArgumentConstructor(baseCommandI+"_updateplayer", 0, 1, 1, false, playerMap);
-		ArgumentConstructor wordfilter = new ArgumentConstructor(baseCommandI+"_wordfilter", 0, 1, 1, false, null);
-		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
-				broadcast, channel,
-				ignore, ignorelist, mute, option,
-				pc, tc,
-				unmute, updateplayer, wordfilter);
+				broadcast, channel, channelgui,
+				ignore, ignorelist, item, mute, performance, pc, option, tc, unmute, updateplayer
+				);
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
 		//CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
 		
 		CommandConstructor msg = new CommandConstructor(baseCommandIV, false);
+		PluginSettings.settings.addCommands(KeyHandler.MSG, msg.getCommandString());
 		
 		CommandConstructor re = new CommandConstructor(baseCommandV, false);
 		
@@ -367,14 +393,17 @@ public class SimpleChatChannels extends Plugin
 		pm.registerCommand(plugin, new RCommandExecutor(plugin, r));
 		pm.registerCommand(plugin, new WCommandExecutor(plugin, w));
 		
-		addingHelps(scc,
-					broadcast, channel,
-					ignore, ignorelist, mute,
+		addingHelps(
+				scc,
+					broadcast, channel, channelgui,
+					ignore, ignorelist,
+					item, item_rename, item_replacers,
+					mute, performance,
 					option, option_channel, option_join, option_spy,
+					unmute, updateplayer,
 					pc, pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite,
 						pc_join, pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice,
 					tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban,
-					unmute, updateplayer, wordfilter,
 				clch, //scceditor, 
 				msg, re, r, w);
 		
@@ -386,11 +415,17 @@ public class SimpleChatChannels extends Plugin
 		new ARGIgnoreList(plugin, ignorelist);
 		
 		new ARGMute(plugin, mute);
+		new ARGUnmute(plugin, unmute);
+		
+		new ARGPerformance(plugin, performance);
 		
 		new ARGOption(plugin, option);
 		new ARGOption_Channel(plugin, option_channel);
 		new ARGOption_Join(plugin, option_join);
 		new ARGOption_Spy(plugin, option_spy);
+		
+		new ARGUpdatePlayer(plugin, updateplayer);
+		
 		
 		new ARGPermanentChannel(plugin, pc);
 		new ARGPermanentChannel_Ban(plugin, pc_ban);
@@ -423,8 +458,29 @@ public class SimpleChatChannels extends Plugin
 		new ARGTemporaryChannel_Leave(plugin, tc_leave);
 		new ARGTemporaryChannel_Unban(plugin, tc_unban);
 		
-		new ARGUpdatePlayer(plugin, updateplayer);
-		new ARGUnmute(plugin, unmute);
+		if(plugin.getYamlHandler().getConfig().getBoolean("Use.Mail", true))
+		{
+			//INFO:Mail
+			ArgumentConstructor mail_lastmails = new ArgumentConstructor(baseCommandVIII+"_lastmails", 0, 0, 2, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTMAILS, mail_lastmails.getCommandString());
+			ArgumentConstructor mail_read = new ArgumentConstructor(baseCommandVIII+"_read", 0, 1, 1, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_READ, mail_read.getCommandString());
+			ArgumentConstructor mail_send = new ArgumentConstructor(baseCommandVIII+"_send", 0, 3, 999, true, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_SEND, mail_send.getCommandString());
+			
+			CommandConstructor mail = new CommandConstructor(baseCommandVIII, true,
+					mail_read, mail_send, mail_lastmails);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL, mail.getCommandString());
+			
+			pm.registerCommand(plugin, new MailCommandExecutor(plugin, mail));
+			
+			addingHelps(mail,
+							mail_lastmails, mail_read, mail_send);
+			
+			new ARGLastMails(plugin, mail_lastmails);
+			new ARGRead(plugin, mail_read);
+			new ARGSend(plugin, mail_send);
+		}
 	}
 	
 	public void ListenerSetup()
@@ -526,9 +582,7 @@ public class SimpleChatChannels extends Plugin
 	public void setupPlayers()
 	{
 		ArrayList<ChatUser> cu = ConvertHandler.convertListI(
-				plugin.getMysqlHandler().getTop(MysqlHandler.Type.CHATUSER,
-						"`id`", true, 0,
-						plugin.getMysqlHandler().lastID(MysqlHandler.Type.CHATUSER)));
+				plugin.getMysqlHandler().getAllListAt(MysqlHandler.Type.CHATUSER, "`id`", false, "?", 1));
 		ArrayList<String> cus = new ArrayList<>();
 		for(ChatUser chus : cu) 
 		{
@@ -569,8 +623,9 @@ public class SimpleChatChannels extends Plugin
 		}
 		chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
 		Collections.reverse(chatTitlesPrefix);
-		chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
+		chatTitlesSuffix.sort(Comparator.comparing(ChatTitle::getWeight));
 		Collections.reverse(chatTitlesSuffix);
+		log.log(Level.INFO, "Loaded "+chatTitlesPrefix.size()+" Prefixe and "+chatTitlesSuffix.size()+" Suffixe!");
 	}
 	
 	private void setupChannels()
@@ -586,7 +641,29 @@ public class SimpleChatChannels extends Plugin
 					|| cha.get(key+".JoinPart") == null
 					|| cha.get(key+".ChatFormat") == null)
 			{
+				log.log(Level.INFO, "Channel "+key+" is not correct set.");
 				continue;
+			}
+			LinkedHashMap<String, String> serverReplacerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> serverCommandMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> serverHoverMap = new LinkedHashMap<>();
+			if(cha.get(key+".ServerConverter") != null)
+			{
+				for(String s : cha.getStringList(key+".ServerConverter"))
+				{
+					if(!s.contains(";"))
+					{
+						continue;
+					}
+					String[] split = s.split(";");
+					if(split.length != 4)
+					{
+						continue;
+					}
+					serverReplacerMap.put(split[0], split[1]);
+					serverCommandMap.put(split[0], split[2]);
+					serverHoverMap.put(split[0], split[3]);
+				}
 			}
 			Channel c = new Channel(
 					cha.getString(key+".UniqueIdentifierName"),
@@ -602,6 +679,13 @@ public class SimpleChatChannels extends Plugin
 					cha.getLong(key+".MinimumTimeBetweenMessages", 500),
 					cha.getLong(key+".MinimumTimeBetweenSameMessages", 1000),
 					cha.getDouble(key+".PercentOfSimiliarityOrLess", 75.0),
+					cha.getString(key+".TimeColor", "&r"),
+					cha.getString(key+".PlayernameCustomColor", "&r"),
+					cha.getString(key+".OtherPlayernameCustomColor", "&r"),
+					cha.getString(key+".SeperatorBetweenPrefix", ""),
+					cha.getString(key+".SeperatorBetweenSuffix", ""),
+					cha.getString(key+".MentionSound", "ENTITY_WANDERING_TRADER_REAPPEARED"),
+					serverReplacerMap, serverCommandMap, serverHoverMap,
 					cha.getBoolean(key+".UseColor", false),
 					cha.getBoolean(key+".UseItemReplacer", false),
 					cha.getBoolean(key+".UseBookReplacer", false),
@@ -621,7 +705,7 @@ public class SimpleChatChannels extends Plugin
 					{
 						c.setSymbol(".");
 					}
-				}if(key.equalsIgnoreCase("temporary"))
+				} else if(key.equalsIgnoreCase("temporary"))
 				{
 					c.setUniqueIdentifierName("Temporary");
 					if(c.getSymbol().equalsIgnoreCase("NULL"))
@@ -631,11 +715,11 @@ public class SimpleChatChannels extends Plugin
 				} else
 				{
 					c.setUniqueIdentifierName("Private");
-					c.setUseMentionReplacer(false);
 				}
+				channels.put(c.getSymbol(), c);
 			} else
 			{
-				if(c.getSymbol().equalsIgnoreCase("null"))
+				if(c.getSymbol().equalsIgnoreCase("null") && nullChannel == null)
 				{
 					nullChannel = c;
 				} else
@@ -644,15 +728,34 @@ public class SimpleChatChannels extends Plugin
 				}
 			}
 		}
+		int c = channels.size()+((nullChannel != null) ? 1 : 0);
+		log.log(Level.INFO, "Loaded "+c+" Channels!");
 	}
 	
-	public void setupEmojis()
+	public Channel getChannel(String uniqueIdentifierName)
+	{
+		for(Channel ch : channels.values())
+		{
+			if(ch.getUniqueIdentifierName().equals(uniqueIdentifierName))
+			{
+				return ch;
+			}
+		}
+		if(nullChannel.getUniqueIdentifierName().equals(uniqueIdentifierName))
+		{
+			return nullChannel;
+		} 
+		return null;
+	}
+	
+	private void setupEmojis()
 	{
 		for(String e : yamlHandler.getEmojis().getKeys())
 		{
 			String emoji = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Emoji.Start")
 					+ e
 					+ plugin.getYamlHandler().getConfig().getString("ChatReplacer.Emoji.End");
+			System.out.println("Emoji: "+emoji+" | "+e); //REMOVEME
 			ChatHandler.emojiList.put(emoji, yamlHandler.getEmojis().getString(e));
 		}
 	}

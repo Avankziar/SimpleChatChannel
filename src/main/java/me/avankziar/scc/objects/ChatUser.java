@@ -4,13 +4,17 @@ public class ChatUser extends ServerLocation
 {
 	private String uuid;
 	private String name;
+	private String rolePlayName;
+	private long rolePlayRenameCooldown;
 	private long muteTime;
 	private boolean optionSpy;
 	private boolean optionChannelMessage;
 	private long lastTimeJoined;
 	private boolean optionJoinMessage;
 	
-	public ChatUser(String uuid, String name, long muteTime,
+	public ChatUser(String uuid, String name,
+			String rolePlayName, long rolePlayRenameCooldown,
+			long muteTime,
 			boolean optionSpy, boolean optionChannelMessage,
 			long lastTimeJoined,
 			boolean optionJoinMessage, ServerLocation serverLocation)
@@ -18,6 +22,8 @@ public class ChatUser extends ServerLocation
 		super(serverLocation);
 		setUUID(uuid);
 		setName(name);
+		setRolePlayName(rolePlayName);
+		setRolePlayRenameCooldown(rolePlayRenameCooldown);
 		setMuteTime(muteTime);
 		setOptionSpy(optionSpy);
 		setOptionChannelMessage(optionChannelMessage);
@@ -43,6 +49,26 @@ public class ChatUser extends ServerLocation
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public String getRolePlayName()
+	{
+		return rolePlayName;
+	}
+
+	public void setRolePlayName(String rolePlayName)
+	{
+		this.rolePlayName = rolePlayName;
+	}
+
+	public long getRolePlayRenameCooldown()
+	{
+		return rolePlayRenameCooldown;
+	}
+
+	public void setRolePlayRenameCooldown(long rolePlayRenameCooldown)
+	{
+		this.rolePlayRenameCooldown = rolePlayRenameCooldown;
 	}
 
 	public long getMuteTime()

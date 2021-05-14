@@ -13,8 +13,8 @@ import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 
 import main.java.me.avankziar.scc.database.Language;
 import main.java.me.avankziar.scc.database.Language.ISO639_2B;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 import main.java.me.avankziar.scc.database.YamlManager;
+import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 
 public class YamlHandler 
 {
@@ -41,6 +41,9 @@ public class YamlHandler
 	private File wordFilter = null;
 	private YamlConfiguration wfr = new YamlConfiguration();
 	
+	private LinkedHashMap<String, File> guifiles = new LinkedHashMap<>();
+	private LinkedHashMap<String, YamlConfiguration> gui = new LinkedHashMap<>();
+	
 	public YamlHandler(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
@@ -49,7 +52,7 @@ public class YamlHandler
 	
 	public boolean loadYamlHandler()
 	{
-		plugin.setYamlManager(new YamlManager());
+		plugin.setYamlManager(new YamlManager(true));
 		if(!mkdirStaticFiles())
 		{
 			return false;
@@ -96,6 +99,11 @@ public class YamlHandler
 		return wfr;
 	}
 	
+	public YamlConfiguration getGui(String guitype)
+	{
+		return gui.get(guitype);
+	}
+	
 	public boolean mkdirStaticFiles()
 	{
 		File directory = new File(plugin.getDataFolder()+"");
@@ -115,7 +123,7 @@ public class YamlHandler
 				e.printStackTrace();
 			}
 		}
-		if(loadYamlTask(config, cfg))
+		if(!loadYamlTask(config, cfg))
 		{
 			return false;
 		}
@@ -135,7 +143,7 @@ public class YamlHandler
 				e.printStackTrace();
 			}
 		}
-		if(loadYamlTask(commands, com))
+		if(!loadYamlTask(commands, com))
 		{
 			return false;
 		}
@@ -153,7 +161,7 @@ public class YamlHandler
 				e.printStackTrace();
 			}
 		}
-		if(loadYamlTask(chattitle, cti))
+		if(!loadYamlTask(chattitle, cti))
 		{
 			return false;
 		}
@@ -171,7 +179,7 @@ public class YamlHandler
 				e.printStackTrace();
 			}
 		}
-		if(loadYamlTask(channels, cha))
+		if(!loadYamlTask(channels, cha))
 		{
 			return false;
 		}
@@ -189,7 +197,7 @@ public class YamlHandler
 				e.printStackTrace();
 			}
 		}
-		if(loadYamlTask(emojis, eji))
+		if(!loadYamlTask(emojis, eji))
 		{
 			return false;
 		}
@@ -207,7 +215,7 @@ public class YamlHandler
 				e.printStackTrace();
 			}
 		}
-		if(loadYamlTask(wordFilter, wfr))
+		if(!loadYamlTask(wordFilter, wfr))
 		{
 			return false;
 		}
@@ -232,6 +240,11 @@ public class YamlHandler
 		{
 			return false;
 		}
+		
+		if(!mkdirGuis())
+		{
+			return false;
+		}
 		return true;
 	}
 	
@@ -243,6 +256,7 @@ public class YamlHandler
 		{
 			directory.mkdir();
 		}
+		language = new File(directory.getPath(), languageString+".yml");
 		if(!language.exists()) 
 		{
 			SimpleChatChannels.log.info("Create %lang%.yml...".replace("%lang%", languageString));
@@ -259,6 +273,53 @@ public class YamlHandler
 			return false;
 		}
 		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
+		return true;
+	}
+	
+	private boolean mkdirGuis()
+	{
+		File directory = new File(plugin.getDataFolder()+"/Guis/");
+		if(!directory.exists())
+		{
+			directory.mkdir();
+		}
+		List<String> guilist = getConfig().getStringList("GuiList");
+		if(guilist == null || guilist.isEmpty())
+		{
+			return false;
+		}
+		for(String g : guilist)
+		{
+			if(g.equalsIgnoreCase("DUMMY"))
+			{
+				continue;
+			}
+			if(guifiles.containsKey(g))
+			{
+				guifiles.remove(g);
+			}
+			File guifile = new File(directory.getPath(), g+".yml");
+			if(!guifile.exists()) 
+			{
+				SimpleChatChannels.log.info("Create %file%.yml...".replace("%file%", g));
+				try
+				{
+					FileUtils.copyToFile(plugin.getResource("default.yml"), guifile);
+				} catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			YamlConfiguration gyaml = new YamlConfiguration();
+			//Laden der Datei
+			if(!loadYamlTask(guifile, gyaml))
+			{
+				return false;
+			}
+			//Niederschreiben aller Werte in die Datei
+			writeFile(guifile, gyaml, plugin.getYamlManager().getGuiKeys(g));
+			gui.put(g, gyaml);
+		}
 		return true;
 	}
 	
@@ -301,6 +362,4 @@ public class YamlHandler
 		}
 		return true;
 	}
-	
-	
 }

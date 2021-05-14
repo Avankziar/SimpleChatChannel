@@ -29,7 +29,7 @@ public class ARGBroadcast extends ArgumentModule
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		String message = "";
+		String message = plugin.getYamlHandler().getLang().getString("CmdScc.Broadcast.Intro");
 		for (int i = 1; i < args.length; i++) 
         {
 			message += args[i];

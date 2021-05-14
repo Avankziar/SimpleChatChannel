@@ -29,7 +29,7 @@ public class GUIApi
 	{
 		NOLEVEL, BASE, ADVANCED, EXPERT;
 		
-		public String getEnum()
+		public String getName()
 		{
 			switch(this)
 			{
@@ -82,7 +82,7 @@ public class GUIApi
 		pdc.set(new NamespacedKey(plugin, INVENTORYIDENTIFIER), PersistentDataType.STRING, this.inventoryIdentifier);
 		pdc.set(new NamespacedKey(plugin, CLICKEVENTCANCEL), PersistentDataType.STRING, String.valueOf(clickEventCancel));
 		pdc.set(new NamespacedKey(plugin, FUNCTION), PersistentDataType.STRING, function);
-		pdc.set(new NamespacedKey(plugin, SETTINGLEVEL), PersistentDataType.STRING, settingsLevel.getEnum());
+		pdc.set(new NamespacedKey(plugin, SETTINGLEVEL), PersistentDataType.STRING, settingsLevel.getName());
 		for(String key : values.keySet())
 		{
 			Entry<Type, Object> value = values.get(key);

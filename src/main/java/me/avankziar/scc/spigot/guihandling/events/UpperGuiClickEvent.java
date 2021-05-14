@@ -7,7 +7,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import main.java.me.avankziar.scc.spigot.guihandling.GUIApi;
-import main.java.me.avankziar.scc.spigot.guihandling.GUIApi.SettingsLevel;
 import main.java.me.avankziar.scc.spigot.guihandling.GUIApi.Type;
 
 public class UpperGuiClickEvent extends Event

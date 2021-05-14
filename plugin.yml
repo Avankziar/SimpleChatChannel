@@ -4,4 +4,4 @@ version: 40
 author: Avankziar
 api-version: 1.16
 description: A Chat Plugin
-softdepend: [Punisher,AfkRecord]
+softdepend: [AfkRecord]

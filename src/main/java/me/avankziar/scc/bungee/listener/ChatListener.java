@@ -28,10 +28,17 @@ public class ChatListener implements Listener
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onChat(ChatEvent event)
 	{
-		ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-		event.setCancelled(true);
-		
+		if(event.isCancelled())
+		{
+			return;
+		}
+		if(event.getMessage().startsWith("/"))
+		{
+			return;
+		}
+		ProxiedPlayer player = (ProxiedPlayer) event.getSender();		
 		final String message = event.getMessage().trim();
+		event.setCancelled(true);
 		ChatHandler ch = new ChatHandler(plugin);
 		/*
 		 * PrePreChecks

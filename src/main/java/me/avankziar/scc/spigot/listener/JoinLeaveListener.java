@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.objects.KeyHandler;
 import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
 import main.java.me.avankziar.scc.objects.chat.UsedChannel;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
@@ -38,8 +39,14 @@ public class JoinLeaveListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event)
 	{
+		if(PluginSettings.settings.isBungee())
+		{
+			return;
+		}
 		Player player = event.getPlayer();
 		String pn = player.getName();
+		final boolean firsttimejoin = !plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
+				"`player_uuid` = ?", player.getUniqueId().toString());
 		/*
 		 * Player check and init
 		 */
@@ -81,8 +88,15 @@ public class JoinLeaveListener implements Listener
 		if(cu.isOptionChannelMessage())
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString(
-					"JoinListener.Welcome").replace("%player%", pn)));
+			if(firsttimejoin)
+			{
+				TextComponent tc = ChatApi.tctl(plugin.getYamlHandler().getLang().getString(
+						"JoinListener.Welcome").replace("%player%", pn));
+				for(Player all : plugin.getServer().getOnlinePlayers())
+				{
+					all.spigot().sendMessage(tc);
+				}
+			}
 		}
 		
 		TextComponent msg = ChatApi.apiChat(
@@ -93,17 +107,26 @@ public class JoinLeaveListener implements Listener
 				plugin.getUtility().getPlayerHover(pn));
 		for(Player all : plugin.getServer().getOnlinePlayers())
 		{
-			if(!all.getName().equals(player.getName()))
+			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
+			if(allcu != null)
 			{
-				ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
-				if(allcu != null)
+				if(allcu.isOptionJoinMessage())
 				{
-					if(allcu.isOptionJoinMessage())
-					{
-						all.spigot().sendMessage(msg);
-					}
+					all.spigot().sendMessage(msg);
 				}
 			}
+		}
+		int unreadedMails = plugin.getMysqlHandler().getCount(Type.MAIL, "`id`",
+				"`reciver_uuid` = ? AND `readeddate` = ?", player.getUniqueId().toString(), 0);
+		if(unreadedMails > 0)
+		{
+			player.spigot().sendMessage(ChatApi.apiChat(
+					plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
+					.replace("%count%", String.valueOf(unreadedMails)),
+					ClickEvent.Action.RUN_COMMAND,
+					PluginSettings.settings.getCommands(KeyHandler.MAIL),
+					HoverEvent.Action.SHOW_TEXT,
+					plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
 		}
 	}
 	

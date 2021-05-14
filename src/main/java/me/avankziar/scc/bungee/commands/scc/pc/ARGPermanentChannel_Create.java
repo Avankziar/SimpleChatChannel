@@ -70,7 +70,7 @@ public class ARGPermanentChannel_Create extends ArgumentModule
 				}
 			}
 		}
-		Channel perm = SimpleChatChannels.channels.get("Permanent");
+		Channel perm = plugin.getChannel("Permanent");
 		String color = "&f";
 		ArrayList<String> members = new ArrayList<String>();
 		members.add(player.getUniqueId().toString());

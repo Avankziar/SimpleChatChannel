@@ -29,6 +29,11 @@ public class ARGMute extends ArgumentModule
 		Player player = (Player) sender;
 		String target = args[1];
 		Player t = plugin.getServer().getPlayer(target);
+		if(t == null)
+		{
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			return;
+		}
 		ChatUser cu = ChatUserHandler.getChatUser(t.getUniqueId());
 		if(cu == null)
 		{
@@ -65,16 +70,22 @@ public class ARGMute extends ArgumentModule
 				{
 				case "y":
 					time += num*1000L*60*60*24*365;
+					break;
 				case "M":
 					time += num*1000L*60*60*24*30;
+					break;
 				case "d":
 					time += num*1000L*60*60*24;
+					break;
 				case "H":
 					time += num*1000L*60*60;
+					break;
 				case "m":
 					time += num*1000L*60;
+					break;
 				case "s":
 					time += num*1000L;
+					break;
 				default:
 					break;
 				}

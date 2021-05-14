@@ -89,7 +89,6 @@ public class YamlHandler
 		try 
 		{
 			yaml = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
-			SimpleChatChannels.log.info("File "+file.getName()+" loaded!");
 		} catch (IOException e) 
 		{
 			SimpleChatChannels.log.severe(
@@ -117,7 +116,6 @@ public class YamlHandler
 		try
 		{
 			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(yml, file);
-			 SimpleChatChannels.log.info("File "+file.getName()+" saved!");
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -127,7 +125,7 @@ public class YamlHandler
 	
 	public boolean loadYamlHandler()
 	{
-		plugin.setYamlManager(new YamlManager());
+		plugin.setYamlManager(new YamlManager(false));
 		if(!mkdirStaticFiles())
 		{
 			return false;
@@ -234,7 +232,7 @@ public class YamlHandler
 			SimpleChatChannels.log.info("Create wordfilter.yml...");
 			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
 	    	 {       
-	    		 Files.copy(in, channels.toPath());
+	    		 Files.copy(in, wordFilter.toPath());
 	         } catch (IOException e) 
 	    	 {
 	        	 e.printStackTrace();

@@ -45,6 +45,10 @@ public class MysqlSetup
 		{
 			return false;
 		}
+		if(!setupDatabaseVI())
+		{
+			return false;
+		}
 		return true;
 	}
 	
@@ -95,6 +99,8 @@ public class MysqlSetup
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
 		        		+ " player_uuid char(36) NOT NULL UNIQUE,"
 		        		+ " player_name varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
+		        		+ " roleplay_name TEXT,"
+		        		+ " roleplayrenamecooldown BIGINT,"
 		        		+ " mutetime BIGINT,"
 		        		+ " spy boolean, channelmessage boolean, lasttimejoined BIGINT, joinmessage boolean,"
 		        		+ " serverlocation MEDIUMTEXT);";
@@ -239,6 +245,43 @@ public class MysqlSetup
 		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameV
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
 		        		+ " uniqueidentifiername TEXT, player_uuid TEXT, used BOOLEAN);";
+		        query = conn.prepareStatement(data);
+		        query.execute();
+		      } catch (SQLException e) 
+		      {
+		        e.printStackTrace();
+		        SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
+		        return false;
+		      } finally 
+		      {
+		    	  try 
+		    	  {
+		    		  if (query != null) 
+		    		  {
+		    			  query.close();
+		    		  }
+		    	  } catch (Exception e) 
+		    	  {
+		    		  e.printStackTrace();
+		    		  return false;
+		    	  }
+		      }
+		}
+		return true;
+	}
+	
+	public boolean setupDatabaseVI() 
+	{
+		if (conn != null) 
+		{
+			PreparedStatement query = null;
+		      try 
+		      {	        
+		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameVI
+		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
+		        		+ " sender_uuid TEXT, sender_name TEXT, reciver_uuid TEXT, reciver_name TEXT,"
+		        		+ " carboncopy_uuid MEDIUMTEXT, carboncopy_name MEDIUMTEXT,"
+		        		+ " sendeddate BIGINT, readeddate BIGINT, subject TEXT, rawmessage MEDIUMTEXT);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
 		      } catch (SQLException e) 

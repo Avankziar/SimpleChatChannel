@@ -7,60 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
+import main.java.me.avankziar.scc.bungee.database.MysqlHandler.QueryType;
 
 public interface TableIII
 {
-	default boolean existIII(SimpleChatChannels plugin, String whereColumn, Object... object) 
-	{
-		PreparedStatement preparedStatement = null;
-		ResultSet result = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		if (conn != null) 
-		{
-			try 
-			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameIII 
-						+ "` WHERE "+whereColumn+" LIMIT 1";
-		        preparedStatement = conn.prepareStatement(sql);
-		        int i = 1;
-		        for(Object o : object)
-		        {
-		        	preparedStatement.setObject(i, o);
-		        	i++;
-		        }
-		        
-		        
-		        result = preparedStatement.executeQuery();
-		        while (result.next()) 
-		        {
-		        	return true;
-		        }
-		    } catch (SQLException e) 
-			{
-				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
-				  e.printStackTrace();
-		    } finally 
-			{
-		    	  try 
-		    	  {
-		    		  if (result != null) 
-		    		  {
-		    			  result.close();
-		    		  }
-		    		  if (preparedStatement != null) 
-		    		  {
-		    			  preparedStatement.close();
-		    		  }
-		    	  } catch (Exception e) {
-		    		  e.printStackTrace();
-		    	  }
-		      }
-		}
-		return false;
-	}
-	
 	default boolean createIII(SimpleChatChannels plugin, Object object) 
 	{
 		if(!(object instanceof PermanentChannel))
@@ -104,7 +57,8 @@ public interface TableIII
 		        preparedStatement.setString(8, pc.getNameColor());
 		        preparedStatement.setString(9, pc.getChatColor());
 		        
-		        preparedStatement.executeUpdate();
+		        int i = preparedStatement.executeUpdate();
+		        MysqlHandler.addRows(QueryType.INSERT, i);
 		        return true;
 		    } catch (SQLException e) 
 			{
@@ -182,7 +136,8 @@ public interface TableIII
 		        	i++;
 		        }
 				
-				preparedStatement.executeUpdate();
+				int u = preparedStatement.executeUpdate();
+				MysqlHandler.addRows(QueryType.UPDATE, u);
 				return true;
 			} catch (SQLException e) {
 				SimpleChatChannels.log.warning("Error: " + e.getMessage());
@@ -221,6 +176,7 @@ public interface TableIII
 		        }
 		        
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        while (result.next()) 
 		        {
 		        	ArrayList<String> vice = new ArrayList<>();
@@ -274,132 +230,6 @@ public interface TableIII
 		return null;
 	}
 	
-	default boolean deleteDataIII(SimpleChatChannels plugin, String whereColumn, Object... whereObject)
-	{
-		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		try 
-		{
-			String sql = "DELETE FROM `" + plugin.getMysqlHandler().tableNameIII + "` WHERE "+whereColumn;
-			preparedStatement = conn.prepareStatement(sql);
-			int i = 1;
-	        for(Object o : whereObject)
-	        {
-	        	preparedStatement.setObject(i, o);
-	        	i++;
-	        }
-			preparedStatement.execute();
-			return true;
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
-		} finally 
-		{
-			try {
-				if (preparedStatement != null) 
-				{
-					preparedStatement.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-	
-	default int lastIDIII(SimpleChatChannels plugin)
-	{
-		PreparedStatement preparedStatement = null;
-		ResultSet result = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		if (conn != null) 
-		{
-			try 
-			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameIII + "` ORDER BY `id` DESC LIMIT 1";
-		        preparedStatement = conn.prepareStatement(sql);
-		        
-		        result = preparedStatement.executeQuery();
-		        while(result.next())
-		        {
-		        	return result.getInt("id");
-		        }
-		    } catch (SQLException e) 
-			{
-		    	e.printStackTrace();
-		    	return 0;
-		    } finally 
-			{
-		    	  try 
-		    	  {
-		    		  if (result != null) 
-		    		  {
-		    			  result.close();
-		    		  }
-		    		  if (preparedStatement != null) 
-		    		  {
-		    			  preparedStatement.close();
-		    		  }
-		    	  } catch (Exception e) 
-		    	  {
-		    		  e.printStackTrace();
-		    	  }
-		      }
-		}
-		return 0;
-	}
-	
-	default int countWhereIDIII(SimpleChatChannels plugin, String whereColumn, Object... whereObject)
-	{
-		PreparedStatement preparedStatement = null;
-		ResultSet result = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		if (conn != null) 
-		{
-			try 
-			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameIII
-						+ "` WHERE "+whereColumn
-						+ " ORDER BY `id` DESC";
-		        preparedStatement = conn.prepareStatement(sql);
-		        int i = 1;
-		        for(Object o : whereObject)
-		        {
-		        	preparedStatement.setObject(i, o);
-		        	i++;
-		        }
-		        result = preparedStatement.executeQuery();
-		        int count = 0;
-		        while(result.next())
-		        {
-		        	count++;
-		        }
-		        return count;
-		    } catch (SQLException e) 
-			{
-		    	e.printStackTrace();
-		    	return 0;
-		    } finally 
-			{
-		    	  try 
-		    	  {
-		    		  if (result != null) 
-		    		  {
-		    			  result.close();
-		    		  }
-		    		  if (preparedStatement != null) 
-		    		  {
-		    			  preparedStatement.close();
-		    		  }
-		    	  } catch (Exception e) 
-		    	  {
-		    		  e.printStackTrace();
-		    	  }
-		      }
-		}
-		return 0;
-	}
-	
 	default ArrayList<PermanentChannel> getListIII(SimpleChatChannels plugin, String orderByColumn,
 			int start, int end, String whereColumn, Object...whereObject)
 	{
@@ -420,6 +250,7 @@ public interface TableIII
 		        	i++;
 		        }
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        ArrayList<PermanentChannel> list = new ArrayList<PermanentChannel>();
 		        while (result.next()) 
 		        {
@@ -499,6 +330,7 @@ public interface TableIII
 		        preparedStatement = conn.prepareStatement(sql);
 		        
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        ArrayList<PermanentChannel> list = new ArrayList<>();
 		        while (result.next()) 
 		        {
@@ -583,6 +415,7 @@ public interface TableIII
 		        	i++;
 		        }
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        ArrayList<PermanentChannel> list = new ArrayList<>();
 		        while (result.next()) 
 		        {

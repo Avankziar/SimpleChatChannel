@@ -29,9 +29,13 @@ public class BypassPermission
 	public static String PERMBYPASSIGNORE = "";
 	public static String PERMBYPASSOFFLINECHANNEL = "";
 	
+	public static String PERMBYPASSBOOK = "";
+	
 	public static String PERMBYPASSPC= "";
 	
 	public static String CUSTOM_ITEMREPLACERSTORAGE = "";
+	
+	public static String MAIL_READOTHER = "";
 	
 	public static void init(SimpleChatChannels plugin)
 	{
@@ -62,7 +66,11 @@ public class BypassPermission
 		PERMBYPASSIGNORE = yml.getString(bp+"Ignore", by+"ignore");
 		PERMBYPASSOFFLINECHANNEL = yml.getString(bp+"OfflineChannel", by+"offlinechannel");
 		
+		PERMBYPASSBOOK = yml.getString(bp+"BookOther", by+"bookother");
+		
 		PERMBYPASSPC = yml.getString(bp+"PermanentChannel", by+"permanentchannel");
+		
+		MAIL_READOTHER = yml.getString(bp+"Mail.ReadOther", by+"mail.readother");
 		
 		String path = "Custom.";
 		String cus = "scc.custom.";

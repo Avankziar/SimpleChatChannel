@@ -36,7 +36,7 @@ public class RCommandExecutor extends Command
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 			return;
 		}
-		if(args.length <= 1)
+		if(args.length <= 0)
 		{
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.PleaseEnterAMessage")));
 			return;
@@ -61,9 +61,10 @@ public class RCommandExecutor extends Command
 			{
 				message += " ";
 			}
+			i++;
 		}
 		ChatHandler ch = new ChatHandler(plugin);
-		if(ch.prePreCheck(player, message))
+		if(!ch.prePreCheck(player, message))
 		{
 			return;
 		}

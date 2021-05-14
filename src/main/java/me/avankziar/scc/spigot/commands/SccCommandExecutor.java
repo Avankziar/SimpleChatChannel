@@ -104,12 +104,12 @@ public class SccCommandExecutor implements CommandExecutor
 							player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 							return false;
 						}
-					} else if(length > ac.maxArgsConstructor) 
+					}/* else if(length > ac.maxArgsConstructor) 
 					{
 						player.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
 								ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
 						return false;
-					} else
+					}*/ else
 					{
 						aclist = ac.subargument;
 						break;
@@ -157,7 +157,7 @@ public class SccCommandExecutor implements CommandExecutor
 				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("GeneralHover")));
 	}
 	
-	public void pastNextPage(Player player,
+	public static void pastNextPage(Player player,
 			int page, boolean lastpage, String cmdstring, String...objects)
 	{
 		if(page==0 && lastpage)
@@ -171,7 +171,7 @@ public class SccCommandExecutor implements CommandExecutor
 		if(page!=0)
 		{
 			TextComponent msg2 = ChatApi.tctl(
-					plugin.getYamlHandler().getLang().getString("BaseInfo.Past"));
+					SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Past"));
 			String cmd = cmdstring+" "+String.valueOf(j);
 			for(String o : objects)
 			{
@@ -183,7 +183,7 @@ public class SccCommandExecutor implements CommandExecutor
 		if(!lastpage)
 		{
 			TextComponent msg1 = ChatApi.tctl(
-					plugin.getYamlHandler().getLang().getString("BaseInfo.Next"));
+					SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Next"));
 			String cmd = cmdstring+" "+String.valueOf(i);
 			for(String o : objects)
 			{

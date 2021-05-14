@@ -1,6 +1,11 @@
 package main.java.me.avankziar.scc.bungee.database;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.bungee.database.tables.TableI;
@@ -8,12 +13,55 @@ import main.java.me.avankziar.scc.bungee.database.tables.TableII;
 import main.java.me.avankziar.scc.bungee.database.tables.TableIII;
 import main.java.me.avankziar.scc.bungee.database.tables.TableIV;
 import main.java.me.avankziar.scc.bungee.database.tables.TableV;
+import main.java.me.avankziar.scc.bungee.database.tables.TableVI;
 
-public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
+public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV, TableVI
 {
 	public enum Type
 	{
-		CHATUSER, IGNOREOBJECT, PERMANENTCHANNEL, ITEMJSON, USEDCHANNEL;
+		CHATUSER, IGNOREOBJECT, PERMANENTCHANNEL, ITEMJSON, USEDCHANNEL, MAIL;
+	}
+	
+	public enum QueryType
+	{
+		INSERT, UPDATE, DELETE, READ;
+	}
+	
+	/*
+	 * Alle Mysql Reihen, welche durch den Betrieb aufkommen.
+	 */
+	public static long startRecordTime = System.currentTimeMillis();
+	public static int inserts = 0;
+	public static int updates = 0;
+	public static int deletes = 0;
+	public static int reads = 0;
+	//FirstKey == ServerName, SecondKey = inserts etc.
+	public static LinkedHashMap<String, LinkedHashMap<QueryType, Integer>> serverPerformance = new LinkedHashMap<>();
+	
+	public static void addRows(QueryType type, int amount)
+	{
+		switch(type)
+		{
+		case DELETE:
+			deletes += amount;
+			break;
+		case INSERT:
+			inserts += amount;
+		case READ:
+			reads += amount;
+			break;
+		case UPDATE:
+			updates += amount;
+			break;
+		}
+	}
+	
+	public static void resetsRows()
+	{
+		inserts = 0;
+		updates = 0;
+		reads = 0;
+		deletes = 0;
 	}
 	
 	private SimpleChatChannels plugin;
@@ -22,6 +70,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 	public String tableNameIII; //Perma
 	public String tableNameIV; //ItemJson
 	public String tableNameV; //UsedChannel
+	public String tableNameVI; //UsedChannel
 	
 	public MysqlHandler(SimpleChatChannels plugin) 
 	{
@@ -56,23 +105,60 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 		{
 			return false;
 		}
+		tableNameVI = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameVI");
+		if(tableNameVI == null)
+		{
+			return false;
+		}
 		return true;
 	}
 	
-	public boolean exist(Type type, String whereColumn, Object... whereObject)
+	public boolean exist(Type type, String whereColumn, Object... object) 
 	{
-		switch(type)
+		String table = getTable(type);
+		PreparedStatement preparedStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
 		{
-		case CHATUSER:
-			return TableI.super.existI(plugin, whereColumn, whereObject);
-		case IGNOREOBJECT:
-			return TableII.super.existII(plugin, whereColumn, whereObject);
-		case PERMANENTCHANNEL:
-			return TableIII.super.existIII(plugin, whereColumn, whereObject);
-		case ITEMJSON:
-			return TableIV.super.existIV(plugin, whereColumn, whereObject);
-		case USEDCHANNEL:
-			return TableV.super.existV(plugin, whereColumn, whereObject);
+			try 
+			{			
+				String sql = "SELECT `id` FROM `" + table
+						+ "` WHERE "+whereColumn+" LIMIT 1";
+		        preparedStatement = conn.prepareStatement(sql);
+		        int i = 1;
+		        for(Object o : object)
+		        {
+		        	preparedStatement.setObject(i, o);
+		        	i++;
+		        }
+		        
+		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
+		        while (result.next()) 
+		        {
+		        	return true;
+		        }
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
 		}
 		return false;
 	}
@@ -91,6 +177,8 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 			return TableIV.super.createIV(plugin, object);
 		case USEDCHANNEL:
 			return TableV.super.createV(plugin, object);
+		case MAIL:
+			return TableVI.super.createVI(plugin, object);
 		}
 		return false;
 	}
@@ -109,6 +197,8 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 			return TableIV.super.updateDataIV(plugin, object, whereColumn, whereObject);
 		case USEDCHANNEL:
 			return TableV.super.updateDataV(plugin, object, whereColumn, whereObject);
+		case MAIL:
+			return TableVI.super.updateDataVI(plugin, object, whereColumn, whereObject);
 		}
 		return false;
 	}
@@ -127,60 +217,212 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 			return TableIV.super.getDataIV(plugin, whereColumn, whereObject);
 		case USEDCHANNEL:
 			return TableV.super.getDataV(plugin, whereColumn, whereObject);
+		case MAIL:
+			return TableVI.super.getDataVI(plugin, whereColumn, whereObject);
 		}
 		return null;
 	}
 	
-	public boolean deleteData(Type type, String whereColumn, Object... whereObject)
+	private String getTable(Type type)
 	{
+		String table = "";
 		switch(type)
 		{
 		case CHATUSER:
-			return TableI.super.deleteDataI(plugin, whereColumn, whereObject);
+			table = tableNameI;
+			break;
 		case IGNOREOBJECT:
-			return TableII.super.deleteDataII(plugin, whereColumn, whereObject);
+			table = tableNameII;
+			break;
 		case PERMANENTCHANNEL:
-			return TableIII.super.deleteDataIII(plugin, whereColumn, whereObject);
+			table = tableNameIII;
+			break;
 		case ITEMJSON:
-			return TableIV.super.deleteDataIV(plugin, whereColumn, whereObject);
+			table = tableNameIV;
+			break;
 		case USEDCHANNEL:
-			return TableV.super.deleteDataV(plugin, whereColumn, whereObject);
+			table = tableNameV;
+			break;
+		case MAIL:
+			table = tableNameVI;
+			break;
+		}
+		return table;
+	}
+	
+	public boolean deleteData(Type type, String whereColumn, Object... whereObject)
+	{
+		String table = getTable(type);
+		PreparedStatement preparedStatement = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		try 
+		{
+			String sql = "DELETE FROM `" + table + "` WHERE "+whereColumn;
+			preparedStatement = conn.prepareStatement(sql);
+			int i = 1;
+	        for(Object o : whereObject)
+	        {
+	        	preparedStatement.setObject(i, o);
+	        	i++;
+	        }
+			int d = preparedStatement.executeUpdate();
+			MysqlHandler.addRows(QueryType.DELETE, d);
+			return true;
+		} catch (Exception e) 
+		{
+			e.printStackTrace();
+		} finally 
+		{
+			try {
+				if (preparedStatement != null) 
+				{
+					preparedStatement.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
 	
 	public int lastID(Type type)
 	{
-		switch(type)
+		String table = getTable(type);
+		PreparedStatement preparedStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
 		{
-		case CHATUSER:
-			return TableI.super.lastIDI(plugin);
-		case IGNOREOBJECT:
-			return TableII.super.lastIDII(plugin);
-		case PERMANENTCHANNEL:
-			return TableIII.super.lastIDIII(plugin);
-		case ITEMJSON:
-			return TableIV.super.lastIDIV(plugin);
-		case USEDCHANNEL:
-			return TableV.super.lastIDV(plugin);
+			try 
+			{			
+				String sql = "SELECT `id` FROM `" + table + "` ORDER BY `id` DESC LIMIT 1";
+		        preparedStatement = conn.prepareStatement(sql);
+		        
+		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
+		        while(result.next())
+		        {
+		        	return result.getInt("id");
+		        }
+		    } catch (SQLException e) 
+			{
+		    	e.printStackTrace();
+		    	return 0;
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) 
+		    	  {
+		    		  e.printStackTrace();
+		    	  }
+		      }
 		}
 		return 0;
 	}
 	
 	public int countWhereID(Type type, String whereColumn, Object... whereObject)
 	{
-		switch(type)
+		String table = getTable(type);
+		PreparedStatement preparedStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
 		{
-		case CHATUSER:
-			return TableI.super.countWhereIDI(plugin, whereColumn, whereObject);
-		case IGNOREOBJECT:
-			return TableII.super.countWhereIDII(plugin, whereColumn, whereObject);
-		case PERMANENTCHANNEL:
-			return TableIII.super.countWhereIDIII(plugin, whereColumn, whereObject);
-		case ITEMJSON:
-			return TableIV.super.countWhereIDIV(plugin, whereColumn, whereObject);
-		case USEDCHANNEL:
-			return TableV.super.countWhereIDV(plugin, whereColumn, whereObject);
+			try 
+			{			
+				String sql = "SELECT `id` FROM `" + table
+						+ "` WHERE "+whereColumn
+						+ " ORDER BY `id` DESC";
+		        preparedStatement = conn.prepareStatement(sql);
+		        int i = 1;
+		        for(Object o : whereObject)
+		        {
+		        	preparedStatement.setObject(i, o);
+		        	i++;
+		        }
+		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
+		        return result.getMetaData().getColumnCount();
+		    } catch (SQLException e) 
+			{
+		    	e.printStackTrace();
+		    	return 0;
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) 
+		    	  {
+		    		  e.printStackTrace();
+		    	  }
+		      }
+		}
+		return 0;
+	}
+	
+	public int getCount(Type type, String orderByColumn, String whereColumn, Object... whereObject)
+	{
+		String table = getTable(type);
+		PreparedStatement preparedStatement = null;
+		ResultSet result = null;
+		Connection conn = plugin.getMysqlSetup().getConnection();
+		if (conn != null) 
+		{
+			try 
+			{
+				String sql = " SELECT count(*) FROM `"+table
+						+"` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
+		        preparedStatement = conn.prepareStatement(sql);
+		        int i = 1;
+		        for(Object o : whereObject)
+		        {
+		        	preparedStatement.setObject(i, o);
+		        	i++;
+		        }
+		        
+		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
+		        while (result.next()) 
+		        {
+		        	return result.getInt(1);
+		        }
+		    } catch (SQLException e) 
+			{
+				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  e.printStackTrace();
+		    } finally 
+			{
+		    	  try 
+		    	  {
+		    		  if (result != null) 
+		    		  {
+		    			  result.close();
+		    		  }
+		    		  if (preparedStatement != null) 
+		    		  {
+		    			  preparedStatement.close();
+		    		  }
+		    	  } catch (Exception e) {
+		    		  e.printStackTrace();
+		    	  }
+		      }
 		}
 		return 0;
 	}
@@ -199,6 +441,8 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 			return TableIV.super.getListIV(plugin, orderByColumn, start, quantity, whereColumn, whereObject);
 		case USEDCHANNEL:
 			return TableV.super.getListV(plugin, orderByColumn, start, quantity, whereColumn, whereObject);
+		case MAIL:
+			return TableVI.super.getListVI(plugin, orderByColumn, start, quantity, whereColumn, whereObject);
 		}
 		return null;
 	}
@@ -217,6 +461,8 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 			return TableIV.super.getTopIV(plugin, orderByColumn, start, end);
 		case USEDCHANNEL:
 			return TableV.super.getTopV(plugin, orderByColumn, start, end);
+		case MAIL:
+			return TableVI.super.getTopVI(plugin, orderByColumn, start, end);
 		}
 		return null;
 	}
@@ -235,6 +481,8 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV
 			return TableIV.super.getAllListAtIV(plugin, orderByColumn, desc, whereColumn, whereObject);
 		case USEDCHANNEL:
 			return TableV.super.getAllListAtV(plugin, orderByColumn, desc, whereColumn, whereObject);
+		case MAIL:
+			return TableVI.super.getAllListAtVI(plugin, orderByColumn, desc, whereColumn, whereObject);
 		}
 		return null;
 	}

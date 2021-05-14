@@ -6,59 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.objects.chat.ItemJson;
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
+import main.java.me.avankziar.scc.bungee.database.MysqlHandler.QueryType;
 
 public interface TableIV
 {
-	default boolean existIV(SimpleChatChannels plugin, String whereColumn, Object... object) 
-	{
-		PreparedStatement preparedStatement = null;
-		ResultSet result = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		if (conn != null) 
-		{
-			try 
-			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameIV 
-						+ "` WHERE "+whereColumn+" LIMIT 1";
-		        preparedStatement = conn.prepareStatement(sql);
-		        int i = 1;
-		        for(Object o : object)
-		        {
-		        	preparedStatement.setObject(i, o);
-		        	i++;
-		        }
-		        
-		        result = preparedStatement.executeQuery();
-		        while (result.next()) 
-		        {
-		        	return true;
-		        }
-		    } catch (SQLException e) 
-			{
-				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
-				  e.printStackTrace();
-		    } finally 
-			{
-		    	  try 
-		    	  {
-		    		  if (result != null) 
-		    		  {
-		    			  result.close();
-		    		  }
-		    		  if (preparedStatement != null) 
-		    		  {
-		    			  preparedStatement.close();
-		    		  }
-		    	  } catch (Exception e) {
-		    		  e.printStackTrace();
-		    	  }
-		      }
-		}
-		return false;
-	}
-	
 	default boolean createIV(SimpleChatChannels plugin, Object object) 
 	{
 		if(!(object instanceof ItemJson))
@@ -81,7 +35,8 @@ public interface TableIV
 		        preparedStatement.setString(4, cu.getJsonString());
 		        preparedStatement.setString(5, cu.getBase64Data());
 		        
-		        preparedStatement.executeUpdate();
+		        int i = preparedStatement.executeUpdate();
+		        MysqlHandler.addRows(QueryType.INSERT, i);
 		        return true;
 		    } catch (SQLException e) 
 			{
@@ -138,7 +93,8 @@ public interface TableIV
 		        	i++;
 		        }
 				
-				preparedStatement.executeUpdate();
+				int u = preparedStatement.executeUpdate();
+				MysqlHandler.addRows(QueryType.UPDATE, u);
 				return true;
 			} catch (SQLException e) {
 				SimpleChatChannels.log.warning("Error: " + e.getMessage());
@@ -177,6 +133,7 @@ public interface TableIV
 		        }
 		        
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        while (result.next()) 
 		        {
 		        	return new ItemJson(
@@ -210,132 +167,6 @@ public interface TableIV
 		return null;
 	}
 	
-	default boolean deleteDataIV(SimpleChatChannels plugin, String whereColumn, Object... whereObject)
-	{
-		PreparedStatement preparedStatement = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		try 
-		{
-			String sql = "DELETE FROM `" + plugin.getMysqlHandler().tableNameIV + "` WHERE "+whereColumn;
-			preparedStatement = conn.prepareStatement(sql);
-			int i = 1;
-	        for(Object o : whereObject)
-	        {
-	        	preparedStatement.setObject(i, o);
-	        	i++;
-	        }
-			preparedStatement.execute();
-			return true;
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
-		} finally 
-		{
-			try {
-				if (preparedStatement != null) 
-				{
-					preparedStatement.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-	
-	default int lastIDIV(SimpleChatChannels plugin)
-	{
-		PreparedStatement preparedStatement = null;
-		ResultSet result = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		if (conn != null) 
-		{
-			try 
-			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameIV + "` ORDER BY `id` DESC LIMIT 1";
-		        preparedStatement = conn.prepareStatement(sql);
-		        
-		        result = preparedStatement.executeQuery();
-		        while(result.next())
-		        {
-		        	return result.getInt("id");
-		        }
-		    } catch (SQLException e) 
-			{
-		    	e.printStackTrace();
-		    	return 0;
-		    } finally 
-			{
-		    	  try 
-		    	  {
-		    		  if (result != null) 
-		    		  {
-		    			  result.close();
-		    		  }
-		    		  if (preparedStatement != null) 
-		    		  {
-		    			  preparedStatement.close();
-		    		  }
-		    	  } catch (Exception e) 
-		    	  {
-		    		  e.printStackTrace();
-		    	  }
-		      }
-		}
-		return 0;
-	}
-	
-	default int countWhereIDIV(SimpleChatChannels plugin, String whereColumn, Object... whereObject)
-	{
-		PreparedStatement preparedStatement = null;
-		ResultSet result = null;
-		Connection conn = plugin.getMysqlSetup().getConnection();
-		if (conn != null) 
-		{
-			try 
-			{			
-				String sql = "SELECT `id` FROM `" + plugin.getMysqlHandler().tableNameIV
-						+ "` WHERE "+whereColumn
-						+ " ORDER BY `id` DESC";
-		        preparedStatement = conn.prepareStatement(sql);
-		        int i = 1;
-		        for(Object o : whereObject)
-		        {
-		        	preparedStatement.setObject(i, o);
-		        	i++;
-		        }
-		        result = preparedStatement.executeQuery();
-		        int count = 0;
-		        while(result.next())
-		        {
-		        	count++;
-		        }
-		        return count;
-		    } catch (SQLException e) 
-			{
-		    	e.printStackTrace();
-		    	return 0;
-		    } finally 
-			{
-		    	  try 
-		    	  {
-		    		  if (result != null) 
-		    		  {
-		    			  result.close();
-		    		  }
-		    		  if (preparedStatement != null) 
-		    		  {
-		    			  preparedStatement.close();
-		    		  }
-		    	  } catch (Exception e) 
-		    	  {
-		    		  e.printStackTrace();
-		    	  }
-		      }
-		}
-		return 0;
-	}
-	
 	default ArrayList<ItemJson> getListIV(SimpleChatChannels plugin, String orderByColumn,
 			int start, int end, String whereColumn, Object...whereObject)
 	{
@@ -356,6 +187,7 @@ public interface TableIV
 		        	i++;
 		        }
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        ArrayList<ItemJson> list = new ArrayList<ItemJson>();
 		        while (result.next()) 
 		        {
@@ -406,6 +238,7 @@ public interface TableIV
 		        preparedStatement = conn.prepareStatement(sql);
 		        
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        ArrayList<ItemJson> list = new ArrayList<ItemJson>();
 		        while (result.next()) 
 		        {
@@ -470,6 +303,7 @@ public interface TableIV
 		        	i++;
 		        }
 		        result = preparedStatement.executeQuery();
+		        MysqlHandler.addRows(QueryType.READ, result.getMetaData().getColumnCount());
 		        ArrayList<ItemJson> list = new ArrayList<ItemJson>();
 		        while (result.next()) 
 		        {

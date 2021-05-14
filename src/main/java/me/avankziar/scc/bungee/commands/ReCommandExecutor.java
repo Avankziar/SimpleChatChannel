@@ -55,9 +55,10 @@ public class ReCommandExecutor extends Command
 			{
 				message += " ";
 			}
+			i++;
 		}
 		ChatHandler ch = new ChatHandler(plugin);
-		if(ch.prePreCheck(player, message))
+		if(!ch.prePreCheck(player, message))
 		{
 			return;
 		}
