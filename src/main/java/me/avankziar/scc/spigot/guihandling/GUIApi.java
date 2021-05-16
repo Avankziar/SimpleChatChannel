@@ -71,6 +71,94 @@ public class GUIApi
 		this.inventoryIdentifier = inventoryIdentifier;
 	}
 	
+	public static ItemStack recreate(ItemStack itemstack, String pluginName, String inventoryIdentifier, 
+			String function, SettingsLevel settingsLevel, boolean clickEventCancel,
+			LinkedHashMap<String, Entry<Type, Object>> values)
+	{
+		SimpleChatChannels plugin = SimpleChatChannels.getPlugin();
+		ItemStack i = itemstack.clone();
+		ItemMeta im = i.getItemMeta();
+		PersistentDataContainer pdc = im.getPersistentDataContainer();
+		pdc.set(new NamespacedKey(plugin, PLUGINNAME), PersistentDataType.STRING, pluginName);
+		pdc.set(new NamespacedKey(plugin, INVENTORYIDENTIFIER), PersistentDataType.STRING, inventoryIdentifier);
+		pdc.set(new NamespacedKey(plugin, CLICKEVENTCANCEL), PersistentDataType.STRING, String.valueOf(clickEventCancel));
+		pdc.set(new NamespacedKey(plugin, FUNCTION), PersistentDataType.STRING, function);
+		pdc.set(new NamespacedKey(plugin, SETTINGLEVEL), PersistentDataType.STRING, settingsLevel.getName());
+		if(values != null)
+		{
+			for(String key : values.keySet())
+			{
+				Entry<Type, Object> value = values.get(key);
+				String fullkey = key+":::"+value.getKey();
+				switch(value.getKey())
+				{
+				case BYTE:
+					if(value.getValue() instanceof Byte)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.BYTE, (Byte) value.getValue());
+					}
+					break;
+				case BYTE_ARRAY:
+					if(value.getValue() instanceof byte[])
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.BYTE_ARRAY, (byte[]) value.getValue());
+					}
+					break;
+				case DOUBLE:
+					if(value.getValue() instanceof Double)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.DOUBLE, (Double) value.getValue());
+					}
+					break;
+				case FLOAT:
+					if(value.getValue() instanceof Float)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.FLOAT, (Float) value.getValue());
+					}
+					break;
+				case INTEGER:
+					if(value.getValue() instanceof Integer)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.INTEGER, (Integer) value.getValue());
+					}
+					break;
+				case INTEGER_ARRAY: 
+					if(value.getValue() instanceof int[])
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.INTEGER_ARRAY, (int[]) value.getValue());
+					}
+					break;
+				case LONG:
+					if(value.getValue() instanceof Long)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.LONG, (Long) value.getValue());
+					}
+					break;
+				case LONG_ARRAY:
+					if(value.getValue() instanceof long[])
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.LONG_ARRAY, (long[]) value.getValue());
+					}
+					break;
+				case SHORT:
+					if(value.getValue() instanceof Short)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.SHORT, (Short) value.getValue());
+					}
+					break;
+				case STRING:
+					if(value.getValue() instanceof String)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.STRING, (String) value.getValue());
+					}
+					break;
+				}
+			}
+		}
+		i.setItemMeta(im);
+		return i;
+	}
+	
 	public void add(int slot, ItemStack itemstack, String function, SettingsLevel settingsLevel, boolean clickEventCancel,
 			LinkedHashMap<String, Entry<Type, Object>> values)
 	{
@@ -83,72 +171,75 @@ public class GUIApi
 		pdc.set(new NamespacedKey(plugin, CLICKEVENTCANCEL), PersistentDataType.STRING, String.valueOf(clickEventCancel));
 		pdc.set(new NamespacedKey(plugin, FUNCTION), PersistentDataType.STRING, function);
 		pdc.set(new NamespacedKey(plugin, SETTINGLEVEL), PersistentDataType.STRING, settingsLevel.getName());
-		for(String key : values.keySet())
+		if(values != null)
 		{
-			Entry<Type, Object> value = values.get(key);
-			String fullkey = key+":::"+value.getKey();
-			switch(value.getKey())
+			for(String key : values.keySet())
 			{
-			case BYTE:
-				if(value.getValue() instanceof Byte)
+				Entry<Type, Object> value = values.get(key);
+				String fullkey = key+":::"+value.getKey();
+				switch(value.getKey())
 				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.BYTE, (Byte) value.getValue());
+				case BYTE:
+					if(value.getValue() instanceof Byte)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.BYTE, (Byte) value.getValue());
+					}
+					break;
+				case BYTE_ARRAY:
+					if(value.getValue() instanceof byte[])
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.BYTE_ARRAY, (byte[]) value.getValue());
+					}
+					break;
+				case DOUBLE:
+					if(value.getValue() instanceof Double)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.DOUBLE, (Double) value.getValue());
+					}
+					break;
+				case FLOAT:
+					if(value.getValue() instanceof Float)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.FLOAT, (Float) value.getValue());
+					}
+					break;
+				case INTEGER:
+					if(value.getValue() instanceof Integer)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.INTEGER, (Integer) value.getValue());
+					}
+					break;
+				case INTEGER_ARRAY: 
+					if(value.getValue() instanceof int[])
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.INTEGER_ARRAY, (int[]) value.getValue());
+					}
+					break;
+				case LONG:
+					if(value.getValue() instanceof Long)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.LONG, (Long) value.getValue());
+					}
+					break;
+				case LONG_ARRAY:
+					if(value.getValue() instanceof long[])
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.LONG_ARRAY, (long[]) value.getValue());
+					}
+					break;
+				case SHORT:
+					if(value.getValue() instanceof Short)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.SHORT, (Short) value.getValue());
+					}
+					break;
+				case STRING:
+					if(value.getValue() instanceof String)
+					{
+						pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.STRING, (String) value.getValue());
+					}
+					break;
 				}
-				break;
-			case BYTE_ARRAY:
-				if(value.getValue() instanceof byte[])
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.BYTE_ARRAY, (byte[]) value.getValue());
-				}
-				break;
-			case DOUBLE:
-				if(value.getValue() instanceof Double)
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.DOUBLE, (Double) value.getValue());
-				}
-				break;
-			case FLOAT:
-				if(value.getValue() instanceof Float)
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.FLOAT, (Float) value.getValue());
-				}
-				break;
-			case INTEGER:
-				if(value.getValue() instanceof Integer)
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.INTEGER, (Integer) value.getValue());
-				}
-				break;
-			case INTEGER_ARRAY: 
-				if(value.getValue() instanceof int[])
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.INTEGER_ARRAY, (int[]) value.getValue());
-				}
-				break;
-			case LONG:
-				if(value.getValue() instanceof Long)
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.LONG, (Long) value.getValue());
-				}
-				break;
-			case LONG_ARRAY:
-				if(value.getValue() instanceof long[])
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.LONG_ARRAY, (long[]) value.getValue());
-				}
-				break;
-			case SHORT:
-				if(value.getValue() instanceof Short)
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.SHORT, (Short) value.getValue());
-				}
-				break;
-			case STRING:
-				if(value.getValue() instanceof String)
-				{
-					pdc.set(new NamespacedKey(plugin, fullkey), PersistentDataType.STRING, (String) value.getValue());
-				}
-				break;
 			}
 		}
 		i.setItemMeta(im);

@@ -394,6 +394,10 @@ public class YamlManager
 		String path = "scc_";
 		String basePermission = "scc.cmd.scc";
 		//INFO:Argument Start
+		argumentInput(path+"book", "book", basePermission,
+				"/scc book <Itemname>", "/scc book ",
+				"&c/scc book <Itemname> &f| Öffnet das Buch vom ItemReplacer.",
+				"&c/scc book <Itemname> &f| Open the book from ItemReplacer.");
 		argumentInput(path+"broadcast", "broadcast", basePermission,
 				"/scc broadcast <message...>", "/scc broadcast ",
 				"&c/scc broadcast <Nachricht> &f| Zum Senden einer Broadcast Nachricht. Falls Bungeecord aktiviert ist, kann man auch von Spigot als Console, bungeecordübergreifend dies an alle Spieler senden.",
@@ -737,6 +741,10 @@ public class YamlManager
 	
 	public void initLanguage() //INFO:Languages
 	{
+		languageKeys.put("GeneralError",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cGenereller Fehler!",
+						"&cGeneral Error!"}));
 		languageKeys.put("InputIsWrong",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDeine Eingabe ist fehlerhaft! Klicke hier auf den Text, um weitere Infos zu bekommen!",
@@ -1036,8 +1044,8 @@ public class YamlManager
 		//Book
 		languageKeys.put("CmdScc.Book.IsNotABook"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDas Item ist kein lesbares Buch!",
-						"&cThe item is not a readable book!"}));
+						"&cDas Item ist kein signiertes Buch!",
+						"&cThe item is not a signed book!"}));
 		//Broadcast
 		languageKeys.put("CmdScc.Broadcast.Intro"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1063,8 +1071,8 @@ public class YamlManager
 		
 		languageKeys.put("CmdScc.ChannelGui.InvTitle"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&c%player% &eChannels",
-						"&c%player% &eChannels"}));
+						"§c%player% §eChannels",
+						"§c%player% §eChannels"}));
 		//Ignore
 		languageKeys.put("CmdScc.Ignore.Active"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1149,8 +1157,8 @@ public class YamlManager
 		//ItemReplacer
 		languageKeys.put("CmdScc.Item.InvTitle"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&c%player% &eReplacer &6Items",
-						"&c%player% &eReplacer &6Items"}));
+						"§c%player% §eReplacer §6Items",
+						"§c%player% §eReplacer §6Items"}));
 		languageKeys.put("CmdScc.Item.YouCannotSaveItems"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDu kannst keine Items vorspeicher!",
@@ -1320,8 +1328,8 @@ public class YamlManager
 		//Invite
 		languageKeys.put("CmdScc.PermanentChannel.Invite.Cooldown"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDu hast schon in der letzten Zeit jemanden eingeladen! Bitte warte etwas bis zur nächsten Einladung!",
-						"&cYou have already invited someone in the last time! Please wait a little until the next invitation!"}));
+						"&cDu hast schon in der letzten Zeit jemanden eingeladen! Bitte warte bis %time%, um die nächsten Einladung zu verschicken!",
+						"&cYou have already invited someone in the last time! Please wait until %time% to send the next invitation!"}));
 		languageKeys.put("CmdScc.PermanentChannel.Invite.SendInvite"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eDu hast den Spieler &6%target% &ein den &5Perma&fnenten &eChannel &r%channel% &r&aeingeladen.",
@@ -1705,6 +1713,10 @@ public class YamlManager
 				"proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.",
 				"hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.",
 				"nether;&cNether;/warp nether;&cDie Hölle"}));
+		channelsKeys.put("private.WorldConverter"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.",
+				"nether;&cNether;/warp nether;&cDie Hölle"}));
 		channelsKeys.put("private.UseColor"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				false}));
@@ -1782,6 +1794,10 @@ public class YamlManager
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.",
 				"hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.",
+				"nether;&cNether;/warp nether;&cDie Hölle"}));
+		channelsKeys.put("permanent.WorldConverter"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.",
 				"nether;&cNether;/warp nether;&cDie Hölle"}));
 		channelsKeys.put("permanent.UseColor"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
@@ -1866,6 +1882,10 @@ public class YamlManager
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.",
 				"hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.",
+				"nether;&cNether;/warp nether;&cDie Hölle"}));
+		channelsKeys.put("temporary.WorldConverter"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.",
 				"nether;&cNether;/warp nether;&cDie Hölle"}));
 		channelsKeys.put("temporary.UseColor"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
@@ -1957,6 +1977,10 @@ public class YamlManager
 				"proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.",
 				"hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.",
 				"nether;&cNether;/warp nether;&cDie Hölle"}));
+		channelsKeys.put("global.WorldConverter"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.",
+				"nether;&cNether;/warp nether;&cDie Hölle"}));
 		channelsKeys.put("global.UseColor"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
@@ -2030,7 +2054,7 @@ public class YamlManager
 		CHANNELS
 	}
 	
-	private void setSlot(GuiType type, String identifier, int slot, String function,
+	private void setSlot(GuiType type, int slot, String function,
 			SettingsLevel settingLevel, org.bukkit.Material material, int amount, String urlTexture,
 			String displaynameGER, String displaynameENG,
 			String[] itemflag, String[] enchantments, String[] lore)
@@ -2038,86 +2062,80 @@ public class YamlManager
 		if(guiKeys.containsKey(type.toString()))
 		{
 			LinkedHashMap<String, Language> gui = guiKeys.get(type.toString());
-			gui.put(identifier+"."+settingLevel.getName()+".Slot"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					slot}));
-			gui.put(identifier+"."+settingLevel.getName()+".Name"
+			gui.put(slot+"."+settingLevel.getName()+".Name"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 					displaynameGER,
 					displaynameENG}));
-			gui.put(identifier+"."+settingLevel.getName()+".Function"
+			gui.put(slot+"."+settingLevel.getName()+".Function"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					function}));
-			gui.put(identifier+"."+settingLevel.getName()+".Material"
+			gui.put(slot+"."+settingLevel.getName()+".Material"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					material.toString()}));
-			gui.put(identifier+"."+settingLevel.getName()+".Amount"
+			gui.put(slot+"."+settingLevel.getName()+".Amount"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					amount}));
 			if(urlTexture != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".PlayerHeadTexture"
+				gui.put(slot+"."+settingLevel.getName()+".PlayerHeadTexture"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					urlTexture}));
 			}
 			if(itemflag != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".Itemflag"
+				gui.put(slot+"."+settingLevel.getName()+".Itemflag"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						itemflag}));
 			}
 			if(enchantments != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".Enchantments"
+				gui.put(slot+"."+settingLevel.getName()+".Enchantments"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						enchantments}));
 			}
 			if(lore != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".Lore"
+				gui.put(slot+"."+settingLevel.getName()+".Lore"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, lore));
 			}
 			guiKeys.replace(type.toString(), gui);
 		} else
 		{
 			LinkedHashMap<String, Language> gui = new LinkedHashMap<>();
-			gui.put(identifier+"."+settingLevel.getName()+".Slot"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					slot}));
-			gui.put(identifier+"."+settingLevel.getName()+".Name"
+			gui.put(slot+"."+settingLevel.getName()+".Name"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 					displaynameGER,
 					displaynameENG}));
-			gui.put(identifier+"."+settingLevel.getName()+".Function"
+			gui.put(slot+"."+settingLevel.getName()+".Function"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					function}));
-			gui.put(identifier+"."+settingLevel.getName()+".Material"
+			gui.put(slot+"."+settingLevel.getName()+".Material"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					material.toString()}));
-			gui.put(identifier+"."+settingLevel.getName()+".Amount"
+			gui.put(slot+"."+settingLevel.getName()+".Amount"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					amount}));
 			if(urlTexture != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".PlayerHeadTexture"
+				gui.put(slot+"."+settingLevel.getName()+".PlayerHeadTexture"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					urlTexture}));
 			}
 			if(itemflag != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".Itemflag"
+				gui.put(slot+"."+settingLevel.getName()+".Itemflag"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						itemflag}));
 			}
 			if(enchantments != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".Enchantments"
+				gui.put(slot+"."+settingLevel.getName()+".Enchantments"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						enchantments}));
 			}
 			if(lore != null)
 			{
-				gui.put(identifier+"."+settingLevel.getName()+".Lore"
+				gui.put(slot+"."+settingLevel.getName()+".Lore"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, lore));
 			}
 			guiKeys.put(type.toString(), gui);
@@ -2139,7 +2157,7 @@ public class YamlManager
 	
 	public void initGuis() //INFO:Guis
 	{
-		setSlot(GuiType.CHANNELS, GuiValues.CHANNELGUI_INVENTORY, 22, GuiValues.CHANNELGUI_FUNCTION+":Private",
+		setSlot(GuiType.CHANNELS, 22, GuiValues.CHANNELGUI_FUNCTION+":Private",
 				SettingsLevel.NOLEVEL, org.bukkit.Material.PAPER, 1,
 				null,
 				"&ePrivatChat: %boolean%",

@@ -1,6 +1,7 @@
 package main.java.me.avankziar.scc.bungee.listener;
 
 import java.util.LinkedHashMap;
+import java.util.logging.Level;
 
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
@@ -34,6 +35,7 @@ public class ChatListener implements Listener
 		}
 		if(event.getMessage().startsWith("/"))
 		{
+			plugin.getLogger().log(Level.INFO, event.getMessage());
 			return;
 		}
 		ProxiedPlayer player = (ProxiedPlayer) event.getSender();		

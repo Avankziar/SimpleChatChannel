@@ -3,11 +3,13 @@ package main.java.me.avankziar.scc.spigot.guihandling;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
@@ -42,6 +44,7 @@ public class GuiListener implements Listener
 		}
 		Inventory inv = event.getEvent().getView().getTopInventory();
 		ItemStack clicked = event.getEvent().getCurrentItem().clone();
+		ItemStack iij = event.getEvent().getCurrentItem().clone();
 		Player player = (Player) event.getEvent().getWhoClicked();
 		if(InventarHandler.isSimilarShort(clicked, inv.getContents()))
 		{
@@ -53,13 +56,26 @@ public class GuiListener implements Listener
 			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdAsh.InventoryClick.InventoryFull")));
 			return;
 		}
+		clicked = GUIApi.recreate(clicked, GuiValues.PLUGINNAME, GuiValues.ITEM_REPLACER_INVENTORY,
+				GuiValues.ITEM_REPLACER_FUNCTION, GUIApi.SettingsLevel.NOLEVEL, true, null);
 		inv.addItem(clicked);
+		int count = plugin.getMysqlHandler().lastID(Type.ITEMJSON)+1;
+		String name = "";
+		if(iij.getType() == Material.WRITTEN_BOOK
+				&& iij.getItemMeta() instanceof BookMeta)
+		{
+			BookMeta bm = (BookMeta) iij.getItemMeta();
+			name = bm.getTitle();
+		} else
+		{
+			name = (iij.hasItemMeta()) ? 
+					((iij.getItemMeta().hasDisplayName()) ? iij.getItemMeta().getDisplayName() : iij.getType().toString())
+					: iij.getType().toString();
+		}
 		ItemJson ij = new ItemJson(player.getUniqueId().toString(), 
-				String.valueOf(event.getEvent().getSlot()),
-				(clicked.hasItemMeta()) ? 
-				((clicked.getItemMeta().hasDisplayName()) ? clicked.getItemMeta().getDisplayName() : clicked.getType().toString())
-				: clicked.getType().toString(), 
-				plugin.getUtility().convertItemStackToJson(clicked), plugin.getUtility().toBase64itemStack(clicked));
+				String.valueOf(count),
+				name, 
+				plugin.getUtility().convertItemStackToJson(iij), plugin.getUtility().toBase64itemStack(iij));
 		plugin.getMysqlHandler().create(Type.ITEMJSON, ij);
 	}
 	

@@ -173,7 +173,7 @@ public class SimpleChatChannels extends JavaPlugin
 		log.info(" ╚══════╝ ╚═════╝ ╚═════╝ | LoadBefore: "+plugin.getDescription().getLoadBefore().toString());
 		
 		yamlHandler = new YamlHandler(this);
-		utility = new Utility();
+		utility = new Utility(plugin);
 		
 		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
 		{
@@ -188,9 +188,9 @@ public class SimpleChatChannels extends JavaPlugin
 		PluginSettings.initSettings(plugin);
 		ChatHandler.initPrivateChatColors();
 		setupPlayers();
-		setupBstats();
 		setupChannels();
 		setupChatTitles();
+		setupEmojis();
 		backgroundtask = new BackgroundTask(this);
 		setupStrings();
 		setupCommandTree();
@@ -316,7 +316,7 @@ public class SimpleChatChannels extends JavaPlugin
 		PluginSettings.settings.addCommands(KeyHandler.SCC_IGNORE, ignore.getCommandString());
 		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1, false,  null);
 		
-		ArgumentConstructor item_rename = new ArgumentConstructor(baseCommandI+"_item_rename", 1, 4, 4, false, null);
+		ArgumentConstructor item_rename = new ArgumentConstructor(baseCommandI+"_item_rename", 1, 3, 3, false, null);
 		ArgumentConstructor item_replacers = new ArgumentConstructor(baseCommandI+"_item_replacers", 1, 1, 1, false, null);
 		ArgumentConstructor item = new ArgumentConstructor(baseCommandI+"_item", 0, 0, 0, false, null, 
 				item_rename, item_replacers);
@@ -374,7 +374,7 @@ public class SimpleChatChannels extends JavaPlugin
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban);
 		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
-				broadcast, channel, channelgui,
+				book, broadcast, channel, channelgui,
 				ignore, ignorelist, 
 				item,
 				mute, option, performance, unmute, updateplayer,
@@ -485,7 +485,7 @@ public class SimpleChatChannels extends JavaPlugin
 		new ARGItem_Rename(plugin, item_rename);
 		new ARGItem_Replacers(plugin, item_replacers);
 		
-		if(!PluginSettings.settings.isBungee() && plugin.getYamlHandler().getConfig().getBoolean("Use.Mail", true))
+		if(plugin.getYamlHandler().getConfig().getBoolean("Use.Mail", true))
 		{			
 			//INFO:Mail
 			ArgumentConstructor mail_lastmails = new ArgumentConstructor(baseCommandVIII+"_lastmails", 0, 0, 2, false, null);
@@ -731,6 +731,27 @@ public class SimpleChatChannels extends JavaPlugin
 					serverHoverMap.put(split[0], split[3]);
 				}
 			}
+			LinkedHashMap<String, String> worldReplacerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> worldCommandMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> worldHoverMap = new LinkedHashMap<>();
+			if(cha.get(key+".WorldConverter") != null)
+			{
+				for(String s : cha.getStringList(key+".WorldConverter"))
+				{
+					if(!s.contains(";"))
+					{
+						continue;
+					}
+					String[] split = s.split(";");
+					if(split.length != 4)
+					{
+						continue;
+					}
+					worldReplacerMap.put(split[0], split[1]);
+					worldCommandMap.put(split[0], split[2]);
+					worldHoverMap.put(split[0], split[3]);
+				}
+			}
 			Channel c = new Channel(
 					cha.getString(key+".UniqueIdentifierName"),
 					cha.getString(key+".Symbol"),
@@ -752,6 +773,7 @@ public class SimpleChatChannels extends JavaPlugin
 					cha.getString(key+".SeperatorBetweenSuffix", ""),
 					cha.getString(key+".MentionSound", "ENTITY_WANDERING_TRADER_REAPPEARED"),
 					serverReplacerMap, serverCommandMap, serverHoverMap,
+					worldReplacerMap, worldCommandMap, serverHoverMap,
 					cha.getBoolean(key+".UseColor", false),
 					cha.getBoolean(key+".UseItemReplacer", false),
 					cha.getBoolean(key+".UseBookReplacer", false),

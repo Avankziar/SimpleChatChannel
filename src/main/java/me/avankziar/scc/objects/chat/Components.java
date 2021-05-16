@@ -36,6 +36,7 @@ public class Components
 	{
 		getComponents().addAll(components.getComponents());
 		getComponentsWithMentions().addAll(components.getComponentsWithMentions());
+		this.mentionPlayers.addAll(components.mentionPlayers);
 		return this;
 	}
 	public Components addAllComponents(BaseComponent bc)
@@ -63,6 +64,7 @@ public class Components
 	public Components addComponents(Components components)
 	{
 		getComponents().addAll(components.getComponents());
+		this.mentionPlayers.addAll(components.mentionPlayers);
 		return this;
 	}
 	
@@ -75,6 +77,7 @@ public class Components
 	public Components addComponentsWithMentions(Components components)
 	{
 		getComponentsWithMentions().addAll(components.getComponentsWithMentions());
+		this.mentionPlayers.addAll(components.mentionPlayers);
 		return this;
 	}
 	

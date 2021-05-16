@@ -41,7 +41,6 @@ public class ServerListener implements Listener
         }
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
         String task = in.readUTF();
-        
         if(task.equals(StaticValues.SCC_TASK_LOCATIONUPDATE))
         {
         	String uuid = in.readUTF();
@@ -61,10 +60,11 @@ public class ServerListener implements Listener
         	return;
         } else if(task.equals(StaticValues.SCC_TASK_BROADCAST))
         {
+        	System.out.println("3");
         	String uuid = in.readUTF();
         	String message = in.readUTF();
         	ChatHandler ch = new ChatHandler(plugin);
-        	Channel usedChannel = SimpleChatChannels.channels.get(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
+        	Channel usedChannel = plugin.getChannel(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
     		if(usedChannel == null)
     		{
     			return;

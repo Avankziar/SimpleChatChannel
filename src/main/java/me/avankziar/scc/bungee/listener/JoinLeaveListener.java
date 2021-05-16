@@ -9,6 +9,7 @@ import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
+import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
 import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
 import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
@@ -16,7 +17,6 @@ import main.java.me.avankziar.scc.objects.ChatUser;
 import main.java.me.avankziar.scc.objects.KeyHandler;
 import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
 import main.java.me.avankziar.scc.objects.chat.UsedChannel;
-import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -25,11 +25,13 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.event.EventHandler;
 
 public class JoinLeaveListener implements Listener
 {
 	private SimpleChatChannels plugin;
+	private LinkedHashMap<String, ScheduledTask> map = new LinkedHashMap<>();
 	
 	public JoinLeaveListener(SimpleChatChannels plugin)
 	{
@@ -46,7 +48,7 @@ public class JoinLeaveListener implements Listener
 		/*
 		 * Player check and init
 		 */
-		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
+		ScheduledTask task = plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
 		{
 			@Override
 			public void run() 
@@ -132,8 +134,11 @@ public class JoinLeaveListener implements Listener
 							HoverEvent.Action.SHOW_TEXT,
 							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
 				}
+				map.get(pn).cancel();
+				map.remove(pn);
 			}
-		}, 2L, TimeUnit.SECONDS);
+		}, 3L, 1L, TimeUnit.SECONDS);
+		map.put(pn, task);
 	}
 	
 	@EventHandler

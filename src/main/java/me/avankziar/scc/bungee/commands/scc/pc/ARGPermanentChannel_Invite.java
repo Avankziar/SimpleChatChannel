@@ -6,6 +6,7 @@ import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
+import main.java.me.avankziar.scc.handlers.TimeHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.KeyHandler;
 import main.java.me.avankziar.scc.objects.PermanentChannel;
@@ -45,9 +46,11 @@ public class ARGPermanentChannel_Invite extends ArgumentModule
 					.replace("%channel%", cc.getName())));
 			return;
 		}
-		if(inviteCooldown.containsKey(player) && System.currentTimeMillis()<inviteCooldown.get(player))
+		if(inviteCooldown.containsKey(player) && System.currentTimeMillis() < inviteCooldown.get(player))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Invite.Cooldown")));
+			
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Invite.Cooldown")
+					.replace("%time%", TimeHandler.getDateTime(inviteCooldown.get(player)))));
 			return;
 		}
 		String t = args[2];

@@ -8,6 +8,7 @@ public class Channel
 	{
 		TIME("%time%"), TIMES("%times%"),
 		SERVER("%server%"), OTHER_SERVER("%other_server%"),
+		WORLD("%world%"), OTHER_WORLD("%other_world%"),
 		NEWLINE("%newline%"),
 		
 		CHANNEL("%channel%"),
@@ -139,6 +140,12 @@ public class Channel
 	
 	private LinkedHashMap<String, String> serverHoverMap;
 	
+    private LinkedHashMap<String, String> worldReplacerMap;
+	
+	private LinkedHashMap<String, String> worldCommandMap;
+	
+	private LinkedHashMap<String, String> worldHoverMap;
+	
 	private boolean useColor;
 	
 	private boolean useItemReplacer;
@@ -164,7 +171,8 @@ public class Channel
 			String timeColor, String playernameCustomColor, String otherplayernameCustomColor,
 			String seperatorBetweenPrefix, String seperatorBetweenSuffix, String mentionSound,
 			LinkedHashMap<String, String> serverReplacerMap, LinkedHashMap<String, String> serverCommandMap,
-			LinkedHashMap<String, String> serverHoverMap,
+			LinkedHashMap<String, String> serverHoverMap, LinkedHashMap<String, String> worldReplacerMap, 
+			LinkedHashMap<String, String> worldCommandMap, LinkedHashMap<String, String> worldHoverMap,
 			boolean useColor, boolean useItemReplacer, boolean useBookReplacer, boolean useRunCommandReplacer,
 			boolean useSuggestCommandReplacer, boolean useWebsiteReplacer,
 			boolean useEmojiReplacer, boolean useMentionReplacer, boolean usePositionReplacer)
@@ -191,6 +199,9 @@ public class Channel
 		setServerReplacerMap(serverReplacerMap);
 		setServerCommandMap(serverCommandMap);
 		setServerHoverMap(serverHoverMap);
+		setWorldReplacerMap(worldReplacerMap);
+		setWorldCommandMap(worldCommandMap);
+		setWorldHoverMap(worldHoverMap);
 		setUseColor(useColor);
 		setUseItemReplacer(useItemReplacer);
 		setUseBookReplacer(useBookReplacer);
@@ -420,6 +431,36 @@ public class Channel
 	public void setServerHoverMap(LinkedHashMap<String, String> serverHoverMap)
 	{
 		this.serverHoverMap = serverHoverMap;
+	}
+
+	public LinkedHashMap<String, String> getWorldReplacerMap()
+	{
+		return worldReplacerMap;
+	}
+
+	public void setWorldReplacerMap(LinkedHashMap<String, String> worldReplacerMap)
+	{
+		this.worldReplacerMap = worldReplacerMap;
+	}
+
+	public LinkedHashMap<String, String> getWorldCommandMap()
+	{
+		return worldCommandMap;
+	}
+
+	public void setWorldCommandMap(LinkedHashMap<String, String> worldCommandMap)
+	{
+		this.worldCommandMap = worldCommandMap;
+	}
+
+	public LinkedHashMap<String, String> getWorldHoverMap()
+	{
+		return worldHoverMap;
+	}
+
+	public void setWorldHoverMap(LinkedHashMap<String, String> worldHoverMap)
+	{
+		this.worldHoverMap = worldHoverMap;
 	}
 
 	public boolean isUseColor()

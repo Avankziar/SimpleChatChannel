@@ -43,7 +43,7 @@ public class ARGItem_Replacers extends ArgumentModule
 		for(int i = 0; i < list.size(); i++)
 		{
 			ItemJson ij = list.get(i);
-			abc.add(ChatApi.apiChatItem(ij.getItemDisplayName(), null, null, ij.getJsonString()));
+			abc.add(ChatApi.apiChatItem("<"+ij.getItemName()+"&r>|"+ij.getItemDisplayName(), null, null, ij.getJsonString()));
 			if(i < (list.size()-1))
 			{
 				abc.add(ChatApi.tctl(" "));

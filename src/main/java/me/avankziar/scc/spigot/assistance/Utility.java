@@ -41,6 +41,11 @@ public class Utility
 	private static SimpleChatChannels plugin;
 	public static ArrayList<String> onlineplayers = new ArrayList<>();
 	public static LinkedHashMap<String, LinkedHashMap<String, UsedChannel>> playerUsedChannels = new LinkedHashMap<>();
+	
+	public Utility(SimpleChatChannels plugin)
+	{
+		Utility.plugin = plugin;
+	}
 	/*public static LinkedHashMap<String, String> item = new LinkedHashMap<>(); //Playeruuid, ItemJason
 	public static LinkedHashMap<String, String> itemname = new LinkedHashMap<>(); //Playeruuid, Itemname
 	
@@ -74,12 +79,7 @@ public class Utility
 	PERMPERMA = "",
 	PERMTEMP = "";
 	
-	public Utility(SimpleChatChannels plugin)
-	{
-		Utility.plugin = plugin;
-		loadUtility();
-		setPermissions();
-	}
+	
 	
 	public boolean loadUtility()
 	{

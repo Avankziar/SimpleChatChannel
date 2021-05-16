@@ -26,6 +26,7 @@ public class ServerListener  implements PluginMessageListener
 	{
 		if(channel.equals(StaticValues.SCC_TOSPIGOT)) 
 		{
+			
         	ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
             DataInputStream in = new DataInputStream(stream);
             String task = null;
@@ -47,6 +48,22 @@ public class ServerListener  implements PluginMessageListener
             			return;
             		}
                 	new ChatHandler(plugin).sendMentionPing(mention, sound);
+            	} else if(task.equals(StaticValues.SCC_TASK_ARG))
+            	{
+            		String uuids = in.readUTF();
+            		String cmd = in.readUTF();
+            		int argAmount = in.readInt();
+            		String runCmd = "/"+cmd+" ";
+            		for(int i = 0; i < argAmount; i++)
+            		{
+            			String s = in.readUTF();
+            			runCmd += s+" ";
+            		}
+            		Player runPlayer = plugin.getServer().getPlayer(UUID.fromString(uuids));
+            		if(runPlayer != null)
+            		{
+            			runPlayer.chat(runCmd);
+            		}
             	}
             } catch (IOException e) 
             {

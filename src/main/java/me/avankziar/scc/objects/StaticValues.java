@@ -8,4 +8,5 @@ public class StaticValues
 	public final static String SCC_TASK_PINGAPLAYER = "pingaplayer";
 	public final static String SCC_TASK_BROADCAST = "broadcast";
 	public final static String SCC_TASK_MYSQLPERFORMANCE = "mysqlperformance";
+	public final static String SCC_TASK_ARG = "task_arg";
 }

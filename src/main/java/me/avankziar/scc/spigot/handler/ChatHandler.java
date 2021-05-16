@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -1033,6 +1034,72 @@ public class ChatHandler
 					ClickEvent.Action.SUGGEST_COMMAND, cmd,
 					HoverEvent.Action.SHOW_TEXT, hover);
 			return components.addAllComponents(tc);
+		case WORLD:
+			if(isNotConsole)
+			{
+				String world = "";
+				if(!ChatListener.playerLocation.containsKey(player.getUniqueId().toString()))
+				{
+					world = "not found";
+				}
+				world = ChatListener.playerLocation.get(player.getUniqueId().toString()).getWordName();
+				String worldReplacer = "";
+				cmd = "";
+				hover = "";
+				if(usedChannel.getWorldReplacerMap().containsKey(world))
+				{
+					serverReplacer = usedChannel.getWorldReplacerMap().get(world);
+				}
+				if(usedChannel.getWorldCommandMap().containsKey(world))
+				{
+					cmd = usedChannel.getWorldCommandMap().get(world);
+				}
+				if(usedChannel.getWorldHoverMap().containsKey(world))
+				{
+					hover = usedChannel.getWorldHoverMap().get(world);
+				}
+				tc = ChatApi.apiChat(worldReplacer,
+						ClickEvent.Action.SUGGEST_COMMAND, cmd,
+						HoverEvent.Action.SHOW_TEXT, hover);
+				return components.addAllComponents(tc);
+			} else
+			{
+				tc = ChatApi.tc("");
+				return components.addAllComponents(tc);
+			}
+		case OTHER_WORLD:
+			if(otherplayer != null)
+			{
+				String world = "";
+				if(!ChatListener.playerLocation.containsKey(player.getUniqueId().toString()))
+				{
+					world = "not found";
+				}
+				world = ChatListener.playerLocation.get(player.getUniqueId().toString()).getWordName();
+				String worldReplacer = "";
+				cmd = "";
+				hover = "";
+				if(usedChannel.getWorldReplacerMap().containsKey(world))
+				{
+					serverReplacer = usedChannel.getWorldReplacerMap().get(world);
+				}
+				if(usedChannel.getWorldCommandMap().containsKey(world))
+				{
+					cmd = usedChannel.getWorldCommandMap().get(world);
+				}
+				if(usedChannel.getWorldHoverMap().containsKey(world))
+				{
+					hover = usedChannel.getWorldHoverMap().get(world);
+				}
+				tc = ChatApi.apiChat(worldReplacer,
+						ClickEvent.Action.SUGGEST_COMMAND, cmd,
+						HoverEvent.Action.SHOW_TEXT, hover);
+				return components.addAllComponents(tc);
+			} else
+			{
+				tc = ChatApi.tc("");
+				return components.addAllComponents(tc);
+			}
 		case TIME:
 			tc = ChatApi.tctl(usedChannel.getTimeColor()+TimeHandler.getTime(System.currentTimeMillis()));
 			return components.addAllComponents(tc);
@@ -1119,56 +1186,59 @@ public class ChatHandler
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Start"))
 					&& f.endsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.End")))
 			{
-				if(!isNotConsole || (usedChannel.isUseBookReplacer() && player.hasPermission(BypassPermission.USE_ITEM))
-					|| player.hasPermission(BypassPermission.USE_BOOK_BYPASS))
-				{
-					/*
-					 * Substring the start and end from the itemname.
-					 */
-					String itemname = f.substring(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Start").length(),
-							f.length()-plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.End").length());
-					String owner = "server";
-					if(isNotConsole)
-					{
-						owner = player.getUniqueId().toString();
-					}
-					if(f.contains(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Seperator")))
+				if(!isNotConsole || (usedChannel.isUseBookReplacer() && player.hasPermission(BypassPermission.USE_BOOK))
+						|| player.hasPermission(BypassPermission.USE_BOOK_BYPASS))
 					{
 						/*
-						 * ChatItemReplacer from the Database, with a specified Name.
+						 * Substring the start and end from the itemname.
 						 */
-						itemname = itemname.substring(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Seperator").length());
-					} else
-					{
-						/*
-						 * ChatItemReplacer from the Database, with null name. Aka default.
-						 */
-						itemname = "default";
+						String itemname = f.substring(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Start").length(),
+								f.length()-plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.End").length());
+						String owner = "server";
+						String own = "server";
+						if(isNotConsole)
+						{
+							owner = player.getUniqueId().toString();
+							own = Utility.convertUUIDToName(owner);
+						}
+						if(f.contains(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Seperator")))
+						{
+							/*
+							 * ChatItemReplacer from the Database, with a specified Name.
+							 */
+							itemname = itemname.substring(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Seperator").length());
+						} else
+						{
+							/*
+							 * ChatItemReplacer from the Database, with null name. Aka default.
+							 */
+							itemname = "default";
+						}
+						ItemJson ij = (ItemJson) plugin.getMysqlHandler().getData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
+								owner, itemname);
+						TextComponent tc = null;
+						if(ij == null || own == null)
+						{
+							tc = ChatApi.hoverEvent("&r"+itemname,
+									HoverEvent.Action.SHOW_TEXT, 
+									plugin.getYamlHandler().getLang().getString("ChatListener.ItemIsMissing"));
+						} else
+						{
+							
+							tc = ChatApi.tctl(ij.getItemDisplayName());
+							tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+									PluginSettings.settings.getCommands(KeyHandler.SCC_BOOK)+itemname+" "+own));
+							tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
+											new BaseComponent[]{new TextComponent(ij.getJsonString())}));
+						}
+						components.addAllComponents(tc);
+						if(count < function.length)
+						{
+							TextComponent tc2 = ChatApi.tc(" ");
+							components.addAllComponents(tc2);
+						}
+						continue;
 					}
-					ItemJson ij = (ItemJson) plugin.getMysqlHandler().getData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
-							owner, itemname);
-					TextComponent tc = null;
-					if(ij == null)
-					{
-						tc = ChatApi.hoverEvent("&r"+itemname,
-								HoverEvent.Action.SHOW_TEXT, 
-								plugin.getYamlHandler().getLang().getString("ChatListener.ItemIsMissing"));
-					} else
-					{
-						tc = ChatApi.tctl(ij.getItemDisplayName());
-						tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
-								PluginSettings.settings.getCommands(KeyHandler.SCC_BOOK)+itemname+" "+owner));
-						tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, 
-										new BaseComponent[]{new TextComponent(ij.getJsonString())}));
-					}
-					components.addAllComponents(tc);
-					if(count < function.length)
-					{
-						TextComponent tc2 = ChatApi.tc(" ");
-						components.addAllComponents(tc2);
-					}
-					continue;
-				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
 					.getString("ChatReplacer.Command.RunCommandStart")))
 			{
@@ -1618,6 +1688,7 @@ public class ChatHandler
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
+		plugin.getLogger().log(Level.INFO, txc2.toLegacyText());
 		ArrayList<String> sendedPlayer = new ArrayList<>();
 		for(Player toMessage : plugin.getServer().getOnlinePlayers())
 		{
@@ -1671,7 +1742,7 @@ public class ChatHandler
 					continue;
 				}
 			}
-			if(components.isMention(player.getName()))
+			if(components.isMention(toMessage.getName()))
 			{
 				toMessage.spigot().sendMessage(txc2);
 				if(toMessage.hasPermission(BypassPermission.USE_SOUND))
@@ -1693,6 +1764,7 @@ public class ChatHandler
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
+		plugin.getLogger().log(Level.INFO, txc2.toLegacyText());
 		ArrayList<String> sendedPlayer = new ArrayList<>();
 		/*
 		 * Use the player the channel?
@@ -1730,10 +1802,6 @@ public class ChatHandler
 		{
 			player.spigot().sendMessage(txc1);
 		}
-		if(player.hasPermission(BypassPermission.USE_SOUND))
-		{
-			sendMentionPing(player, usedChannel.getMentionSound());
-		}
 		sendedPlayer.add(player.getUniqueId().toString());
 		if(components.isMention(other.getName()))
 		{
@@ -1762,6 +1830,7 @@ public class ChatHandler
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
+		plugin.getLogger().log(Level.INFO, txc2.toLegacyText());
 		if(components.isMention(other.getName()))
 		{
 			other.spigot().sendMessage(txc2);
@@ -1788,13 +1857,7 @@ public class ChatHandler
 			{
 				continue;
 			}
-			if(components.isMention(spy.getName()))
-			{
-				spy.spigot().sendMessage(txc2);
-			} else
-			{
-				spy.spigot().sendMessage(txc1);
-			}
+			spy.spigot().sendMessage(txc1);
 		}
 	}
 	
@@ -1802,7 +1865,7 @@ public class ChatHandler
 	{
 		player.playSound(player.getLocation(),
 				Sound.valueOf(sound), 
-				0.5F,
+				3.0F,
 				0.5F);
 	}
 }

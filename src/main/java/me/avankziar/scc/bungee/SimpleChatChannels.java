@@ -21,10 +21,15 @@ import main.java.me.avankziar.scc.bungee.commands.WCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.mail.ARGLastMails;
 import main.java.me.avankziar.scc.bungee.commands.mail.ARGRead;
 import main.java.me.avankziar.scc.bungee.commands.mail.ARGSend;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGBook;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcast;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannel;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannelGui;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGIgnore;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGIgnoreList;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGItem;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGItem_Rename;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGItem_Replacers;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGMute;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGOption_Channel;
@@ -179,9 +184,6 @@ public class SimpleChatChannels extends Plugin
 		setupCommandTree();
 		ListenerSetup();
 		setupBstats();
-		setupChannels();
-		setupChatTitles();
-		setupEmojis();
 		BypassPermission.init(plugin);
 	}
 	
@@ -310,7 +312,7 @@ public class SimpleChatChannels extends Plugin
 		PluginSettings.settings.addCommands(KeyHandler.SCC_IGNORE, ignore.getCommandString());
 		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1,false,  null);
 		
-		ArgumentConstructor item_rename = new ArgumentConstructor(baseCommandI+"_item_rename", 1, 4, 4, false, null);
+		ArgumentConstructor item_rename = new ArgumentConstructor(baseCommandI+"_item_rename", 1, 3, 3, false, null);
 		ArgumentConstructor item_replacers = new ArgumentConstructor(baseCommandI+"_item_replacers", 1, 1, 1, false, null);
 		ArgumentConstructor item = new ArgumentConstructor(baseCommandI+"_item", 0, 0, 0, false, null, 
 				item_rename, item_replacers);
@@ -368,7 +370,7 @@ public class SimpleChatChannels extends Plugin
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban);
 		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
-				broadcast, channel, channelgui,
+				book, broadcast, channel, channelgui,
 				ignore, ignorelist, item, mute, performance, pc, option, tc, unmute, updateplayer
 				);
 		
@@ -407,12 +409,18 @@ public class SimpleChatChannels extends Plugin
 				clch, //scceditor, 
 				msg, re, r, w);
 		
+		new ARGBook(plugin, book, scc.getName());
 		new ARGBroadcast(plugin, broadcast);
 		
 		new ARGChannel(plugin, channel);
+		new ARGChannelGui(plugin, channelgui, scc.getName());
 		
 		new ARGIgnore(plugin, ignore);
 		new ARGIgnoreList(plugin, ignorelist);
+		
+		new ARGItem(plugin, item, scc.getName());
+		new ARGItem_Rename(plugin, item_rename, scc.getName());
+		new ARGItem_Replacers(plugin, item_replacers, scc.getName());
 		
 		new ARGMute(plugin, mute);
 		new ARGUnmute(plugin, unmute);
@@ -665,6 +673,27 @@ public class SimpleChatChannels extends Plugin
 					serverHoverMap.put(split[0], split[3]);
 				}
 			}
+			LinkedHashMap<String, String> worldReplacerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> worldCommandMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> worldHoverMap = new LinkedHashMap<>();
+			if(cha.get(key+".WorldConverter") != null)
+			{
+				for(String s : cha.getStringList(key+".WorldConverter"))
+				{
+					if(!s.contains(";"))
+					{
+						continue;
+					}
+					String[] split = s.split(";");
+					if(split.length != 4)
+					{
+						continue;
+					}
+					worldReplacerMap.put(split[0], split[1]);
+					worldCommandMap.put(split[0], split[2]);
+					worldHoverMap.put(split[0], split[3]);
+				}
+			}
 			Channel c = new Channel(
 					cha.getString(key+".UniqueIdentifierName"),
 					cha.getString(key+".Symbol"),
@@ -686,6 +715,7 @@ public class SimpleChatChannels extends Plugin
 					cha.getString(key+".SeperatorBetweenSuffix", ""),
 					cha.getString(key+".MentionSound", "ENTITY_WANDERING_TRADER_REAPPEARED"),
 					serverReplacerMap, serverCommandMap, serverHoverMap,
+					worldReplacerMap, worldCommandMap, serverHoverMap,
 					cha.getBoolean(key+".UseColor", false),
 					cha.getBoolean(key+".UseItemReplacer", false),
 					cha.getBoolean(key+".UseBookReplacer", false),

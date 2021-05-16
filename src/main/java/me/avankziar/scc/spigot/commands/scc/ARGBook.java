@@ -43,8 +43,13 @@ public class ARGBook extends ArgumentModule
 		}
 		ItemJson ij = (ItemJson) plugin.getMysqlHandler().getData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
 				owner, bookname);
+		if(ij == null)
+		{
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdScc.Book.IsNotABook")));
+			return;
+		}
 		ItemStack is = plugin.getUtility().fromBase64itemStack(ij.getBase64Data());
-		if(is == null || (is.getType() != Material.WRITABLE_BOOK && is.getType() != Material.WRITTEN_BOOK))
+		if(is == null || is.getType() != Material.WRITTEN_BOOK)
 		{
 			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdScc.Book.IsNotABook")));
 			return;

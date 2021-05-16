@@ -1,5 +1,8 @@
 package main.java.me.avankziar.scc.bungee.assistance;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,6 +20,7 @@ import main.java.me.avankziar.scc.objects.ChatUser;
 import main.java.me.avankziar.scc.objects.KeyHandler;
 import main.java.me.avankziar.scc.objects.PermanentChannel;
 import main.java.me.avankziar.scc.objects.ServerLocation;
+import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.objects.chat.Channel;
 import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
 import main.java.me.avankziar.scc.objects.chat.UsedChannel;
@@ -673,6 +677,25 @@ public class Utility
 	}*/
 	
 	//--------------------------------------Ab hier ist nützlich TODO
+	
+	public void sendToSpigot(ProxiedPlayer player, int argsAmount , String cmd, String...objects)
+	{
+		ByteArrayOutputStream streamout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(streamout);
+        try {
+        	out.writeUTF(StaticValues.SCC_TASK_ARG);
+			out.writeUTF(player.getUniqueId().toString());
+			out.writeUTF(cmd);
+			out.writeInt(argsAmount);
+			for(String o : objects)
+			{
+				out.writeUTF(o);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        player.getServer().getInfo().sendData(StaticValues.SCC_TOSPIGOT, streamout.toByteArray());
+	}
 	
 	public String removeColor(String msg)
 	{

@@ -43,7 +43,7 @@ public class ARGBroadcast extends ArgumentModule
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(stream);
 	        try {
-				out.writeUTF(StaticValues.SCC_TASK_LOCATIONUPDATE);
+				out.writeUTF(StaticValues.SCC_TASK_BROADCAST);
 				out.writeUTF((sender instanceof Player) ? ((Player) sender).getUniqueId().toString() : "Console");
 				out.writeUTF(message);
 			} catch (IOException e) {
@@ -62,7 +62,6 @@ public class ARGBroadcast extends ArgumentModule
 		Channel usedChannel = SimpleChatChannels.channels.get(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
 		if(usedChannel == null)
 		{
-			
 			sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.UsedChannelForBroadCastDontExist")));
 			return;
 		}

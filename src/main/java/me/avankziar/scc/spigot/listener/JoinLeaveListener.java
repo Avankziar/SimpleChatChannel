@@ -39,10 +39,6 @@ public class JoinLeaveListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event)
 	{
-		if(PluginSettings.settings.isBungee())
-		{
-			return;
-		}
 		Player player = event.getPlayer();
 		String pn = player.getName();
 		final boolean firsttimejoin = !plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
@@ -84,7 +80,10 @@ public class JoinLeaveListener implements Listener
 				}
 			}
 		}
-		
+		if(PluginSettings.settings.isBungee())
+		{
+			return;
+		}
 		if(cu.isOptionChannelMessage())
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));

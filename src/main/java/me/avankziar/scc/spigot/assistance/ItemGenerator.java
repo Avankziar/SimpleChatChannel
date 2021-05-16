@@ -54,7 +54,7 @@ public class ItemGenerator
 		{
 			return null;
 		}
-		String name = "";
+		String name = itm.getString(ID+"."+settingLevel.getName()+".Name");
 		im.setDisplayName(ChatApi.tl(replace(name, channel)));
 		ArrayList<String> itf = null;
 		if(itm.getStringList(ID+"."+settingLevel.getName()+".Itemflag") != null)
@@ -123,10 +123,16 @@ public class ItemGenerator
 	
 	public static String replace(String s, Boolean channel) throws IOException
 	{
-		String st = "";
+		String st = s;
 		if(channel != null)
 		{
-			st.replace("%boolean%", getActiveTerm(channel));
+			if(channel)
+			{
+				st = st.replace("%boolean%", SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.ActiveTerm"));
+			} else
+			{
+				st = st.replace("%boolean%", SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.DeactiveTerm"));
+			}
 		}
 		return st;
 	}
@@ -161,10 +167,12 @@ public class ItemGenerator
 	{
 		if(boo)
 		{
-			return SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("Gui.ActiveTerm");
+			String s = SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.ActiveTerm");
+			return s;
 		} else
 		{
-			return SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("Gui.DeactiveTerm");
+			String s = SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.DeactiveTerm");
+			return s;
 		}
 	}
 	
