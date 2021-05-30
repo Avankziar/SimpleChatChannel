@@ -13,6 +13,7 @@ Future =========================================================================
 - Spieler direkt und per Zeiteinheit löschen. (Spieler die länger x Tage nicht da sind).
   
 Build 40 ==================================================================================================
+- +Config wert für Joinnachrichten machen, der den Default mysql wert vorgibt.
 - +Spam Schutz. Einmal durch einen Zeitinterval und einmal durch die Prüfung, ob es die gleiche Nachricht ist.
 - +Dynamische Channel
 - +Dynamische ChatTitel (Pre- und Suffix)

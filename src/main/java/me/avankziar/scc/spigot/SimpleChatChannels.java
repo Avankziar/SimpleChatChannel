@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -96,6 +97,7 @@ import main.java.me.avankziar.scc.spigot.database.YamlHandler;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiListener;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiPreListener;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.ifh.MessageToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.listener.ChatListener;
 import main.java.me.avankziar.scc.spigot.listener.JoinLeaveListener;
 import main.java.me.avankziar.scc.spigot.listener.LocationUpdateListener;
@@ -116,6 +118,8 @@ public class SimpleChatChannels extends JavaPlugin
 	private static MysqlHandler mysqlHandler;
 	private static BackgroundTask backgroundtask;
 	private static Utility utility;
+	
+	private static MessageToBungeeAPI mtb;
 	
 	public ArrayList<String> editorplayers = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<>();
@@ -197,6 +201,7 @@ public class SimpleChatChannels extends JavaPlugin
 		ListenerSetup();		
 		BypassPermission.init(plugin);
 		setupBstats();
+		setupIFH();
 	}
 	
 	public void onDisable()
@@ -844,6 +849,21 @@ public class SimpleChatChannels extends JavaPlugin
 					+ plugin.getYamlHandler().getConfig().getString("ChatReplacer.Emoji.End");
 			ChatHandler.emojiList.put(emoji, yamlHandler.getEmojis().getString(e));
 		}
+	}
+	
+	private void setupIFH()
+	{      
+        if (plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
+		{
+			mtb = new MessageToBungeeAPI();
+            plugin.getServer().getServicesManager().register(
+            		main.java.me.avankziar.interfacehub.spigot.interfaces.MessageToBungee.class,
+            		mtb,
+            		this,
+                    ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub. Hooking!");
+            return;
+        }
 	}
 	
 	public void setupBstats()

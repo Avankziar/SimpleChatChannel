@@ -809,11 +809,9 @@ public class Utility
 	
 	public ChatUser controlUsedChannels(ProxiedPlayer player)
 	{
-		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(), "", 0L, 0L, false, true, System.currentTimeMillis(), true,
-				new ServerLocation(player
-						.getServer()
-						.getInfo()
-						.getName(), "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
+		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(),
+				"", 0L, 0L, false, true, System.currentTimeMillis(), plugin.getYamlHandler().getConfig().getBoolean("JoinMessageDefaultValue"),
+				new ServerLocation("", "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
 		if(!plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString()))
 		{

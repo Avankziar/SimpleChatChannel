@@ -1,13 +1,21 @@
 package main.java.me.avankziar.scc.spigot.commands;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.UUID;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.spigot.assistance.Utility;
 import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 
 public class WCommandExecutor implements CommandExecutor
 {
@@ -33,8 +41,8 @@ public class WCommandExecutor implements CommandExecutor
 			return false;
 		}
 		String otherPlayer = args[0];
-		Player other = plugin.getServer().getPlayer(otherPlayer);
-		if(other == null)
+		UUID uuid = Utility.convertNameToUUID(otherPlayer);
+		if(uuid == null)
 		{
 			return false;
 		}
@@ -47,9 +55,38 @@ public class WCommandExecutor implements CommandExecutor
 			{
 				message += " ";
 			}
+			i++;
 		}
-		ChatHandler ch = new ChatHandler(plugin);
-		ch.startPrivateConsoleChat(sender, other, message);
-		return true;
+		if(PluginSettings.settings.isBungee())
+		{
+			for(Player all : plugin.getServer().getOnlinePlayers())
+			{
+				if(all != null)
+				{
+					ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			        DataOutputStream out = new DataOutputStream(stream);
+			        try {
+						out.writeUTF(StaticValues.SCC_TASK_W);
+						out.writeUTF(uuid.toString());
+						out.writeUTF(message);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			        all.sendPluginMessage(SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+					break;
+				}
+			}
+			return true;
+		} else
+		{
+			Player other = plugin.getServer().getPlayer(otherPlayer);
+			if(other == null)
+			{
+				return false;
+			}
+			ChatHandler ch = new ChatHandler(plugin);
+			ch.startPrivateConsoleChat(sender, other, message);
+			return true;
+		}		
 	}
 }

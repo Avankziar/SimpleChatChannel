@@ -71,6 +71,10 @@ public class GuiPreListener implements Listener
 	
 	private void getUpperGuiEvent(InventoryClickEvent event)
 	{
+		if(event.getCurrentItem() == null)
+		{
+			return;
+		}
 		ItemStack i = event.getCurrentItem().clone();
 		SimpleChatChannels plugin = SimpleChatChannels.getPlugin();
 		NamespacedKey npluginName = new NamespacedKey(plugin, GUIApi.PLUGINNAME);

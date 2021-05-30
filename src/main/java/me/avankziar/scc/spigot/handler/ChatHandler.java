@@ -356,7 +356,7 @@ public class ChatHandler
 		if(SimpleChatChannels.rePlayers.containsKey(player.getUniqueId().toString()))
 		{
 			ArrayList<String> relist = SimpleChatChannels.rePlayers.get(player.getUniqueId().toString());
-			if(!relist.contains(other.getName()))
+			if(!relist.contains(other.getUniqueId().toString()))
 			{
 				relist.add(other.getName());
 				SimpleChatChannels.rePlayers.replace(player.getUniqueId().toString(), relist);
@@ -367,12 +367,13 @@ public class ChatHandler
 			relist.add(other.getName());
 			SimpleChatChannels.rePlayers.put(player.getUniqueId().toString(), relist);
 		}
+		
 		if(SimpleChatChannels.rPlayers.containsKey(player.getUniqueId().toString()))
 		{
-			SimpleChatChannels.rPlayers.replace(player.getUniqueId().toString(), other.getName());
+			SimpleChatChannels.rPlayers.replace(player.getUniqueId().toString(), other.getUniqueId().toString());
 		} else
 		{
-			SimpleChatChannels.rPlayers.put(player.getUniqueId().toString(), other.getName());
+			SimpleChatChannels.rPlayers.put(player.getUniqueId().toString(), other.getUniqueId().toString());
 		}
 	}
 	
@@ -1426,8 +1427,14 @@ public class ChatHandler
 			 * Color Handling, if nothing is correct
 			 */
 			boolean canColor = false;
-			if((usedChannel.isUseColor() && player.hasPermission(BypassPermission.USE_COLOR))
-					|| player.hasPermission(BypassPermission.USE_COLOR_BYPASS))
+			if(isNotConsole)
+			{
+				if((usedChannel.isUseColor() && player.hasPermission(BypassPermission.USE_COLOR))
+						|| player.hasPermission(BypassPermission.USE_COLOR_BYPASS))
+				{
+					canColor = true;
+				}
+			} else
 			{
 				canColor = true;
 			}
@@ -1436,12 +1443,12 @@ public class ChatHandler
 			int i = 0;
 			while(i < string.length())
 			{
-				if(i == 0 && string.charAt(i) != '&')
+				if(i == 0 && (string.charAt(i) != '&') || string.charAt(i) != '§')
 				{
 					s += lastColor;
 				}
 				char c = string.charAt(i);
-				if(c == '&')
+				if(c == '&' || c == '§')
 				{
 					if(string.length() > (i+1))
 					{
@@ -1810,7 +1817,8 @@ public class ChatHandler
 		{
 			other.spigot().sendMessage(txc1);
 		}
-		if(other.hasPermission(BypassPermission.USE_SOUND))
+		if(plugin.getYamlHandler().getConfig().getBoolean("MsgSoundUsage") &&
+				other.hasPermission(BypassPermission.USE_SOUND))
 		{
 			sendMentionPing(other, usedChannel.getMentionSound());
 		}
@@ -1838,7 +1846,8 @@ public class ChatHandler
 		{
 			other.spigot().sendMessage(txc1);
 		}
-		if(other.hasPermission(BypassPermission.USE_SOUND))
+		if(plugin.getYamlHandler().getConfig().getBoolean("MsgSoundUsage") &&
+				other.hasPermission(BypassPermission.USE_SOUND))
 		{
 			sendMentionPing(other, usedChannel.getMentionSound());
 		}

@@ -279,6 +279,12 @@ public class YamlManager
 		configKeys.put("CleanUp.DeleteReadedMailWhichIsOlderThanDays"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				120}));
+		configKeys.put("MsgSoundUsage"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
+		configKeys.put("JoinMessageDefaultValue"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
 		configKeys.put("Mail.UseChannelForMessageParser"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"Global"}));
@@ -1122,8 +1128,12 @@ public class YamlManager
 						"&eThe &f%player%&ecan talk again."}));
 		languageKeys.put("CmdScc.Performance.Headline"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&e=====&7[&cScc MysqlPerformance &f<%time%>&7]&e=====",
-						"&e=====&7[&cScc MysqlPerformance &f<%time%>&7]&e====="}));
+						"&e=====&7[&cScc MySQLPerformance&7]&e=====",
+						"&e=====&7[&cScc MysqlPerformance&7]&e====="}));
+		languageKeys.put("CmdScc.Performance.Subline"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eZeitraum von &f%begin% &ebis &f%end%",
+						"&eTime &f%begin% &etoo &f%end%"}));
 		languageKeys.put("CmdScc.Performance.Text"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&4%server% &e>> &6Inserts:&f%insert% &bUpdates:&f%update% &cDeletes:&f%delete% &eReads:&f%read%",

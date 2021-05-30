@@ -1,8 +1,11 @@
 package main.java.me.avankziar.scc.bungee.listener;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
@@ -10,6 +13,7 @@ import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler.QueryType;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
+import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.ServerLocation;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.objects.chat.Channel;
@@ -60,7 +64,6 @@ public class ServerListener implements Listener
         	return;
         } else if(task.equals(StaticValues.SCC_TASK_BROADCAST))
         {
-        	System.out.println("3");
         	String uuid = in.readUTF();
         	String message = in.readUTF();
         	ChatHandler ch = new ChatHandler(plugin);
@@ -78,6 +81,15 @@ public class ServerListener implements Listener
         		ProxiedPlayer player = plugin.getProxy().getPlayer(UUID.fromString(uuid));
         		ch.sendBroadCast(player, usedChannel, message);
         	}
+        } else if(task.equals(StaticValues.SCC_TASK_W))
+        {
+        	String uuid = in.readUTF();
+        	String message = in.readUTF();
+        	ChatHandler ch = new ChatHandler(plugin);
+    		CommandSender console = plugin.getProxy().getConsole();
+    		ProxiedPlayer other = plugin.getProxy().getPlayer(UUID.fromString(uuid));
+    		ch.startPrivateConsoleChat(console, other, message);
+    		return;
         } else if(task.equals(StaticValues.SCC_TASK_MYSQLPERFORMANCE))
         {
         	String server = in.readUTF();
@@ -131,6 +143,169 @@ public class ServerListener implements Listener
         		map.put(QueryType.READ, reads);
         		MysqlHandler.serverPerformance.put(server, map);
         	}
+        } else if(task.equals(StaticValues.MTBS))
+        {
+        	String uuid = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	send(uuid, false, null, false, false, null, msg);
+        } else if(task.equals(StaticValues.MTBSS))
+        {
+        	String uuid = in.readUTF();
+        	String sound = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	send(uuid, true, sound, false, false, null, msg);
+        } else if(task.equals(StaticValues.MTBM))
+        {
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, false, null, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.MTBMS))
+        {
+        	String sound = in.readUTF();
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, true, sound, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.MTBMP))
+        {
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, false, null, true, hasPermission, permission, msg);
+        	}
+        } else if(task.equals(StaticValues.MTBMSP))
+        {
+        	String sound = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        	}
+        } else if(task.equals(StaticValues.MTBA))
+        {
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, false, null, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.MTBAS))
+        {
+        	String sound = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, true, sound, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.MTBAP))
+        {
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, false, null, true, hasPermission, permission, msg);
+        	}
+        } else if(task.equals(StaticValues.MTBASP))
+        {
+        	String sound = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        	}
         }
+	}
+	
+	private ArrayList<String> getMessages(DataInputStream in) throws IOException
+	{
+		int lenght = in.readInt();
+    	ArrayList<String> list = new ArrayList<>();
+    	for(int i = 0; i < lenght; i++)
+    	{
+    		list.add(in.readUTF());
+    	}
+    	return list;
+	}
+	
+	private ArrayList<String> getUUIDs(DataInputStream in) throws IOException
+	{
+		int size = in.readInt();
+		ArrayList<String> uuids = new ArrayList<>();
+    	for(int i = 0; i < size; i++)
+    	{
+    		uuids.add(in.readUTF());
+    	}
+    	return uuids;
+	}
+	
+	private void send(String uuid, boolean sound, String sounds, boolean perm, boolean hasPermission, String permission, ArrayList<String> msg)
+	{
+		UUID u = UUID.fromString(uuid);
+		if(u == null)
+		{
+			return;
+		}
+		ProxiedPlayer player = plugin.getProxy().getPlayer(u);
+		if(player == null)
+		{
+			return;
+		}
+		if(perm)
+		{
+			if(hasPermission)
+			{
+				//The player must have the perm, to continue!
+				if(!player.hasPermission(permission))
+				{
+					return;
+				}
+			} else
+			{
+				//The player must not have the perm, to continue!
+				if(player.hasPermission(permission))
+				{
+					return;
+				}
+			}
+		}
+		if(sound)
+		{
+			sendsound(player, uuid, sounds);
+		}
+		for(String s : msg)
+		{
+			player.sendMessage(ChatApi.tctl(s));
+		}
+	}
+	
+	private void sendsound(ProxiedPlayer player, String uuid, String sound)
+	{
+		ByteArrayOutputStream streamout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(streamout);
+        try {
+			out.writeUTF(StaticValues.SENDSOUND);
+			out.writeUTF(uuid);
+			out.writeUTF(sound);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    player.getServer().sendData(StaticValues.SCC_TOSPIGOT, streamout.toByteArray());
 	}
 }

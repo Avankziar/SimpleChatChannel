@@ -33,7 +33,7 @@ public class ChatListener implements Listener
 		Player player = (Player) event.getPlayer();
 		event.setCancelled(true);
 		
-		final String message = event.getMessage().trim();
+		String message = event.getMessage().trim();
 		ChatHandler ch = new ChatHandler(plugin);
 		/*
 		 * PrePreChecks
@@ -58,11 +58,13 @@ public class ChatListener implements Listener
 		if(usedChannel == null && SimpleChatChannels.nullChannel != null)
 		{
 			usedChannel = SimpleChatChannels.nullChannel;
-		} else
+		}
+		if(usedChannel == null)
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.NoChannelIsNullChannel")));
 			return;
 		}
+		message = message.substring(usedChannel.getSymbol().length());
 		ch.startChat(player, usedChannel, message);
 	}
 }

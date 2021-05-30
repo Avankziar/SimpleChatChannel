@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -64,6 +65,26 @@ public class ServerListener  implements PluginMessageListener
             		{
             			runPlayer.chat(runCmd);
             		}
+            	} else if(task.equals(StaticValues.SENDSOUND))
+            	{
+            		String uuids = in.readUTF();
+            		String s = in.readUTF();
+            		Sound sound = Sound.ENTITY_WANDERING_TRADER_REAPPEARED;
+            		try
+            		{
+            			sound = Sound.valueOf(s);
+            		} catch(Exception e){}
+            		UUID uuid = UUID.fromString(uuids);
+            		if(uuid == null)
+            		{
+            			return;
+            		}
+            		Player target = plugin.getServer().getPlayer(uuid);
+            		if(target == null)
+            		{
+            			return;
+            		}
+            		target.playSound(target.getLocation(), sound, 3.0F, 0.5F);
             	}
             } catch (IOException e) 
             {

@@ -824,7 +824,8 @@ public class Utility
 	
 	public ChatUser controlUsedChannels(Player player)
 	{
-		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(), "", 0L, 0L, false, true, System.currentTimeMillis(), true,
+		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(),
+				"", 0L, 0L, false, true, System.currentTimeMillis(), plugin.getYamlHandler().getConfig().getBoolean("JoinMessageDefaultValue"),
 				new ServerLocation(PluginSettings.settings.getServer(), "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
 		if(!plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString()))

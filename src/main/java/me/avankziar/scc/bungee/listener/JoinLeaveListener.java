@@ -67,7 +67,7 @@ public class JoinLeaveListener implements Listener
 				}
 				
 				Utility.playerUsedChannels.put(player.getUniqueId().toString(),	usedChannels);
-				
+				SimpleChatChannels.onlinePlayers.add(player.getName());
 				//Names Aktualisierung
 				if(!cu.getName().equals(pn))
 				{
@@ -147,6 +147,7 @@ public class JoinLeaveListener implements Listener
 		//ADDME:Wenn ein Spieler wegen der Whitelist disconnetet, so soll der hier nicht auftauchen.
 		ProxiedPlayer player = event.getPlayer();
 		String pn = player.getName();
+		SimpleChatChannels.onlinePlayers.remove(player.getName());
 		Utility.playerUsedChannels.remove(player.getUniqueId().toString());
 		
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(pn);

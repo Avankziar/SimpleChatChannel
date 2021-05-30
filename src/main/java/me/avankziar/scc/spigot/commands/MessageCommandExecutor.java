@@ -56,6 +56,7 @@ public class MessageCommandExecutor implements CommandExecutor
 			{
 				message += " ";
 			}
+			i++;
 		}
 		ChatHandler ch = new ChatHandler(plugin);
 		if(!ch.prePreCheck(player, message))
@@ -65,5 +66,4 @@ public class MessageCommandExecutor implements CommandExecutor
 		ch.startPrivateChat(player, other, message);
 		return true;
 	}
-
 }

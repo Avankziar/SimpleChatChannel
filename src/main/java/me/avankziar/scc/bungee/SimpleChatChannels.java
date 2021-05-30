@@ -359,7 +359,7 @@ public class SimpleChatChannels extends Plugin
 		ArgumentConstructor tc_ban = new ArgumentConstructor(baseCommandI+"_tc_ban", 1, 2, 2, false, playerMapII);
 		ArgumentConstructor tc_changepassword = new ArgumentConstructor(baseCommandI+"_tc_changepassword", 1, 2, 2, false, null);
 		ArgumentConstructor tc_create = new ArgumentConstructor(baseCommandI+"_tc_create", 1, 2, 3, false, null);
-		ArgumentConstructor tc_info = new ArgumentConstructor(baseCommandI+"_tc_info", 1, 2, 2, false, null);
+		ArgumentConstructor tc_info = new ArgumentConstructor(baseCommandI+"_tc_info", 1, 1, 1, false, null);
 		ArgumentConstructor tc_invite = new ArgumentConstructor(baseCommandI+"_tc_invite", 2, 2, 2, false, playerMapII);
 		ArgumentConstructor tc_join = new ArgumentConstructor(baseCommandI+"_tc_join", 1, 2, 3, false, tcMap);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_TC_JOIN, tc_join.getCommandString());
