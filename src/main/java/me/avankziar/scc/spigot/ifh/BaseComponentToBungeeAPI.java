@@ -8,19 +8,21 @@ import java.util.UUID;
 
 import org.bukkit.Sound;
 
-import main.java.me.avankziar.interfacehub.spigot.interfaces.MessageToBungee;
+import main.java.me.avankziar.interfacehub.spigot.interfaces.BaseComponentToBungee;
+import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import net.md_5.bungee.api.chat.BaseComponent;
 
-public class MessageToBungeeAPI implements MessageToBungee
-{	
+public class BaseComponentToBungeeAPI implements BaseComponentToBungee
+{
 	@Override
-	public void sendMessage(UUID uuid, String... message)
+	public void sendMessage(UUID uuid, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.MTBS);
+			out.writeUTF(StaticValues.BCTBS);
 			out.writeUTF(uuid.toString());
 			writeMessage(out, message);
 		} catch (IOException e) {
@@ -29,14 +31,14 @@ public class MessageToBungeeAPI implements MessageToBungee
         SimpleChatChannels.getPlugin().getServer().sendPluginMessage(
         		SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
 	}
-	
+
 	@Override
-	public void sendMessage(UUID uuid, Sound sound, String... message)
+	public void sendMessage(UUID uuid, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.MTBSS);
+			out.writeUTF(StaticValues.BCTBSS);
 			out.writeUTF(uuid.toString());
 			out.writeUTF(sound.toString());
 			writeMessage(out, message);
@@ -48,7 +50,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		if(uuids.isEmpty())
 		{
@@ -68,7 +70,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, Sound sound, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		if(uuids.isEmpty())
 		{
@@ -89,7 +91,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		if(uuids.isEmpty())
 		{
@@ -111,7 +113,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, Sound sound, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		if(uuids.isEmpty())
 		{
@@ -134,7 +136,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 	
 	@Override
-	public void sendMessage(String... message)
+	public void sendMessage(ArrayList<ArrayList<BaseComponent>> message)
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
@@ -149,7 +151,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 	
 	@Override
-	public void sendMessage(Sound sound, String... message)
+	public void sendMessage(Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
@@ -165,7 +167,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 	
 	@Override
-	public void sendMessage(String permission, boolean hasPermission, String... message)
+	public void sendMessage(String permission, boolean hasPermission, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
@@ -182,7 +184,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 	
 	@Override
-	public void sendMessage(String permission, boolean hasPermission, Sound sound, String... message)
+	public void sendMessage(String permission, boolean hasPermission, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
@@ -199,11 +201,12 @@ public class MessageToBungeeAPI implements MessageToBungee
         		SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
 	}
 	
-	private void writeMessage(DataOutputStream out, String... message) throws IOException
+	private void writeMessage(DataOutputStream out, ArrayList<ArrayList<BaseComponent>> message) throws IOException 
 	{
-		out.writeInt(message.length);
-		for(String s : message)
+		out.writeInt(message.size());
+		for(ArrayList<BaseComponent> list : message)
 		{
+			String s = ChatApi.serialized(list);
 			out.writeUTF(s);
 		}
 	}

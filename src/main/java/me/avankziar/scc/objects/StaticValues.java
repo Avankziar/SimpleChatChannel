@@ -15,6 +15,19 @@ public class StaticValues
 	public final static String MTBAP = "messagetobungeeallwithpermission";
 	public final static String MTBASP = "messagetobungeeallwithsoundpermission";
 	
+	public final static String BCTBS = "basecomponenttobungeesingle";
+	public final static String BCTBSS = "basecomponenttobungeesinglewithsound";
+	
+	public final static String BCTBM = "basecomponenttobungeemultiple";
+	public final static String BCTBMS = "basecomponenttobungeemultiplewithsound";
+	public final static String BCTBMP = "basecomponenttobungeemultiplewithpermission";
+	public final static String BCTBMSP =  "basecomponenttobungeemultiplewithsoundpermission";
+	
+	public final static String BCTBA = "basecomponenttobungeeall";
+	public final static String BCTBAS = "basecomponenttobungeeallwithsound";
+	public final static String BCTBAP = "basecomponenttobungeeallwithpermission";
+	public final static String BCTBASP = "basecomponenttobungeeallwithsoundpermission";
+	
 	public final static String SENDSOUND = "sendsound";
 	
 	public final static String SCC_TOBUNGEE = "scc:simplechatbungee";

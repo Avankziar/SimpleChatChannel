@@ -138,6 +138,26 @@ public class ChatApi
 		return msg;
 	}
 	
+	public static String serialized(ArrayList<BaseComponent> list)
+	{
+		TextComponent tc = tc("");
+		tc.setExtra(list);
+		return ComponentSerializer.toString(tc);
+	}
+	
+	public static TextComponent deserialized(String json)
+	{
+		BaseComponent[] bc = ComponentSerializer.parse(json);
+		ArrayList<BaseComponent> list = new ArrayList<>();
+		for(BaseComponent b : bc)
+		{
+			list.add(b);
+		}
+		TextComponent tc = tc("");
+		tc.setExtra(list);
+		return tc;
+	}
+	
 	public static TextComponent generateTextComponent(String message)
 	{
 		String idclick = "click";

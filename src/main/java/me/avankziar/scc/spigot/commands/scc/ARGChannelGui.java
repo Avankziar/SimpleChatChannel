@@ -56,8 +56,7 @@ public class ARGChannelGui extends ArgumentModule
 		final SettingsLevel sl = SettingsLevel.NOLEVEL;
 		for(String key : plugin.getYamlHandler().getGui(gt.toString()).getKeys(false))
 		{
-			String[] f = plugin.getYamlHandler().getGui(gt.toString())
-					.getString(key+"."+sl.toString()+".Function").split(":");
+			String[] f = key.split("_");
 			if(f.length != 2)
 			{
 				continue;
@@ -70,8 +69,9 @@ public class ARGChannelGui extends ArgumentModule
 			}
 			ItemStack itemstack = ItemGenerator.create(key, plugin.getYamlHandler().getGui(gt.toString()),
 					gt, false, sl, uc.isUsed());
-			int slot = Integer.parseInt(key);
-			gapi.add(slot, itemstack, GuiValues.CHANNELGUI_FUNCTION+":"+function, sl, true, null);
+			int slot = plugin.getYamlHandler().getGui(gt.toString())
+					.getInt(key+"."+sl.toString()+".Slot");
+			gapi.add(slot, itemstack, GuiValues.CHANNELGUI_FUNCTION+"_"+function, sl, true, null);
 		}
 		GUIApi.addInGui(player.getUniqueId().toString(), GuiValues.CHANNELGUI_INVENTORY);
 		gapi.open(player);

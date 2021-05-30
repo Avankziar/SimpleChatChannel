@@ -2072,80 +2072,80 @@ public class YamlManager
 		if(guiKeys.containsKey(type.toString()))
 		{
 			LinkedHashMap<String, Language> gui = guiKeys.get(type.toString());
-			gui.put(slot+"."+settingLevel.getName()+".Name"
+			gui.put(function+"."+settingLevel.getName()+".Name"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 					displaynameGER,
 					displaynameENG}));
-			gui.put(slot+"."+settingLevel.getName()+".Function"
+			gui.put(function+"."+settingLevel.getName()+".Slot"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					function}));
-			gui.put(slot+"."+settingLevel.getName()+".Material"
+					slot}));
+			gui.put(function+"."+settingLevel.getName()+".Material"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					material.toString()}));
-			gui.put(slot+"."+settingLevel.getName()+".Amount"
+			gui.put(function+"."+settingLevel.getName()+".Amount"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					amount}));
 			if(urlTexture != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".PlayerHeadTexture"
+				gui.put(function+"."+settingLevel.getName()+".PlayerHeadTexture"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					urlTexture}));
 			}
 			if(itemflag != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".Itemflag"
+				gui.put(function+"."+settingLevel.getName()+".Itemflag"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						itemflag}));
 			}
 			if(enchantments != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".Enchantments"
+				gui.put(function+"."+settingLevel.getName()+".Enchantments"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						enchantments}));
 			}
 			if(lore != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".Lore"
+				gui.put(function+"."+settingLevel.getName()+".Lore"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, lore));
 			}
 			guiKeys.replace(type.toString(), gui);
 		} else
 		{
 			LinkedHashMap<String, Language> gui = new LinkedHashMap<>();
-			gui.put(slot+"."+settingLevel.getName()+".Name"
+			gui.put(function+"."+settingLevel.getName()+".Name"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 					displaynameGER,
 					displaynameENG}));
-			gui.put(slot+"."+settingLevel.getName()+".Function"
+			gui.put(function+"."+settingLevel.getName()+".Slot"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					function}));
-			gui.put(slot+"."+settingLevel.getName()+".Material"
+					slot}));
+			gui.put(function+"."+settingLevel.getName()+".Material"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					material.toString()}));
-			gui.put(slot+"."+settingLevel.getName()+".Amount"
+			gui.put(function+"."+settingLevel.getName()+".Amount"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					amount}));
 			if(urlTexture != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".PlayerHeadTexture"
+				gui.put(function+"."+settingLevel.getName()+".PlayerHeadTexture"
 					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 					urlTexture}));
 			}
 			if(itemflag != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".Itemflag"
+				gui.put(function+"."+settingLevel.getName()+".Itemflag"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						itemflag}));
 			}
 			if(enchantments != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".Enchantments"
+				gui.put(function+"."+settingLevel.getName()+".Enchantments"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 						enchantments}));
 			}
 			if(lore != null)
 			{
-				gui.put(slot+"."+settingLevel.getName()+".Lore"
+				gui.put(function+"."+settingLevel.getName()+".Lore"
 						, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, lore));
 			}
 			guiKeys.put(type.toString(), gui);
@@ -2167,7 +2167,7 @@ public class YamlManager
 	
 	public void initGuis() //INFO:Guis
 	{
-		setSlot(GuiType.CHANNELS, 22, GuiValues.CHANNELGUI_FUNCTION+":Private",
+		setSlot(GuiType.CHANNELS, 22, GuiValues.CHANNELGUI_FUNCTION+"_Private",
 				SettingsLevel.NOLEVEL, org.bukkit.Material.PAPER, 1,
 				null,
 				"&ePrivatChat: %boolean%",

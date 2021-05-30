@@ -97,6 +97,7 @@ import main.java.me.avankziar.scc.spigot.database.YamlHandler;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiListener;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiPreListener;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.ifh.BaseComponentToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.ifh.MessageToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.listener.ChatListener;
 import main.java.me.avankziar.scc.spigot.listener.JoinLeaveListener;
@@ -120,6 +121,7 @@ public class SimpleChatChannels extends JavaPlugin
 	private static Utility utility;
 	
 	private static MessageToBungeeAPI mtb;
+	private static BaseComponentToBungeeAPI bctb;
 	
 	public ArrayList<String> editorplayers = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<>();
@@ -861,8 +863,15 @@ public class SimpleChatChannels extends JavaPlugin
             		mtb,
             		this,
                     ServicePriority.Normal);
-            log.info(pluginName + " detected InterfaceHub. Hooking!");
-            return;
+            log.info(pluginName + " detected InterfaceHub. Hooking with MessageToBungee!");
+            
+            bctb = new BaseComponentToBungeeAPI();
+            plugin.getServer().getServicesManager().register(
+            		main.java.me.avankziar.interfacehub.spigot.interfaces.BaseComponentToBungee.class,
+            		bctb,
+            		this,
+                    ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub. Hooking with BaseComponentToBungee!");
         }
 	}
 	

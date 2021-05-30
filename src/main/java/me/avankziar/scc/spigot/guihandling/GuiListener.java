@@ -114,9 +114,9 @@ public class GuiListener implements Listener
 	private void channelGuiHandling(UpperGuiClickEvent event) throws IOException
 	{
 		if(event.getFunction().startsWith(GuiValues.CHANNELGUI_FUNCTION)
-				&& event.getFunction().contains(":"))
+				&& event.getFunction().contains("_"))
 		{
-			String[] f = event.getFunction().split(":");
+			String[] f = event.getFunction().split("_");
 			if(f.length != 2)
 			{
 				return;

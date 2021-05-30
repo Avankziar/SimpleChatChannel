@@ -230,6 +230,93 @@ public class ServerListener implements Listener
         		String uuid = all.getUniqueId().toString();
         		send(uuid, true, sound, true, hasPermission, permission, msg);
         	}
+        } else if(task.equals(StaticValues.BCTBS))
+        {
+        	String uuid = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	send(uuid, false, null, false, false, null, msg);
+        } else if(task.equals(StaticValues.BCTBSS))
+        {
+        	String uuid = in.readUTF();
+        	String sound = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	send(uuid, true, sound, false, false, null, msg);
+        } else if(task.equals(StaticValues.BCTBM))
+        {
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, false, null, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.BCTBMS))
+        {
+        	String sound = in.readUTF();
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, true, sound, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.BCTBMP))
+        {
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, false, null, true, hasPermission, permission, msg);
+        	}
+        } else if(task.equals(StaticValues.BCTBMSP))
+        {
+        	String sound = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> uuids = getUUIDs(in);
+        	ArrayList<String> msg = getMessages(in);
+        	for(String uuid : uuids)
+        	{
+        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        	}
+        } else if(task.equals(StaticValues.BCTBA))
+        {
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, false, null, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.BCTBAS))
+        {
+        	String sound = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, true, sound, false, false, null, msg);
+        	}
+        } else if(task.equals(StaticValues.BCTBAP))
+        {
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, false, null, true, hasPermission, permission, msg);
+        	}
+        } else if(task.equals(StaticValues.BCTBASP))
+        {
+        	String sound = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	String permission = in.readUTF();
+        	ArrayList<String> msg = getMessages(in);
+        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	{
+        		String uuid = all.getUniqueId().toString();
+        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        	}
         }
 	}
 	
