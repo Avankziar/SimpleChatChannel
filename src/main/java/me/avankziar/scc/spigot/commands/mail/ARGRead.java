@@ -37,20 +37,20 @@ public class ARGRead extends ArgumentModule
 		boolean isAdmin = false;
 		if(!MatchApi.isInteger(idstring))
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("NotNumber")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NotNumber")));
 			return;
 		}
 		Mail mail = (Mail) plugin.getMysqlHandler().getData(Type.MAIL, "`id` = ?", Integer.parseInt(idstring));
 		if(mail == null)
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.MailNotExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.MailNotExist")));
 			return;
 		}
 		if(!mail.getReciverUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 		{
 			if(!player.hasPermission(BypassPermission.MAIL_READOTHER))
 			{
-				player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CannotReadOthersMails")));
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CannotReadOthersMails")));
 				return;
 			}
 			isAdmin = true;
@@ -68,16 +68,16 @@ public class ARGRead extends ArgumentModule
 										.getComponents();
 		TextComponent tc = ChatApi.tc("");
 		tc.setExtra(bclist);
-		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Headline")
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Headline")
 				.replace("%id%", String.valueOf(mail.getId())))); //Headline
-		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Sender")
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Sender")
 				.replace("%sender%", mail.getSender()))); //Sender
-		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CC")
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CC")
 				.replace("%cc%", String.join(", ", ccsplit)))); //CC
-		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Subject")
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Subject")
 				.replace("%subject%", mail.getSubject()))); //Subject
 		player.spigot().sendMessage(tc); //Message
-		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Bottomline"))); //Bottomline
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Bottomline"))); //Bottomline
 		if(!isAdmin)
 		{
 			mail.setReadedDate(System.currentTimeMillis());

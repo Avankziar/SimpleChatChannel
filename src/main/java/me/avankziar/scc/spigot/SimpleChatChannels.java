@@ -37,9 +37,12 @@ import main.java.me.avankziar.scc.spigot.commands.MessageCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.RCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.ReCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.SccCommandExecutor;
+import main.java.me.avankziar.scc.spigot.commands.SccEditorCommandExecutor;
 import main.java.me.avankziar.scc.spigot.commands.TABCompletion;
 import main.java.me.avankziar.scc.spigot.commands.WCommandExecutor;
-import main.java.me.avankziar.scc.spigot.commands.mail.ARGLastMails;
+import main.java.me.avankziar.scc.spigot.commands.mail.ARGForward;
+import main.java.me.avankziar.scc.spigot.commands.mail.ARGLastReceivedMails;
+import main.java.me.avankziar.scc.spigot.commands.mail.ARGLastSendedMails;
 import main.java.me.avankziar.scc.spigot.commands.mail.ARGRead;
 import main.java.me.avankziar.scc.spigot.commands.mail.ARGSend;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGBook;
@@ -389,7 +392,7 @@ public class SimpleChatChannels extends JavaPlugin
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
-		//CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
+		CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
 		
 		CommandConstructor msg = new CommandConstructor(baseCommandIV, false);
 		PluginSettings.settings.addCommands(KeyHandler.MSG, msg.getCommandString());
@@ -404,8 +407,8 @@ public class SimpleChatChannels extends JavaPlugin
 		getCommand(scc.getName()).setExecutor(new SccCommandExecutor(plugin, scc));
 		getCommand(scc.getName()).setTabCompleter(new TABCompletion(plugin));
 		
-		//registerCommand(scceditor.getPath(), scceditor.getName());
-		//getCommand(scceditor.getName()).setExecutor(new _SccEditorCommandExecutor(plugin, scceditor));
+		registerCommand(scceditor.getPath(), scceditor.getName());
+		getCommand(scceditor.getName()).setExecutor(new SccEditorCommandExecutor(plugin, scceditor));
 		
 		registerCommand(clch.getPath(), clch.getName());
 		getCommand(clch.getName()).setExecutor(new ClickChatCommandExecutor(plugin, clch));
@@ -435,7 +438,7 @@ public class SimpleChatChannels extends JavaPlugin
 				pc, pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite,
 					pc_join, pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice,
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban,
-			clch, //scceditor, 
+			clch, scceditor, 
 			msg, re, r, w);
 				
 		//All Commands which are deactivated, if scc is active on bungeecord
@@ -495,15 +498,20 @@ public class SimpleChatChannels extends JavaPlugin
 		if(plugin.getYamlHandler().getConfig().getBoolean("Use.Mail", true))
 		{			
 			//INFO:Mail
-			ArgumentConstructor mail_lastmails = new ArgumentConstructor(baseCommandVIII+"_lastmails", 0, 0, 2, false, null);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTMAILS, mail_lastmails.getCommandString());
+			ArgumentConstructor mail_forward = new ArgumentConstructor(baseCommandVIII+"_forward", 0, 2, 2, true, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_FORWARD, mail_forward.getCommandString());
+			ArgumentConstructor mail_lastreceivedmails = new ArgumentConstructor(baseCommandVIII+"_lastreceivedmails", 0, 0, 2, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTRECEIVEDMAILS, mail_lastreceivedmails.getCommandString());
+			ArgumentConstructor mail_lastsendedmails = new ArgumentConstructor(baseCommandVIII+"_lastsendedmails", 0, 0, 2, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTSENDEDMAILS, mail_lastsendedmails.getCommandString());
 			ArgumentConstructor mail_read = new ArgumentConstructor(baseCommandVIII+"_read", 0, 1, 1, false, null);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL_READ, mail_read.getCommandString());
 			ArgumentConstructor mail_send = new ArgumentConstructor(baseCommandVIII+"_send", 0, 3, 999, true, null);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL_SEND, mail_send.getCommandString());
 			
+			
 			CommandConstructor mail = new CommandConstructor(baseCommandVIII, true,
-					mail_read, mail_send, mail_lastmails);
+					mail_read, mail_send, mail_lastreceivedmails);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL, mail.getCommandString());
 			
 			registerCommand(mail.getPath(), mail.getName());
@@ -511,9 +519,11 @@ public class SimpleChatChannels extends JavaPlugin
 			getCommand(mail.getName()).setTabCompleter(new TABCompletion(plugin));
 			
 			addingHelps(mail,
-							mail_lastmails, mail_read, mail_send);
+							mail_forward, mail_lastreceivedmails, mail_lastsendedmails, mail_read, mail_send);
 			
-			new ARGLastMails(plugin, mail_lastmails);
+			new ARGForward(plugin, mail_forward);
+			new ARGLastReceivedMails(plugin, mail_lastreceivedmails);
+			new ARGLastSendedMails(plugin, mail_lastsendedmails);
 			new ARGRead(plugin, mail_read);
 			new ARGSend(plugin, mail_send);
 		}

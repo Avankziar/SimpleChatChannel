@@ -39,7 +39,11 @@ public class ChatListener implements Listener
 			plugin.getLogger().log(Level.INFO, player.getName() +": "+event.getMessage());
 			return;
 		}
-		ProxiedPlayer player = (ProxiedPlayer) event.getSender();		
+		ProxiedPlayer player = (ProxiedPlayer) event.getSender();
+		if(plugin.editorplayers.contains(player.getName()))
+		{
+			return;
+		}
 		String message = event.getMessage().trim();
 		event.setCancelled(true);
 		ChatHandler ch = new ChatHandler(plugin);
@@ -72,7 +76,19 @@ public class ChatListener implements Listener
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.NoChannelIsNullChannel")));
 			return;
 		}
-		message = message.substring(usedChannel.getSymbol().length());
+		/*
+		 * Trim the orginal message, and if the message is empty, so return;
+		 */
+		if(!usedChannel.getUniqueIdentifierName().equals(SimpleChatChannels.nullChannel.getUniqueIdentifierName())
+				&& !usedChannel.getUniqueIdentifierName().equals("Private"))
+		{
+			if(message.length() <= usedChannel.getSymbol().length())
+			{
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
+				return;
+			}
+			message = message.substring(usedChannel.getSymbol().length());
+		}
 		ch.startChat(player, usedChannel, message);
 	}
 }

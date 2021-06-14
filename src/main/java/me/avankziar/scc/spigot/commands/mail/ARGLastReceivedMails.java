@@ -26,11 +26,11 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class ARGLastMails extends ArgumentModule
+public class ARGLastReceivedMails extends ArgumentModule
 {
 	private SimpleChatChannels plugin;
 	
-	public ARGLastMails(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGLastReceivedMails(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -63,7 +63,7 @@ public class ARGLastMails extends ArgumentModule
 			if(!other.equals(player.getUniqueId().toString())
 					&& !player.hasPermission(BypassPermission.MAIL_READOTHER))
 			{
-				player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("NoPermission")));
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 				return;
 			}
 			other = uuid.toString();
@@ -82,6 +82,14 @@ public class ARGLastMails extends ArgumentModule
 		ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
 		for(Mail mail : mails)
 		{
+			String cc = mail.getCarbonCopyNames();
+			boolean ccExist = true;
+			String senders = mail.getSender();
+			String sep = plugin.getYamlHandler().getConfig().getString("Mail.CCSeperator");
+			if(cc.isEmpty() || cc.length() < 3)
+			{
+				ccExist = false;
+			}
 			ArrayList<BaseComponent> sublist = new ArrayList<>();
 			TextComponent tcRead = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Click"),
 					ClickEvent.Action.RUN_COMMAND,
@@ -90,28 +98,37 @@ public class ARGLastMails extends ArgumentModule
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Hover"));
 			TextComponent tcSendPlus = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendPlus.Click"),
 					ClickEvent.Action.SUGGEST_COMMAND,
-					PluginSettings.settings.getCommands(KeyHandler.MAIL_SEND)+mail.getCarbonCopyNames()+" ",
+					PluginSettings.settings.getCommands(KeyHandler.MAIL_SEND)+cc+" Re:"+mail.getSubject()+" "+sep+" ",
 					HoverEvent.Action.SHOW_TEXT,
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendPlus.Hover"));
 			TextComponent tcSendMinus = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendMinus.Click"),
 					ClickEvent.Action.SUGGEST_COMMAND,
-					PluginSettings.settings.getCommands(KeyHandler.MAIL_SEND)+mail.getSender()+" ",
+					PluginSettings.settings.getCommands(KeyHandler.MAIL_SEND)+senders+" Re:"+mail.getSubject()+" "+sep+" ",
 					HoverEvent.Action.SHOW_TEXT,
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendMinus.Hover"));
+			TextComponent tcForward = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Click"),
+					ClickEvent.Action.SUGGEST_COMMAND,
+					PluginSettings.settings.getCommands(KeyHandler.MAIL_FORWARD)+mail.getId(),
+					HoverEvent.Action.SHOW_TEXT,
+					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Hover"));
 			TextComponent tc = ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Text")
-					.replace("%sender%", mail.getSender())
+					.replace("%sender%", senders)
 					.replace("%subject%", mail.getSubject())
 					, HoverEvent.Action.SHOW_TEXT,
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Hover")
 					.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
 					.replace("%cc%", (mail.getCarbonCopyNames().isEmpty() ? "/" : mail.getCarbonCopyNames())));
 			sublist.add(tcRead);
-			sublist.add(tcSendPlus);
+			if(ccExist)
+			{
+				sublist.add(tcSendPlus);
+			}
 			sublist.add(tcSendMinus);
+			sublist.add(tcForward);
 			sublist.add(tc);
 			list.add(sublist);
 		}
-		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastMails.Headline")
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastReceivedMails.Headline")
 				.replace("%page%", String.valueOf(page))
 				.replace("%player%", othern)));
 		for(ArrayList<BaseComponent> sub : list)
@@ -120,6 +137,6 @@ public class ARGLastMails extends ArgumentModule
 			tc.setExtra(sub);
 			player.spigot().sendMessage(tc);
 		}
-		SccCommandExecutor.pastNextPage(player, page, last, PluginSettings.settings.getCommands(KeyHandler.MAIL_LASTMAILS));
+		SccCommandExecutor.pastNextPage(player, page, last, PluginSettings.settings.getCommands(KeyHandler.MAIL_LASTRECEIVEDMAILS));
 	}
 }

@@ -56,7 +56,7 @@ public class ARGSend extends ArgumentModule
 				UUID uuid = Utility.convertNameToUUID(s);
 				if(uuid == null)
 				{
-					sender.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
+					sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
 					return;
 				}
 				ccuuid += uuid.toString()+ccseperator;
@@ -70,7 +70,7 @@ public class ARGSend extends ArgumentModule
 			UUID uuid = Utility.convertNameToUUID(reciver);
 			if(uuid == null)
 			{
-				sender.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
+				sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
 				return;
 			}
 			ccuuid += uuid.toString();
@@ -98,7 +98,7 @@ public class ARGSend extends ArgumentModule
 		}
 		if(rawText.isEmpty())
 		{
-			sender.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.OneWordMinimum")));
+			sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.OneWordMinimum")));
 			return;
 		}
 		boolean alreadySended = false;
@@ -122,7 +122,7 @@ public class ARGSend extends ArgumentModule
 				ccu = "";
 				ccn = "";
 			}
-			final Mail mail = new Mail(0, senderuuid, sendername, u, s,
+			Mail mail = new Mail(0, senderuuid, sendername, u, s,
 					ccu, ccn, System.currentTimeMillis(), 0L, subject, rawText);
 			plugin.getMysqlHandler().create(Type.MAIL, mail);
 			if(isPlayer && !alreadySended)

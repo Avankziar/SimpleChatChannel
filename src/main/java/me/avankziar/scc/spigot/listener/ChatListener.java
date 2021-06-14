@@ -14,6 +14,7 @@ import main.java.me.avankziar.scc.objects.ServerLocation;
 import main.java.me.avankziar.scc.objects.chat.Channel;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 
 public class ChatListener implements Listener
 {
@@ -30,7 +31,15 @@ public class ChatListener implements Listener
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onChat(AsyncPlayerChatEvent event) throws InterruptedException, ExecutionException
 	{
+		if(PluginSettings.settings.isBungee())
+		{
+			return;
+		}
 		Player player = (Player) event.getPlayer();
+		if(plugin.editorplayers.contains(player.getName()))
+		{
+			return;
+		}
 		event.setCancelled(true);
 		
 		String message = event.getMessage().trim();
@@ -64,7 +73,20 @@ public class ChatListener implements Listener
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.NoChannelIsNullChannel")));
 			return;
 		}
-		message = message.substring(usedChannel.getSymbol().length());
+		/*
+		 * Trim the orginal message, and if the message is empty, so return;
+		 */
+		if(!usedChannel.getUniqueIdentifierName().equals(SimpleChatChannels.nullChannel.getUniqueIdentifierName())
+				&& !usedChannel.getUniqueIdentifierName().equals("Private"))
+		{
+			if(message.length() <= usedChannel.getSymbol().length())
+			{
+				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
+				return;
+			}
+			message = message.substring(usedChannel.getSymbol().length());
+		}
+		
 		ch.startChat(player, usedChannel, message);
 	}
 }

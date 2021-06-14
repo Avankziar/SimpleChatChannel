@@ -389,18 +389,6 @@ public class ChatHandler
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.ChannelIsOff")));
 			return false;
 		}
-		/*
-		 * Trim the orginal message, and if the message is empty, so return;
-		 */
-		if(!usedChannel.getUniqueIdentifierName().equals(SimpleChatChannels.nullChannel.getUniqueIdentifierName())
-				&& !usedChannel.getUniqueIdentifierName().equals("Private"))
-		{
-			if(message.length() <= usedChannel.getSymbol().length())
-			{
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
-				return false;
-			}
-		}
 		
 		/*
 		 * Spam Protection Wall
@@ -1144,7 +1132,7 @@ public class ChatHandler
 					 */
 					String itemname = f.substring(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Item.Start").length(),
 							f.length()-plugin.getYamlHandler().getConfig().getString("ChatReplacer.Item.End").length());
-					String owner = "server";
+					String owner = "sv"; //server
 					if(isNotConsole)
 					{
 						owner = player.getUniqueId().toString();
@@ -1531,91 +1519,6 @@ public class ChatHandler
 		return components;
 	}
 	
-	/*//INFO:Wird nicht mehr gebraucht
-	private String getColoredString(String string, String channelColor, boolean canColor)
-	{
-		String s = "";
-		String lastColor = channelColor;
-		int i = 0;
-		while(i < string.length())
-		{
-			if(i == 0 && string.charAt(i) != '&')
-			{
-				s += lastColor;
-			}
-			char c = string.charAt(i);
-			if(c == '&')
-			{
-				if(string.length() > (i+1))
-				{
-					char c2 = string.charAt(i+1);
-					if(c2 == '#')
-					{
-						if(string.length() > i+7 && canColor)
-						{
-							char c3 = string.charAt(i+2);
-							char c4 = string.charAt(i+3);
-							char c5 = string.charAt(i+4);
-							char c6 = string.charAt(i+5);
-							char c7 = string.charAt(i+6);
-							char c8 = string.charAt(i+7);
-							if(!isHexChar(c3, c4, c5, c6, c7, c8))
-							{
-								i = i+8;
-								continue;
-							}
-							lastColor = "&#"
-									+c3+c4+c5+c6+c7+c8;
-							s += lastColor;
-							i = i+8;
-							continue;
-						} else if(string.length() > i+7 && !canColor)
-						{
-							i = i+8;
-							continue;
-						} else
-						{
-							i = i+2;
-							continue;
-						}
-					} else if(isColor(c2) && canColor)
-					{
-						lastColor = "&"+String.valueOf(c2);
-						s += lastColor;
-						i += 2;
-						continue;
-					} else
-					{
-						i += 2;
-						continue;
-					}
-				} else
-				{
-					s += c;
-					i++;
-					continue;
-				}
-			} else if(c == ' ')
-			{
-				if(canColor)
-				{
-					s+= " "+lastColor;
-					i++;
-					continue;
-				}
-				s += " "+channelColor;
-				i++;
-				continue;
-			} else
-			{
-				s += c;
-				i++;
-				continue;
-			}
-		}
-		return s;
-	}*/
-	
 	private boolean isColor(char c)
 	{
 		if(c == '0' || c == '1' || c == '2' || c == '3' || c == '4' || c == '5' || c == '6' || c == '7' || c == '8' || c == '9' 
@@ -1881,6 +1784,10 @@ public class ChatHandler
 	public void sendMentionPing(ProxiedPlayer player, String soundEnum)
 	{
 		if(player == null)
+		{
+			return;
+		}
+		if(!plugin.getYamlHandler().getConfig().getBoolean("MsgSoundUsage"))
 		{
 			return;
 		}

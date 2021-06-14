@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,9 +17,12 @@ import main.java.me.avankziar.scc.bungee.commands.MessageCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.RCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.ReCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.SccCommandExecutor;
+import main.java.me.avankziar.scc.bungee.commands.SccEditorCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.TabCompletionListener;
 import main.java.me.avankziar.scc.bungee.commands.WCommandExecutor;
-import main.java.me.avankziar.scc.bungee.commands.mail.ARGLastMails;
+import main.java.me.avankziar.scc.bungee.commands.mail.ARGForward;
+import main.java.me.avankziar.scc.bungee.commands.mail.ARGLastReceivedMails;
+import main.java.me.avankziar.scc.bungee.commands.mail.ARGLastSendedMails;
 import main.java.me.avankziar.scc.bungee.commands.mail.ARGRead;
 import main.java.me.avankziar.scc.bungee.commands.mail.ARGSend;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBook;
@@ -376,7 +380,7 @@ public class SimpleChatChannels extends Plugin
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
-		//CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
+		CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
 		
 		CommandConstructor msg = new CommandConstructor(baseCommandIV, false);
 		PluginSettings.settings.addCommands(KeyHandler.MSG, msg.getCommandString());
@@ -389,7 +393,7 @@ public class SimpleChatChannels extends Plugin
 		
 		pm.registerCommand(plugin, new SccCommandExecutor(plugin, scc));
 		pm.registerCommand(plugin, new ClickChatCommandExecutor(plugin, clch));
-		//pm.registerCommand(plugin, new SccEditorCommandExecutor(plugin, scceditor));
+		pm.registerCommand(plugin, new SccEditorCommandExecutor(plugin, scceditor));
 		pm.registerCommand(plugin, new MessageCommandExecutor(plugin, msg));
 		pm.registerCommand(plugin, new ReCommandExecutor(plugin, re));
 		pm.registerCommand(plugin, new RCommandExecutor(plugin, r));
@@ -406,7 +410,7 @@ public class SimpleChatChannels extends Plugin
 					pc, pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite,
 						pc_join, pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice,
 					tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban,
-				clch, //scceditor, 
+				clch, scceditor, 
 				msg, re, r, w);
 		
 		new ARGBook(plugin, book, scc.getName());
@@ -469,23 +473,30 @@ public class SimpleChatChannels extends Plugin
 		if(plugin.getYamlHandler().getConfig().getBoolean("Use.Mail", true))
 		{
 			//INFO:Mail
-			ArgumentConstructor mail_lastmails = new ArgumentConstructor(baseCommandVIII+"_lastmails", 0, 0, 2, false, null);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTMAILS, mail_lastmails.getCommandString());
+			ArgumentConstructor mail_forward = new ArgumentConstructor(baseCommandVIII+"_forward", 0, 2, 2, true, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_FORWARD, mail_forward.getCommandString());
+			ArgumentConstructor mail_lastreceivedmails = new ArgumentConstructor(baseCommandVIII+"_lastreceivedmails", 0, 0, 2, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTRECEIVEDMAILS, mail_lastreceivedmails.getCommandString());
+			ArgumentConstructor mail_lastsendedmails = new ArgumentConstructor(baseCommandVIII+"_lastsendedmails", 0, 0, 2, false, null);
+			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTSENDEDMAILS, mail_lastsendedmails.getCommandString());
 			ArgumentConstructor mail_read = new ArgumentConstructor(baseCommandVIII+"_read", 0, 1, 1, false, null);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL_READ, mail_read.getCommandString());
 			ArgumentConstructor mail_send = new ArgumentConstructor(baseCommandVIII+"_send", 0, 3, 999, true, null);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL_SEND, mail_send.getCommandString());
 			
+			
 			CommandConstructor mail = new CommandConstructor(baseCommandVIII, true,
-					mail_read, mail_send, mail_lastmails);
+					mail_read, mail_send, mail_lastreceivedmails);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL, mail.getCommandString());
 			
 			pm.registerCommand(plugin, new MailCommandExecutor(plugin, mail));
 			
 			addingHelps(mail,
-							mail_lastmails, mail_read, mail_send);
+							mail_forward, mail_lastreceivedmails, mail_lastsendedmails, mail_read, mail_send);
 			
-			new ARGLastMails(plugin, mail_lastmails);
+			new ARGForward(plugin, mail_forward);
+			new ARGLastReceivedMails(plugin, mail_lastreceivedmails);
+			new ARGLastSendedMails(plugin, mail_lastsendedmails);
 			new ARGRead(plugin, mail_read);
 			new ARGSend(plugin, mail_send);
 		}
@@ -749,7 +760,7 @@ public class SimpleChatChannels extends Plugin
 				channels.put(c.getSymbol(), c);
 			} else
 			{
-				if(c.getSymbol().equalsIgnoreCase("null") && nullChannel == null)
+				if(c.getSymbol().equalsIgnoreCase("NULL") && nullChannel == null)
 				{
 					nullChannel = c;
 				} else
@@ -759,6 +770,26 @@ public class SimpleChatChannels extends Plugin
 			}
 		}
 		int c = channels.size()+((nullChannel != null) ? 1 : 0);
+		String cl = "";
+		if(nullChannel != null)
+		{
+			cl += nullChannel.getUniqueIdentifierName()+" Symbol: None";
+		}
+		if(c > 0)
+		{
+			cl += ", ";
+		}
+		int i = 0;
+		for(Entry<String, Channel> channel : channels.entrySet())
+		{
+			cl += channel.getValue().getUniqueIdentifierName()+" Symbol: "+channel.getValue().getSymbol();
+			if((i+1) < channels.size())
+			{
+				cl += ", ";
+			}
+			i++;
+		}
+		log.log(Level.INFO, cl);
 		log.log(Level.INFO, "Loaded "+c+" Channels!");
 	}
 	
@@ -785,7 +816,6 @@ public class SimpleChatChannels extends Plugin
 			String emoji = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Emoji.Start")
 					+ e
 					+ plugin.getYamlHandler().getConfig().getString("ChatReplacer.Emoji.End");
-			System.out.println("Emoji: "+emoji+" | "+e); //REMOVEME
 			ChatHandler.emojiList.put(emoji, yamlHandler.getEmojis().getString(e));
 		}
 	}

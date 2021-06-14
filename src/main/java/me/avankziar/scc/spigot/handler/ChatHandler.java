@@ -389,18 +389,6 @@ public class ChatHandler
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.ChannelIsOff")));
 			return false;
 		}
-		/*
-		 * Trim the orginal message, and if the message is empty, so return;
-		 */
-		if(!usedChannel.getUniqueIdentifierName().equals(SimpleChatChannels.nullChannel.getUniqueIdentifierName())
-				&& !usedChannel.getUniqueIdentifierName().equals("Private"))
-		{
-			if(message.length() <= usedChannel.getSymbol().length())
-			{
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
-				return false;
-			}
-		}
 		
 		/*
 		 * Spam Protection Wall

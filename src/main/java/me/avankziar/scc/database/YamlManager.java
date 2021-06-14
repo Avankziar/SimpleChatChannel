@@ -239,6 +239,18 @@ public class YamlManager
 		configKeys.put("Use.Mail"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
+		configKeys.put("Mail.UseChannelForMessageParser"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"Global"}));
+		configKeys.put("Mail.ConsoleReplacerInSendedMails"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"Console"}));
+		configKeys.put("Mail.CCSeperator"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"@"}));
+		configKeys.put("Mail.SubjectMessageSeperator"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"<>"}));
 		configKeys.put("PrivateChannel.UseDynamicColor"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
@@ -270,6 +282,12 @@ public class YamlManager
 		configKeys.put("Mute.SendGlobal"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
+		configKeys.put("MsgSoundUsage"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
+		configKeys.put("JoinMessageDefaultValue"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
 		configKeys.put("CleanUp.RunAutomaticByRestart"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
@@ -278,25 +296,7 @@ public class YamlManager
 				120}));
 		configKeys.put("CleanUp.DeleteReadedMailWhichIsOlderThanDays"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				120}));
-		configKeys.put("MsgSoundUsage"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				true}));
-		configKeys.put("JoinMessageDefaultValue"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				true}));
-		configKeys.put("Mail.UseChannelForMessageParser"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"Global"}));
-		configKeys.put("Mail.ConsoleReplacerInSendedMails"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"Console"}));
-		configKeys.put("Mail.CCSeperator"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"@"}));
-		configKeys.put("Mail.SubjectMessageSeperator"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"<|>"}));
+				365}));
 		configKeys.put("ChatReplacer.Command.RunCommandStart"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"cmd|/"}));
@@ -377,6 +377,10 @@ public class YamlManager
 				"/scc [pagenumber]", "/scc ",
 				"&c/scc [Seitenzahl] &f| Infoseite für alle Befehle.",
 				"&c/scc [pagenumber] &f| Info page for all commands.");
+		commandsInput("scceditor", "scceditor", "scc.cmd.scceditor", 
+				"/scceditor", "/scceditor ",
+				"&c/scceditor &f| ChatEditor Toggle.",
+				"&c/scceditor &f| ChatEditor toggle.");
 		commandsInput("clch", "clch", "scc.cmd.clch", 
 				"/clch [pagenumber]", "/clch ",
 				"&c/clch <Spielername> <Zahl> <Nachricht...> &f| Sendet einen Klickbaren Chat für den Spieler. Geeignet für Citizen / Denizen plugin.",
@@ -492,8 +496,8 @@ public class YamlManager
 				"&c/scc permanentchannel changepassword <channelname> <password> &f| Changes the password of a permanent channel.");
 		argumentInput(path+"pc_channels", "channels", basePermission,
 				"/scc permanentchannel channels <channel> ", "/scc permanentchannel channels ",
-				"&c/scc permanentchannel channels <Channel> &f| Aktiviert oder deaktiviert, für sich selbst, den angegeben Channel.",
-				"&c/scc permanentchannel channels <channel> &f| Enables or disables, for itself, the specified channel.");
+				"&c/scc permanentchannel channels <Channel> &f| Zeigt alle Channels an mit Infobefehl.",
+				"&c/scc permanentchannel channels <channel> &f| Shows all channels with info command.");
 		argumentInput(path+"pc_chatcolor", "chatcolor", basePermission,
 				"/scc permanentchannel chatcolor <channelname> <color> ", "/scc permanentchannel chatcolor ",
 				"&c/scc permanentchannel chatcolor <Channelname> <Farbe> &f| Ändert die Farbe des permanenten Channel für den Chat.",
@@ -599,16 +603,24 @@ public class YamlManager
 				"&c/mail [pagen] &f| Shows all unread mails with click and hover events.");
 		path = "mail_";
 		basePermission = "scc.cmd.mail";
-		argumentInput(path+"lastmails", "lastmails", basePermission,
-				"/mail lastmails [page] [playername] ", "/mail read ",
-				"&c/mail read [Seitenzahl] [Spielername] &f| Liest die Mail.",
-				"&c/mail read [page] [playername] &f| Read the mail.");
+		argumentInput(path+"lastreceivedmails", "lastreceivedmails", basePermission,
+				"/mail lastreceivedmails [page] [playername] ", "/mail lastreceivedmails ",
+				"&c/mail lastreceivedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte empfangende Mails.",
+				"&c/mail lastreceivedmails [page] [playername] &f| Show the last received mails.");
+		argumentInput(path+"lastsendedmails", "lastsendedmails", basePermission,
+				"/mail lastsendedmails [page] [playername] ", "/mail lastsendedmails ",
+				"&c/mail lastsendedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte gesendeten Mails.",
+				"&c/mail lastsendedmails [page] [playername] &f| Show the last sended mails.");
+		argumentInput(path+"forward", "forward", basePermission,
+				"/mail forward <id> ", "/mail forward ",
+				"&c/mail forward <id> <Spielername> &f| Leitet die Mail an den Spieler weiter.",
+				"&c/mail forward <id> <playername> &f| Forwards the mail to the player.");
 		argumentInput(path+"read", "read", basePermission,
 				"/mail read <id> ", "/mail read ",
 				"&c/mail read <id> &f| Liest die Mail.",
 				"&c/mail read <id> &f| Read the mail.");
 		argumentInput(path+"send", "send", basePermission,
-				"/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> ", "/mail read ",
+				"/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> ", "/mail send ",
 				"&c/mail send <Empfänger, mehrere getrennt mit @> <Betreff...> <Trennwert> <Nachricht...> &f| Schreibt eine Mail.",
 				"&c/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> &f| Write a mail.");
 		/*argumentInput(path+"", "", basePermission,
@@ -928,6 +940,17 @@ public class YamlManager
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDu hast mit keinem Spieler geschrieben!",
 						"&cYou have not written with any player!"}));
+		/*
+		 * INFO:Editor
+		 */
+		languageKeys.put("CmdEditor.Active"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eDer ChatEditor ist aktive. &cDu kannst nun nicht mehr am normalen Chat teilnehmen.",
+						"&eThe ChatEditor is active. &cYou can no longer participate in the normal chat."}));
+		languageKeys.put("CmdEditor.Deactive"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eDer ChatEditor ist deaktive. &aDu kannst nun am normalen Chat teilnehmen.",
+						"&eThe ChatEditor is deactive. &aYou can now participate in the normal chat."}));
 		
 		/*
 		 * INFO:Mail
@@ -946,20 +969,28 @@ public class YamlManager
 						"&eClick here to read the mail."}));
 		languageKeys.put("CmdMail.Base.SendPlus.Click", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&7[&cSend&a+CC&7]",
-						"&7[&cSend&a+CC&7]"}));
+						"&7[&cReply&7]",
+						"&7[&cReply&7]"}));
 		languageKeys.put("CmdMail.Base.SendPlus.Hover", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eKlick hier um eine Antwort an alle, Verfasser sowie CC, zu schreiben.",
 						"&eClick here to write a reply to all, authors as well as CC."}));
 		languageKeys.put("CmdMail.Base.SendMinus.Click", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&7[&cSend&4-CC&7]",
-						"&7[&cSend&4-CC&7]"}));
+						"&7[&cReply&4All&7]",
+						"&7[&cReply&4All&7]"}));
 		languageKeys.put("CmdMail.Base.SendMinus.Hover", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eKlick hier um eine Antwort nur an Verfasser zu schreiben.",
 						"&eClick here to write a reply to author only."}));
+		languageKeys.put("CmdMail.Base.Forward.Click", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&7[&dFwd&7]",
+						"&7[&dFwd&7]"}));
+		languageKeys.put("CmdMail.Base.Forward.Hover", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlick hier um die Mail weiterzuleiten.",
+						"&eClick here to forward the mail."}));
 		languageKeys.put("CmdMail.Base.Subject.Text", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						" &6{&f%sender%&6} &d>> &r%subject%",
@@ -972,11 +1003,24 @@ public class YamlManager
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&e===== &b%mailscount% &fUngelesene Nachrichten&e=====",
 						"&e===== &b%mailscount% &fUnreaded messages&e====="}));
-		//LastMails
-		languageKeys.put("CmdMail.LastMails.Headline", 
+		//Forward
+		languageKeys.put("CmdMail.Forward.CCHasAlreadyTheMail", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&e=====&cSeite %page% &fder letzten Mails von &b%player%&e=====",
-						"&e=====&cSeite %page% &fthe last mails von &b%player%&e====="}));
+						"&cDer Spieler hat diese Mail schon bekommen!",
+						"&cThe player has already received this mail!"}));
+		languageKeys.put("CmdMail.Send.HasNewMail", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&7[&bMail&7] &eDer Spieler &f%player% &ehat dir eine Mail weitergeleitet!",
+						"&7[&bMail&7] &eThe &f%player% &ehas forwarded you a mail!"}));
+		//LastMails
+		languageKeys.put("CmdMail.LastReceivedMails.Headline", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&e=====&cSeite %page% &fder letzten empfangenen Mails von &b%player%&e=====",
+						"&e=====&cSeite %page% &fthe last received mails von &b%player%&e====="}));
+		languageKeys.put("CmdMail.LastSendedMails.Headline", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&e=====&cSeite %page% &fder letzten gesendeten Mails von &b%player%&e=====",
+						"&e=====&cSeite %page% &fthe last sended mails von &b%player%&e====="}));
 		//Read
 		languageKeys.put("CmdMail.Read.MailNotExist", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {

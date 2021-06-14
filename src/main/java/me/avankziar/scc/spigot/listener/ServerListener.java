@@ -27,7 +27,6 @@ public class ServerListener  implements PluginMessageListener
 	{
 		if(channel.equals(StaticValues.SCC_TOSPIGOT)) 
 		{
-			
         	ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
             DataInputStream in = new DataInputStream(stream);
             String task = null;

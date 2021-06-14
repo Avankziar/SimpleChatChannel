@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.interfacehub.spigot.interfaces.MessageToBungee;
 import main.java.me.avankziar.scc.objects.StaticValues;
@@ -17,6 +18,12 @@ public class MessageToBungeeAPI implements MessageToBungee
 	@Override
 	public void sendMessage(UUID uuid, String... message)
 	{
+		Player player = SimpleChatChannels.getPlugin().getServer().getPlayer(uuid);
+		if(player != null && player.isOnline())
+		{
+			sendWhenOnlineOnLocalServer(player, false, null, message);
+			return;
+		}
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
@@ -33,6 +40,12 @@ public class MessageToBungeeAPI implements MessageToBungee
 	@Override
 	public void sendMessage(UUID uuid, Sound sound, String... message)
 	{
+		Player player = SimpleChatChannels.getPlugin().getServer().getPlayer(uuid);
+		if(player != null && player.isOnline())
+		{
+			sendWhenOnlineOnLocalServer(player, true, sound, message);
+			return;
+		}
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
@@ -197,6 +210,18 @@ public class MessageToBungeeAPI implements MessageToBungee
 		}
         SimpleChatChannels.getPlugin().getServer().sendPluginMessage(
         		SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+	}
+	
+	private void sendWhenOnlineOnLocalServer(Player player, boolean s, Sound sound, String... message)
+	{
+		if(s)
+		{
+    		player.playSound(player.getLocation(), sound, 3.0F, 0.5F);
+		}
+		for(String msg : message)
+		{
+			player.sendMessage(msg);
+		}
 	}
 	
 	private void writeMessage(DataOutputStream out, String... message) throws IOException
