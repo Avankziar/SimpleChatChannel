@@ -6,6 +6,9 @@ Future =========================================================================
   - In mysql wird durch die Ersteinstellung (Zeit) bestimmt, wenn ein neuer Zyklus anfängt, wann welcher zuerststarten darf.
 - Befehl einführen um sich Texte zu speichern
 - Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
+
+- IFH für scceditor einpfegen.
+- /msgrp einfügen. & im ChatHandler bei ROLEPLAYNAME den SuggestCommand ändern.
   
 Build 40 ==================================================================================================
 - +Config wert für Joinnachrichten machen, der den Default mysql wert vorgibt.

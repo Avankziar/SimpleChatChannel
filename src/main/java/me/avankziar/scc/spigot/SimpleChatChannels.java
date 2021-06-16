@@ -685,6 +685,7 @@ public class SimpleChatChannels extends JavaPlugin
 					|| cti.get(key+".IsPrefix") == null 
 					|| cti.get(key+".InChatName") == null
 					|| cti.get(key+".InChatColorCode") == null
+					|| cti.get(key+".SuggestCommand") == null
 					|| cti.get(key+".Hover") == null
 					|| cti.get(key+".Permission") == null
 					|| cti.get(key+".Weight") == null)
@@ -695,6 +696,7 @@ public class SimpleChatChannels extends JavaPlugin
 					cti.getBoolean(key+".IsPrefix"),
 					cti.getString(key+".InChatName"),
 					cti.getString(key+".InChatColorCode"),
+					cti.getString(key+".SuggestCommand"),
 					cti.getString(key+".Hover"),
 					cti.getString(key+".Permission"),
 					cti.getInt(key+".Weight"));

@@ -679,11 +679,14 @@ public class ChatHandler
 				{
 					if(i < last)
 					{
-						bc.add(ChatApi.hoverEvent(cts.getInChatName()+usedChannel.getSeperatorBetweenSuffix(), 
+						bc.add(ChatApi.apiChat(cts.getInChatName()+usedChannel.getSeperatorBetweenSuffix(),
+								ClickEvent.Action.SUGGEST_COMMAND, cts.getClick(),
 								HoverEvent.Action.SHOW_TEXT, cts.getHover()));
 					} else
 					{
-						bc.add(ChatApi.hoverEvent(cts.getInChatName(), HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+						bc.add(ChatApi.apiChat(cts.getInChatName(),
+								ClickEvent.Action.SUGGEST_COMMAND, cts.getClick(),
+								HoverEvent.Action.SHOW_TEXT, cts.getHover()));
 					}
 					
 					i++;
@@ -705,7 +708,9 @@ public class ChatHandler
 				if(prefixs.size() > 0)
 				{
 					ChatTitle ct = prefixs.get(0);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			} else
 			{
@@ -719,7 +724,9 @@ public class ChatHandler
 				if(prefixs.size() > 0)
 				{
 					ChatTitle ct = prefixs.get(prefixs.size()-1);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			} else
 			{
@@ -736,11 +743,14 @@ public class ChatHandler
 				{
 					if(i < last)
 					{
-						bc.add(ChatApi.hoverEvent(cts.getInChatName()+usedChannel.getSeperatorBetweenSuffix(), 
+						bc.add(ChatApi.apiChat(cts.getInChatName()+usedChannel.getSeperatorBetweenSuffix(), 
+								ClickEvent.Action.SUGGEST_COMMAND, cts.getClick(),
 								HoverEvent.Action.SHOW_TEXT, cts.getHover()));
 					} else
 					{
-						bc.add(ChatApi.hoverEvent(cts.getInChatName(), HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+						bc.add(ChatApi.apiChat(cts.getInChatName(),
+								ClickEvent.Action.SUGGEST_COMMAND, cts.getClick(),
+								HoverEvent.Action.SHOW_TEXT, cts.getHover()));
 					}
 					
 					i++;
@@ -762,7 +772,9 @@ public class ChatHandler
 				if(suffixs.size() > 0)
 				{
 					ChatTitle ct = suffixs.get(0);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			} else
 			{
@@ -776,7 +788,9 @@ public class ChatHandler
 				if(prefixs.size() > 0)
 				{
 					ChatTitle ct = suffixs.get(suffixs.size()-1);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			} else
 			{
@@ -872,7 +886,9 @@ public class ChatHandler
 				ArrayList<BaseComponent> bc = new ArrayList<>();
 				for(ChatTitle ctp : prefixs)
 				{
-					bc.add(ChatApi.hoverEvent(ctp.getInChatName(), HoverEvent.Action.SHOW_TEXT, ctp.getHover()));
+					bc.add(ChatApi.apiChat(ctp.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ctp.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ctp.getHover()));
 				}
 				tc = ChatApi.tc("");
 				tc.setExtra(bc);
@@ -888,7 +904,9 @@ public class ChatHandler
 				if(prefixs.size() > 0)
 				{
 					ChatTitle ct = prefixs.get(0);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			}
 			return components.addAllComponents(tc);
@@ -902,7 +920,9 @@ public class ChatHandler
 				if(prefixs.size() > 0)
 				{
 					ChatTitle ct = prefixs.get(prefixs.size()-1);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			}
 			return components.addAllComponents(tc);
@@ -915,7 +935,9 @@ public class ChatHandler
 				ArrayList<BaseComponent> bc = new ArrayList<>();
 				for(ChatTitle cts : suffixs)
 				{
-					bc.add(ChatApi.hoverEvent(cts.getInChatName(), HoverEvent.Action.SHOW_TEXT, cts.getHover()));
+					bc.add(ChatApi.apiChat(cts.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, cts.getClick(),
+							HoverEvent.Action.SHOW_TEXT, cts.getHover()));
 				}
 				tc = ChatApi.tc("");
 				tc.setExtra(bc);
@@ -931,7 +953,9 @@ public class ChatHandler
 				if(suffixs.size() > 0)
 				{
 					ChatTitle ct = suffixs.get(0);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			}
 			return components.addAllComponents(tc);
@@ -945,7 +969,9 @@ public class ChatHandler
 				if(prefixs.size() > 0)
 				{
 					ChatTitle ct = suffixs.get(suffixs.size()-1);
-					tc = ChatApi.hoverEvent(ct.getInChatName(), HoverEvent.Action.SHOW_TEXT, ct.getHover());
+					tc = ChatApi.apiChat(ct.getInChatName(),
+							ClickEvent.Action.SUGGEST_COMMAND, ct.getClick(),
+							HoverEvent.Action.SHOW_TEXT, ct.getHover());
 				}
 			}
 			return components.addAllComponents(tc);
@@ -1762,6 +1788,7 @@ public class ChatHandler
 		{
 			sendMentionPing(other, usedChannel.getMentionSound());
 		}
+		logging(txc1);
 	}
 	
 	private void spy(ArrayList<String> sendedPlayer, final Components components, final TextComponent txc1, final TextComponent txc2)
@@ -1779,6 +1806,12 @@ public class ChatHandler
 			}
 			spy.sendMessage(txc1);
 		}
+		logging(txc1);
+	}
+	
+	private void logging(final TextComponent txc)
+	{
+		plugin.getLogger().log(Level.INFO, txc.toLegacyText());
 	}
 	
 	public void sendMentionPing(ProxiedPlayer player, String soundEnum)

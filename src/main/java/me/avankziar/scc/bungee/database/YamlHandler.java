@@ -2,17 +2,15 @@ package main.java.me.avankziar.scc.bungee.database;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.database.Language;
+import main.java.me.avankziar.scc.database.FileHandler;
+import main.java.me.avankziar.scc.database.FileHandler.ISO639_2B;
 import main.java.me.avankziar.scc.database.YamlManager;
-import main.java.me.avankziar.scc.database.Language.ISO639_2B;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -20,26 +18,13 @@ import net.md_5.bungee.config.YamlConfiguration;
 public class YamlHandler 
 {
 	private SimpleChatChannels plugin;
-	private File config = null;
 	private Configuration cfg = new Configuration();
-	
-	private File commands = null;
-	private Configuration com = new Configuration();
-	
 	private String languages;
-	private File language = null;
+	private Configuration com = new Configuration();
 	private Configuration lang = new Configuration();
-	
-	private File chattitle = null;
 	private Configuration cti = new Configuration();
-	
-	private File channels = null;
 	private Configuration cha = new Configuration();
-	
-	private File emojis = null;
 	private Configuration eji = new Configuration();
-	
-	private File wordFilter = null;
 	private Configuration wfr = new Configuration();
 
 	public YamlHandler(SimpleChatChannels plugin)
@@ -100,29 +85,6 @@ public class YamlHandler
 		return y;
 	}
 	
-	private boolean writeFile(File file, Configuration yml, LinkedHashMap<String, Language> keyMap)
-	{
-		for(String key : keyMap.keySet())
-		{
-			Language languageObject = keyMap.get(key);
-			if(languageObject.languageValues.containsKey(plugin.getYamlManager().getLanguageType()) == true)
-			{
-				plugin.getYamlManager().setFileInputBungee(yml, keyMap, key, plugin.getYamlManager().getLanguageType());
-			} else if(languageObject.languageValues.containsKey(plugin.getYamlManager().getDefaultLanguageType()) == true)
-			{
-				plugin.getYamlManager().setFileInputBungee(yml, keyMap, key, plugin.getYamlManager().getDefaultLanguageType());
-			}
-		}
-		try
-		{
-			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(yml, file);
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return true;
-	}
-	
 	public boolean loadYamlHandler()
 	{
 		plugin.setYamlManager(new YamlManager(false));
@@ -137,116 +99,66 @@ public class YamlHandler
 		return true;
 	}
 	
+	public void save(Configuration yml, String filename)
+	{
+		try
+		{
+			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(yml, new File(plugin.getDataFolder(), filename+".yml"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void save(Configuration yml, String filename, String additionalDirectory)
+	{
+		try
+		{
+			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(yml, 
+					 new File(plugin.getDataFolder()+"/"+additionalDirectory+"/", filename+".yml"));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	private void fileHandling(String filename, Configuration con, LinkedHashMap<ISO639_2B, ArrayList<String>> map)
+	{
+		File file = FileHandler.initFile(plugin.getDataFolder(), filename+".yml");
+		FileHandler.writeFile(file, FileHandler.readFile(file), 
+				(map.get(plugin.getYamlManager().getLanguageType()) != null)
+				? map.get(plugin.getYamlManager().getLanguageType())
+				: map.get(plugin.getYamlManager().getDefaultLanguageType()));
+		con = loadYamlTask(file, con);
+	}
+	
+	private void fileHandling(String filename, Configuration con, LinkedHashMap<ISO639_2B, ArrayList<String>> map,
+			String additionalDirectory)
+	{
+		File file = FileHandler.initFile(plugin.getDataFolder(), filename, additionalDirectory);
+		FileHandler.writeFile(file, FileHandler.readFile(file), 
+				(map.get(plugin.getYamlManager().getLanguageType()) != null)
+				? map.get(plugin.getYamlManager().getLanguageType())
+				: map.get(plugin.getYamlManager().getDefaultLanguageType()));
+		con = loadYamlTask(file, con);
+	}
+	
 	public boolean mkdirStaticFiles()
 	{
-		File directory = new File(plugin.getDataFolder()+"");
-		if(!directory.exists())
-		{
-			directory.mkdir();
-		}
-		config = new File(plugin.getDataFolder(), "config.yml");
-		if(!config.exists()) 
-		{
-			SimpleChatChannels.log.info("Create config.yml...");
-			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
-	    	 {       
-	    		 Files.copy(in, config.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-		}
-		cfg = loadYamlTask(config, cfg);
-		writeFile(config, cfg, plugin.getYamlManager().getConfigKey());
+		fileHandling("config", cfg, plugin.getYamlManager().getConfigMap());
 		
 		languages = cfg.getString("Language", "ENG").toUpperCase();
-		
-		commands = new File(plugin.getDataFolder(), "commands.yml");
-		if(!commands.exists()) 
-		{
-			SimpleChatChannels.log.info("Create commands.yml...");
-			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
-	    	 {       
-	    		 Files.copy(in, commands.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-		}
-		com = loadYamlTask(commands, com);
-		writeFile(commands, com, plugin.getYamlManager().getCommandsKey());
-		
-		chattitle = new File(plugin.getDataFolder(), "chattitle.yml");
-		if(!chattitle.exists()) 
-		{
-			SimpleChatChannels.log.info("Create chattitle.yml...");
-			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
-	    	 {       
-	    		 Files.copy(in, chattitle.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-		}
-		cti = loadYamlTask(chattitle, cti);
-		writeFile(chattitle, cti, plugin.getYamlManager().getChatTitleKey());
-		
-		channels = new File(plugin.getDataFolder(), "channels.yml");
-		if(!channels.exists()) 
-		{
-			SimpleChatChannels.log.info("Create channels.yml...");
-			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
-	    	 {       
-	    		 Files.copy(in, channels.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-		}
-		cha = loadYamlTask(channels, cha);
-		writeFile(channels, cha, plugin.getYamlManager().getChannelsKey());
-		
-		emojis = new File(plugin.getDataFolder(), "emojis.yml");
-		if(!emojis.exists()) 
-		{
-			SimpleChatChannels.log.info("Create emojis.yml...");
-			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
-	    	 {       
-	    		 Files.copy(in, emojis.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-		}
-		eji = loadYamlTask(emojis, eji);
-		writeFile(emojis, eji, plugin.getYamlManager().getEmojiKey());
-		
-		wordFilter = new File(plugin.getDataFolder(), "wordfilter.yml");
-		if(!wordFilter.exists()) 
-		{
-			SimpleChatChannels.log.info("Create wordfilter.yml...");
-			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
-	    	 {       
-	    		 Files.copy(in, wordFilter.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-		}
-		wfr = loadYamlTask(wordFilter, wfr);
-		writeFile(wordFilter, wfr, plugin.getYamlManager().getWordFilterKey());
+		fileHandling("commands", com, plugin.getYamlManager().getCommandsMap());
+		fileHandling("chattitle", cti, plugin.getYamlManager().getChatTitleMap());
+		fileHandling("channels", cha, plugin.getYamlManager().getChannelsMap());
+		fileHandling("emojis", eji, plugin.getYamlManager().getEmojisMap());
+		fileHandling("wordfilter", wfr, plugin.getYamlManager().getWordFilterMap());
 		return true;
 	}
 	
 	private boolean mkdirDynamicFiles()
 	{
-		List<Language.ISO639_2B> types = new ArrayList<Language.ISO639_2B>(EnumSet.allOf(Language.ISO639_2B.class));
+		List<ISO639_2B> types = new ArrayList<ISO639_2B>(EnumSet.allOf(ISO639_2B.class));
 		ISO639_2B languageType = ISO639_2B.ENG;
 		for(ISO639_2B type : types)
 		{
@@ -267,26 +179,7 @@ public class YamlHandler
 	private boolean mkdirLanguage()
 	{
 		String languageString = plugin.getYamlManager().getLanguageType().toString().toLowerCase();
-		File directory = new File(plugin.getDataFolder()+"/Languages/");
-		if(!directory.exists())
-		{
-			directory.mkdir();
-		}
-		language = new File(directory.getPath(), languageString+".yml");
-		if(!language.exists()) 
-		{
-			SimpleChatChannels.log.info("Create %lang%.yml...".replace("%lang%", languageString));
-			 try (InputStream in = plugin.getResourceAsStream("default.yml")) 
-	    	 {       
-	    		 Files.copy(in, language.toPath());
-	         } catch (IOException e) 
-	    	 {
-	        	 e.printStackTrace();
-	        	 return false;
-	         }
-		}
-		lang = loadYamlTask(language, lang);
-		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
+		fileHandling(languageString, cfg, plugin.getYamlManager().getLanguageMap(), "Languages");
 		return true;
 	}
 }

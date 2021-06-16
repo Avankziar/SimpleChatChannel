@@ -76,6 +76,10 @@ public class ChatTitle
 	 */
 	private String inChatColorCode;
 	/**
+	 * The clickevent of the ChatTitle
+	 */
+	private String click;
+	/**
 	 * The hover of the ChatTitle;
 	 */
 	private String hover;
@@ -89,12 +93,13 @@ public class ChatTitle
 	private int weight;
 	
 	public ChatTitle(String uniqueIdentifierName, boolean isPrefix, String inChatName, String inChatColorCode,
-			String hover, String permission, int weight)
+			String click, String hover, String permission, int weight)
 	{
 		setUniqueIdentifierName(uniqueIdentifierName);
 		setPrefix(isPrefix);
 		setInChatName(inChatName);
 		setInChatColorCode(inChatColorCode);
+		setClick(click);
 		setHover(hover);
 		setPermission(permission);
 		setWeight(weight);
@@ -138,6 +143,16 @@ public class ChatTitle
 	public void setInChatColorCode(String inChatColorCode)
 	{
 		this.inChatColorCode = inChatColorCode;
+	}
+
+	public String getClick()
+	{
+		return click;
+	}
+
+	public void setClick(String click)
+	{
+		this.click = click;
 	}
 
 	public String getHover()

@@ -176,6 +176,8 @@ public class SimpleChatChannels extends Plugin
 		} else
 		{
 			log.severe("MySQL is not enabled! "+pluginName+" wont work correctly!");
+			this.onDisable();
+			return;
 		}
 		PluginSettings.initSettings(plugin);
 		ChatHandler.initPrivateChatColors();
@@ -619,6 +621,7 @@ public class SimpleChatChannels extends Plugin
 					|| cti.get(key+".IsPrefix") == null 
 					|| cti.get(key+".InChatName") == null
 					|| cti.get(key+".InChatColorCode") == null
+					|| cti.get(key+".SuggestCommand") == null
 					|| cti.get(key+".Hover") == null
 					|| cti.get(key+".Permission") == null
 					|| cti.get(key+".Weight") == null)
@@ -629,6 +632,7 @@ public class SimpleChatChannels extends Plugin
 					cti.getBoolean(key+".IsPrefix"),
 					cti.getString(key+".InChatName"),
 					cti.getString(key+".InChatColorCode"),
+					cti.getString(key+".SuggestCommand"),
 					cti.getString(key+".Hover"),
 					cti.getString(key+".Permission"),
 					cti.getInt(key+".Weight"));
