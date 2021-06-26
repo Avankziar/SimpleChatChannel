@@ -15,6 +15,7 @@ import main.java.me.avankziar.scc.bungee.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
+import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
 import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.ChatUser;
 import main.java.me.avankziar.scc.objects.KeyHandler;
@@ -876,6 +877,20 @@ public class Utility
 				plugin.getMysqlHandler().deleteData(Type.USEDCHANNEL, "`uniqueidentifiername` = ? AND `player_uuid` = ?",
 						cnull.getUniqueIdentifierName(), player.getUniqueId().toString());
 			}
+		}
+	}
+	
+	public String getChannelNameSuggestion(Channel c, PermanentChannel pc, TemporaryChannel tc)
+	{
+		if(pc != null)
+		{
+			return c.getInChatName().replace("%channel%", pc.getNameColor()+pc.getName());
+		} if(tc != null) 
+		{
+			return c.getInChatName().replace("%channel%", tc.getName());
+		} else
+		{
+			return c.getInChatName();
 		}
 	}
 	

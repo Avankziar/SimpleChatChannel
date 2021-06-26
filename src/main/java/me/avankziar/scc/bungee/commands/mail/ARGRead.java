@@ -10,6 +10,7 @@ import main.java.me.avankziar.scc.bungee.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
 import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
 import main.java.me.avankziar.scc.handlers.MatchApi;
+import main.java.me.avankziar.scc.handlers.TimeHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.Mail;
 import main.java.me.avankziar.scc.objects.chat.Channel;
@@ -73,6 +74,9 @@ public class ARGRead extends ArgumentModule
 				.replace("%sender%", mail.getSender()))); //Sender
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CC")
 				.replace("%cc%", String.join(", ", ccsplit)))); //CC
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Date")
+				.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
+				.replace("%readeddate%", TimeHandler.getDateTime(mail.getReadedDate())))); //Datum
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Subject")
 				.replace("%subject%", mail.getSubject()))); //Subject
 		player.sendMessage(tc); //Message

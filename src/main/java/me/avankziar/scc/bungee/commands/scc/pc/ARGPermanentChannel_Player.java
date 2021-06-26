@@ -28,7 +28,7 @@ public class ARGPermanentChannel_Player extends ArgumentModule
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		String uuid = "";
 		String name = "";
-		if(args.length == 1)
+		if(args.length == 2)
 		{
 			uuid = player.getUniqueId().toString();
 			name = player.getName();
@@ -39,13 +39,13 @@ public class ARGPermanentChannel_Player extends ArgumentModule
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 				return;
 			}
-			uuid = Utility.convertNameToUUID(args[1]).toString();
+			uuid = Utility.convertNameToUUID(args[2]).toString();
 			if(uuid == null)
 			{
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 				return;
 			}
-			name = args[1];
+			name = args[2];
 		}
 		int creators = 0;
 		int vices = 0;

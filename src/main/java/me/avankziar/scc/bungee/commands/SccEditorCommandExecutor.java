@@ -43,6 +43,31 @@ public class SccEditorCommandExecutor extends Command
     			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
     		}
     		return;
+    	} else if(args.length == 1)
+    	{
+    		if(args[0].equalsIgnoreCase("true"))
+    		{
+    			if(plugin.editorplayers.contains(player.getName()))
+        		{
+        			plugin.editorplayers.remove(player.getName());
+        			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+        		} else
+        		{
+        			plugin.editorplayers.add(player.getName());
+        			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+        		}
+        		return;
+    		} else if(args[0].equalsIgnoreCase("false"))
+    		{
+    			if(plugin.editorplayers.contains(player.getName()))
+        		{
+        			plugin.editorplayers.remove(player.getName());
+        		} else
+        		{
+        			plugin.editorplayers.add(player.getName());
+        		}
+        		return;
+    		}
     	}
     }
 }

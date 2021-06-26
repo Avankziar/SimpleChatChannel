@@ -45,7 +45,17 @@ public class ServerListener implements Listener
         }
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(event.getData()));
         String task = in.readUTF();
-        if(task.equals(StaticValues.SCC_TASK_LOCATIONUPDATE))
+        if(task.equals(StaticValues.SCC_EDITOR)) 
+        {
+        	String playername = in.readUTF();
+        	if(plugin.editorplayers.contains(playername))
+    		{
+    			plugin.editorplayers.remove(playername);
+    		} else
+    		{
+    			plugin.editorplayers.add(playername);
+    		}
+        } else if(task.equals(StaticValues.SCC_TASK_LOCATIONUPDATE))
         {
         	String uuid = in.readUTF();
         	String server = in.readUTF();

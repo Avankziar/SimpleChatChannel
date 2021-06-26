@@ -34,6 +34,7 @@ import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.BypassPermission;
 import main.java.me.avankziar.scc.spigot.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
+import main.java.me.avankziar.scc.spigot.objects.TemporaryChannel;
 import net.md_5.bungee.api.ChatColor;
 
 public class Utility 
@@ -879,6 +880,20 @@ public class Utility
 		{
 			plugin.getMysqlHandler().deleteData(Type.USEDCHANNEL, "`uniqueidentifiername` = ? AND `player_uuid` = ?",
 					cnull.getUniqueIdentifierName(), player.getUniqueId().toString());
+		}
+	}
+	
+	public String getChannelNameSuggestion(Channel c, PermanentChannel pc, TemporaryChannel tc)
+	{
+		if(pc != null)
+		{
+			return c.getInChatName().replace("%channel%", pc.getNameColor()+pc.getName());
+		} if(tc != null) 
+		{
+			return c.getInChatName().replace("%channel%", tc.getName());
+		} else
+		{
+			return c.getInChatName();
 		}
 	}
 	

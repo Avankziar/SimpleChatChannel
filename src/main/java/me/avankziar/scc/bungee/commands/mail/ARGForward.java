@@ -61,9 +61,12 @@ public class ARGForward extends ArgumentModule
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Forward.CCHasAlreadyTheMail")));
 			return;
 		}
-		Mail fwd = new Mail(0, mail.getSenderUUID(), mail.getSender().toString(), player.getUniqueId(), player.getName(),
-				mail.getCarbonCopyUUIDs(), mail.getCarbonCopyNames(), mail.getSendedDate(), 0L, "Fwd:"+mail.getSubject(), mail.getRawText());
+		Mail fwd = new Mail(0, mail.getSenderUUID(), mail.getSender().toString(), other, args[2],
+				mail.getCarbonCopyUUIDs(), mail.getCarbonCopyNames(), mail.getSendedDate(), 0L,
+				"Fwd("+player.getName()+"):"+mail.getSubject(), mail.getRawText());
 		plugin.getMysqlHandler().create(Type.MAIL, fwd);
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Forward.Sended")
+				.replace("%player%", args[2])));
 		ProxiedPlayer target = plugin.getProxy().getPlayer(other);
 		if(target != null)
 		{

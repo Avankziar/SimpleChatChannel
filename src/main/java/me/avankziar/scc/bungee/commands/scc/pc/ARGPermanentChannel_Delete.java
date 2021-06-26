@@ -5,7 +5,9 @@ import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
+import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
 import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.objects.KeyHandler;
 import main.java.me.avankziar.scc.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -39,7 +41,8 @@ public class ARGPermanentChannel_Delete extends ArgumentModule
 			player.sendMessage(ChatApi.clickEvent(
 					plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Delete.Confirm")
 					.replace("%channel%", cc.getNameColor()+cc.getName()),
-					ClickEvent.Action.SUGGEST_COMMAND, "/scc pcdelete "+cc.getName()+" confirm"));
+					ClickEvent.Action.SUGGEST_COMMAND,
+					PluginSettings.settings.getCommands(KeyHandler.SCC_PC_DELETE)+cc.getName()+" confirm"));
 		} else if(args.length >= 4)
 		{
 			String confirm = args[3];

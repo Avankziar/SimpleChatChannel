@@ -3,7 +3,9 @@ package main.java.me.avankziar.scc.spigot.commands.scc.pc;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
 import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.objects.KeyHandler;
 import main.java.me.avankziar.scc.objects.PermanentChannel;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
@@ -39,7 +41,8 @@ public class ARGPermanentChannel_Delete extends ArgumentModule
 			player.spigot().sendMessage(ChatApi.clickEvent(
 					plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Delete.Confirm")
 					.replace("%channel%", cc.getNameColor()+cc.getName()),
-					ClickEvent.Action.SUGGEST_COMMAND, "/scc pcdelete "+cc.getName()+" confirm"));
+					ClickEvent.Action.SUGGEST_COMMAND,
+					PluginSettings.settings.getCommands(KeyHandler.SCC_PC_DELETE)+cc.getName()+" confirm"));
 		} else if(args.length >= 4)
 		{
 			String confirm = args[3];

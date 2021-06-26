@@ -145,7 +145,7 @@ public class MailCommandExecutor extends Command
 				String cc = mail.getCarbonCopyNames();
 				boolean ccExist = true;
 				String senders = mail.getSender();
-				String sep = plugin.getYamlHandler().getConfig().getString("Mail.CCSeperator");
+				String sep = plugin.getYamlHandler().getConfig().getString("Mail.SubjectMessageSeperator");
 				if(cc.isEmpty() || cc.length() < 3)
 				{
 					ccExist = false;

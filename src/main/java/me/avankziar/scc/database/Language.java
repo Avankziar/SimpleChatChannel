@@ -2,7 +2,7 @@ package main.java.me.avankziar.scc.database;
 
 import java.util.LinkedHashMap;
 
-public class _Language
+public class Language
 {
 	//See https://en.wikipedia.org/wiki/List_of_ISO_639-2_codes, and if a * appears, than use this.
 	public enum ISO639_2B
@@ -36,7 +36,7 @@ public class _Language
 	
 	public LinkedHashMap<ISO639_2B, Object[]> languageValues = new LinkedHashMap<>();
 	
-	public _Language(ISO639_2B[] languages, Object[] values)
+	public Language(ISO639_2B[] languages, Object[] values)
 	{
 		if(languages.length == values.length)
 		{
@@ -60,18 +60,5 @@ public class _Language
 				languageValues.put(languages[i], valuesArray);
 			}
 		}
-	}
-	
-	public _Language(ISO639_2B languages, Object value)
-	{
-		add(languages, value);
-	}
-	
-	public LinkedHashMap<ISO639_2B, Object> languageValuesII = new LinkedHashMap<>();
-	
-	public _Language add(ISO639_2B languages, Object value)
-	{
-		languageValuesII.put(languages, value);
-		return this;
 	}
 }

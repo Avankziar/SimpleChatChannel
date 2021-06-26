@@ -119,20 +119,22 @@ public class ChatHandler
 		TemporaryChannel tc = null;
 		PermanentChannel pc = null;
 		
+		String channelcolor = usedChannel.getInChatColorMessage();
+		String msg = message;
+		
 		if(usedChannel.getUniqueIdentifierName().equalsIgnoreCase("Permanent"))
 		{
 			/*
 			 * Define, whiche pc it is.
 			 */
 			String[] space = message.split(" ");
-			if(space.length < 2)
+			if(space.length < 1)
 			{
 				return;
 			}
-			String s = space[0].substring(usedChannel.getSymbol().length());
-			if(s.length() > 0);
+			if(space[0].length() > 0);
 			{
-				pc = PermanentChannel.getChannelFromSymbol(s);
+				pc = PermanentChannel.getChannelFromSymbol(space[0]);
 			}
 			if(pc == null)
 			{
@@ -147,6 +149,8 @@ public class ChatHandler
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.NotAPermanentChannel")));
 				return;
 			}
+			msg = message.substring(pc.getSymbolExtra().length()+1);
+			channelcolor = pc.getChatColor();
 		} else if(usedChannel.getUniqueIdentifierName().equalsIgnoreCase("Temporary"))
 		{
 			/*
@@ -161,8 +165,8 @@ public class ChatHandler
 			}
 		}
 		Components components = getComponent(
-				player, null, message, usedChannel.getChatFormat(), userPrefix, userSuffix, usedChannel, tc, pc, null, null, 
-				usedChannel.getInChatColorMessage());
+				player, null, msg, usedChannel.getChatFormat(), userPrefix, userSuffix, usedChannel, tc, pc, null, null, 
+				channelcolor);
 		sendMessage(components, player, usedChannel, tc, pc);
 	}
 	
@@ -595,7 +599,7 @@ public class ChatHandler
 		{
 		case CHANNEL:
 			String text = plugin.getUtility().getChannelHover(usedChannel);
-			tc = ChatApi.apiChat(usedChannel.getInChatName(),
+			tc = ChatApi.apiChat(plugin.getUtility().getChannelNameSuggestion(usedChannel, pc, tch),
 					ClickEvent.Action.SUGGEST_COMMAND,
 					plugin.getUtility().getChannelSuggestion(usedChannel, pc),
 					HoverEvent.Action.SHOW_TEXT, 

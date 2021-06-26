@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.database.YamlHandler;
+import main.java.me.avankziar.scc.bungee.database.YamlHandlerOld;
 
 public class PluginSettings
 {
@@ -27,7 +27,7 @@ public class PluginSettings
 	
 	public static void initSettings(SimpleChatChannels plugin)
 	{
-		YamlHandler yh = plugin.getYamlHandler();
+		YamlHandlerOld yh = plugin.getYamlHandler();
 		boolean bungee = plugin.getYamlHandler().getConfig().getBoolean("Bungee", false);
 		boolean mysql = false;
 		if(plugin.getMysqlSetup().getConnection() != null)

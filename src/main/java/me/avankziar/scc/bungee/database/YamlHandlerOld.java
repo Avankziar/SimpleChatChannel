@@ -1,9 +1,26 @@
 package main.java.me.avankziar.scc.bungee.database;
 
-public class _YamlHandlerOld
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.database.Language;
+import main.java.me.avankziar.scc.database.Language.ISO639_2B;
+import main.java.me.avankziar.scc.database.YamlManagerOld;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
+
+public class YamlHandlerOld
 {
 
-	/*private SimpleChatChannels plugin;
+	private SimpleChatChannels plugin;
 	private File config = null;
 	private Configuration cfg = new Configuration();
 	
@@ -26,7 +43,7 @@ public class _YamlHandlerOld
 	private File wordFilter = null;
 	private Configuration wfr = new Configuration();
 
-	public _YamlHandlerOld(SimpleChatChannels plugin)
+	public YamlHandlerOld(SimpleChatChannels plugin)
 	{
 		this.plugin = plugin;
 		loadYamlHandler();
@@ -109,7 +126,7 @@ public class _YamlHandlerOld
 	
 	public boolean loadYamlHandler()
 	{
-		plugin.setYamlManager(new YamlManager(false));
+		plugin.setYamlManager(new YamlManagerOld(false));
 		if(!mkdirStaticFiles())
 		{
 			return false;
@@ -272,5 +289,5 @@ public class _YamlHandlerOld
 		lang = loadYamlTask(language, lang);
 		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
 		return true;
-	}*/
+	}
 }

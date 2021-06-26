@@ -21,7 +21,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import main.java.me.avankziar.scc.database.YamlManager;
+import main.java.me.avankziar.scc.database.YamlManagerOld;
 import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatUser;
 import main.java.me.avankziar.scc.objects.KeyHandler;
@@ -96,7 +96,7 @@ import main.java.me.avankziar.scc.spigot.commands.tree.BaseConstructor;
 import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
 import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
 import main.java.me.avankziar.scc.spigot.database.MysqlSetup;
-import main.java.me.avankziar.scc.spigot.database.YamlHandler;
+import main.java.me.avankziar.scc.spigot.database.YamlHandlerOld;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiListener;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiPreListener;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
@@ -116,8 +116,8 @@ public class SimpleChatChannels extends JavaPlugin
 	private static SimpleChatChannels plugin;
 	public static Logger log;
 	public static String pluginName = "SimpleChatChannels";
-	private static YamlHandler yamlHandler;
-	private static YamlManager yamlManager;
+	private static YamlHandlerOld yamlHandler;
+	private static YamlManagerOld yamlManager;
 	private static MysqlSetup mysqlSetup;
 	private static MysqlHandler mysqlHandler;
 	private static BackgroundTask backgroundtask;
@@ -181,7 +181,7 @@ public class SimpleChatChannels extends JavaPlugin
 		log.info(" ███████║╚██████╗╚██████╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepend().toString());
 		log.info(" ╚══════╝ ╚═════╝ ╚═════╝ | LoadBefore: "+plugin.getDescription().getLoadBefore().toString());
 		
-		yamlHandler = new YamlHandler(this);
+		yamlHandler = new YamlHandlerOld(this);
 		utility = new Utility(plugin);
 		
 		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
@@ -230,17 +230,17 @@ public class SimpleChatChannels extends JavaPlugin
 		return plugin;
 	}
 	
-	public YamlHandler getYamlHandler() 
+	public YamlHandlerOld getYamlHandler() 
 	{
 		return yamlHandler;
 	}
 	
-	public YamlManager getYamlManager()
+	public YamlManagerOld getYamlManager()
 	{
 		return yamlManager;
 	}
 	
-	public void setYamlManager(YamlManager yamlManager)
+	public void setYamlManager(YamlManagerOld yamlManager)
 	{
 		SimpleChatChannels.yamlManager = yamlManager;
 	}
@@ -301,7 +301,7 @@ public class SimpleChatChannels extends JavaPlugin
 			pcarray.add(pc.getName());
 		}
 		Collections.sort(pcarray);
-		pcPlayerMap.put(1, pcarray);
+		pcPlayerMap.put(2, pcarray);
 		pcMap.put(2, pcarray);
 		ArrayList<String> playerarray = getPlayers();
 		Collections.sort(playerarray);
@@ -511,7 +511,7 @@ public class SimpleChatChannels extends JavaPlugin
 			
 			
 			CommandConstructor mail = new CommandConstructor(baseCommandVIII, true,
-					mail_read, mail_send, mail_lastreceivedmails);
+					mail_forward, mail_read, mail_send, mail_lastreceivedmails, mail_lastsendedmails);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL, mail.getCommandString());
 			
 			registerCommand(mail.getPath(), mail.getName());

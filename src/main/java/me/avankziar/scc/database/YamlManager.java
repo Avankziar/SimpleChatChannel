@@ -26,7 +26,7 @@ public class YamlManager
 	public YamlManager(boolean spigot)
 	{
 		initConfig();
-		/*initCommands();
+		initCommands();
 		initLanguage();
 		initChatTitle();
 		initChannels();
@@ -35,7 +35,7 @@ public class YamlManager
 		{
 			initGuis();
 		}
-		initWordFilter();*/
+		initWordFilter();
 	}
 	
 	public ISO639_2B getLanguageType()
@@ -126,7 +126,7 @@ public class YamlManager
 		add(configMap, ISO639_2B.GER, "# If you wish to see the wiki, see https://github.com/Avankziar/SimpleChatChannel/wiki");
 		add(configMap, ISO639_2B.GER, "# For a direct support, see on my discord https://discord.gg/JkWGRxw");
 		add(configMap, ISO639_2B.GER, "# Please note that I am only a hobby developer and therefore still have a RL main job^^.");
-		add(configMap, ISO639_2B.GER, "# So it may happen that I can't help you directly.");
+		add(configMap, ISO639_2B.GER, "# So it may happen that I cannot help you directly.");
 		add(configMap, ISO639_2B.GER, "# But if you leave a message and explain your problem, I will try to answer you the same day (CEST).");
 		add(configMap, ISO639_2B.GER, "#          + ----------------------------------------------------------------------------- +");
 		add(configMap, ISO639_2B.GER, "");
@@ -291,254 +291,254 @@ public class YamlManager
 		comBypass();
 		commandsInput("scc", "scc", "scc.cmd.scc.scc", 
 				"/scc [pagenumber]", "/scc ",
-				"'&c/scc [Seitenzahl] &f| Infoseite für alle Befehle.",
-				"'&c/scc [pagenumber] &f| Info page for all commands.");
+				"&c/scc [Seitenzahl] &f| Infoseite für alle Befehle.",
+				"&c/scc [pagenumber] &f| Info page for all commands.");
 		commandsInput("scceditor", "scceditor", "scc.cmd.scceditor", 
 				"/scceditor", "/scceditor ",
-				"'&c/scceditor &f| ChatEditor Toggle.",
-				"'&c/scceditor &f| ChatEditor toggle.");
+				"&c/scceditor &f| ChatEditor Toggle.",
+				"&c/scceditor &f| ChatEditor toggle.");
 		commandsInput("clch", "clch", "scc.cmd.clch", 
 				"/clch [pagenumber]", "/clch ",
-				"'&c/clch <Spielername> <Zahl> <Nachricht...> &f| Sendet einen Klickbaren Chat für den Spieler. Geeignet für Citizen / Denizen plugin.",
-				"'&c/clch <player name> <number> <message...> &f| Sends a clickable chat for the player. Suitable for Citizen / Denizen plugin.");
+				"&c/clch <Spielername> <Zahl> <Nachricht...> &f| Sendet einen Klickbaren Chat für den Spieler. Geeignet für Citizen / Denizen plugin.",
+				"&c/clch <player name> <number> <message...> &f| Sends a clickable chat for the player. Suitable for Citizen / Denizen plugin.");
 		commandsInput("msg", "msg", "scc.cmd.msg", 
 				"/msg <player> <message...>", "/msg ",
-				"'&c/msg <Spielernamen> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler, welche online sind, werden als Vorschlag angezeigt.",
-				"'&c/msg <player name> <message> &f| Write to the player privately. All players who are online will be displayed as a suggestion.");
+				"&c/msg <Spielernamen> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler, welche online sind, werden als Vorschlag angezeigt.",
+				"&c/msg <player name> <message> &f| Write to the player privately. All players who are online will be displayed as a suggestion.");
 		commandsInput("re", "re", "scc.cmd.re", 
 				"/re <player> <message...>", "/re ",
-				"'&c/re <Spielernamen> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler mit denen man schon geschrieben hat, werden als Vorschlag angezeigt.",
-				"'&c/re <player name> <message> &f| Write to the player privately. All players with whom you have already written are displayed as suggestions.");
+				"&c/re <Spielernamen> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler mit denen man schon geschrieben hat, werden als Vorschlag angezeigt.",
+				"&c/re <player name> <message> &f| Write to the player privately. All players with whom you have already written are displayed as suggestions.");
 		commandsInput("r", "r", "scc.cmd.r", 
 				"/r <message...>", "/r ",
-				"'&c/r <message...> &f| Schreibt dem Spieler, welcher einem selbst zuletzt privat geschrieben hat.",
-				"'&c/r <message...> &f| Write to the player who last wrote to you privately.");
+				"&c/r <message...> &f| Schreibt dem Spieler, welcher einem selbst zuletzt privat geschrieben hat.",
+				"&c/r <message...> &f| Write to the player who last wrote to you privately.");
 		commandsInput("w", "w", "scc.cmd.w", 
 				"/w <player>", "/w ",
-				"'&c/w [Spielername] &f| Consolenbefehl für Privatnachrichten an Spieler.",
-				"'&c/w [playername] &f| Consolecommand for private message to player.");
+				"&c/w [Spielername] &f| Consolenbefehl für Privatnachrichten an Spieler.",
+				"&c/w [playername] &f| Consolecommand for private message to player.");
 		String path = "scc_";
 		String basePermission = "scc.cmd.scc";
 		//INFO:Argument Start
 		argumentInput(path+"book", "book", basePermission,
 				"/scc book <Itemname>", "/scc book ",
-				"'&c/scc book <Itemname> &f| Öffnet das Buch vom ItemReplacer.",
-				"'&c/scc book <Itemname> &f| Open the book from ItemReplacer.");
+				"&c/scc book <Itemname> &f| Öffnet das Buch vom ItemReplacer.",
+				"&c/scc book <Itemname> &f| Open the book from ItemReplacer.");
 		argumentInput(path+"broadcast", "broadcast", basePermission,
 				"/scc broadcast <message...>", "/scc broadcast ",
-				"'&c/scc broadcast <Nachricht> &f| Zum Senden einer Broadcast Nachricht. Falls Bungeecord aktiviert ist, kann man auch von Spigot als Console, bungeecordübergreifend dies an alle Spieler senden.",
-				"'&c/scc broadcast <message> &f| To send a broadcast message. If bungeecord is enabled, you can also send this to all players from Spigot as a console, across bungeecords.");
+				"&c/scc broadcast <Nachricht> &f| Zum Senden einer Broadcast Nachricht. Falls Bungeecord aktiviert ist, kann man auch von Spigot als Console, bungeecordübergreifend dies an alle Spieler senden.",
+				"&c/scc broadcast <message> &f| To send a broadcast message. If bungeecord is enabled, you can also send this to all players from Spigot as a console, across bungeecords.");
 		argumentInput(path+"channel", "channel", basePermission,
 				"/scc channel <channel>", "/scc channel ",
-				"'&c/scc channel &f| Zum An- & Ausstellen des angegebenen Channels.",
-				"'&c/scc channel &f| To turn the specified channel on & off.");
+				"&c/scc channel &f| Zum An- & Ausstellen des angegebenen Channels.",
+				"&c/scc channel &f| To turn the specified channel on & off.");
 		argumentInput(path+"channelgui", "channelgui", basePermission,
 				"/scc channelgui ", "/scc channelgui ",
-				"'&c/scc channelgui &f| Öffnet ein Menü, wo die Channels aus und eingestellt werden können.",
-				"'&c/scc channelgui &f| Opens a menu where the channels can be selected and set.");
+				"&c/scc channelgui &f| Öffnet ein Menü, wo die Channels aus und eingestellt werden können.",
+				"&c/scc channelgui &f| Opens a menu where the channels can be selected and set.");
 		argumentInput(path+"ignore", "ignore", basePermission,
 				"/scc ignore <player>", "/scc ignore ",
-				"'&c/scc ignore <Spielername> &f| Zum Einsetzten oder Aufheben des Ignores für den Spieler.",
-				"'&c/scc ignore <playername> &f| To set or remove the ignore for the player.");
+				"&c/scc ignore <Spielername> &f| Zum Einsetzten oder Aufheben des Ignores für den Spieler.",
+				"&c/scc ignore <playername> &f| To set or remove the ignore for the player.");
 		argumentInput(path+"ignorelist", "ignorelist", basePermission,
 				"/scc ignorelist [playername]", "/scc ignorelist ",
-				"'&c/scc ignorelist [Spielername] &f| Zum Anzeigen aller Spieler auf der Ignoreliste.",
-				"'&c/scc ignorelist [playername] &f| To show all players on the ignore list.");
+				"&c/scc ignorelist [Spielername] &f| Zum Anzeigen aller Spieler auf der Ignoreliste.",
+				"&c/scc ignorelist [playername] &f| To show all players on the ignore list.");
 		argumentInput(path+"mute", "mute", basePermission,
 				"/scc mute <playername> [values...]", "/scc mute ",
-				"'&c/scc mute <Spielername> [Werte...] &f| Stellt den Spieler für die angegebene Zeit stumm. Bei keinem Wert ist es permanent. Möglich addidative Werte sind: (Format xxx:<Zahl>) y=Jahre, M=Monate, d=Tage, H=Stunden, m=Minuten, s=Sekunden.",
-				"'&c/scc mute <playername> [values...] &f| Mutes the player for the specified time. With no value, it is permanent. Possible addidative values are: (format xxx:<number>) y=years, M=months, d=days, H=hours, m=minutes, s=seconds.");
+				"&c/scc mute <Spielername> [Werte...] &f| Stellt den Spieler für die angegebene Zeit stumm. Bei keinem Wert ist es permanent. Möglich addidative Werte sind: (Format xxx:<Zahl>) y=Jahre, M=Monate, d=Tage, H=Stunden, m=Minuten, s=Sekunden.",
+				"&c/scc mute <playername> [values...] &f| Mutes the player for the specified time. With no value, it is permanent. Possible addidative values are: (format xxx:<number>) y=years, M=months, d=days, H=hours, m=minutes, s=seconds.");
 		argumentInput(path+"performance", "performance", basePermission,
 				"/scc performance ", "/scc performance ",
-				"'&c/scc performance &f| Zeigt die MysqlPerformances des Plugins an.",
-				"'&c/scc performance &f| Displays the MysqlPerformances of the plugin.");
+				"&c/scc performance &f| Zeigt die MysqlPerformances des Plugins an.",
+				"&c/scc performance &f| Displays the MysqlPerformances of the plugin.");
 		argumentInput(path+"unmute", "unmute", basePermission,
 				"/scc unmute <playername", "/scc unmute ",
-				"'&c/scc unmute <Spielername> &f| Zum Wiedererlangen der Schreib-Rechte.",
-				"'&c/scc unmute <playername> &f| To regain write permissions.");
+				"&c/scc unmute <Spielername> &f| Zum Wiedererlangen der Schreib-Rechte.",
+				"&c/scc unmute <playername> &f| To regain write permissions.");
 		argumentInput(path+"updateplayer", "updateplayer", basePermission,
 				"/scc updateplayer <playername>", "/scc updateplayer ",
-				"'&c/scc updateplayer <Spielername> &f| Updatet die Zugangsrechte des Spielers für alle Channels.",
-				"'&c/scc updateplayer <playername> &f| Updates the player's access rights for all channels.");
+				"&c/scc updateplayer <Spielername> &f| Updatet die Zugangsrechte des Spielers für alle Channels.",
+				"&c/scc updateplayer <playername> &f| Updates the player's access rights for all channels.");
 		
 		argumentInput(path+"option", "option", basePermission,
 				"/scc option ", "/scc option ",
-				"'&c/scc option &f| Zwischenbefehl",
-				"'&c/scc option &f| Intermediate command");
+				"&c/scc option &f| Zwischenbefehl",
+				"&c/scc option &f| Intermediate command");
 		basePermission = "scc.cmd.scc.option";
 		argumentInput(path+"option_channel", "channel", basePermission,
 				"/scc option channel ", "/scc option channel ",
-				"'&c/scc option channel &f| Aktiviert oder deaktiviert ob man beim Joinen seine aktiven Channels sieht.",
-				"'&c/scc option channel &f| Enables or disables whether you can see your active channels when joining.");
+				"&c/scc option channel &f| Aktiviert oder deaktiviert ob man beim Joinen seine aktiven Channels sieht.",
+				"&c/scc option channel &f| Enables or disables whether you can see your active channels when joining.");
 		argumentInput(path+"option_join", "join", basePermission,
 				"/scc option join", "/scc option join",
-				"'&c/scc option join &f| Aktiviert oder deaktiviert ob man die Joinnachricht anderer Spieler sieht.",
-				"'&c/scc option join &f| Enables or disables whether you can see the join message of other players.");
+				"&c/scc option join &f| Aktiviert oder deaktiviert ob man die Joinnachricht anderer Spieler sieht.",
+				"&c/scc option join &f| Enables or disables whether you can see the join message of other players.");
 		argumentInput(path+"option_spy", "spy", basePermission,
 				"/scc option spy ", "/scc option spy ",
-				"'&c/scc option spy &f| Aktiviert oder deaktiviert ob man Nachrichten sehen kann, welche einem sonst vorborgen wären.",
-				"'&c/scc option spy &f| Enables or disables whether you can see messages that would otherwise be hidden from you.");
+				"&c/scc option spy &f| Aktiviert oder deaktiviert ob man Nachrichten sehen kann, welche einem sonst vorborgen wären.",
+				"&c/scc option spy &f| Enables or disables whether you can see messages that would otherwise be hidden from you.");
 		basePermission = "scc.cmd.scc.item.";
 		argumentInput(path+"item", "item", basePermission,
 				"/scc item ", "/scc item ",
-				"'&c/scc item &f| Öffnet das Menü, wo man die Items für den Replacer einstellen kann.",
-				"'&c/scc item &f| Opens the menu where you can set the items for the replacer.");
+				"&c/scc item &f| Öffnet das Menü, wo man die Items für den Replacer einstellen kann.",
+				"&c/scc item &f| Opens the menu where you can set the items for the replacer.");
 		argumentInput(path+"item_rename", "rename", basePermission,
 				"/scc item rename <oldname> <newname> ", "/scc item rename ",
-				"'&c/scc item rename <oldname> <newname> &f| Benennt das Item, welches auf den alten Namen hört, um.",
-				"'&c/scc item rename <oldname> <newname> &f| Renames the item that goes by the old name.");
+				"&c/scc item rename <oldname> <newname> &f| Benennt das Item, welches auf den alten Namen hört, um.",
+				"&c/scc item rename <oldname> <newname> &f| Renames the item that goes by the old name.");
 		argumentInput(path+"item_replacers", "replacers", basePermission,
 				"/scc item replacers ", "/scc item replacers ",
-				"'&c/scc item replacers &f| Zeigt alle Möglichen Replacer im Chat an, sowie dessen Item als Hover.",
-				"'&c/scc item replacers &f| Displays all possible replacers in the chat, as well as their item as a hover.");
+				"&c/scc item replacers &f| Zeigt alle Möglichen Replacer im Chat an, sowie dessen Item als Hover.",
+				"&c/scc item replacers &f| Displays all possible replacers in the chat, as well as their item as a hover.");
 		//INFO:PermanentChannel
 		basePermission = "scc.cmd.scc";
 		argumentInput(path+"pc", "permanentchannel", basePermission,
 				"/scc permanentchannel ", "/scc permanentchannel ",
-				"'&c/scc permanentchannel &f| Zwischenbefehl",
-				"'&c/scc permanentchannel &f| Intermediate command");
+				"&c/scc permanentchannel &f| Zwischenbefehl",
+				"&c/scc permanentchannel &f| Intermediate command");
 		basePermission = "scc.cmd.scc.pc";
 		argumentInput(path+"pc_ban", "ban", basePermission,
 				"/scc permanentchannel ban <channelname> <playername> ", "/scc permanentchannel ban",
-				"'&c/scc permanentchannel ban <Channelname> <Spielername> &f| Bannt einen Spieler von einem permanenten Channel.",
-				"'&c/scc permanentchannel ban <channelname> <playername> &f| Bans a player from a permanent channel.");
+				"&c/scc permanentchannel ban <Channelname> <Spielername> &f| Bannt einen Spieler von einem permanenten Channel.",
+				"&c/scc permanentchannel ban <channelname> <playername> &f| Bans a player from a permanent channel.");
 		argumentInput(path+"pc_unban", "unban", basePermission,
 				"/scc permanentchannel unban <channelname> <playername>", "/scc permanentchannel unban ",
-				"'&c/scc permanentchannel <Channelname> <Spielername> &f| Unbannt einen Spieler von einem permanenten Channel.",
-				"'&c/scc permanentchannel <channelname> <playername> &f| Unbans a player from a permanent channel.");
+				"&c/scc permanentchannel <Channelname> <Spielername> &f| Unbannt einen Spieler von einem permanenten Channel.",
+				"&c/scc permanentchannel <channelname> <playername> &f| Unbans a player from a permanent channel.");
 		argumentInput(path+"pc_changepassword", "changepassword", basePermission,
 				"/scc permanentchannel changepassword <channelname> <password>", "/scc permanentchannel changepassword ",
-				"'&c/scc permanentchannel changepassword <Channelname> <Passwort> &f| Ändert das Passwort von einem permanenten Channel.",
-				"'&c/scc permanentchannel changepassword <channelname> <password> &f| Changes the password of a permanent channel.");
+				"&c/scc permanentchannel changepassword <Channelname> <Passwort> &f| Ändert das Passwort von einem permanenten Channel.",
+				"&c/scc permanentchannel changepassword <channelname> <password> &f| Changes the password of a permanent channel.");
 		argumentInput(path+"pc_channels", "channels", basePermission,
 				"/scc permanentchannel channels <channel> ", "/scc permanentchannel channels ",
-				"'&c/scc permanentchannel channels <Channel> &f| Zeigt alle Channels an mit Infobefehl.",
-				"'&c/scc permanentchannel channels <channel> &f| Shows all channels with info command.");
+				"&c/scc permanentchannel channels <Channel> &f| Zeigt alle Channels an mit Infobefehl.",
+				"&c/scc permanentchannel channels <channel> &f| Shows all channels with info command.");
 		argumentInput(path+"pc_chatcolor", "chatcolor", basePermission,
 				"/scc permanentchannel chatcolor <channelname> <color> ", "/scc permanentchannel chatcolor ",
-				"'&c/scc permanentchannel chatcolor <Channelname> <Farbe> &f| Ändert die Farbe des permanenten Channel für den Chat.",
-				"'&c/scc permanentchannel chatcolor <channelname> <color> &f| Changes the color of the permanent channel for the chat.");
+				"&c/scc permanentchannel chatcolor <Channelname> <Farbe> &f| Ändert die Farbe des permanenten Channel für den Chat.",
+				"&c/scc permanentchannel chatcolor <channelname> <color> &f| Changes the color of the permanent channel for the chat.");
 		argumentInput(path+"pc_create", "create", basePermission,
 				"/scc permanentchannel create <channelname> [password] ", "/scc permanentchannel create ",
-				"'&c/scc permanentchannel create <Channelname> [Passwort] &f| Erstellt einen permanenten Channel. Optional mit Passwort.",
-				"'&c/scc permanentchannel create <channelname> [password] &f| Creates a permanent channel. Optionally with password.");
+				"&c/scc permanentchannel create <Channelname> [Passwort] &f| Erstellt einen permanenten Channel. Optional mit Passwort.",
+				"&c/scc permanentchannel create <channelname> [password] &f| Creates a permanent channel. Optionally with password.");
 		argumentInput(path+"pc_delete", "delete", basePermission,
 				"/scc permanentchannel delete <channelname> ", "/scc permanentchannel delete ",
-				"'&c/scc permanentchannel delete <Channelname> &f| Löscht den Channel.",
-				"'&c/scc permanentchannel delete <channelname> &f| Delete the channel.");
+				"&c/scc permanentchannel delete <Channelname> &f| Löscht den Channel.",
+				"&c/scc permanentchannel delete <channelname> &f| Delete the channel.");
 		argumentInput(path+"pc_info", "info", basePermission,
 				"/scc permanentchannel info [channelname] ", "/scc permanentchannel info ",
-				"'&c/scc permanentchannel info [Channelname] &f| Zeigt alle Infos zum permanenten Channel an.",
-				"'&c/scc permanentchannel info [channelname] &f| Displays all info about the permanent channel.");
+				"&c/scc permanentchannel info [Channelname] &f| Zeigt alle Infos zum permanenten Channel an.",
+				"&c/scc permanentchannel info [channelname] &f| Displays all info about the permanent channel.");
 		argumentInput(path+"pc_inherit", "inherit", basePermission,
 				"/scc permanentchannel inherit <channelname> <playername> ", "/scc permanentchannel inherit ",
-				"'&c/scc permanentchannel inherit <Channelname> <Spielername> &f| Lässt den Spieler den Channel als Ersteller beerben.",
-				"'&c/scc permanentchannel inherit <channelname> <playername> &f| Lets the player inherit the channel as creator.");
+				"&c/scc permanentchannel inherit <Channelname> <Spielername> &f| Lässt den Spieler den Channel als Ersteller beerben.",
+				"&c/scc permanentchannel inherit <channelname> <playername> &f| Lets the player inherit the channel as creator.");
 		argumentInput(path+"pc_invite", "invite", basePermission,
 				"/scc permanentchannel invite <channelname> <playername>", "/scc permanentchannel invite ",
-				"'&c/scc permanentchannel invite <Channelname> <Spielername> &f| Lädt einen Spieler in den permanenten Channel ein.",
-				"'&c/scc permanentchannel invite <channelname> <playername> &f| Invites a player to the permanent Channel.");
+				"&c/scc permanentchannel invite <Channelname> <Spielername> &f| Lädt einen Spieler in den permanenten Channel ein.",
+				"&c/scc permanentchannel invite <channelname> <playername> &f| Invites a player to the permanent Channel.");
 		argumentInput(path+"pc_join", "join", basePermission,
 				"/scc permanentchannel join <channelname> [password] ", "/scc permanentchannel join ",
-				"'&c/scc permanentchannel join <Channelname> [Passwort] &f| Betritt einen permanenten Channel.",
-				"'&c/scc permanentchannel join <channelname> [password] &f| Enter a permanent channel.");
+				"&c/scc permanentchannel join <Channelname> [Passwort] &f| Betritt einen permanenten Channel.",
+				"&c/scc permanentchannel join <channelname> [password] &f| Enter a permanent channel.");
 		argumentInput(path+"pc_kick", "kick", basePermission,
 				"/scc permanentchannel kick <channelname> <playername> ", "/scc permanentchannel kick ",
-				"'&c/scc permanentchannel kick <Channelname> <Spielername> &f| Kickt einen Spieler von einem permanenten Channel.",
-				"'&c/scc permanentchannel kick <channelname> <playername> &f| Kicks a player from a permanent channel.");
+				"&c/scc permanentchannel kick <Channelname> <Spielername> &f| Kickt einen Spieler von einem permanenten Channel.",
+				"&c/scc permanentchannel kick <channelname> <playername> &f| Kicks a player from a permanent channel.");
 		argumentInput(path+"pc_leave", "leave", basePermission,
 				"/scc permanentchannel leave <channelname> ", "/scc permanentchannel leave ",
-				"'&c/scc permanentchannel leave <Channelname> &f| Verlässt einen permanenten Channel.",
-				"'&c/scc permanentchannel leave <channelname> &f| Leaves a permanent channel.");
+				"&c/scc permanentchannel leave <Channelname> &f| Verlässt einen permanenten Channel.",
+				"&c/scc permanentchannel leave <channelname> &f| Leaves a permanent channel.");
 		argumentInput(path+"pc_namecolor", "namecolor", basePermission,
 				"/scc permanentchannel namecolor <channelname> <color> ", "/scc permanentchannel namecolor ",
-				"'&c/scc permanentchannel namecolor <Channelname> <Farbe> &f| Ändert die Farbe des permanenten Channelpräfix.",
-				"'&c/scc permanentchannel namecolor <channelname> <color> &f| Changes the color of the permanent Channelprefix.");
+				"&c/scc permanentchannel namecolor <Channelname> <Farbe> &f| Ändert die Farbe des permanenten Channelpräfix.",
+				"&c/scc permanentchannel namecolor <channelname> <color> &f| Changes the color of the permanent Channelprefix.");
 		argumentInput(path+"pc_player", "player", basePermission,
 				"/scc permanentchannel player [playername] ", "/scc permanentchannel player ",
-				"'&c/scc permanentchannel player [Spielername] &f| Zeigt alle permanenten Channels, wo der Spieler beigetreten ist an.",
-				"'&c/scc permanentchannel player [playername] &f| Displays all permanent channels where the player has joined.");
+				"&c/scc permanentchannel player [Spielername] &f| Zeigt alle permanenten Channels, wo der Spieler beigetreten ist an.",
+				"&c/scc permanentchannel player [playername] &f| Displays all permanent channels where the player has joined.");
 		argumentInput(path+"pc_rename", "rename", basePermission,
 				"/scc permanentchannel rename <channelname> <newname>", "/scc permanentchannel rename ",
-				"'&c/scc permanentchannel rename <Channelname> <Neuer Name> &f| Ändert den Namen des permanenten Channel.",
-				"'&c/scc permanentchannel rename <channelname> <newname> &f| Changes the name of the permanent Channel.");
+				"&c/scc permanentchannel rename <Channelname> <Neuer Name> &f| Ändert den Namen des permanenten Channel.",
+				"&c/scc permanentchannel rename <channelname> <newname> &f| Changes the name of the permanent Channel.");
 		argumentInput(path+"pc_symbol", "symbol", basePermission,
 				"/scc permanentchannel symbol <channelname> <symbols>", "/scc permanentchannel symbol ",
-				"'&c/scc permanentchannel symbol <Channelname> <Symbole> &f| Ändert das Zugangssymbol des Channels.",
-				"'&c/scc permanentchannel symbol <channelname> <symbols> &f| Changes the access icon of the channel.");
+				"&c/scc permanentchannel symbol <Channelname> <Symbole> &f| Ändert das Zugangssymbol des Channels.",
+				"&c/scc permanentchannel symbol <channelname> <symbols> &f| Changes the access icon of the channel.");
 		argumentInput(path+"pc_vice", "vice", basePermission,
 				"/scc permanentchannel vice <channelname> <playername> ", "/scc permanentchannel vice ",
-				"'&c/scc permanentchannel vice <Channelname> <Spielername> &f| Befördert oder degradiert einen Spieler innerhalb des permanenten Channels.",
-				"'&c/scc permanentchannel vice <channelname> <playername> &f| Promotes or demotes a player within the permanent Channel.");
+				"&c/scc permanentchannel vice <Channelname> <Spielername> &f| Befördert oder degradiert einen Spieler innerhalb des permanenten Channels.",
+				"&c/scc permanentchannel vice <channelname> <playername> &f| Promotes or demotes a player within the permanent Channel.");
 		//INFO:TemporaryChannel
 		basePermission = "scc.cmd.scc";
 		argumentInput(path+"tc", "temporarychannel", basePermission,
 				"/scc temporarychannel ", "/scc temporarychannel ",
-				"'&c/scc temporarychannel &f| Zwischenbefehl",
-				"'&c/scc temporarychannel &f| Intermediate command");
+				"&c/scc temporarychannel &f| Zwischenbefehl",
+				"&c/scc temporarychannel &f| Intermediate command");
 		basePermission = "scc.cmd.scc.  ";
 		argumentInput(path+"tc_ban", "ban", basePermission,
 				"/scc temporarychannel ban <playername> ", "/scc temporarychannel ban ",
-				"'&c/scc temporarychannel ban <Spielername> &f| Bannt einen Spieler von einem temporären Channel.",
-				"'&c/scc temporarychannel ban <playername> &f| Bans a player from a temporary channel.");
+				"&c/scc temporarychannel ban <Spielername> &f| Bannt einen Spieler von einem temporären Channel.",
+				"&c/scc temporarychannel ban <playername> &f| Bans a player from a temporary channel.");
 		argumentInput(path+"tc_unban", "unban", basePermission,
 				"/scc temporarychannel unban <playername> ", "/scc temporarychannel unban ",
-				"'&c/scc temporarychannel unban <Spielername> &f| Entbannt einen Spieler von einem temporären Channel.",
-				"'&c/scc temporarychannel unban <playername> &f| Unbans a player from a temporary channel.");
+				"&c/scc temporarychannel unban <Spielername> &f| Entbannt einen Spieler von einem temporären Channel.",
+				"&c/scc temporarychannel unban <playername> &f| Unbans a player from a temporary channel.");
 		argumentInput(path+"tc_changepassword", "changepassword", basePermission,
 				"/scc temporarychannel changepassword <password> ", "/scc temporarychannel changepassword ",
-				"'&c/scc temporarychannel changepassword <Passwort> &f| Ändert das Passwort von einem temporären Channel.",
-				"'&c/scc temporarychannel changepassword <password> &f| Changes the password of a temporary channel.");
+				"&c/scc temporarychannel changepassword <Passwort> &f| Ändert das Passwort von einem temporären Channel.",
+				"&c/scc temporarychannel changepassword <password> &f| Changes the password of a temporary channel.");
 		argumentInput(path+"tc_create", "create", basePermission,
 				"/scc temporarychannel create <channelname> [password] ", "/scc temporarychannel create ",
-				"'&c/scc temporarychannel create <Channelname> [Passwort] &f| Erstellt einen temporären Channel. Optional mit Passwort.",
-				"'&c/scc temporarychannel create <channelname> [password] &f| Creates a temporary channel. Optionally with password.");
+				"&c/scc temporarychannel create <Channelname> [Passwort] &f| Erstellt einen temporären Channel. Optional mit Passwort.",
+				"&c/scc temporarychannel create <channelname> [password] &f| Creates a temporary channel. Optionally with password.");
 		argumentInput(path+"tc_info", "info", basePermission,
 				"/scc temporarychannel info ", "/scc temporarychannel info ",
-				"'&c/scc temporarychannel info &f| Zeigt alle Informationen bezüglich des temporären Channels an.",
-				"'&c/scc temporarychannel info &f| Displays all information related to the temporary channel.");
+				"&c/scc temporarychannel info &f| Zeigt alle Informationen bezüglich des temporären Channels an.",
+				"&c/scc temporarychannel info &f| Displays all information related to the temporary channel.");
 		argumentInput(path+"tc_invite", "invite", basePermission,
 				"/scc temporarychannel invite <playername> ", "/scc temporarychannel invite ",
-				"'&c/scc temporarychannel invite <Spielername> &f| Lädt einen Spieler in den eigenen temporären Channel ein.",
-				"'&c/scc temporarychannel invite <playername> &f| Invites a player to the own temporary channel.");
+				"&c/scc temporarychannel invite <Spielername> &f| Lädt einen Spieler in den eigenen temporären Channel ein.",
+				"&c/scc temporarychannel invite <playername> &f| Invites a player to the own temporary channel.");
 		argumentInput(path+"tc_join", "join", basePermission,
 				"/scc temporarychannel join <channelname> [password] ", "/scc temporarychannel join ",
-				"'&c/scc temporarychannel join <Channelname> [Passwort] &f| Betritt einem temporären Channel.",
-				"'&c/scc temporarychannel join <channelname> [password] &f| Enter a temporary channel.");
+				"&c/scc temporarychannel join <Channelname> [Passwort] &f| Betritt einem temporären Channel.",
+				"&c/scc temporarychannel join <channelname> [password] &f| Enter a temporary channel.");
 		argumentInput(path+"tc_kick", "kick", basePermission,
 				"/scc temporarychannel kick <playername> ", "/scc temporarychannel kick ",
-				"'&c/scc temporarychannel kick <Spielername> &f| Kickt einen Spieler von einem temporären Channel.",
-				"'&c/scc temporarychannel kick <playername> &f| Kicks a player from a temporary channel.");
+				"&c/scc temporarychannel kick <Spielername> &f| Kickt einen Spieler von einem temporären Channel.",
+				"&c/scc temporarychannel kick <playername> &f| Kicks a player from a temporary channel.");
 		argumentInput(path+"tc_leave", "leave", basePermission,
 				"/scc temporarychannel leave ", "/scc temporarychannel leave ",
-				"'&c/scc temporarychannel leave &f| Verlässt einen temporären Channel.",
-				"'&c/scc temporarychannel leave &f| Leaves a temporary channel.");
+				"&c/scc temporarychannel leave &f| Verlässt einen temporären Channel.",
+				"&c/scc temporarychannel leave &f| Leaves a temporary channel.");
 		commandsInput("mail", "mail", "scc.cmd.mail.mail", 
 				"/mail [page]", "/mail ",
-				"'&c/mail [Seitenzahl] &f| Zeigt alle ungelesene Mails mit Klick- und HoverEvents.",
-				"'&c/mail [pagen] &f| Shows all unread mails with click and hover events.");
+				"&c/mail [Seitenzahl] &f| Zeigt alle ungelesene Mails mit Klick- und HoverEvents.",
+				"&c/mail [pagen] &f| Shows all unread mails with click and hover events.");
 		path = "mail_";
 		basePermission = "scc.cmd.mail";
 		argumentInput(path+"lastreceivedmails", "lastreceivedmails", basePermission,
 				"/mail lastreceivedmails [page] [playername] ", "/mail lastreceivedmails ",
-				"'&c/mail lastreceivedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte empfangende Mails.",
-				"'&c/mail lastreceivedmails [page] [playername] &f| Show the last received mails.");
+				"&c/mail lastreceivedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte empfangende Mails.",
+				"&c/mail lastreceivedmails [page] [playername] &f| Show the last received mails.");
 		argumentInput(path+"lastsendedmails", "lastsendedmails", basePermission,
 				"/mail lastsendedmails [page] [playername] ", "/mail lastsendedmails ",
-				"'&c/mail lastsendedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte gesendeten Mails.",
-				"'&c/mail lastsendedmails [page] [playername] &f| Show the last sended mails.");
+				"&c/mail lastsendedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte gesendeten Mails.",
+				"&c/mail lastsendedmails [page] [playername] &f| Show the last sended mails.");
 		argumentInput(path+"forward", "forward", basePermission,
 				"/mail forward <id> ", "/mail forward ",
-				"'&c/mail forward <id> <Spielername> &f| Leitet die Mail an den Spieler weiter.",
-				"'&c/mail forward <id> <playername> &f| Forwards the mail to the player.");
+				"&c/mail forward <id> <Spielername> &f| Leitet die Mail an den Spieler weiter.",
+				"&c/mail forward <id> <playername> &f| Forwards the mail to the player.");
 		argumentInput(path+"read", "read", basePermission,
 				"/mail read <id> ", "/mail read ",
-				"'&c/mail read <id> &f| Liest die Mail.",
-				"'&c/mail read <id> &f| Read the mail.");
+				"&c/mail read <id> &f| Liest die Mail.",
+				"&c/mail read <id> &f| Read the mail.");
 		argumentInput(path+"send", "send", basePermission,
 				"/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> ", "/mail send ",
-				"'&c/mail send <Empfänger, mehrere getrennt mit @> <Betreff...> <Trennwert> <Nachricht...> &f| Schreibt eine Mail.",
-				"'&c/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> &f| Write a mail.");
+				"&c/mail send <Empfänger, mehrere getrennt mit @> <Betreff...> <Trennwert> <Nachricht...> &f| Schreibt eine Mail.",
+				"&c/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> &f| Write a mail.");
 		/*argumentInput(path+"", "", basePermission,
 				"/scc ", "/scc ",
 				"'&c/scc &f| ",
@@ -657,8 +657,8 @@ public class YamlManager
 				"'&bAktive Channels: '",
 				"'&bActive Channels: '");
 		add(languageMap, "  Spy: ",
-				"'&4Spy",
-				"'&4Spy");
+				"'&4Spy'",
+				"'&4Spy'");
 		add(languageMap, "  Join: ",
 				"'&7[&a+&7] &e%player%'",
 				"'&7[&a+&7] &e%player%'");
@@ -720,18 +720,18 @@ public class YamlManager
 				"'&dKlick hier um im Privaten mit &f%player% &dzu schreiben.'",
 				"'&dClick here to write in private with &f%player% &d.'");
 		add(languageMap, "  ChannelHover: ",
-				"%channelcolor%Klick hier um im %channel% Channel zu schreiben.'",
-				"%channelcolor%Click here to write in the %channel% channel.'");
+				"'%channelcolor%Klick hier um im %channel% Channel zu schreiben.'",
+				"'%channelcolor%Click here to write in the %channel% channel.'");
 		add(languageMap, "  CommandRunHover: ",
 				"'&4Klick hier um den Befehl auszuführen.'",
 				"'&4Click here to execute the command.'");
 		add(languageMap, "  CommandSuggestHover: ",
 				"'&eKlick hier um den Befehl in der Chatzeile zu erhalten.'",
 				"'&eClick here to get the command in the chat line.'");
-		add(languageMap, " Website:");
+		add(languageMap, "  Website:");
 		add(languageMap, "    Replacer: ", 
-				"'&fWeb&7seite",
-				"'&fweb&7site");
+				"'&fWeb&7seite'",
+				"'&fweb&7site'");
 		add(languageMap, "    NotAllowReplacer: ",
 				"'&f[&7Zensiert&f]'",
 				"'&f[&7Censord&f]'");
@@ -797,16 +797,16 @@ public class YamlManager
 				"'&eKlick hier um eine Antwort nur an Verfasser zu schreiben.'",
 				"'&eClick here to write a reply to author only.'");
 		add(languageMap, "    Forward:");
-		add(languageMap, "      Click", 
-				"'&7[&dFwd&7]",
-				"'&7[&dFwd&7]");
+		add(languageMap, "      Click: ", 
+				"'&7[&dFwd&7]'",
+				"'&7[&dFwd&7]'");
 		add(languageMap, "      Hover: ", 
 				"'&eKlick hier um die Mail weiterzuleiten.'",
 				"'&eClick here to forward the mail.'");
 		add(languageMap, "    Subject:");
 		add(languageMap, "      Text: ", 
-				" &6{&f%sender%&6} &d>> &r%subject%'",
-				" &6{&f%sender%&6} &d>> &r%subject%'");
+				"'&6{&f%sender%&6} &d>> &r%subject%'",
+				"'&6{&f%sender%&6} &d>> &r%subject%'");
 		add(languageMap, "      Hover: ", 
 				"'&eGesendet am &f%sendeddate%~!~&cCC: &f%cc%'",
 				"'&eSended on the &f%sendeddate%~!~&cCC: &f%cc%'");
@@ -893,8 +893,8 @@ public class YamlManager
 		//Broadcast
 		add(languageMap, "  Broadcast:");
 		add(languageMap, "    Intro: ", 
-				"'&7[&cINFO&7] &r",
-				"'&7[&cINFO&7] &r");
+				"'&7[&cINFO&7] &r'",
+				"'&7[&cINFO&7] &r'");
 		//Channel
 		add(languageMap, "  Channel:");
 		add(languageMap, "    ChannelDontExist: ", 
@@ -993,7 +993,7 @@ public class YamlManager
 				"'§c%player% §eReplacer §6Items'");
 		add(languageMap, "    YouCannotSaveItems: ", 
 				"'&cDu kannst keine Items vorspeicher!'",
-				"'&cYou can't pre-store items!'");
+				"'&cYou cannnot pre-store items!'");
 		add(languageMap, "    Rename:");
 		add(languageMap, "      NotDefault: ", 
 				"'&cDer alte oder neue Name darf nicht &fdefault &cheißen!'",
@@ -1168,10 +1168,10 @@ public class YamlManager
 		add(languageMap, "    Kick:");
 		add(languageMap, "      ViceCannotKickCreator: ", 
 				"'&cDu kannst als Stellvertreter den Ersteller nicht kicken!'",
-				"'&cYou can't kick the creator as a vice!'");
+				"'&cYou cannot kick the creator as a vice!'");
 		add(languageMap, "      CannotSelfKick: ", 
 				"'&cDu kannst dich nicht kicken!'",
-				"'&cYou can't kick yourself!'");
+				"'&cYou cannot kick yourself!'");
 		add(languageMap, "      YouWereKicked: ", 
 				"'&cDu wurdest aus dem Permanenten &eChannel &r%channel%&r &cgekickt!'",
 				"'&cYou have been kicked out of the Permanent &eChannel &r%channel%&r&c!'");
@@ -1363,7 +1363,7 @@ public class YamlManager
 		//Leave
 		add(languageMap, "    Leave:");
 		add(languageMap, "      NewCreator: ", 
-				"'&eDu wurdest der neue Ersteller des &5temp&forären &eChannels &f%channel'%",
+				"'&eDu wurdest der neue Ersteller des &5temp&forären &eChannels &f%channel%'",
 				"'&eYou became the new creator of the &5temp&forary &eChannel &f%channel%'");
 		add(languageMap, "      YouLeft: ", 
 				"'&eDu hast den &5temp&forären &eChannel &f%channel% &everlassen!'",
@@ -1386,16 +1386,15 @@ public class YamlManager
 		add(chatTitleMap, "  UniqueIdentifierName: ",
 				"'Admin'",
 				"'Admin'");
-		add(chatTitleMap, "  IsPrefix: ", ISO639_2B.GER,
-				true);
+		add(chatTitleMap, ISO639_2B.GER,
+				"  IsPrefix: "+true);
 		add(chatTitleMap, "  InChatName: ",
 				"'&7[&4Admin&7]'",
 				"'&7[&4Admin&7]'");
 		add(chatTitleMap, "  InChatColorCode: ",
 				"'&4'",
 				"'&4'");
-		add(chatTitleMap, "  SuggestCommand: ", ISO639_2B.GER,
-				"'/rules'");
+		add(chatTitleMap, ISO639_2B.GER,"  SuggestCommand: '/rules'");
 		add(chatTitleMap, "  Hover: ", 
 				"'&eDie Admins sind für die administrative Arbeit auf dem Server zuständig.~!~Für Hilfe im Spielbetrieb sind sie aber die letzte Instanz.'",
 				"'&eThe admins are responsible for the administrative work on the server.~!~But for help in the game operation they are the last instance.'");
@@ -1410,390 +1409,137 @@ public class YamlManager
 	//INFO:Channels
 	public void initChannels() 
 	{
-		add(channelsMap, "private:");
-		add(channelsMap, "  UniqueIdentifierName: "
-				, ISO639_2B.GER,
-				"'Private'");
-		add(channelsMap, "  Symbol: "
-				, ISO639_2B.GER,
-				"'/msg'");
-		add(channelsMap, "  InChatName: "
-				, ISO639_2B.GER,
-				"'&e[Private]'");
-		add(channelsMap, "  InChatColorMessage: "
-				, ISO639_2B.GER,
-				"'&d'");
-		add(channelsMap, "  Permission: "
-				, ISO639_2B.GER,
-				"scc.channel.private'");
-		add(channelsMap, "  JoinPart: "
-				, ISO639_2B.GER,
-				"'&ePrivate &7= /msg'");
-		add(channelsMap, "  ChatFormat: "
-				, ISO639_2B.GER,
-				"'&7[%time%&7] %playername_with_prefixhighcolorcode% &e>> %other_playername_with_prefixhighcolorcode% &7: %message%'");
-		add(channelsMap, "  MinimumTimeBetweenMessages: "
-				, ISO639_2B.GER,
-				500);
-		add(channelsMap, "  MinimumTimeBetweenSameMessages: "
-				, ISO639_2B.GER,
-				1000);
-		add(channelsMap, "  PercentOfSimiliarityOrLess: "
-				, ISO639_2B.GER,
-				75.0);
-		add(channelsMap, "  TimeColor: "
-				, ISO639_2B.GER,
-				"'&7'");
-		add(channelsMap, "  PlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  OtherPlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  SeperatorBetweenPrefix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  SeperatorBetweenSuffix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  MentionSound: "
-				, ISO639_2B.GER,
-				"'ENTITY_WANDERING_TRADER_REAPPEARED'");
-		add(channelsMap, "  ServerConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");				
-		add(channelsMap, "  WorldConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");
-		add(channelsMap, "  UseColor: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseItemReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseBookReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseRunCommandReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseSuggestCommandReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseWebsiteReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseEmojiReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UsePositionReplacer: "
-				, ISO639_2B.GER,
-				false);
-		
-		add(channelsMap, "permanent:");
-		add(channelsMap, "  UniqueIdentifierName: "
-				, ISO639_2B.GER,
-				"'Permanent'");
-		add(channelsMap, "  Symbol: "
-				, ISO639_2B.GER,
-				"'.'");
-		add(channelsMap, "  InChatName: "
-				, ISO639_2B.GER,
-				"'&d[%channel%&d]'");
-		add(channelsMap, "  InChatColorMessage: "
-				, ISO639_2B.GER,
-				"'&f'");
-		add(channelsMap, "  Permission: "
-				, ISO639_2B.GER,
-				"scc.channel.permanent'");
-		add(channelsMap, "  JoinPart: "
-				, ISO639_2B.GER,
-				"'&dPerma&7nent &7= .'");
-		add(channelsMap, "  ChatFormat: "
-				, ISO639_2B.GER,
-				"'&7[%time%&7] %channel% %prefixall% %playername_with_prefixhighcolorcode% %suffixall%&7: %message%'");
-		add(channelsMap, "  MinimumTimeBetweenMessages: "
-				, ISO639_2B.GER,
-				500);
-		add(channelsMap, "  MinimumTimeBetweenSameMessages: "
-				, ISO639_2B.GER,
-				1000);
-		add(channelsMap, "  PercentOfSimiliarityOrLess: "
-				, ISO639_2B.GER,
-				75.0);
-		add(channelsMap, "  TimeColor: "
-				, ISO639_2B.GER,
-				"'&7'");
-		add(channelsMap, "  PlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  OtherPlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  SeperatorBetweenPrefix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  SeperatorBetweenSuffix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  MentionSound: "
-				, ISO639_2B.GER,
-				"'ENTITY_WANDERING_TRADER_REAPPEARED'");
-		add(channelsMap, "  ServerConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");				
-		add(channelsMap, "  WorldConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");
-		add(channelsMap, "  UseColor: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseColor: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseItemReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseBookReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseRunCommandReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseSuggestCommandReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseWebsiteReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseEmojiReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseMentionReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UsePositionReplacer: "
-				, ISO639_2B.GER,
-				false);
-		
-		add(channelsMap, "temporary:");
-		add(channelsMap, "  UniqueIdentifierName: "
-				, ISO639_2B.GER,
-				"'Temporary'");
-		add(channelsMap, "  Symbol: "
-				, ISO639_2B.GER,
-				"';'");
-		add(channelsMap, "  InChatName: "
-				, ISO639_2B.GER,
-				"'&5[%channel%]'");
-		add(channelsMap, "  InChatColorMessage: "
-				, ISO639_2B.GER,
-				"'&5'");
-		add(channelsMap, "  Permission: "
-				, ISO639_2B.GER,
-				"scc.channel.temporary");
-		add(channelsMap, "  JoinPart: "
-				, ISO639_2B.GER,
-				"'&5Temporary &7= ;'");
-		add(channelsMap, "  ChatFormat: "
-				, ISO639_2B.GER,
-				"'&7[%time%&7] %channel% %prefixall% %playername_with_prefixhighcolorcode% %suffixall%&7: %message%'");
-		add(channelsMap, "  MinimumTimeBetweenMessages: "
-				, ISO639_2B.GER,
-				500);
-		add(channelsMap, "  MinimumTimeBetweenSameMessages: "
-				, ISO639_2B.GER,
-				1000);
-		add(channelsMap, "  PercentOfSimiliarityOrLess: "
-				, ISO639_2B.GER,
-				75.0);
-		add(channelsMap, "  TimeColor: "
-				, ISO639_2B.GER,
-				"'&7'");
-		add(channelsMap, "  PlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  OtherPlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  SeperatorBetweenPrefix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  SeperatorBetweenSuffix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  MentionSound: "
-				, ISO639_2B.GER,
-				"'ENTITY_WANDERING_TRADER_REAPPEARED'");
-		add(channelsMap, "  ServerConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");				
-		add(channelsMap, "  WorldConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");
-		add(channelsMap, "  UseColor: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseItemReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseBookReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseRunCommandReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseSuggestCommandReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseWebsiteReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseEmojiReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseMentionReplacer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UsePositionReplacer: "
-				, ISO639_2B.GER,
-				false);
-		
-		add(channelsMap, "global:");
-		add(channelsMap, "  UniqueIdentifierName: "
-				, ISO639_2B.GER,
-				"'Global'");
-		add(channelsMap, "  Symbol: "
-				, ISO639_2B.GER,
-				"'NULL'");
-		add(channelsMap, "  InChatName: "
-				, ISO639_2B.GER,
-				"'&e[G]'");
-		add(channelsMap, "  InChatColorMessage: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  Permission: "
-				, ISO639_2B.GER,
-				"scc.channel.global'");
-		add(channelsMap, "  JoinPart: "
-				, ISO639_2B.GER,
-				"'&eGlobal &7= Without Symbol'");
-		add(channelsMap, "  ChatFormat: "
-				, ISO639_2B.GER,
-				"'&7[%time%&7] %channel% %prefixall% %playername_with_prefixhighcolorcode% %suffixall%&7: %message%'");
-		add(channelsMap, "  UseSpecificServer: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseSpecificsWorld: "
-				, ISO639_2B.GER,
-				false);
-		add(channelsMap, "  UseBlockRadius: "
-				, ISO639_2B.GER,
-				0);
-		add(channelsMap, "  MinimumTimeBetweenMessages: "
-				, ISO639_2B.GER,
-				500);
-		add(channelsMap, "  MinimumTimeBetweenSameMessages: "
-				, ISO639_2B.GER,
-				1000);
-		add(channelsMap, "  PercentOfSimiliarityOrLess: "
-				, ISO639_2B.GER,
-				75.0);
-		add(channelsMap, "  TimeColor: "
-				, ISO639_2B.GER,
-				"'&7'");
-		add(channelsMap, "  PlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  OtherPlayernameCustomColor: "
-				, ISO639_2B.GER,
-				"'&e'");
-		add(channelsMap, "  SeperatorBetweenPrefix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  SeperatorBetweenSuffix: "
-				, ISO639_2B.GER,
-				"' '");
-		add(channelsMap, "  MentionSound: "
-				, ISO639_2B.GER,
-				"'ENTITY_WANDERING_TRADER_REAPPEARED'");
-		add(channelsMap, "  ServerConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");				
-		add(channelsMap, "  WorldConverter: ");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
-		add(channelsMap, "  "
-				, ISO639_2B.GER,
-				"- 'nether;&cNether;/warp nether;&cDie Hölle'");
-		add(channelsMap, "  UseColor: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UseItemReplacer: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UseBookReplacer: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UseRunCommandReplacer: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UseSuggestCommandReplacer: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UseWebsiteReplacer: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UseEmojiReplacer: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UseMentionReplacer: "
-				, ISO639_2B.GER,
-				true);
-		add(channelsMap, "  UsePositionReplacer: "
-				, ISO639_2B.GER,
-				true);
+		add(channelsMap, ISO639_2B.GER, "private:");
+		add(channelsMap, ISO639_2B.GER,	"  UniqueIdentifierName: 'Private'");
+		add(channelsMap, ISO639_2B.GER,	"  Symbol: '/msg'");
+		add(channelsMap, ISO639_2B.GER, "  InChatName: '&e[Private]'");
+		add(channelsMap, ISO639_2B.GER, "  InChatColorMessage: '&d'");
+		add(channelsMap, ISO639_2B.GER,	"  Permission: 'scc.channel.private'");
+		add(channelsMap, ISO639_2B.GER, "  JoinPart: '&ePrivate &7= /msg'");
+		add(channelsMap, ISO639_2B.GER, "  ChatFormat: '&7[%time%&7] %playername_with_prefixhighcolorcode% &e>> %other_playername_with_prefixhighcolorcode% &7: %message%'");
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenMessages: "+500);
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenSameMessages: "+1000);
+		add(channelsMap, ISO639_2B.GER,	"  PercentOfSimiliarityOrLess: "+75.0);
+		add(channelsMap, ISO639_2B.GER,	"  TimeColor: '&7'");
+		add(channelsMap, ISO639_2B.GER,	"  PlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER, "  OtherPlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenPrefix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenSuffix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  MentionSound: 'ENTITY_WANDERING_TRADER_REAPPEARED'");
+		add(channelsMap, ISO639_2B.GER, "  ServerConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
+		add(channelsMap, ISO639_2B.GER,	"  - 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");				
+		add(channelsMap, ISO639_2B.GER, "  WorldConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");
+		add(channelsMap, ISO639_2B.GER,	"  UseColor: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseItemReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER, "  UseBookReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseRunCommandReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseSuggestCommandReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseWebsiteReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseEmojiReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UsePositionReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER, "permanent:");
+		add(channelsMap, ISO639_2B.GER,	"  UniqueIdentifierName: 'Permanent'");
+		add(channelsMap, ISO639_2B.GER,	"  Symbol: '.'");
+		add(channelsMap, ISO639_2B.GER, "  InChatName: '&d[%channel%&d]'");
+		add(channelsMap, ISO639_2B.GER, "  InChatColorMessage: '&f'");
+		add(channelsMap, ISO639_2B.GER,	"  Permission: 'scc.channel.permanent'");
+		add(channelsMap, ISO639_2B.GER, "  JoinPart: '&dPerma&7nent &7= .'");
+		add(channelsMap, ISO639_2B.GER, "  ChatFormat: '&7[%time%&7] %channel% %prefixall% %playername_with_prefixhighcolorcode% %suffixall%&7: %message%'");
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenMessages: "+500);
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenSameMessages: "+1000);
+		add(channelsMap, ISO639_2B.GER,	"  PercentOfSimiliarityOrLess: "+75.0);
+		add(channelsMap, ISO639_2B.GER,	"  TimeColor: '&7'");
+		add(channelsMap, ISO639_2B.GER,	"  PlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER, "  OtherPlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenPrefix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenSuffix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  MentionSound: 'ENTITY_WANDERING_TRADER_REAPPEARED'");
+		add(channelsMap, ISO639_2B.GER, "  ServerConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
+		add(channelsMap, ISO639_2B.GER,	"  - 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");				
+		add(channelsMap, ISO639_2B.GER, "  WorldConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");
+		add(channelsMap, ISO639_2B.GER,	"  UseColor: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseItemReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER, "  UseBookReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseRunCommandReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseSuggestCommandReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseWebsiteReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseEmojiReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UsePositionReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER, "temporary:");
+		add(channelsMap, ISO639_2B.GER,	"  UniqueIdentifierName: 'Temporary'");
+		add(channelsMap, ISO639_2B.GER,	"  Symbol: ';'");
+		add(channelsMap, ISO639_2B.GER, "  InChatName: '&5[%channel%]'");
+		add(channelsMap, ISO639_2B.GER, "  InChatColorMessage: '&5'");
+		add(channelsMap, ISO639_2B.GER,	"  Permission: 'scc.channel.temporary'");
+		add(channelsMap, ISO639_2B.GER, "  JoinPart: '&5Temporary &7= ;'");
+		add(channelsMap, ISO639_2B.GER, "  ChatFormat: '&7[%time%&7] %channel% %prefixall% %playername_with_prefixhighcolorcode% %suffixall%&7: %message%'");
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenMessages: "+500);
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenSameMessages: "+1000);
+		add(channelsMap, ISO639_2B.GER,	"  PercentOfSimiliarityOrLess: "+75.0);
+		add(channelsMap, ISO639_2B.GER,	"  TimeColor: '&7'");
+		add(channelsMap, ISO639_2B.GER,	"  PlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER, "  OtherPlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenPrefix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenSuffix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  MentionSound: 'ENTITY_WANDERING_TRADER_REAPPEARED'");
+		add(channelsMap, ISO639_2B.GER, "  ServerConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
+		add(channelsMap, ISO639_2B.GER,	"  - 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");				
+		add(channelsMap, ISO639_2B.GER, "  WorldConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");
+		add(channelsMap, ISO639_2B.GER,	"  UseColor: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseItemReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER, "  UseBookReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseRunCommandReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseSuggestCommandReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseWebsiteReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseEmojiReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UsePositionReplacer: "+false);
+		add(channelsMap, ISO639_2B.GER, "global:");
+		add(channelsMap, ISO639_2B.GER,	"  UniqueIdentifierName: 'Global'");
+		add(channelsMap, ISO639_2B.GER,	"  Symbol: 'NULL'");
+		add(channelsMap, ISO639_2B.GER, "  InChatName: '&e[G]'");
+		add(channelsMap, ISO639_2B.GER, "  InChatColorMessage: '&e'");
+		add(channelsMap, ISO639_2B.GER,	"  Permission: 'scc.channel.global'");
+		add(channelsMap, ISO639_2B.GER, "  JoinPart: '&eGlobal &7= Without Symbol'");
+		add(channelsMap, ISO639_2B.GER, "  ChatFormat: '&7[%time%&7] %channel% %prefixall% %playername_with_prefixhighcolorcode% %suffixall%&7: %message%'");
+		add(channelsMap, ISO639_2B.GER,	"  UseSpecificServer: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseSpecificsWorld: "+false);
+		add(channelsMap, ISO639_2B.GER,	"  UseBlockRadius: "+0);
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenMessages: "+500);
+		add(channelsMap, ISO639_2B.GER, "  MinimumTimeBetweenSameMessages: "+1000);
+		add(channelsMap, ISO639_2B.GER,	"  PercentOfSimiliarityOrLess: "+75.0);
+		add(channelsMap, ISO639_2B.GER,	"  TimeColor: '&7'");
+		add(channelsMap, ISO639_2B.GER,	"  PlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER, "  OtherPlayernameCustomColor: '&e'");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenPrefix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  SeperatorBetweenSuffix: ' '");
+		add(channelsMap, ISO639_2B.GER,	"  MentionSound: 'ENTITY_WANDERING_TRADER_REAPPEARED'");
+		add(channelsMap, ISO639_2B.GER, "  ServerConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'proxy;&2BungeeCord;/warp spawn;&eDer Proxy ist der Verwalter aller Spigotserver.'");
+		add(channelsMap, ISO639_2B.GER,	"  - 'hub;&aHub;/warp hub;&eVom Hub kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");				
+		add(channelsMap, ISO639_2B.GER, "  WorldConverter: ");
+		add(channelsMap, ISO639_2B.GER,	"  - 'spawn;&aSpawn;/warp spawn;&eVom Spawn kommst du zu alle~!~&eandere Server.'");
+		add(channelsMap, ISO639_2B.GER, "  - 'nether;&cNether;/warp nether;&cDie Hölle'");
+		add(channelsMap, ISO639_2B.GER,	"  UseColor: "+true);
+		add(channelsMap, ISO639_2B.GER,	"  UseItemReplacer: "+true);
+		add(channelsMap, ISO639_2B.GER, "  UseBookReplacer: "+true);
+		add(channelsMap, ISO639_2B.GER,	"  UseRunCommandReplacer: "+true);
+		add(channelsMap, ISO639_2B.GER,	"  UseSuggestCommandReplacer: "+true);
+		add(channelsMap, ISO639_2B.GER,	"  UseWebsiteReplacer: "+true);
+		add(channelsMap, ISO639_2B.GER,	"  UseEmojiReplacer: "+true);
+		add(channelsMap, ISO639_2B.GER,	"  UsePositionReplacer: "+true);
 	}
 	
 	 //INFO:Emojis
@@ -1823,14 +1569,14 @@ public class YamlManager
 		 * https://de.wikipedia.org/wiki/Unicodeblock_Zus%C3%A4tzliche_umschlossene_alphanumerische_Zeichen
 		 */
 		
-		add(emojisMap, "umbrella: ", ISO639_2B.GER, "'☂'");
+		add(emojisMap, ISO639_2B.GER, "umbrella: '☂'");
 	}
 	
 	public void initWordFilter() //INFO:Wordfilter
 	{
 		add(wordFilterMap, "WordFilter: ");
-		add(wordFilterMap, "", ISO639_2B.GER, "- 'Arschloch'");
-		add(wordFilterMap, "", ISO639_2B.GER, "- 'Asshole'");
+		add(wordFilterMap, ISO639_2B.GER, "- 'Arschloch'");
+		add(wordFilterMap, ISO639_2B.GER, "- 'Asshole'");
 	}
 	
 	public enum GuiType
@@ -1852,15 +1598,15 @@ public class YamlManager
 		}
 		add(gui, function+":");
 		add(gui, "  "+settingLevel.getName()+":");
-		add(gui, "    Name:", 
-				"'"+displaynameGER+"'",
-				"'"+displaynameENG+"'");
-		add(gui, "    Slot:", ISO639_2B.GER, slot);
-		add(gui, "    Material:", ISO639_2B.GER, "'"+material.toString()+"'");
-		add(gui, "    Amount: ", ISO639_2B.GER, amount);
+		add(gui, "    Name: ", 
+				displaynameGER,
+				displaynameENG);
+		add(gui, ISO639_2B.GER,"    Slot: "+slot);
+		add(gui, ISO639_2B.GER,"    Material: "+"'"+material.toString()+"'");
+		add(gui, ISO639_2B.GER,"    Amount: "+amount);
 		if(urlTexture != null)
 		{
-			add(gui, "    PlayerHeadTexture:", ISO639_2B.GER, "'"+urlTexture+"'");
+			add(gui, ISO639_2B.GER,"    PlayerHeadTexture: '"+urlTexture+"'");
 		}
 		if(itemflag != null)
 		{
@@ -1904,8 +1650,8 @@ public class YamlManager
 		setSlot(GuiType.CHANNELS, 22, GuiValues.CHANNELGUI_FUNCTION+"_Private",
 				SettingsLevel.NOLEVEL, org.bukkit.Material.PAPER, 1,
 				null,
-				"'&ePrivatChat: %boolean%'",
-				"'&ePrivateChat: %boolean%'",
+				"'&ePrivatChat %boolean%'",
+				"'&ePrivateChat %boolean%'",
 				null,//Itemflag
 				null,//Ench
 				null);

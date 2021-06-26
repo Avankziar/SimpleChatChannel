@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
+import main.java.me.avankziar.interfacehub.bungee.InterfaceHub;
+import main.java.me.avankziar.interfacehub.bungee.plugin.ServicePriority;
 import main.java.me.avankziar.scc.bungee.assistance.BackgroundTask;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.commands.ClickChatCommandExecutor;
@@ -77,8 +79,10 @@ import main.java.me.avankziar.scc.bungee.commands.tree.BaseConstructor;
 import main.java.me.avankziar.scc.bungee.commands.tree.CommandConstructor;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.database.MysqlSetup;
-import main.java.me.avankziar.scc.bungee.database.YamlHandler;
+import main.java.me.avankziar.scc.bungee.database.YamlHandlerOld;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
+import main.java.me.avankziar.scc.bungee.ifh.ChatEditorProvider;
+import main.java.me.avankziar.scc.bungee.ifh.ChatProvider;
 import main.java.me.avankziar.scc.bungee.listener.ChatListener;
 import main.java.me.avankziar.scc.bungee.listener.JoinLeaveListener;
 import main.java.me.avankziar.scc.bungee.listener.ServerListener;
@@ -86,7 +90,7 @@ import main.java.me.avankziar.scc.bungee.metrics.Metrics;
 import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
 import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
-import main.java.me.avankziar.scc.database.YamlManager;
+import main.java.me.avankziar.scc.database.YamlManagerOld;
 import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatUser;
 import main.java.me.avankziar.scc.objects.KeyHandler;
@@ -94,6 +98,7 @@ import main.java.me.avankziar.scc.objects.PermanentChannel;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.objects.chat.Channel;
 import main.java.me.avankziar.scc.objects.chat.ChatTitle;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.config.Configuration;
@@ -103,8 +108,8 @@ public class SimpleChatChannels extends Plugin
 	public static SimpleChatChannels plugin;
 	public static Logger log;
 	public static String pluginName = "SimpleChatChannels";
-	private static YamlHandler yamlHandler;
-	private static YamlManager yamlManager;
+	private static YamlHandlerOld yamlHandler;
+	private static YamlManagerOld yamlManager;
 	private static MysqlSetup mysqlSetup;
 	private static MysqlHandler mysqlHandler;
 	private static Utility utility;
@@ -166,7 +171,7 @@ public class SimpleChatChannels extends Plugin
 		log.info(" ███████║╚██████╗╚██████╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepends().toString());
 		log.info(" ╚══════╝ ╚═════╝ ╚═════╝ | Have Fun^^");
 		
-		yamlHandler = new YamlHandler(plugin);
+		yamlHandler = new YamlHandlerOld(plugin);
 		utility = new Utility(plugin);
 		
 		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
@@ -191,6 +196,8 @@ public class SimpleChatChannels extends Plugin
 		ListenerSetup();
 		setupBstats();
 		BypassPermission.init(plugin);
+		setupIFHProvider();
+		//setupIFHConsumer();
 	}
 	
 	public void onDisable()
@@ -215,17 +222,17 @@ public class SimpleChatChannels extends Plugin
 		return plugin;
 	}
 	
-	public YamlHandler getYamlHandler() 
+	public YamlHandlerOld getYamlHandler() 
 	{
 		return yamlHandler;
 	}
 	
-	public YamlManager getYamlManager()
+	public YamlManagerOld getYamlManager()
 	{
 		return yamlManager;
 	}
 	
-	public void setYamlManager(YamlManager yamlManager)
+	public void setYamlManager(YamlManagerOld yamlManager)
 	{
 		SimpleChatChannels.yamlManager = yamlManager;
 	}
@@ -291,7 +298,7 @@ public class SimpleChatChannels extends Plugin
 			pcarray.add(pc.getName());
 		}
 		Collections.sort(pcarray);
-		pcPlayerMap.put(1, pcarray);
+		pcPlayerMap.put(2, pcarray);
 		pcMap.put(2, pcarray);
 		ArrayList<String> playerarray = getPlayers();
 		Collections.sort(playerarray);
@@ -363,7 +370,7 @@ public class SimpleChatChannels extends Plugin
 				pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice);
 		
 		ArgumentConstructor tc_ban = new ArgumentConstructor(baseCommandI+"_tc_ban", 1, 2, 2, false, playerMapII);
-		ArgumentConstructor tc_changepassword = new ArgumentConstructor(baseCommandI+"_tc_changepassword", 1, 2, 2, false, null);
+		ArgumentConstructor tc_changepassword = new ArgumentConstructor(baseCommandI+"_tc_changepassword", 1, 3, 3, false, null);
 		ArgumentConstructor tc_create = new ArgumentConstructor(baseCommandI+"_tc_create", 1, 2, 3, false, null);
 		ArgumentConstructor tc_info = new ArgumentConstructor(baseCommandI+"_tc_info", 1, 1, 1, false, null);
 		ArgumentConstructor tc_invite = new ArgumentConstructor(baseCommandI+"_tc_invite", 2, 2, 2, false, playerMapII);
@@ -403,7 +410,7 @@ public class SimpleChatChannels extends Plugin
 		
 		addingHelps(
 				scc,
-					broadcast, channel, channelgui,
+					book, broadcast, channel, channelgui,
 					ignore, ignorelist,
 					item, item_rename, item_replacers,
 					mute, performance,
@@ -488,7 +495,7 @@ public class SimpleChatChannels extends Plugin
 			
 			
 			CommandConstructor mail = new CommandConstructor(baseCommandVIII, true,
-					mail_read, mail_send, mail_lastreceivedmails);
+					mail_forward, mail_read, mail_send, mail_lastreceivedmails, mail_lastsendedmails);
 			PluginSettings.settings.addCommands(KeyHandler.MAIL, mail.getCommandString());
 			
 			pm.registerCommand(plugin, new MailCommandExecutor(plugin, mail));
@@ -626,6 +633,7 @@ public class SimpleChatChannels extends Plugin
 					|| cti.get(key+".Permission") == null
 					|| cti.get(key+".Weight") == null)
 			{
+				log.info("Chattitle "+key+"cannot be loaded!");
 				continue;
 			}
 			ChatTitle ct = new ChatTitle(cti.getString(key+".UniqueIdentifierName"),
@@ -823,6 +831,65 @@ public class SimpleChatChannels extends Plugin
 			ChatHandler.emojiList.put(emoji, yamlHandler.getEmojis().getString(e));
 		}
 	}
+	
+	private void setupIFHProvider()
+	{
+		Plugin plugin = BungeeCord.getInstance().getPluginManager().getPlugin("InterfaceHub");
+        if (plugin == null) 
+        {
+            return;
+        }
+        try
+        {
+        	main.java.me.avankziar.interfacehub.bungee.InterfaceHub ifh = (InterfaceHub) plugin;
+        	try
+            {
+        		 ChatProvider cp = new ChatProvider();
+                 ifh.getServicesManager().register(
+                 		main.java.me.avankziar.interfacehub.general.chat.Chat.class,
+                 		cp, plugin, ServicePriority.Normal);
+                 log.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
+            } catch(NoClassDefFoundError e) 
+        	{}
+        	try
+            {
+        		ChatEditorProvider cep = new ChatEditorProvider();
+                ifh.getServicesManager().register(
+                		main.java.me.avankziar.interfacehub.general.chat.ChatEditor.class,
+                		cep, plugin, ServicePriority.Normal);
+                log.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
+            } catch(NoClassDefFoundError e) 
+            {}
+        } catch(NoClassDefFoundError e) 
+        {
+        	//Your Log.
+        }    
+	}
+	
+	/*private void setupIFHConsumer()
+    {
+		Plugin plugin = BungeeCord.getInstance().getPluginManager().getPlugin("InterfaceHub");
+        if (plugin == null) 
+        {
+            return;
+        }
+        main.java.me.avankziar.interfacehub.bungee.InterfaceHub ifh = (InterfaceHub) plugin;
+        RegisteredServiceProvider<Chat> rsp = ifh
+        		.getServicesManager()
+        		.getRegistration(main.java.me.avankziar.interfacehub.bungee.chat.Chat.class);
+        if (rsp == null) 
+        {
+        	log.info(pluginName + " detected InterfaceHub >>> Chat.class Provider is missing! Failing hooking!");
+            return;
+        }
+        main.java.me.avankziar.interfacehub.bungee.chat.Chat chat = rsp.getProvider();
+        if(chat != null)
+        {
+    		log.info(pluginName + " detected InterfaceHub:Chat.class >>> Hooking!");
+        }
+        log.info("chat.isEnabled: "+chat.isEnabled());
+        return;
+    }*/
 	
 	public void setupBstats()
 	{

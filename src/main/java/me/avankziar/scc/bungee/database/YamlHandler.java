@@ -17,7 +17,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 public class YamlHandler 
 {
-	private SimpleChatChannels plugin;
+	/*private SimpleChatChannels plugin;
 	private Configuration cfg = new Configuration();
 	private String languages;
 	private Configuration com = new Configuration();
@@ -73,7 +73,7 @@ public class YamlHandler
 		Configuration y = null;
 		try 
 		{
-			yaml = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+			y = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
 		} catch (IOException e) 
 		{
 			SimpleChatChannels.log.severe(
@@ -81,7 +81,6 @@ public class YamlHandler
 					+ e.getMessage());
 			e.printStackTrace();
 		}
-		y = yaml;
 		return y;
 	}
 	
@@ -122,37 +121,36 @@ public class YamlHandler
 		}
 	}
 	
-	private void fileHandling(String filename, Configuration con, LinkedHashMap<ISO639_2B, ArrayList<String>> map)
+	private File fileHandling(String filename, LinkedHashMap<ISO639_2B, ArrayList<String>> map, boolean rewrite)
 	{
 		File file = FileHandler.initFile(plugin.getDataFolder(), filename+".yml");
 		FileHandler.writeFile(file, FileHandler.readFile(file), 
 				(map.get(plugin.getYamlManager().getLanguageType()) != null)
 				? map.get(plugin.getYamlManager().getLanguageType())
-				: map.get(plugin.getYamlManager().getDefaultLanguageType()));
-		con = loadYamlTask(file, con);
+				: map.get(plugin.getYamlManager().getDefaultLanguageType()), rewrite);
+		return file;
 	}
 	
-	private void fileHandling(String filename, Configuration con, LinkedHashMap<ISO639_2B, ArrayList<String>> map,
-			String additionalDirectory)
+	private File fileHandling(String filename, LinkedHashMap<ISO639_2B, ArrayList<String>> map,
+			String additionalDirectory, boolean rewrite)
 	{
-		File file = FileHandler.initFile(plugin.getDataFolder(), filename, additionalDirectory);
+		File file = FileHandler.initFile(plugin.getDataFolder(), filename+".yml", additionalDirectory);
 		FileHandler.writeFile(file, FileHandler.readFile(file), 
 				(map.get(plugin.getYamlManager().getLanguageType()) != null)
 				? map.get(plugin.getYamlManager().getLanguageType())
-				: map.get(plugin.getYamlManager().getDefaultLanguageType()));
-		con = loadYamlTask(file, con);
+				: map.get(plugin.getYamlManager().getDefaultLanguageType()), rewrite);
+		return file;
 	}
 	
 	public boolean mkdirStaticFiles()
 	{
-		fileHandling("config", cfg, plugin.getYamlManager().getConfigMap());
-		
+		cfg = loadYamlTask(fileHandling("config", plugin.getYamlManager().getConfigMap(), true), cfg);		
 		languages = cfg.getString("Language", "ENG").toUpperCase();
-		fileHandling("commands", com, plugin.getYamlManager().getCommandsMap());
-		fileHandling("chattitle", cti, plugin.getYamlManager().getChatTitleMap());
-		fileHandling("channels", cha, plugin.getYamlManager().getChannelsMap());
-		fileHandling("emojis", eji, plugin.getYamlManager().getEmojisMap());
-		fileHandling("wordfilter", wfr, plugin.getYamlManager().getWordFilterMap());
+		com = loadYamlTask(fileHandling("commands", plugin.getYamlManager().getCommandsMap(), true), com);
+		cti = loadYamlTask(fileHandling("chattitle", plugin.getYamlManager().getChatTitleMap(), false), cti);
+		cha = loadYamlTask(fileHandling("channels", plugin.getYamlManager().getChannelsMap(), false), cha);
+		eji = loadYamlTask(fileHandling("emojis", plugin.getYamlManager().getEmojisMap(), false), eji);
+		wfr = loadYamlTask(fileHandling("wordfilter", plugin.getYamlManager().getWordFilterMap(), false), wfr);
 		return true;
 	}
 	
@@ -179,7 +177,7 @@ public class YamlHandler
 	private boolean mkdirLanguage()
 	{
 		String languageString = plugin.getYamlManager().getLanguageType().toString().toLowerCase();
-		fileHandling(languageString, cfg, plugin.getYamlManager().getLanguageMap(), "Languages");
+		lang = loadYamlTask(fileHandling(languageString, plugin.getYamlManager().getLanguageMap(), "Languages", true), lang);
 		return true;
-	}
+	}*/
 }

@@ -30,6 +30,7 @@ Build 40 =======================================================================
 - +/re <Spieler>, hinzugefügt. Hat als Tab nur noch die Spieler, mit denen man zur laufzeit geschrieben hat.
 - +/r, hinzugefügt. Schreibt nur direkt der zu letzt geschriebenen Person.
 - +/w <Spieler>, hinzugefügt. Dediziertes /msg für die Console.
+- +/scceditor [true/false], nun mit optionalem Argument. true, damit die Nachricht gesendet wird. false, dann nicht.
 - +CommandTree update eingebaut.
 - +ChannelGui eingefügt.
 - +BackgroundTask CleanUp, welcher den Letzten Join abgleicht und diese nach der gegeben Zeit löscht.

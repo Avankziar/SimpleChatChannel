@@ -46,7 +46,7 @@ public class FileHandler
 	{
 		File directory = new File(pluginDataFolder+"/"+additionalDirectory+"/");
 		directory.mkdir();
-		File file = new File(directory.getPath(), filename);
+		File file = new File(directory, filename);
 		try
 		{
 			if(file.createNewFile())
@@ -66,7 +66,7 @@ public class FileHandler
 	public static File initFile(File pluginDataFolder, String filename)
 	{
 		pluginDataFolder.mkdir();
-		File file = new File(pluginDataFolder.getPath(),filename);
+		File file = new File(pluginDataFolder, filename);
 		try
 		{
 			if(file.createNewFile())
@@ -101,8 +101,34 @@ public class FileHandler
 		return list;
 	}
 	
-	public static void writeFile(File file, ArrayList<String> actualLines, ArrayList<String> defaultLines)
+	public static void writeFile(File file, ArrayList<String> actualLines, ArrayList<String> defaultLines, boolean rewrite)
 	{
+		if(!rewrite)
+		{
+			if(actualLines.isEmpty() || actualLines.size() <= 1)
+			{
+				try
+				{
+					FileOutputStream fileOutputStream = new FileOutputStream(file);
+					OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+					Writer writer = new BufferedWriter(outputStreamWriter);
+					for(String dline : defaultLines)
+					{
+						writer.write(dline + "\n");
+						//System.out.println(dline);
+					}
+					writer.close();
+					outputStreamWriter.close();
+					fileOutputStream.close();
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			return;
+		}
 		try
 		{
 			FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -256,15 +282,14 @@ public class FileHandler
 						j++;
 					}
 				}
+				/* Mach ich, wenn es muss
 				while(j < defaultLines.size())
 				{
-					/*
-					 * If the actual at the end, but the default not.
-					 */
+					// If the actual at the end, but the default not.
 					//System.out.println(defaultLines.get(j));
 					writer.write(defaultLines.get(j) + "\n");
 					j++;
-				}
+				}*/
 			}
 			writer.close();
 			outputStreamWriter.close();

@@ -2,4 +2,4 @@ name: SimpleChatChannels
 main: main.java.me.avankziar.scc.bungee.SimpleChatChannels
 version: 40
 author: Avankziar
-softdepends: [AfkRecord]
+softdepends: [AfkRecord, InterfaceHub]

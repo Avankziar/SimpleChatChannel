@@ -1,11 +1,16 @@
 package main.java.me.avankziar.scc.spigot.commands;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
 
@@ -34,6 +39,7 @@ public class SccEditorCommandExecutor implements CommandExecutor
 		}
     	if(args.length == 0)
     	{
+    		send(player);
     		if(plugin.editorplayers.contains(player.getName()))
     		{
     			plugin.editorplayers.remove(player.getName());
@@ -44,7 +50,45 @@ public class SccEditorCommandExecutor implements CommandExecutor
     			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
     		}
     		return true;
+    	} else if(args.length == 1)
+    	{
+    		if(args[0].equalsIgnoreCase("true"))
+    		{
+    			if(plugin.editorplayers.contains(player.getName()))
+        		{
+        			plugin.editorplayers.remove(player.getName());
+        			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+        		} else
+        		{
+        			plugin.editorplayers.add(player.getName());
+        			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+        		}
+        		return true;
+    		} else if(args[0].equalsIgnoreCase("false"))
+    		{
+    			if(plugin.editorplayers.contains(player.getName()))
+        		{
+        			plugin.editorplayers.remove(player.getName());
+        		} else
+        		{
+        			plugin.editorplayers.add(player.getName());
+        		}
+        		return true;
+    		}
     	}
     	return false;
+    }
+    
+    private void send(Player player)
+    {
+    	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(stream);
+        try {
+			out.writeUTF(StaticValues.SCC_EDITOR);
+			out.writeUTF(player.getName());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        player.sendPluginMessage(plugin, StaticValues.SCC_TOBUNGEE, stream.toByteArray());
     }
 }

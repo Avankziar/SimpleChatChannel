@@ -5,7 +5,7 @@ import java.util.LinkedHashMap;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.database.YamlHandler;
+import main.java.me.avankziar.scc.spigot.database.YamlHandlerOld;
 
 
 public class PluginSettings
@@ -30,7 +30,7 @@ public class PluginSettings
 	
 	public static void initSettings(SimpleChatChannels plugin)
 	{
-		YamlHandler yh = plugin.getYamlHandler();
+		YamlHandlerOld yh = plugin.getYamlHandler();
 		boolean bungee = plugin.getYamlHandler().getConfig().getBoolean("IsBungeeActive", false);
 		boolean mysql = false;
 		if(plugin.getMysqlSetup().getConnection() != null)

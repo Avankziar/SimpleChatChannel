@@ -1,14 +1,22 @@
 package main.java.me.avankziar.scc.spigot.database;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 
-import main.java.me.avankziar.scc.database.YamlManager;
+import main.java.me.avankziar.scc.database.Language;
+import main.java.me.avankziar.scc.database.Language.ISO639_2B;
+import main.java.me.avankziar.scc.database.YamlManagerOld;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 
-public class _YamlHandlerOld
+public class YamlHandlerOld
 {
 	private SimpleChatChannels plugin;
 	private File config = null;
@@ -36,7 +44,7 @@ public class _YamlHandlerOld
 	private LinkedHashMap<String, File> guifiles = new LinkedHashMap<>();
 	private LinkedHashMap<String, YamlConfiguration> gui = new LinkedHashMap<>();
 	
-	public _YamlHandlerOld(SimpleChatChannels plugin) 
+	public YamlHandlerOld(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
 		loadYamlHandler();
@@ -44,15 +52,15 @@ public class _YamlHandlerOld
 	
 	public boolean loadYamlHandler()
 	{
-		plugin.setYamlManager(new YamlManager(true));
-		/*if(!mkdirStaticFiles())
+		plugin.setYamlManager(new YamlManagerOld(true));
+		if(!mkdirStaticFiles())
 		{
 			return false;
 		}
 		if(!mkdirDynamicFiles())
 		{
 			return false;
-		}*/
+		}
 		return true;
 	}
 	
@@ -96,7 +104,7 @@ public class _YamlHandlerOld
 		return gui.get(guitype);
 	}
 	
-	/*public boolean mkdirStaticFiles()
+	public boolean mkdirStaticFiles()
 	{
 		File directory = new File(plugin.getDataFolder()+"");
 		if(!directory.exists())
@@ -353,5 +361,5 @@ public class _YamlHandlerOld
 			e.printStackTrace();
 		}
 		return true;
-	}*/
+	}
 }
