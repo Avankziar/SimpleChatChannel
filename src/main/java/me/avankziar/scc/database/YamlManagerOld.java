@@ -27,7 +27,7 @@ public class YamlManagerOld
 	
 	public YamlManagerOld(boolean spigot)
 	{
-		initConfig();
+		initConfig(spigot);
 		initCommands();
 		initLanguage();
 		initChatTitle();
@@ -179,20 +179,20 @@ public class YamlManagerOld
 			yml.set(key, (List<String>) stringList);
 		}
 	}
-	public void initConfig() //INFO:Config
+	public void initConfig(boolean spigot) //INFO:Config
 	{
 		configKeys.put("Language"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"ENG"}));
-		configKeys.put("# Test hier"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				null}));
-		configKeys.put("Server"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"hub"}));
-		configKeys.put("IsBungeeActive"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				true}));
+		if(spigot)
+		{
+			configKeys.put("Server"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					"hub"}));
+			configKeys.put("IsBungeeActive"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+		}
 		configKeys.put("Mysql.Status"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				false}));
@@ -238,10 +238,6 @@ public class YamlManagerOld
 		configKeys.put("Mysql.TableNameVI"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"simplechatchannelsMails"}));
-		configKeys.put(
-				  "#Test notiz~"
-				+ "#Und hier die zweite Zeile"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {""}));
 		configKeys.put("Logging"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
@@ -341,10 +337,10 @@ public class YamlManagerOld
 				">"}));
 		configKeys.put("ChatReplacer.Emoji.Start"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				":|"}));
+				":"}));
 		configKeys.put("ChatReplacer.Emoji.End"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"|:"}));
+				":"}));
 		configKeys.put("ChatReplacer.Mention.Start"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"@@"}));
@@ -388,19 +384,19 @@ public class YamlManagerOld
 				"&c/scc [pagenumber] &f| Info page for all commands.");
 		commandsInput("scceditor", "scceditor", "scc.cmd.scceditor", 
 				"/scceditor", "/scceditor ",
-				"&c/scceditor &f| ChatEditor Toggle.",
-				"&c/scceditor &f| ChatEditor toggle.");
+				"&c/scceditor [true|false] &f| ChatEditor Toggle.",
+				"&c/scceditor [true|false] &f| ChatEditor toggle.");
 		commandsInput("clch", "clch", "scc.cmd.clch", 
 				"/clch [pagenumber]", "/clch ",
-				"&c/clch <Spielername> <Zahl> <Nachricht...> &f| Sendet einen Klickbaren Chat für den Spieler. Geeignet für Citizen / Denizen plugin.",
+				"&c/clch <Spielername> <Zahl> <Nachricht...> &f| Sendet einen klickbaren Chat für den Spieler. Geeignet für Citizen / Denizen Plugin.",
 				"&c/clch <player name> <number> <message...> &f| Sends a clickable chat for the player. Suitable for Citizen / Denizen plugin.");
 		commandsInput("msg", "msg", "scc.cmd.msg", 
 				"/msg <player> <message...>", "/msg ",
-				"&c/msg <Spielernamen> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler, welche online sind, werden als Vorschlag angezeigt.",
+				"&c/msg <Spielername> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler, welche online sind, werden als Vorschlag angezeigt.",
 				"&c/msg <player name> <message> &f| Write to the player privately. All players who are online will be displayed as a suggestion.");
 		commandsInput("re", "re", "scc.cmd.re", 
 				"/re <player> <message...>", "/re ",
-				"&c/re <Spielernamen> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler mit denen man schon geschrieben hat, werden als Vorschlag angezeigt.",
+				"&c/re <Spielername> <Nachricht> &f| Schreibt dem Spieler privat. Alle Spieler mit denen man schon geschrieben hat, werden als Vorschlag angezeigt.",
 				"&c/re <player name> <message> &f| Write to the player privately. All players with whom you have already written are displayed as suggestions.");
 		commandsInput("r", "r", "scc.cmd.r", 
 				"/r <message...>", "/r ",
@@ -414,24 +410,24 @@ public class YamlManagerOld
 		String basePermission = "scc.cmd.scc";
 		//INFO:Argument Start
 		argumentInput(path+"book", "book", basePermission,
-				"/scc book <Itemname> [Player]", "/scc book ",
-				"&c/scc book <Itemname> [Spieler] &f| Öffnet das Buch vom ItemReplacer.",
-				"&c/scc book <Itemname> [player] &f| Open the book from ItemReplacer.");
+				"/scc book <itemname> [playername]", "/scc book ",
+				"&c/scc book <Itemname> [Spielername] &f| Öffnet das Buch vom ItemReplacer.",
+				"&c/scc book <Itemname> [playername] &f| Open the book from ItemReplacer.");
 		argumentInput(path+"broadcast", "broadcast", basePermission,
 				"/scc broadcast <message...>", "/scc broadcast ",
 				"&c/scc broadcast <Nachricht> &f| Zum Senden einer Broadcast Nachricht. Falls Bungeecord aktiviert ist, kann man auch von Spigot als Console, bungeecordübergreifend dies an alle Spieler senden.",
 				"&c/scc broadcast <message> &f| To send a broadcast message. If bungeecord is enabled, you can also send this to all players from Spigot as a console, across bungeecords.");
 		argumentInput(path+"channel", "channel", basePermission,
 				"/scc channel <channel>", "/scc channel ",
-				"&c/scc channel &f| Zum An- & Ausstellen des angegebenen Channels.",
-				"&c/scc channel &f| To turn the specified channel on & off.");
+				"&c/scc channel <Channelname> &f| Zum An- & Ausstellen des angegebenen Channels.",
+				"&c/scc channel <channelname> &f| To turn the specified channel on & off.");
 		argumentInput(path+"channelgui", "channelgui", basePermission,
 				"/scc channelgui ", "/scc channelgui ",
 				"&c/scc channelgui &f| Öffnet ein Menü, wo die Channels aus und eingestellt werden können.",
 				"&c/scc channelgui &f| Opens a menu where the channels can be selected and set.");
 		argumentInput(path+"ignore", "ignore", basePermission,
-				"/scc ignore <player>", "/scc ignore ",
-				"&c/scc ignore <Spielername> &f| Zum Einsetzten oder Aufheben des Ignores für den Spieler.",
+				"/scc ignore <playername>", "/scc ignore ",
+				"&c/scc ignore <Spielername> &f| Zum Einsetzen oder Aufheben des Ignores für den Spieler.",
 				"&c/scc ignore <playername> &f| To set or remove the ignore for the player.");
 		argumentInput(path+"ignorelist", "ignorelist", basePermission,
 				"/scc ignorelist [playername]", "/scc ignorelist ",
@@ -439,16 +435,16 @@ public class YamlManagerOld
 				"&c/scc ignorelist [playername] &f| To show all players on the ignore list.");
 		argumentInput(path+"mute", "mute", basePermission,
 				"/scc mute <playername> [values...]", "/scc mute ",
-				"&c/scc mute <Spielername> [Werte...] &f| Stellt den Spieler für die angegebene Zeit stumm. Bei keinem Wert ist es permanent. Möglich addidative Werte sind: (Format xxx:<Zahl>) y=Jahre, M=Monate, d=Tage, H=Stunden, m=Minuten, s=Sekunden.",
-				"&c/scc mute <playername> [values...] &f| Mutes the player for the specified time. With no value, it is permanent. Possible addidative values are: (format xxx:<number>) y=years, M=months, d=days, H=hours, m=minutes, s=seconds.");
+				"&c/scc mute <Spielername> [Werte...] &f| Stellt den Spieler für die angegebene Zeit stumm. Bei keinem Wert ist es permanent. Mögliche hinzufügbare und kombinierbare Werte sind: (Format x:<Zahl>) y=Jahre, M=Monate, d=Tage, H=Stunden, m=Minuten, s=Sekunden. Z.B. H:2 m:10 bedeutet für 2 Stunden und 10 Minuten gemutet.",
+				"&c/scc mute <playername> [values...] &f| Mutes the player for the specified time. With no value, it is permanent. Possible addable and combinable values are: (format x:<number>) y=years, M=months, d=days, H=hours, m=minutes, s=seconds. E.g. H:2 m:10 means muted for 2 hours and 10 minutes.");
 		argumentInput(path+"performance", "performance", basePermission,
 				"/scc performance ", "/scc performance ",
 				"&c/scc performance &f| Zeigt die MysqlPerformances des Plugins an.",
 				"&c/scc performance &f| Displays the MysqlPerformances of the plugin.");
 		argumentInput(path+"unmute", "unmute", basePermission,
-				"/scc unmute <playername", "/scc unmute ",
-				"&c/scc unmute <Spielername> &f| Zum Wiedererlangen der Schreib-Rechte.",
-				"&c/scc unmute <playername> &f| To regain write permissions.");
+				"/scc unmute <playername> ", "/scc unmute ",
+				"&c/scc unmute <Spielername> &f| Zum sofortigen entmuten des Spielers.",
+				"&c/scc unmute <playername> &f| To immediately unmute the player.");
 		argumentInput(path+"updateplayer", "updateplayer", basePermission,
 				"/scc updateplayer <playername>", "/scc updateplayer ",
 				"&c/scc updateplayer <Spielername> &f| Updatet die Zugangsrechte des Spielers für alle Channels.",
@@ -461,16 +457,16 @@ public class YamlManagerOld
 		basePermission = "scc.cmd.scc.option";
 		argumentInput(path+"option_channel", "channel", basePermission,
 				"/scc option channel ", "/scc option channel ",
-				"&c/scc option channel &f| Aktiviert oder deaktiviert ob man beim Joinen seine aktiven Channels sieht.",
-				"&c/scc option channel &f| Enables or disables whether you can see your active channels when joining.");
+				"&c/scc option channel &f| Aktiviert oder deaktiviert, ob man beim Joinen seine aktiven Channels sieht.",
+				"&c/scc option channel &f| Enables or disables, whether you can see your active channels when joining.");
 		argumentInput(path+"option_join", "join", basePermission,
 				"/scc option join", "/scc option join",
-				"&c/scc option join &f| Aktiviert oder deaktiviert ob man die Joinnachricht anderer Spieler sieht.",
-				"&c/scc option join &f| Enables or disables whether you can see the join message of other players.");
+				"&c/scc option join &f| Aktiviert oder deaktiviert, ob man die Joinnachricht anderer Spieler sieht.",
+				"&c/scc option join &f| Enables or disables, whether you can see the join message of other players.");
 		argumentInput(path+"option_spy", "spy", basePermission,
 				"/scc option spy ", "/scc option spy ",
-				"&c/scc option spy &f| Aktiviert oder deaktiviert ob man Nachrichten sehen kann, welche einem sonst vorborgen wären.",
-				"&c/scc option spy &f| Enables or disables whether you can see messages that would otherwise be hidden from you.");
+				"&c/scc option spy &f| Aktiviert oder deaktiviert, ob man Nachrichten sehen kann, welche einem sonst verborgen wären.",
+				"&c/scc option spy &f| Enables or disables, whether you can see messages that would otherwise be hidden from you.");
 		basePermission = "scc.cmd.scc.item.";
 		argumentInput(path+"item", "item", basePermission,
 				"/scc item ", "/scc item ",
@@ -478,12 +474,12 @@ public class YamlManagerOld
 				"&c/scc item &f| Opens the menu where you can set the items for the replacer.");
 		argumentInput(path+"item_rename", "rename", basePermission,
 				"/scc item rename <oldname> <newname> ", "/scc item rename ",
-				"&c/scc item rename <oldname> <newname> &f| Benennt das Item, welches auf den alten Namen hört, um.",
+				"&c/scc item rename <Alter Name> <Neuer Name> &f| Benennt das Item, welches auf den alten Namen registriert ist, um.",
 				"&c/scc item rename <oldname> <newname> &f| Renames the item that goes by the old name.");
 		argumentInput(path+"item_replacers", "replacers", basePermission,
 				"/scc item replacers ", "/scc item replacers ",
-				"&c/scc item replacers &f| Zeigt alle Möglichen Replacer im Chat an, sowie dessen Item als Hover.",
-				"&c/scc item replacers &f| Displays all possible replacers in the chat, as well as their item as a hover.");
+				"&c/scc item replacers &f| Zeigt alle möglichen Replacer im Chat an, sowie dessen Item als Hovernachricht.",
+				"&c/scc item replacers &f| Displays all possible replacers in the chat, as well as their item as a hovermessage.");
 		//INFO:PermanentChannel
 		basePermission = "scc.cmd.scc";
 		argumentInput(path+"pc", "pc", basePermission,
@@ -497,7 +493,7 @@ public class YamlManagerOld
 				"&c/scc pc ban <channelname> <playername> &f| Bans a player from a permanent channel.");
 		argumentInput(path+"pc_unban", "unban", basePermission,
 				"/scc pc unban <channelname> <playername>", "/scc pc unban ",
-				"&c/scc pc <Channelname> <Spielername> &f| Unbannt einen Spieler von einem permanenten Channel.",
+				"&c/scc pc <Channelname> <Spielername> &f| Entbannt einen Spieler von einem permanenten Channel.",
 				"&c/scc pc <channelname> <playername> &f| Unbans a player from a permanent channel.");
 		argumentInput(path+"pc_changepassword", "changepassword", basePermission,
 				"/scc pc changepassword <channelname> <password>", "/scc pc changepassword ",
@@ -549,7 +545,7 @@ public class YamlManagerOld
 				"&c/scc pc namecolor <channelname> <color> &f| Changes the color of the permanent Channelprefix.");
 		argumentInput(path+"pc_player", "player", basePermission,
 				"/scc pc player [playername] ", "/scc pc player ",
-				"&c/scc pc player [Spielername] &f| Zeigt alle permanenten Channels, wo der Spieler beigetreten ist an.",
+				"&c/scc pc player [Spielername] &f| Zeigt alle permanenten Channels an, wo der Spieler beigetreten ist.",
 				"&c/scc pc player [playername] &f| Displays all permanent channels where the player has joined.");
 		argumentInput(path+"pc_rename", "rename", basePermission,
 				"/scc pc rename <channelname> <newname>", "/scc pc rename ",
@@ -596,7 +592,7 @@ public class YamlManagerOld
 				"&c/scc tc invite <playername> &f| Invites a player to the own temporary channel.");
 		argumentInput(path+"tc_join", "join", basePermission,
 				"/scc tc join <channelname> [password] ", "/scc tc join ",
-				"&c/scc tc join <Channelname> [Passwort] &f| Betritt einem temporären Channel.",
+				"&c/scc tc join <Channelname> [Passwort] &f| Betritt einen temporären Channel.",
 				"&c/scc tc join <channelname> [password] &f| Enter a temporary channel.");
 		argumentInput(path+"tc_kick", "kick", basePermission,
 				"/scc tc kick <playername> ", "/scc tc kick ",
@@ -608,17 +604,17 @@ public class YamlManagerOld
 				"&c/scc tc leave &f| Leaves a temporary channel.");
 		commandsInput("mail", "mail", "scc.cmd.mail.mail", 
 				"/mail [page]", "/mail ",
-				"&c/mail [Seitenzahl] &f| Zeigt alle ungelesene Mails mit Klick- und HoverEvents.",
+				"&c/mail [Seitenzahl] &f| Zeigt alle ungelesenen Mails mit Klick- und Hovernachrichten.",
 				"&c/mail [pagen] &f| Shows all unread mails with click and hover events.");
 		path = "mail_";
 		basePermission = "scc.cmd.mail";
 		argumentInput(path+"lastreceivedmails", "lastreceivedmails", basePermission,
 				"/mail lastreceivedmails [page] [playername] ", "/mail lastreceivedmails ",
-				"&c/mail lastreceivedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte empfangende Mails.",
+				"&c/mail lastreceivedmails [Seitenzahl] [Spielername] &f| Zeigt die letzten empfangen Mails an.",
 				"&c/mail lastreceivedmails [page] [playername] &f| Show the last received mails.");
 		argumentInput(path+"lastsendedmails", "lastsendedmails", basePermission,
 				"/mail lastsendedmails [page] [playername] ", "/mail lastsendedmails ",
-				"&c/mail lastsendedmails [Seitenzahl] [Spielername] &f| Zeigt die letzte gesendeten Mails.",
+				"&c/mail lastsendedmails [Seitenzahl] [Spielername] &f| Zeigt die letzten gesendeten Mails.",
 				"&c/mail lastsendedmails [page] [playername] &f| Show the last sended mails.");
 		argumentInput(path+"forward", "forward", basePermission,
 				"/mail forward <id> ", "/mail forward ",
@@ -629,9 +625,9 @@ public class YamlManagerOld
 				"&c/mail read <id> &f| Liest die Mail.",
 				"&c/mail read <id> &f| Read the mail.");
 		argumentInput(path+"send", "send", basePermission,
-				"/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> ", "/mail send ",
-				"&c/mail send <Empfänger, mehrere getrennt mit @> <Betreff...> <Trennwert> <Nachricht...> &f| Schreibt eine Mail.",
-				"&c/mail send <reciver, multiple seperate with @> <subject...> <seperator> <message...> &f| Write a mail.");
+				"/mail send <receiver, multiple seperate with @> <subject...> <seperator> <message...> ", "/mail send ",
+				"&c/mail send <Empfänger, mehrere getrennt mit @> <Betreff...> <Trennzeichen> <Nachricht...> &f| Schreibt eine Mail.",
+				"&c/mail send <receiver, multiple seperate with @> <subject...> <seperator> <message...> &f| Write a mail.");
 		/*argumentInput(path+"", "", basePermission,
 				"/scc ", "/scc ",
 				"&c/scc &f| ",
@@ -842,7 +838,7 @@ public class YamlManagerOld
 		//INFO:ChatListener
 		languageKeys.put("ChatListener.NoChannelIsNullChannel",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDeine Chateingabe kann in kein Channel gepostet werden, da kein Channel passt und auch kein Channel ohne Eingangssymbol existiert!",
+						"&cDeine Chateingabe kann in keinen Channel gepostet werden, da kein Channel passt und auch kein Channel ohne Eingangssymbol existiert!",
 						"&cYour chat entry canot be posted in any channel, because no channel fits and also no channel exists without an entry symbol!"}));
 		languageKeys.put("ChatListener.NotATemporaryChannel"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -870,11 +866,11 @@ public class YamlManagerOld
 						"&cYou are muted for &f%time%&c!"}));
 		languageKeys.put("ChatListener.PleaseWaitALittle"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cBitte warte noch bis &f%time%&c, bis du in im Channel &r%channel% &cwieder etwas schreibst.",
+						"&cBitte warte noch bis &f%time%&c, dann kannst du im Channel &r%channel% &cwieder etwas schreibst.",
 						"&cPlease wait until &f%time%&c to write something again in the channel &r%channel%&c."}));
 		languageKeys.put("ChatListener.PleaseWaitALittleWithSameMessage"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cBitte warte noch bis &f%time%&c, bis du in im Channel &r%channel% &cwieder die selbe Nachricht schreibst.",
+						"&cBitte warte noch bis &f%time%&c, dann kannst du im Channel &r%channel% &cwieder die selbe Nachricht schreiben.",
 						"&cPlease wait until &f%time% &cto write again the same message in the channel &r%channel%&c."}));
 		languageKeys.put("ChatListener.PlayerIgnoreYou"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -886,7 +882,7 @@ public class YamlManagerOld
 						"&cThe &f%player% &cignores you, however you were able to bypass that!"}));
 		languageKeys.put("ChatListener.PlayerHasPrivateChannelOff"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDer Spieler &f%player% &chat privat Nachrichten deaktiviert!",
+						"&cDer Spieler &f%player% &chat das Empfangen von privaten Nachrichten deaktiviert!",
 						"&cThe player &f%player% &chas private messaging disabled!"}));
 		languageKeys.put("ChatListener.StringTrim"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -898,19 +894,19 @@ public class YamlManagerOld
 						"&7[&fNot found&7]"}));
 		languageKeys.put("ChatListener.PrivateChatHover",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&dKlick hier um im Privaten mit &f%player% &dzu schreiben.",
+						"&dKlick hier, um im Privaten mit &f%player% &dzu schreiben.",
 						"&dClick here to write in private with &f%player% &d."}));
 		languageKeys.put("ChatListener.ChannelHover",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"%channelcolor%Klick hier um im %channel% Channel zu schreiben.",
+						"%channelcolor%Klick hier, um im %channel% Channel zu schreiben.",
 						"%channelcolor%Click here to write in the %channel% channel."}));
 		languageKeys.put("ChatListener.CommandRunHover",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&4Klick hier um den Befehl auszuführen.",
+						"&4Klick hier, um den Befehl auszuführen.",
 						"&4Click here to execute the command."}));
 		languageKeys.put("ChatListener.CommandSuggestHover",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eKlick hier um den Befehl in der Chatzeile zu erhalten.",
+						"&eKlick hier, um den Befehl in der Chatzeile zu erhalten.",
 						"&eClick here to get the command in the chat line."}));
 		languageKeys.put("ChatListener.Website.Replacer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -922,7 +918,7 @@ public class YamlManagerOld
 						"&f[&7Censord&f]"}));
 		languageKeys.put("ChatListener.Website.Hover"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eKlicke hier um diese Webseite zu öffnen.~!~&b",
+						"&eKlick hier, um diese Webseite zu öffnen.~!~&b",
 						"&eClick here to open this web page.~!~&b"}));
 		languageKeys.put("ChatListener.Website.NotAllowHover"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -939,8 +935,8 @@ public class YamlManagerOld
 		
 		languageKeys.put("CmdMsg.PrivateChannelsNotActive"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDer PrivateChannel ist global deaktiviert!",
-						"&cThe PrivateChannel is globally disabled!"}));
+						"&cDer Private Channel ist global deaktiviert!",
+						"&cThe private Channel is globally disabled!"}));
 		languageKeys.put("CmdMsg.PleaseEnterAMessage"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cBitte schreibe eine Nachricht mit Inhalt!",
@@ -954,11 +950,11 @@ public class YamlManagerOld
 		 */
 		languageKeys.put("CmdEditor.Active"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDer ChatEditor ist aktive. &cDu kannst nun nicht mehr am normalen Chat teilnehmen.",
+						"&eDer ChatEditor ist aktiviert. &cDu kannst nun nicht mehr am normalen Chat teilnehmen.",
 						"&eThe ChatEditor is active. &cYou can no longer participate in the normal chat."}));
 		languageKeys.put("CmdEditor.Deactive"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDer ChatEditor ist deaktive. &aDu kannst nun am normalen Chat teilnehmen.",
+						"&eDer ChatEditor ist deaktiviert. &aDu kannst nun am normalen Chat teilnehmen.",
 						"&eThe ChatEditor is deactive. &aYou can now participate in the normal chat."}));
 		
 		/*
@@ -974,7 +970,7 @@ public class YamlManagerOld
 						"&7[&bRead&7]"}));
 		languageKeys.put("CmdMail.Base.Read.Hover", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eKlick hier um die Mail zu lesen.",
+						"&eKlick hier, um die Mail zu lesen.",
 						"&eClick here to read the mail."}));
 		languageKeys.put("CmdMail.Base.SendPlus.Click", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -982,15 +978,15 @@ public class YamlManagerOld
 						"&7[&cReply&7]"}));
 		languageKeys.put("CmdMail.Base.SendPlus.Hover", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eKlick hier um eine Antwort an alle, Verfasser sowie CC, zu schreiben.",
-						"&eClick here to write a reply to all, authors as well as CC."}));
+						"&eKlick hier, um eine Antwort an alle (Verfasser sowie CC) zu schreiben.",
+						"&eClick here to write a reply to all (authors as well as CC)."}));
 		languageKeys.put("CmdMail.Base.SendMinus.Click", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&7[&cReply&4All&7]",
 						"&7[&cReply&4All&7]"}));
 		languageKeys.put("CmdMail.Base.SendMinus.Hover", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eKlick hier um eine Antwort nur an Verfasser zu schreiben.",
+						"&eKlick hier, um eine Antwort nur an Verfasser zu schreiben.",
 						"&eClick here to write a reply to author only."}));
 		languageKeys.put("CmdMail.Base.Forward.Click", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -998,7 +994,7 @@ public class YamlManagerOld
 						"&7[&dFwd&7]"}));
 		languageKeys.put("CmdMail.Base.Forward.Hover", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eKlick hier um die Mail weiterzuleiten.",
+						"&eKlick hier, um die Mail weiterzuleiten.",
 						"&eClick here to forward the mail."}));
 		languageKeys.put("CmdMail.Base.Subject.Text", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1042,11 +1038,11 @@ public class YamlManagerOld
 						"&cThis mail does not exist!"}));
 		languageKeys.put("CmdMail.Read.CannotReadOthersMails", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDu darfst diese Mail nicht lesen, das sie nicht für dich adressiert ist!",
+						"&cDu darfst diese Mail nicht lesen, da sie nicht für an dich adressiert ist!",
 						"&cYou must not read this mail, it is not addressed to you!"}));
 		languageKeys.put("CmdMail.Read.NoChannelIsNullChannel",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDeine Mail kann nicht verarbeitet werden, da der Channel, welche für das Verarbeiten der Mailnachricht nicht existiert!",
+						"&cDeine Mail kann nicht verarbeitet werden, da der Channel, welcher für das Verarbeiten der Mailnachricht zustandig ist, nicht existiert!",
 						"&cYour mail cannot be processed, because the channel which is used for processing the mail message does not exist!"}));
 		languageKeys.put("CmdMail.Read.Headline", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1079,7 +1075,7 @@ public class YamlManagerOld
 						"&cOne of the specified recipients does not exist!"}));
 		languageKeys.put("CmdMail.Send.OneWordMinimum", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cBitte gebe mindestens 1 Wort als Nachricht an!",
+						"&cBitte gib mindestens 1 Wort als Nachricht an!",
 						"&cPlease enter at least 1 word as message!"}));
 		languageKeys.put("CmdMail.Send.Sended", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1103,11 +1099,11 @@ public class YamlManagerOld
 		 */
 		languageKeys.put("CmdScc.OtherCmd", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cBitte nutze den Befehl, mit einem weiteren Argument aus der Tabliste!",
-						"&cPlease use the command, with another argument from the tab list!"}));
+						"&cBitte nutze den Befehl mit einem weiteren Argument aus der Tabliste!",
+						"&cPlease use the command with another argument from the tab list!"}));
 		languageKeys.put("CmdScc.UsedChannelForBroadCastDontExist"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDen in der config.yml gewählten Channel für einen Broadcast existiert nicht!",
+						"&cDer in der config.yml definierte Channel existiert nicht für diesen Broadcast!",
 						"&cThe channel selected in config.yml for a broadcast does not exist!"}));
 		//Book
 		languageKeys.put("CmdScc.Book.IsNotABook"
@@ -1122,11 +1118,11 @@ public class YamlManagerOld
 		//Channel
 		languageKeys.put("CmdScc.Channel.ChannelDontExist"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDer angegeben Channel existiert nicht!",
+						"&cDer angegebene Channel existiert nicht!",
 						"&cThe specified channel does not exist!"}));
 		languageKeys.put("CmdScc.Channel.UsedChannelDontExist"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDu kannst den angegeben Channel nicht ändern, da du in diesen garnicht schreiben darfst!",
+						"&cDu kannst den angegebenen Channel nicht ändern, da du in diesen gar nicht schreiben darfst!",
 						"&cYou can not change the specified channel, because you are not allowed to write in it!"}));
 		languageKeys.put("CmdScc.Channel.Active"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1156,7 +1152,7 @@ public class YamlManagerOld
 						"&eYou dont ignore any player!"}));
 		languageKeys.put("CmdScc.Ignore.Hover"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eKlick hier um den Spieler nicht mehr zu ignorieren!",
+						"&eKlick hier, um den Spieler nicht mehr zu ignorieren!",
 						"&eClick here to stop ignoring the player!"}));
 		languageKeys.put("CmdScc.Ignore.Headline"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1174,19 +1170,19 @@ public class YamlManagerOld
 						"&eYou have muted &c%player% &eto the &f%time%&e!"}));
 		languageKeys.put("CmdScc.Mute.PlayerMute"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDer Spieler &c%target% &ewurden von &f%player% &ebis zum &f%time% &egemutet!",
+						"&eDer Spieler &c%target% &ewurde von &f%player% &ebis zum &f%time% &egemutet!",
 						"&eThe player &c%target% &ehas been muted from &f%player% &eto &f%time%&e!"}));
 		languageKeys.put("CmdScc.Mute.YouHaveBeenUnmute"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDu kannst dich wieder am Chat beteiligen!",
+						"&eDu wurdest entmutet!",
 						"&eYou can join the chat again!"}));
 		languageKeys.put("CmdScc.Mute.YouHaveUnmute"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDu hast den &f%player% &eunmutet!",
+						"&eDu hast den &f%player% &eentmutet!",
 						"&eYou have the &f%player% &eunmuted!"}));
 		languageKeys.put("CmdScc.Mute.PlayerUnmute"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDer Spieler &f%player% &ekann wieder reden.",
+						"&eDer Spieler &f%player% &ekann wieder schreiben.",
 						"&eThe &f%player%&ecan talk again."}));
 		languageKeys.put("CmdScc.Performance.Headline"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1224,7 +1220,7 @@ public class YamlManagerOld
 						"&eYou will now see all chat messages that would otherwise be hidden to you."}));
 		languageKeys.put("CmdScc.Option.Spy.Deactive"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDu siehst nun nur noch die Chatnachrichten, wozu du auch berechtig bist.",
+						"&eDu siehst nun nur noch die Chatnachrichten, wozu du auch berechtigt bist.",
 						"&eYou will now only see the chat messages that you are authorized to see."}));
 		//ItemReplacer
 		languageKeys.put("CmdScc.Item.InvTitle"
@@ -1233,7 +1229,7 @@ public class YamlManagerOld
 						"§c%player% §eReplacer §6Items"}));
 		languageKeys.put("CmdScc.Item.YouCannotSaveItems"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDu kannst keine Items vorspeicher!",
+						"&cDu kannst keine Items vorspeichern!",
 						"&cYou can't pre-store items!"}));
 		languageKeys.put("CmdScc.Item.Rename.NotDefault"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1688,20 +1684,20 @@ public class YamlManagerOld
 		//UpdatePlayer
 		languageKeys.put("CmdScc.UpdatePlayer.IsUpdated"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDu hast den Spieler &f%player% &eneu bewerten lassen! Seine aktiven Channels sind nach seinen Permission neu eingestellt worden.",
+						"&eDu hast den Spieler &f%player% &eneu bewerten lassen! Seine aktiven Channels sind nach seinen Permissions neu eingestellt worden.",
 						"&eYou have had the player &f%player% &revaluated! His active channels have been reset after his permission."}));
 		languageKeys.put("CmdScc.UpdatePlayer.YouWasUpdated"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDer Spieler &f%player% &ehat deine aktiven Channels nach deinen Permission neu einstellen lassen.",
+						"&eDer Spieler &f%player% &ehat deine aktiven Channels nach deinen Permissions neu einstellen lassen.",
 						"&eThe player &f%player% &ehas your active channels reset according to your permission."}));
 		/*languageKeys.put(""
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 				"",
-				""}));*/
+				""}));
 		languageKeys.put("CmdScc.TemporaryChannel.Leave."
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"",
-						""}));
+						""}));*/
 	}
 	
 	public void initChatTitle() //INFO:ChatTitle

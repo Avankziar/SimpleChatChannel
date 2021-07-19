@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -836,6 +838,28 @@ public class SimpleChatChannels extends JavaPlugin
 				}
 			}
 		}
+		int c = channels.size()+((nullChannel != null) ? 1 : 0);
+		String cl = "";
+		if(nullChannel != null)
+		{
+			cl += nullChannel.getUniqueIdentifierName()+" Symbol: None";
+		}
+		if(c > 0)
+		{
+			cl += ", ";
+		}
+		int i = 0;
+		for(Entry<String, Channel> channel : channels.entrySet())
+		{
+			cl += channel.getValue().getUniqueIdentifierName()+" Symbol: "+channel.getValue().getSymbol();
+			if((i+1) < channels.size())
+			{
+				cl += ", ";
+			}
+			i++;
+		}
+		log.log(Level.INFO, cl);
+		log.log(Level.INFO, "Loaded "+c+" Channels!");
 	}
 	
 	public Channel getChannel(String uniqueIdentifierName)

@@ -39,6 +39,7 @@ Build 40 =======================================================================
 - +Spieler direkt und per Zeiteinheit löschen. (Spieler die länger x Tage nicht da sind).
 - +Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
 - +logging korrekt alles anzeigen
+- +Permanente und Temporäre Channel Befehle werden nun aus übersichtgründen auseinander geschrieben
 
 - Mysql:
   - TableI: 

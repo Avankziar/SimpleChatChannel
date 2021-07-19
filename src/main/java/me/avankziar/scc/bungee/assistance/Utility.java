@@ -724,7 +724,7 @@ public class Utility
 			i++;
 		}
 		double percent = (((double) matches) / ((double) comparison.length()))*100.0 ;
-		if(percent <= percentOfSimilarity)
+		if(percent >= percentOfSimilarity)
 		{
 			return true;
 		}

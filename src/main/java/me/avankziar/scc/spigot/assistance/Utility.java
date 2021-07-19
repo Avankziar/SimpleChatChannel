@@ -1043,8 +1043,8 @@ public class Utility
 	    Method asNMSCopyMethod = ReflectionUtil.getMethod(craftItemStackClazz, "asNMSCopy", ItemStack.class);
 
 	    // NMS Method to serialize a net.minecraft.server.ItemStack to a valid Json string
-	    Class<?> nmsItemStackClazz = ReflectionUtil.getNMSClass("ItemStack");
-	    Class<?> nbtTagCompoundClazz = ReflectionUtil.getNMSClass("NBTTagCompound");
+	    Class<?> nmsItemStackClazz = ReflectionUtil.getNMSClass("world.item.ItemStack");
+	    Class<?> nbtTagCompoundClazz = ReflectionUtil.getNMSClass("nbt.NBTTagCompound");
 	    Method saveNmsItemStackMethod = ReflectionUtil.getMethod(nmsItemStackClazz, "save", nbtTagCompoundClazz);
 
 	    Object nmsNbtTagCompoundObj; // This will just be an empty NBTTagCompound instance to invoke the saveNms method

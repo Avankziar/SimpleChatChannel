@@ -2,6 +2,7 @@ name: SimpleChatChannels
 main: main.java.me.avankziar.scc.spigot.SimpleChatChannels
 version: 40
 author: Avankziar
-api-version: 1.16
+api-version: 1.17
 description: A Chat Plugin
 softdepend: [AfkRecord, InterfaceHub]
+website: https://www.spigotmc.org/resources/simple-chat-channels.35220/

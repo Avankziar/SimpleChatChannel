@@ -61,7 +61,8 @@ public class ReflectionUtil
             return loadedNMSClasses.get(nmsClassName);
         }
 
-        String clazzName = "net.minecraft.server." + getVersion() + nmsClassName;
+        String clazzName = 	"net.minecraft."+nmsClassName;
+        					//"net.minecraft.server." + getVersion() + nmsClassName;
         Class<?> clazz;
 
         try {
@@ -200,4 +201,16 @@ public class ReflectionUtil
             return null;
         }
     }
+    
+    /**
+	 * <strong>1.17 and new only</strong>
+	 * 
+	 * Get a Class from the net.minecraft package
+	 * @param className The name of the class
+	 * @return Returns the class
+	 * @throws ClassNotFoundException Thrown when the Class was not found
+	 */
+	public static Class<?> getMinecraftClass(String className) throws ClassNotFoundException {
+		return Class.forName("net.minecraft." + className);
+	}
 }

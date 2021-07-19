@@ -46,6 +46,8 @@ public class ARGRead extends ArgumentModule
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.MailNotExist")));
 			return;
 		}
+		long now = System.currentTimeMillis();
+		String readdate = TimeHandler.getDateTime(now);
 		if(!mail.getReciverUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 		{
 			if(!player.hasPermission(BypassPermission.MAIL_READOTHER))
@@ -54,6 +56,7 @@ public class ARGRead extends ArgumentModule
 				return;
 			}
 			isAdmin = true;
+			readdate = "/";
 		}
 		String usingChannel = plugin.getYamlHandler().getConfig().getString("Mail.UseChannelForMessageParser");
 		Channel usedChannel = plugin.getChannel(usingChannel);
@@ -76,14 +79,14 @@ public class ARGRead extends ArgumentModule
 				.replace("%cc%", String.join(", ", ccsplit)))); //CC
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Date")
 				.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
-				.replace("%readeddate%", TimeHandler.getDateTime(mail.getReadedDate())))); //Datum
+				.replace("%readeddate%", readdate))); //Datum
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Subject")
 				.replace("%subject%", mail.getSubject()))); //Subject
 		player.sendMessage(tc); //Message
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Bottomline"))); //Bottomline
 		if(!isAdmin)
 		{
-			mail.setReadedDate(System.currentTimeMillis());
+			mail.setReadedDate(now);
 			plugin.getMysqlHandler().updateData(Type.MAIL, mail, "`id` = ?", mail.getId());
 		}
 	}

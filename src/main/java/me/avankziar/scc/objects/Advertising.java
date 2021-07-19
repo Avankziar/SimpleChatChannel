@@ -2,13 +2,13 @@ package main.java.me.avankziar.scc.objects;
 
 public class Advertising
 {
-	private String advertiser; //As UUID
+	/*private String advertiser; //As UUID
 	private long insertTime;
 	private String rawText;
 	private double costs;
 	private int placedQuantity;
 	private int remainingQuantity;
-	private boolean directAdvertising; //Ob beim senden direkt die Werbung gepostet werden soll. Kostet extra
+	private boolean directAdvertising; //Ob beim senden direkt die Werbung gepostet werden soll. Kostet extra*/
 	
 	public Advertising()
 	{

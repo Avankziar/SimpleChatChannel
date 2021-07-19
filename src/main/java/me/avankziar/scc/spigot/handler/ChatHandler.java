@@ -396,72 +396,58 @@ public class ChatHandler
 		
 		/*
 		 * Spam Protection Wall
-		 */
+		 */		
 		long now = System.currentTimeMillis();
-		long last = 0;
-		if(ChatListener.spamMap.containsKey(player.getUniqueId().toString()) 
-				&& ChatListener.spamMap.get(player.getUniqueId().toString()).containsKey(usedChannel.getUniqueIdentifierName()))
+		if(ChatListener.spamMap.containsKey(player.getUniqueId().toString())
+				&& ChatListener.spamMapII.containsKey(player.getUniqueId().toString()))
 		{
-			if(ChatListener.spamMap.get(player.getUniqueId().toString()).get(usedChannel.getUniqueIdentifierName()) > now)
-			{ 
-				final long diff = ChatListener.spamMap.get(player.getUniqueId().toString()).get(usedChannel.getUniqueIdentifierName()) - now;
-				last = diff +now;
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.PleaseWaitALittle")
-						.replace("%channel%", usedChannel.getInChatName())
-						.replace("%time%", TimeHandler.getDateTime(last))));
-				ChatListener.spamMap.get(player.getUniqueId().toString())
-					.replace(player.getUniqueId().toString(), now+usedChannel.getTimeBetweenMessages());
-				return false;
-			}
 			LinkedHashMap<String, Long> map = ChatListener.spamMap.get(player.getUniqueId().toString());
-			map.replace(player.getUniqueId().toString(), now+usedChannel.getTimeBetweenMessages());
-		} else
-		{
-			if(ChatListener.spamMap.containsKey(player.getUniqueId().toString()))
+			LinkedHashMap<String, String> mapII = ChatListener.spamMapII.get(player.getUniqueId().toString());
+			if(map.containsKey(usedChannel.getUniqueIdentifierName())
+					&& mapII.containsKey(usedChannel.getUniqueIdentifierName()))
 			{
-				LinkedHashMap<String, Long> map = ChatListener.spamMap.get(player.getUniqueId().toString());
-				map.put(usedChannel.getUniqueIdentifierName(), now+usedChannel.getTimeBetweenMessages());
-				ChatListener.spamMap.replace(player.getUniqueId().toString(), map);
+				long last = map.get(usedChannel.getUniqueIdentifierName())+usedChannel.getTimeBetweenSameMessages();
+				if(plugin.getUtility().isSimliarText(
+						message, mapII.get(usedChannel.getUniqueIdentifierName()), usedChannel.getPercentOfSimilarity())
+						&& last > now)
+				{
+					player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang()
+							.getString("ChatListener.PleaseWaitALittleWithSameMessage")
+							.replace("%channel%", usedChannel.getInChatName())
+							.replace("%time%", TimeHandler.getDateTime(last))));
+					return false;
+				}
+				last = map.get(usedChannel.getUniqueIdentifierName())+usedChannel.getTimeBetweenMessages();
+				if(last > now)
+				{
+					player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.PleaseWaitALittle")
+							.replace("%channel%", usedChannel.getInChatName())
+							.replace("%time%", TimeHandler.getDateTime(last))));
+					return false;
+				}
+				LinkedHashMap<String, Long> mapIII = ChatListener.spamMap.get(player.getUniqueId().toString());
+				mapIII.replace(player.getUniqueId().toString(), now);
+				ChatListener.spamMap.put(player.getUniqueId().toString(), mapIII);
+				LinkedHashMap<String, String> mapIV = ChatListener.spamMapII.get(player.getUniqueId().toString());
+				mapIV.replace(player.getUniqueId().toString(), message);
+				ChatListener.spamMapII.put(player.getUniqueId().toString(), mapIV);
 			} else
 			{
-				LinkedHashMap<String, Long> map = new LinkedHashMap<>();
-				map.put(usedChannel.getUniqueIdentifierName(), now+usedChannel.getTimeBetweenMessages());
-				ChatListener.spamMap.put(player.getUniqueId().toString(), map);
+				LinkedHashMap<String, Long> mapIII = new LinkedHashMap<>();
+				mapIII.put(usedChannel.getUniqueIdentifierName(), now);
+				ChatListener.spamMap.put(player.getUniqueId().toString(), mapIII);
+				LinkedHashMap<String, String> mapIV = new LinkedHashMap<>();
+				mapIV.put(usedChannel.getUniqueIdentifierName(), message);
+				ChatListener.spamMapII.put(player.getUniqueId().toString(), mapIV);
 			}
-			
-		}
-		/*
-		 * Spam Protection Wall 2
-		 */
-		if(ChatListener.spamMapII.containsKey(player.getUniqueId().toString())
-				&& ChatListener.spamMapII.get(player.getUniqueId().toString()).containsKey(usedChannel.getUniqueIdentifierName()))
-		{
-			if(plugin.getUtility().isSimliarText(message, 
-					ChatListener.spamMapII.get(player.getUniqueId().toString())
-					.get(usedChannel.getUniqueIdentifierName()), usedChannel.getPercentOfSimilarity())
-					
-					&& last > (now-usedChannel.getTimeBetweenSameMessages()))
-			{
-				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.PleaseWaitALittleWithSameMessage")
-						.replace("%channel%", usedChannel.getInChatName())
-						.replace("%time%", TimeHandler.getDateTime(last))));
-				return false;
-			}
-			LinkedHashMap<String, String> map = ChatListener.spamMapII.get(player.getUniqueId().toString());
-			map.replace(player.getUniqueId().toString(), message);
 		} else
 		{
-			if(ChatListener.spamMapII.containsKey(player.getUniqueId().toString()))
-			{
-				LinkedHashMap<String, String> map = ChatListener.spamMapII.get(player.getUniqueId().toString());
-				map.put(usedChannel.getUniqueIdentifierName(), message);
-				ChatListener.spamMapII.replace(player.getUniqueId().toString(), map);
-			} else
-			{
-				LinkedHashMap<String, String> map = new LinkedHashMap<>();
-				map.put(usedChannel.getUniqueIdentifierName(), message);
-				ChatListener.spamMapII.put(player.getUniqueId().toString(), map);
-			}
+			LinkedHashMap<String, Long> map = new LinkedHashMap<>();
+			map.put(usedChannel.getUniqueIdentifierName(), now+usedChannel.getTimeBetweenMessages());
+			ChatListener.spamMap.put(player.getUniqueId().toString(), map);
+			LinkedHashMap<String, String> mapII = new LinkedHashMap<>();
+			mapII.put(usedChannel.getUniqueIdentifierName(), message);
+			ChatListener.spamMapII.put(player.getUniqueId().toString(), mapII);
 		}
 		return true;
 	}

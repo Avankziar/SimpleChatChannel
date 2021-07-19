@@ -63,6 +63,7 @@ public class SccEditorCommandExecutor implements CommandExecutor
         			plugin.editorplayers.add(player.getName());
         			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
         		}
+    			send(player);
         		return true;
     		} else if(args[0].equalsIgnoreCase("false"))
     		{
@@ -73,6 +74,7 @@ public class SccEditorCommandExecutor implements CommandExecutor
         		{
         			plugin.editorplayers.add(player.getName());
         		}
+    			send(player);
         		return true;
     		}
     	}

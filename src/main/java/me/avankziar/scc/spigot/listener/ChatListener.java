@@ -86,7 +86,6 @@ public class ChatListener implements Listener
 			}
 			message = message.substring(usedChannel.getSymbol().length());
 		}
-		
 		ch.startChat(player, usedChannel, message);
 	}
 }

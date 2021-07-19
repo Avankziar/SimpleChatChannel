@@ -91,7 +91,7 @@ public class ARGLastSendedMails extends ArgumentModule
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Hover"));
 			TextComponent tcForward = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Click"),
 					ClickEvent.Action.SUGGEST_COMMAND,
-					PluginSettings.settings.getCommands(KeyHandler.MAIL_FORWARD)+mail.getId(),
+					PluginSettings.settings.getCommands(KeyHandler.MAIL_FORWARD)+mail.getId()+" ",
 					HoverEvent.Action.SHOW_TEXT,
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Hover"));
 			TextComponent tc = ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Text")
