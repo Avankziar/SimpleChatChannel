@@ -9,6 +9,7 @@ Future =========================================================================
 
 - IFH für scceditor einpfegen.
 - /msgrp einfügen. & im ChatHandler bei ROLEPLAYNAME den SuggestCommand ändern.
+- Sound beim Mention pm etc. individuell einstellbar machen.
   
 Build 40 ==================================================================================================
 - +Config wert für Joinnachrichten machen, der den Default mysql wert vorgibt.

@@ -311,7 +311,8 @@ public class ChatHandler
 				}
 			}
 			Random r = new Random();
-			if(remainingColors.isEmpty())
+			if(remainingColors.isEmpty()
+					&& remainingColors.size()-1 < 1)
 			{
 				/*
 				 * If all are in use, use a random color.

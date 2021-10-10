@@ -80,6 +80,7 @@ public class JoinLeaveListener implements Listener
 				}
 			}
 		}
+		event.setJoinMessage("");
 		if(PluginSettings.settings.isBungee())
 		{
 			return;
@@ -132,6 +133,7 @@ public class JoinLeaveListener implements Listener
 	@EventHandler
 	public void onLeave(PlayerQuitEvent event)
 	{
+		event.setQuitMessage("");
 		if(PluginSettings.settings.isBungee())
 		{
 			return;

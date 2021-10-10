@@ -76,8 +76,8 @@ public class ARGLastReceivedMails extends ArgumentModule
 			last = true;
 			start = totalcount-10;
 		}
-		ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getAllListAt(
-				Type.MAIL, "`id`", true, "`reciver_uuid` = ?", other));
+		ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getList(
+				Type.MAIL, "`id`", true, start, amount, "`reciver_uuid` = ?", other));
 		ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
 		for(Mail mail : mails)
 		{

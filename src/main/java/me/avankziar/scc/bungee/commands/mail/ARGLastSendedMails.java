@@ -76,8 +76,8 @@ public class ARGLastSendedMails extends ArgumentModule
 			last = true;
 			start = totalcount-10;
 		}
-		ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getAllListAt(
-				Type.MAIL, "`id`", true, "`reciver_uuid` = ?", other));
+		ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getList(
+				Type.MAIL, "`id`", true, start, amount, "`reciver_uuid` = ?", other));
 		ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
 		for(Mail mail : mails)
 		{
@@ -105,7 +105,7 @@ public class ARGLastSendedMails extends ArgumentModule
 			sublist.add(tc);
 			list.add(sublist);
 		}
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastMails.Headline")
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastReceivedMails.Headline")
 				.replace("%page%", String.valueOf(page))
 				.replace("%player%", othern)));
 		for(ArrayList<BaseComponent> sub : list)

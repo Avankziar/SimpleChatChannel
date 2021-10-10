@@ -35,6 +35,11 @@ public class ARGItem_Rename extends ArgumentModule
 		}
 		ItemJson ij = (ItemJson) plugin.getMysqlHandler().getData(Type.ITEMJSON,
 						"`owner` = ? AND `itemname` = ?", player.getUniqueId().toString(), old);
+		if(ij == null)
+		{
+			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdScc.Item.Rename.ItemDontExist")));
+			return;
+		}
 		if(plugin.getMysqlHandler().exist(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
 						player.getUniqueId().toString(), newname))
 		{

@@ -609,11 +609,11 @@ public class YamlManagerOld
 		path = "mail_";
 		basePermission = "scc.cmd.mail";
 		argumentInput(path+"lastreceivedmails", "lastreceivedmails", basePermission,
-				"/mail lastreceivedmails [page] [playername] ", "/mail lastreceivedmails ",
+				"/mail lastreceivedmails [page] [playername] ", "/mail lastreceivedmails",
 				"&c/mail lastreceivedmails [Seitenzahl] [Spielername] &f| Zeigt die letzten empfangen Mails an.",
 				"&c/mail lastreceivedmails [page] [playername] &f| Show the last received mails.");
 		argumentInput(path+"lastsendedmails", "lastsendedmails", basePermission,
-				"/mail lastsendedmails [page] [playername] ", "/mail lastsendedmails ",
+				"/mail lastsendedmails [page] [playername] ", "/mail lastsendedmails",
 				"&c/mail lastsendedmails [Seitenzahl] [Spielername] &f| Zeigt die letzten gesendeten Mails.",
 				"&c/mail lastsendedmails [page] [playername] &f| Show the last sended mails.");
 		argumentInput(path+"forward", "forward", basePermission,
@@ -1235,6 +1235,10 @@ public class YamlManagerOld
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDer alte oder neue Name darf nicht &fdefault &cheißen!",
 						"&cThe old or new name must not be &fdefault&c!"}));
+		languageKeys.put("CmdScc.Item.Rename.ItemDontExist"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDas Item existiert nicht!",
+						"&cThe item dont exist!"}));
 		languageKeys.put("CmdScc.Item.Rename.NameAlreadyExist"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDer Name ist schon vergeben!",

@@ -82,6 +82,10 @@ public class GuiPreListener implements Listener
 		NamespacedKey nclickEventCancel = new NamespacedKey(plugin, GUIApi.CLICKEVENTCANCEL);
 		NamespacedKey nfunction = new NamespacedKey(plugin, GUIApi.FUNCTION);
 		NamespacedKey nsettingslevel = new NamespacedKey(plugin, GUIApi.SETTINGLEVEL);
+		if(i.getItemMeta() == null)
+		{
+			return;
+		}
 		PersistentDataContainer pdc = i.getItemMeta().getPersistentDataContainer();
 		if(!pdc.has(npluginName, PersistentDataType.STRING)
 				|| !pdc.has(ninventoryIdentifier, PersistentDataType.STRING)
