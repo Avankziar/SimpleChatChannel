@@ -1027,10 +1027,18 @@ public class YamlManagerOld
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&e=====&cSeite %page% &fder letzten empfangenen Mails von &b%player%&e=====",
 						"&e=====&cSeite %page% &fthe last received mails von &b%player%&e====="}));
+		languageKeys.put("CmdMail.LastReceivedMails.NoMail", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDu hast keine Mails!",
+						"&cYou have no mails!"}));
 		languageKeys.put("CmdMail.LastSendedMails.Headline", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&e=====&cSeite %page% &fder letzten gesendeten Mails von &b%player%&e=====",
 						"&e=====&cSeite %page% &fthe last sended mails von &b%player%&e====="}));
+		languageKeys.put("CmdMail.LastSendedMails.NoMail", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDu hast keine Mails!",
+						"&cYou have no mails!"}));
 		//Read
 		languageKeys.put("CmdMail.Read.MailNotExist", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {

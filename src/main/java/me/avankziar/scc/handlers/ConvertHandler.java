@@ -21,7 +21,7 @@ public class ConvertHandler
 				el.add((ChatUser) o);
 			} else
 			{
-				return null;
+				return el;
 			}
 		}
 		return el;
@@ -37,7 +37,7 @@ public class ConvertHandler
 				el.add((IgnoreObject) o);
 			} else
 			{
-				return null;
+				return el;
 			}
 		}
 		return el;
@@ -53,7 +53,7 @@ public class ConvertHandler
 				el.add((PermanentChannel) o);
 			} else
 			{
-				return null;
+				return el;
 			}
 		}
 		return el;
@@ -69,7 +69,7 @@ public class ConvertHandler
 				el.add((ItemJson) o);
 			} else
 			{
-				return null;
+				return el;
 			}
 		}
 		return el;
@@ -85,7 +85,7 @@ public class ConvertHandler
 				el.add((UsedChannel) o);
 			} else
 			{
-				return null;
+				return el;
 			}
 		}
 		return el;
@@ -101,7 +101,7 @@ public class ConvertHandler
 				el.add((Mail) o);
 			} else
 			{
-				return null;
+				return el;
 			}
 		}
 		return el;

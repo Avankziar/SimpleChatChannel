@@ -76,6 +76,11 @@ public class ARGLastSendedMails extends ArgumentModule
 			last = true;
 			start = totalcount-10;
 		}
+		if(totalcount < 1)
+		{
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastSendedMails.NoMail")));
+			return;
+		}
 		ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getList(
 				Type.MAIL, "`id`", true, start, amount, "`reciver_uuid` = ?", other));
 		ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
