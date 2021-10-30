@@ -425,6 +425,10 @@ public class YamlManagerOld
 				"/scc channelgui ", "/scc channelgui ",
 				"&c/scc channelgui &f| Öffnet ein Menü, wo die Channels aus und eingestellt werden können.",
 				"&c/scc channelgui &f| Opens a menu where the channels can be selected and set.");
+		argumentInput(path+"debug", "debug", basePermission,
+				"/scc debug ", "/scc debug ",
+				"&c/scc debug &f| Debugbefehl",
+				"&c/scc debug &f| Debugcommand");
 		argumentInput(path+"ignore", "ignore", basePermission,
 				"/scc ignore <playername>", "/scc ignore ",
 				"&c/scc ignore <Spielername> &f| Zum Einsetzen oder Aufheben des Ignores für den Spieler.",
@@ -1046,7 +1050,7 @@ public class YamlManagerOld
 						"&cThis mail does not exist!"}));
 		languageKeys.put("CmdMail.Read.CannotReadOthersMails", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&cDu darfst diese Mail nicht lesen, da sie nicht für an dich adressiert ist!",
+						"&cDu darfst diese Mail nicht lesen, da sie nicht an dich adressiert ist!",
 						"&cYou must not read this mail, it is not addressed to you!"}));
 		languageKeys.put("CmdMail.Read.NoChannelIsNullChannel",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {

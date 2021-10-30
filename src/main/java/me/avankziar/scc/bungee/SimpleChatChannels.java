@@ -31,6 +31,7 @@ import main.java.me.avankziar.scc.bungee.commands.scc.ARGBook;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcast;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannel;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannelGui;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGDebug;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGIgnore;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGIgnoreList;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGItem;
@@ -321,6 +322,8 @@ public class SimpleChatChannels extends Plugin
 		ArgumentConstructor channel = new ArgumentConstructor(baseCommandI+"_channel", 0, 1, 1, false, channelMap);
 		ArgumentConstructor channelgui = new ArgumentConstructor(baseCommandI+"_channelgui", 0, 0, 0, false, null);
 		
+		ArgumentConstructor debug = new ArgumentConstructor(baseCommandI+"_debug", 0, 0, 0, false, null);
+		
 		ArgumentConstructor ignore = new ArgumentConstructor(baseCommandI+"_ignore", 0, 1, 1, false, playerMapI);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_IGNORE, ignore.getCommandString());
 		ArgumentConstructor ignorelist = new ArgumentConstructor(baseCommandI+"_ignorelist", 0, 0, 1,false,  null);
@@ -383,7 +386,7 @@ public class SimpleChatChannels extends Plugin
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban);
 		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
-				book, broadcast, channel, channelgui,
+				book, broadcast, channel, channelgui, debug,
 				ignore, ignorelist, item, mute, performance, pc, option, tc, unmute, updateplayer
 				);
 		
@@ -410,7 +413,7 @@ public class SimpleChatChannels extends Plugin
 		
 		addingHelps(
 				scc,
-					book, broadcast, channel, channelgui,
+					book, broadcast, channel, channelgui, debug,
 					ignore, ignorelist,
 					item, item_rename, item_replacers,
 					mute, performance,
@@ -427,6 +430,8 @@ public class SimpleChatChannels extends Plugin
 		
 		new ARGChannel(plugin, channel);
 		new ARGChannelGui(plugin, channelgui, scc.getName());
+		
+		new ARGDebug(plugin, debug);
 		
 		new ARGIgnore(plugin, ignore);
 		new ARGIgnoreList(plugin, ignorelist);

@@ -25,13 +25,12 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.event.EventHandler;
 
 public class JoinLeaveListener implements Listener
 {
 	private SimpleChatChannels plugin;
-	private LinkedHashMap<String, ScheduledTask> map = new LinkedHashMap<>();
+	//private LinkedHashMap<String, ScheduledTask> map = new LinkedHashMap<>();
 	
 	public JoinLeaveListener(SimpleChatChannels plugin)
 	{
@@ -48,7 +47,8 @@ public class JoinLeaveListener implements Listener
 		/*
 		 * Player check and init
 		 */
-		ScheduledTask task = plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
+		//ScheduledTask task = 
+		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
 		{
 			@Override
 			public void run() 
@@ -134,11 +134,11 @@ public class JoinLeaveListener implements Listener
 							HoverEvent.Action.SHOW_TEXT,
 							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
 				}
-				map.get(pn).cancel();
-				map.remove(pn);
+				//map.get(pn).cancel();
+				//map.remove(pn);
 			}
-		}, 3L, 1L, TimeUnit.SECONDS);
-		map.put(pn, task);
+		}, 5L, TimeUnit.SECONDS);
+		//map.put(pn, task);
 	}
 	
 	@EventHandler

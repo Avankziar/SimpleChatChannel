@@ -245,7 +245,9 @@ public class GUIApi
 		i.setItemMeta(im);
 		if(this.inventory != null)
 		{
-			this.inventory.setItem(slot, i);
+			Inventory inv = this.inventory;
+			inv.setItem(slot, i);
+			this.inventory = inv;
 		}
 	}
 

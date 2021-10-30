@@ -84,6 +84,7 @@ public class GuiListener implements Listener
 	{
 		if(!event.getPluginName().equals(GuiValues.PLUGINNAME))
 		{
+			
 			return;
 		}
 		if(event.getInventoryIdentifier().equals(GuiValues.ITEM_REPLACER_INVENTORY))
@@ -117,11 +118,11 @@ public class GuiListener implements Listener
 				&& event.getFunction().contains("_"))
 		{
 			String[] f = event.getFunction().split("_");
-			if(f.length != 2)
+			if(f.length != 3)
 			{
 				return;
 			}
-			String channel = f[1];
+			String channel = f[2];
 			boolean boo = ARGChannel.updateUsedChannel(plugin, (Player) event.getEvent().getWhoClicked(), channel);
 			if(!boo)
 			{

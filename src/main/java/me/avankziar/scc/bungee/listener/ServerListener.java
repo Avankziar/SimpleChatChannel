@@ -17,7 +17,11 @@ import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.ServerLocation;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.objects.chat.Channel;
+import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.Title;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -156,176 +160,150 @@ public class ServerListener implements Listener
         } else if(task.equals(StaticValues.MTBS))
         {
         	String uuid = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
-        	send(uuid, false, null, false, false, null, msg);
-        } else if(task.equals(StaticValues.MTBSS))
-        {
-        	String uuid = in.readUTF();
+        	boolean s = in.readBoolean();
         	String sound = in.readUTF();
         	ArrayList<String> msg = getMessages(in);
-        	send(uuid, true, sound, false, false, null, msg);
+        	send(uuid, s, sound, false, true, null, msg);
         } else if(task.equals(StaticValues.MTBM))
         {
-        	ArrayList<String> uuids = getUUIDs(in);
-        	ArrayList<String> msg = getMessages(in);
-        	for(String uuid : uuids)
-        	{
-        		send(uuid, false, null, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.MTBMS))
-        {
+        	boolean s = in.readBoolean();
         	String sound = in.readUTF();
-        	ArrayList<String> uuids = getUUIDs(in);
-        	ArrayList<String> msg = getMessages(in);
-        	for(String uuid : uuids)
-        	{
-        		send(uuid, true, sound, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.MTBMP))
-        {
-        	boolean hasPermission = in.readBoolean();
+        	boolean p = in.readBoolean();
         	String permission = in.readUTF();
-        	ArrayList<String> uuids = getUUIDs(in);
-        	ArrayList<String> msg = getMessages(in);
-        	for(String uuid : uuids)
-        	{
-        		send(uuid, false, null, true, hasPermission, permission, msg);
-        	}
-        } else if(task.equals(StaticValues.MTBMSP))
-        {
-        	String sound = in.readUTF();
         	boolean hasPermission = in.readBoolean();
-        	String permission = in.readUTF();
         	ArrayList<String> uuids = getUUIDs(in);
         	ArrayList<String> msg = getMessages(in);
         	for(String uuid : uuids)
         	{
-        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        		send(uuid, s, sound, p, hasPermission, permission, msg);
         	}
         } else if(task.equals(StaticValues.MTBA))
         {
-        	ArrayList<String> msg = getMessages(in);
-        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
-        	{
-        		String uuid = all.getUniqueId().toString();
-        		send(uuid, false, null, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.MTBAS))
-        {
+        	boolean s = in.readBoolean();
         	String sound = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
-        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
-        	{
-        		String uuid = all.getUniqueId().toString();
-        		send(uuid, true, sound, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.MTBAP))
-        {
-        	boolean hasPermission = in.readBoolean();
+        	boolean p = in.readBoolean();
         	String permission = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
-        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
-        	{
-        		String uuid = all.getUniqueId().toString();
-        		send(uuid, false, null, true, hasPermission, permission, msg);
-        	}
-        } else if(task.equals(StaticValues.MTBASP))
-        {
-        	String sound = in.readUTF();
         	boolean hasPermission = in.readBoolean();
-        	String permission = in.readUTF();
         	ArrayList<String> msg = getMessages(in);
         	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
         	{
         		String uuid = all.getUniqueId().toString();
-        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        		send(uuid, s, sound, p, hasPermission, permission, msg);
         	}
         } else if(task.equals(StaticValues.BCTBS))
         {
         	String uuid = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
-        	send(uuid, false, null, false, false, null, msg);
-        } else if(task.equals(StaticValues.BCTBSS))
-        {
-        	String uuid = in.readUTF();
+        	boolean s = in.readBoolean();
         	String sound = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
-        	send(uuid, true, sound, false, false, null, msg);
+        	ArrayList<TextComponent> msg = getBCMessages(in);
+        	sendBC(uuid, s, sound, false, true, null, msg);
         } else if(task.equals(StaticValues.BCTBM))
         {
-        	ArrayList<String> uuids = getUUIDs(in);
-        	ArrayList<String> msg = getMessages(in);
-        	for(String uuid : uuids)
-        	{
-        		send(uuid, false, null, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.BCTBMS))
-        {
+        	boolean s = in.readBoolean();
         	String sound = in.readUTF();
-        	ArrayList<String> uuids = getUUIDs(in);
-        	ArrayList<String> msg = getMessages(in);
-        	for(String uuid : uuids)
-        	{
-        		send(uuid, true, sound, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.BCTBMP))
-        {
-        	boolean hasPermission = in.readBoolean();
+        	boolean p = in.readBoolean();
         	String permission = in.readUTF();
-        	ArrayList<String> uuids = getUUIDs(in);
-        	ArrayList<String> msg = getMessages(in);
-        	for(String uuid : uuids)
-        	{
-        		send(uuid, false, null, true, hasPermission, permission, msg);
-        	}
-        } else if(task.equals(StaticValues.BCTBMSP))
-        {
-        	String sound = in.readUTF();
         	boolean hasPermission = in.readBoolean();
-        	String permission = in.readUTF();
         	ArrayList<String> uuids = getUUIDs(in);
-        	ArrayList<String> msg = getMessages(in);
+        	ArrayList<TextComponent> msg = getBCMessages(in);
         	for(String uuid : uuids)
         	{
-        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        		sendBC(uuid, s, sound, p, hasPermission, permission, msg);
         	}
         } else if(task.equals(StaticValues.BCTBA))
         {
-        	ArrayList<String> msg = getMessages(in);
-        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
-        	{
-        		String uuid = all.getUniqueId().toString();
-        		send(uuid, false, null, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.BCTBAS))
-        {
+        	boolean s = in.readBoolean();
         	String sound = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
-        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
-        	{
-        		String uuid = all.getUniqueId().toString();
-        		send(uuid, true, sound, false, false, null, msg);
-        	}
-        } else if(task.equals(StaticValues.BCTBAP))
-        {
-        	boolean hasPermission = in.readBoolean();
+        	boolean p = in.readBoolean();
         	String permission = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
+        	boolean hasPermission = in.readBoolean();
+        	ArrayList<TextComponent> msg = getBCMessages(in);
         	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
         	{
         		String uuid = all.getUniqueId().toString();
-        		send(uuid, false, null, true, hasPermission, permission, msg);
+        		sendBC(uuid, s, sound, p, hasPermission, permission, msg);
         	}
-        } else if(task.equals(StaticValues.BCTBASP))
+        } else if(task.equals(StaticValues.TM2BS))
         {
+        	String uuid = in.readUTF();
+        	String title = in.readUTF();
+        	String subtitle = in.readUTF();
+        	int fadeIn = in.readInt();
+        	int stay= in.readInt();
+        	int fadeOut = in.readInt();
+        	boolean s = in.readBoolean();
         	String sound = in.readUTF();
-        	boolean hasPermission = in.readBoolean();
+        	boolean p = in.readBoolean();
         	String permission = in.readUTF();
-        	ArrayList<String> msg = getMessages(in);
-        	for(ProxiedPlayer all : plugin.getProxy().getPlayers())
+        	boolean hasPermission = in.readBoolean();
+        	sendTitle(uuid, title, subtitle, fadeIn, stay, fadeOut, s, sound, p, permission, hasPermission);
+        } else if(task.equals(StaticValues.TM2BM))
+        {
+        	ArrayList<String> uuids = getUUIDs(in);
+        	String title = in.readUTF();
+        	String subtitle = in.readUTF();
+        	int fadeIn = in.readInt();
+        	int stay= in.readInt();
+        	int fadeOut = in.readInt();
+        	boolean s = in.readBoolean();
+        	String sound = in.readUTF();
+        	boolean p = in.readBoolean();
+        	String permission = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	for(String uuid : uuids)
         	{
-        		String uuid = all.getUniqueId().toString();
-        		send(uuid, true, sound, true, hasPermission, permission, msg);
+        		sendTitle(uuid, title, subtitle, fadeIn, stay, fadeOut, s, sound, p, permission, hasPermission);
+        	}
+        } else if(task.equals(StaticValues.TM2BA))
+        {
+        	String title = in.readUTF();
+        	String subtitle = in.readUTF();
+        	int fadeIn = in.readInt();
+        	int stay= in.readInt();
+        	int fadeOut = in.readInt();
+        	boolean s = in.readBoolean();
+        	String sound = in.readUTF();
+        	boolean p = in.readBoolean();
+        	String permission = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	for(ProxiedPlayer pp : BungeeCord.getInstance().getPlayers())
+        	{
+        		sendTitle(pp.getUniqueId().toString(), title, subtitle, fadeIn, stay, fadeOut, s, sound, p, permission, hasPermission);
+        	}
+        } else if(task.equals(StaticValues.ABM2BS))
+        {
+        	String uuid = in.readUTF();
+        	String actionbarmessage = in.readUTF();
+        	boolean s = in.readBoolean();
+        	String sound = in.readUTF();
+        	boolean p = in.readBoolean();
+        	String permission = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	sendActionBar(uuid, actionbarmessage, s, sound, p, permission, hasPermission);
+        } else if(task.equals(StaticValues.ABM2BM))
+        {
+        	ArrayList<String> uuids = getUUIDs(in);
+        	String actionbarmessage = in.readUTF();
+        	boolean s = in.readBoolean();
+        	String sound = in.readUTF();
+        	boolean p = in.readBoolean();
+        	String permission = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	for(String uuid : uuids)
+        	{
+        		sendActionBar(uuid, actionbarmessage, s, sound, p, permission, hasPermission);
+        	}
+        } else if(task.equals(StaticValues.ABM2BA))
+        {
+        	String actionbarmessage = in.readUTF();
+        	boolean s = in.readBoolean();
+        	String sound = in.readUTF();
+        	boolean p = in.readBoolean();
+        	String permission = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
+        	for(ProxiedPlayer pp : BungeeCord.getInstance().getPlayers())
+        	{
+        		sendActionBar(pp.getUniqueId().toString(), actionbarmessage, s, sound, p, permission, hasPermission);
         	}
         }
 	}
@@ -341,6 +319,17 @@ public class ServerListener implements Listener
     	return list;
 	}
 	
+	private ArrayList<TextComponent> getBCMessages(DataInputStream in) throws IOException
+	{
+		int lenght = in.readInt();
+    	ArrayList<TextComponent> list = new ArrayList<>();
+    	for(int i = 0; i < lenght; i++)
+    	{
+    		list.add(ChatApi.deserialized(in.readUTF()));
+    	}
+    	return list;
+	}
+	
 	private ArrayList<String> getUUIDs(DataInputStream in) throws IOException
 	{
 		int size = in.readInt();
@@ -352,7 +341,7 @@ public class ServerListener implements Listener
     	return uuids;
 	}
 	
-	private void send(String uuid, boolean sound, String sounds, boolean perm, boolean hasPermission, String permission, ArrayList<String> msg)
+	private void send(String uuid, boolean s, String sound, boolean p, boolean hasPermission, String permission, ArrayList<String> msg)
 	{
 		UUID u = UUID.fromString(uuid);
 		if(u == null)
@@ -364,32 +353,171 @@ public class ServerListener implements Listener
 		{
 			return;
 		}
-		if(perm)
+		if(p)
 		{
 			if(hasPermission)
 			{
 				//The player must have the perm, to continue!
-				if(!player.hasPermission(permission))
+				if(player.hasPermission(permission))
 				{
-					return;
+					sendsub(player, uuid, s, sound, msg);
 				}
 			} else
 			{
 				//The player must not have the perm, to continue!
-				if(player.hasPermission(permission))
+				if(!player.hasPermission(permission))
 				{
-					return;
+					sendsub(player, uuid, s, sound, msg);
 				}
 			}
-		}
-		if(sound)
+		} else
 		{
-			sendsound(player, uuid, sounds);
+			sendsub(player, uuid, s, sound, msg);
 		}
-		for(String s : msg)
+	}
+	
+	private void sendsub(ProxiedPlayer player, String uuid, boolean s, String sound, ArrayList<String> msg)
+	{
+		if(s)
 		{
-			player.sendMessage(ChatApi.tctl(s));
+			sendsound(player, uuid, sound);
 		}
+		for(String m : msg)
+		{
+			player.sendMessage(ChatApi.tctl(m));
+		}
+	}
+	
+	private void sendBC(String uuid, boolean s, String sound, boolean p, boolean hasPermission, String permission,
+			ArrayList<TextComponent> msg)
+	{
+		UUID u = UUID.fromString(uuid);
+		if(u == null)
+		{
+			return;
+		}
+		ProxiedPlayer player = plugin.getProxy().getPlayer(u);
+		if(player == null)
+		{
+			return;
+		}
+		if(p)
+		{
+			if(hasPermission)
+			{
+				//The player must have the perm, to continue!
+				if(player.hasPermission(permission))
+				{
+					sendBCSub(player, uuid, hasPermission, sound, msg);
+				}
+			} else
+			{
+				if(!player.hasPermission(permission))
+				{
+					sendBCSub(player, uuid, hasPermission, sound, msg);
+				}
+			}
+		} else
+		{
+			sendBCSub(player, uuid, hasPermission, sound, msg);
+		}
+	}
+	
+	private void sendBCSub(ProxiedPlayer player, String uuid, boolean s, String sound, ArrayList<TextComponent> msg)
+	{
+		if(s)
+		{
+			sendsound(player, uuid, sound);
+		}
+		for(TextComponent m : msg)
+		{
+			player.sendMessage(m);
+		}
+	}
+	
+	private void sendTitle(String uuid, String title, String subtitle, int fadeIn, int stay, int fadeOut,
+			boolean s, String sound, boolean p, String permission, boolean hasPermission)
+	{
+		UUID u = UUID.fromString(uuid);
+		if(u == null)
+		{
+			return;
+		}
+		ProxiedPlayer player = plugin.getProxy().getPlayer(u);
+		if(player == null)
+		{
+			return;
+		}
+		Title t = BungeeCord.getInstance().createTitle();
+		t.title(ChatApi.tctl(title));
+		t.subTitle(ChatApi.tctl(subtitle));
+		t.fadeIn(fadeIn);
+		t.stay(stay);
+		t.fadeOut(fadeOut);
+		if(p)
+		{
+			if(hasPermission)
+			{
+				if(player.hasPermission(permission))
+				{
+					if(s)
+					{
+						sendsound(player, uuid, sound);
+					}
+					player.sendTitle(t);
+				}
+			} else
+			{
+				if(!player.hasPermission(permission))
+				{
+					if(s)
+					{
+						sendsound(player, uuid, sound);
+					}
+					player.sendTitle(t);
+				}
+			}
+		} else
+		{
+			player.sendTitle(t);
+		}		
+	}
+	
+	private void sendActionBar(String uuid, String actionbar, boolean s, String sound, boolean p, String permission, boolean hasPermission)
+	{
+		UUID u = UUID.fromString(uuid);
+		if(u == null)
+		{
+			return;
+		}
+		ProxiedPlayer player = plugin.getProxy().getPlayer(u);
+		if(player == null)
+		{
+			return;
+		}
+		if(s)
+		{
+			sendsound(player, uuid, sound);
+		}
+		if(p)
+		{
+			if(hasPermission)
+			{
+				if(player.hasPermission(permission))
+				{
+					player.sendMessage(ChatMessageType.ACTION_BAR, ChatApi.tctl(actionbar));
+				}
+			} else
+			{
+				if(!player.hasPermission(permission))
+				{
+					player.sendMessage(ChatMessageType.ACTION_BAR, ChatApi.tctl(actionbar));
+				}
+			}
+		} else
+		{
+			player.sendMessage(ChatMessageType.ACTION_BAR, ChatApi.tctl(actionbar));
+		}		
 	}
 	
 	private void sendsound(ProxiedPlayer player, String uuid, String sound)

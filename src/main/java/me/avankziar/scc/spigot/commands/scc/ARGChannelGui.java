@@ -43,9 +43,10 @@ public class ARGChannelGui extends ArgumentModule
 		{
 			rows = 6;
 		}
+		String title = plugin.getYamlHandler().getLang().getString("CmdScc.ChannelGui.InvTitle")
+				.replace("%player%", player.getName());
 		GUIApi gapi = new GUIApi(GuiValues.PLUGINNAME, GuiValues.CHANNELGUI_INVENTORY, 
-				null, rows, plugin.getYamlHandler().getLang().getString("CmdScc.ChannelGui.InvTitle")
-				.replace("%player%", player.getName()));
+				null, rows, title);
 		LinkedHashMap<String, UsedChannel> usedChannels = ChatUserHandler.getUsedChannels(player.getUniqueId());
 		if(usedChannels == null)
 		{
@@ -57,14 +58,16 @@ public class ARGChannelGui extends ArgumentModule
 		for(String key : plugin.getYamlHandler().getGui(gt.toString()).getKeys(false))
 		{
 			String[] f = key.split("_");
-			if(f.length != 2)
+			if(f.length != 3)
 			{
+				SimpleChatChannels.log.info("Gui cannot add ItemStack, because "+key+" has more than 3 parts!");
 				continue;
 			}
-			String function = f[1];
+			String function = f[2];
 			UsedChannel uc = usedChannels.get(function);
 			if(uc == null)
 			{
+				SimpleChatChannels.log.info("Gui cannot add ItemStack, because "+key+"/"+function+" is not know channel");
 				continue;
 			}
 			ItemStack itemstack = ItemGenerator.create(key, plugin.getYamlHandler().getGui(gt.toString()),

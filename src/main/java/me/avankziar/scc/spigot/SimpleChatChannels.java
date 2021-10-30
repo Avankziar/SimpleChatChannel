@@ -102,8 +102,10 @@ import main.java.me.avankziar.scc.spigot.database.YamlHandlerOld;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiListener;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiPreListener;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.ifh.ActionBarMessageToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.ifh.BaseComponentToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.ifh.MessageToBungeeAPI;
+import main.java.me.avankziar.scc.spigot.ifh.TitleMessageToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.listener.ChatListener;
 import main.java.me.avankziar.scc.spigot.listener.JoinLeaveListener;
 import main.java.me.avankziar.scc.spigot.listener.LocationUpdateListener;
@@ -127,6 +129,8 @@ public class SimpleChatChannels extends JavaPlugin
 	
 	private static MessageToBungeeAPI mtb;
 	private static BaseComponentToBungeeAPI bctb;
+	private static TitleMessageToBungeeAPI tmtb;
+	private static ActionBarMessageToBungeeAPI abmtb;
 	
 	public ArrayList<String> editorplayers = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<>();
@@ -908,6 +912,22 @@ public class SimpleChatChannels extends JavaPlugin
             		this,
                     ServicePriority.Normal);
             log.info(pluginName + " detected InterfaceHub. Hooking with BaseComponentToBungee!");
+            
+            tmtb = new TitleMessageToBungeeAPI();
+            plugin.getServer().getServicesManager().register(
+            		main.java.me.avankziar.interfacehub.spigot.interfaces.TitleMessageToBungee.class,
+            		tmtb,
+            		this,
+                    ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub. Hooking with TitleMessageToBungee!");
+            
+            abmtb = new ActionBarMessageToBungeeAPI();
+            plugin.getServer().getServicesManager().register(
+            		main.java.me.avankziar.interfacehub.spigot.interfaces.ActionBarMessageToBungee.class,
+            		abmtb,
+            		this,
+                    ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub. Hooking with ActionBarMessageToBungee!");
         }
 	}
 	

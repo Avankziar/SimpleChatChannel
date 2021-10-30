@@ -1797,7 +1797,6 @@ public class ChatHandler
 			}
 			spy.sendMessage(txc1);
 		}
-		logging(txc1);
 	}
 	
 	private void logging(final TextComponent txc)

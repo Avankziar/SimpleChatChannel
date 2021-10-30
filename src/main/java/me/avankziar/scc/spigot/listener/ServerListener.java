@@ -68,11 +68,14 @@ public class ServerListener  implements PluginMessageListener
             	{
             		String uuids = in.readUTF();
             		String s = in.readUTF();
-            		Sound sound = Sound.ENTITY_WANDERING_TRADER_REAPPEARED;
+            		Sound sound;
             		try
             		{
             			sound = Sound.valueOf(s);
-            		} catch(Exception e){}
+            		} catch(Exception e)
+            		{
+            			sound = Sound.ENTITY_WANDERING_TRADER_REAPPEARED;
+            		}
             		UUID uuid = UUID.fromString(uuids);
             		if(uuid == null)
             		{

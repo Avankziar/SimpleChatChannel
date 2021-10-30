@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -18,8 +19,8 @@ import main.java.me.avankziar.scc.spigot.guihandling.events.UpperGuiClickEvent;
 
 public class GuiPreListener implements Listener
 {
-	@EventHandler
-	public void onClickListener(InventoryClickEvent event)
+	@EventHandler (priority = EventPriority.LOWEST)
+	public void onClickListener(final InventoryClickEvent event)
 	{
 		if(event.isCancelled())
 		{
@@ -36,9 +37,11 @@ public class GuiPreListener implements Listener
 		if(event.getClickedInventory().getType() == InventoryType.CHEST)
 		{
 			getUpperGuiEvent(event);
+			return;
 		} else if(event.getClickedInventory().getType() == InventoryType.PLAYER)
 		{
 			getBottomGuiEvent(event);
+			return;
 		}
 		return;
 	}
@@ -53,7 +56,7 @@ public class GuiPreListener implements Listener
 		}
 	}
 	
-	private void getBottomGuiEvent(InventoryClickEvent event)
+	private void getBottomGuiEvent(final InventoryClickEvent event)
 	{
 		String uuid = event.getWhoClicked().getUniqueId().toString();
 		if(!GUIApi.isInGui(uuid))
@@ -69,10 +72,11 @@ public class GuiPreListener implements Listener
 		Bukkit.getPluginManager().callEvent(gce);
 	}
 	
-	private void getUpperGuiEvent(InventoryClickEvent event)
+	private void getUpperGuiEvent(final InventoryClickEvent event)
 	{
 		if(event.getCurrentItem() == null)
 		{
+			//SimpleChatChannels.log.info("UpperGuiEvent cannot go further, because current Item is null!");
 			return;
 		}
 		ItemStack i = event.getCurrentItem().clone();
@@ -84,6 +88,7 @@ public class GuiPreListener implements Listener
 		NamespacedKey nsettingslevel = new NamespacedKey(plugin, GUIApi.SETTINGLEVEL);
 		if(i.getItemMeta() == null)
 		{
+			//SimpleChatChannels.log.info("UpperGuiEvent cannot go further, because Itemmeta is null!");
 			return;
 		}
 		PersistentDataContainer pdc = i.getItemMeta().getPersistentDataContainer();
@@ -93,10 +98,11 @@ public class GuiPreListener implements Listener
 				|| !pdc.has(nfunction, PersistentDataType.STRING)
 				|| !pdc.has(nsettingslevel, PersistentDataType.STRING))
 		{
+			//SimpleChatChannels.log.info("UpperGuiEvent cannot go further, PersistentDataContainer has not the requiered data");
 			return;
 		}
 		boolean clickEventCancel = Boolean.parseBoolean(pdc.get(nclickEventCancel, PersistentDataType.STRING));
-		if(!clickEventCancel)
+		if(clickEventCancel)
 		{
 			event.setCancelled(true);
 			event.setResult(Result.DENY);

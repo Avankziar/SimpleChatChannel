@@ -30,7 +30,11 @@ public class TabCompletionListener implements Listener
 			return;
 		}
 		ProxiedPlayer player = (ProxiedPlayer) event.getSender();
-		String tab = event.getCursor().substring(1);
+		String tab = event.getCursor();
+		try
+		{
+			tab = tab.substring(1);
+		} catch(ArrayIndexOutOfBoundsException e){}
 		String[] tabArgs = tab.split(" ");
 		if(tabArgs.length < 0)
 		{

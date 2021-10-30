@@ -39,6 +39,7 @@ public class ItemGenerator
 		ItemStack is = null;
 		if(itm.getString(ID+"."+settingLevel.getName()+".Material") == null)
 		{
+			SimpleChatChannels.log.info("ItemGenerator cannot read the material of "+ID+"."+settingLevel.getName()+".Material");
 			return null;
 		}
 		Material mat = Material.matchMaterial(itm.getString(ID+"."+settingLevel.getName()+".Material"));
@@ -52,6 +53,7 @@ public class ItemGenerator
 		ItemMeta im = is.getItemMeta();
 		if(itm.getString(ID+"."+settingLevel.getName()+".Name") == null)
 		{
+			SimpleChatChannels.log.info("ItemGenerator cannot read the name of "+ID+"."+settingLevel.getName()+".Name");
 			return null;
 		}
 		String name = itm.getString(ID+"."+settingLevel.getName()+".Name");

@@ -55,8 +55,23 @@ public class MysqlSetup
 	public boolean connectToDatabase() 
 	{
 		SimpleChatChannels.log.info("Connecting to the database...");
-		try 
-		{
+		boolean bool = false;
+	    try
+	    {
+	    	// Load new Drivers for papermc
+	    	Class.forName("com.mysql.cj.jdbc.Driver");
+	    	bool = true;
+	    } catch (Exception e)
+	    {
+	    	bool = false;
+	    } 
+	    try
+	    {
+	    	if (bool == false)
+	    	{
+	    		// Load old Drivers for spigot
+	    		Class.forName("com.mysql.jdbc.Driver");
+	    	}
        	 	//Load Drivers
             Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
@@ -339,14 +354,29 @@ public class MysqlSetup
 	
 	public boolean reConnect() 
 	{
-		try 
-		{            
+		boolean bool = false;
+	    try
+	    {
+	    	// Load new Drivers for papermc
+	    	Class.forName("com.mysql.cj.jdbc.Driver");
+	    	bool = true;
+	    } catch (Exception e)
+	    {
+	    	bool = false;
+	    } 
+	    try
+	    {
+	    	if (bool == false)
+	    	{
+	    		// Load old Drivers for spigot
+	    		Class.forName("com.mysql.jdbc.Driver");
+	    	}          
             long start = 0;
 			long end = 0;
 			
 		    start = System.currentTimeMillis();
 		    SimpleChatChannels.log.info("Attempting to establish a connection to the MySQL server!");
-            Class.forName("com.mysql.jdbc.Driver");
+		    
             Properties properties = new Properties();
             properties.setProperty("user", plugin.getYamlHandler().getConfig().getString("Mysql.User"));
             properties.setProperty("password", plugin.getYamlHandler().getConfig().getString("Mysql.Password"));

@@ -10,7 +10,11 @@ Future =========================================================================
 - IFH für scceditor einpfegen.
 - /msgrp einfügen. & im ChatHandler bei ROLEPLAYNAME den SuggestCommand ändern.
 - Sound beim Mention pm etc. individuell einstellbar machen.
-  
+- Neue Replacer fürs ChatFormat machen, was den Zugang zu den chattitle Farben gewährt.
+- Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
+Build 40-2 ==================================================================================================
+- ClickEvent bei /scc channelgui gefixt.
+
 Build 40 ==================================================================================================
 - +Config wert für Joinnachrichten machen, der den Default mysql wert vorgibt.
 - +Spam Schutz. Einmal durch einen Zeitinterval und einmal durch die Prüfung, ob es die gleiche Nachricht ist.
