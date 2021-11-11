@@ -58,7 +58,9 @@ public class ARGPermanentChannel_Join extends ArgumentModule
 			return;
 		} else
 		{
-			if(!cc.getPassword().equals(password))
+			if(cc.getPassword() != null 
+					&& password != null
+					&& !cc.getPassword().equals(password))
 			{
 				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.PasswordIncorrect")));
 				return;

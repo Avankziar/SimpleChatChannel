@@ -76,6 +76,10 @@ public class ARGLastSendedMails extends ArgumentModule
 		{
 			last = true;
 			start = totalcount-10;
+			if(start < 0)
+			{
+				start = 0;
+			}
 		}
 		if(totalcount < 1)
 		{
@@ -83,7 +87,7 @@ public class ARGLastSendedMails extends ArgumentModule
 			return;
 		}
 		ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getList(
-				Type.MAIL, "`id`", true, start, amount, "`reciver_uuid` = ?", other));
+				Type.MAIL, "`id`", true, start, amount, "`sender_uuid` = ?", other));
 		ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
 		for(Mail mail : mails)
 		{

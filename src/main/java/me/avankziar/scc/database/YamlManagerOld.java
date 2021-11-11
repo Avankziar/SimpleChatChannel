@@ -1325,8 +1325,8 @@ public class YamlManagerOld
 		//ChangePassword
 		languageKeys.put("CmdScc.PermanentChannel.ChangePassword.Success"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDu hast das Passwort des &5Perma&fnenten &eChannel auf &f%pw% &egeändert.",
-						"&eYou have changed the password of the &5perma&fnent &eChannel to &f%pw%&e."}));
+						"&eDu hast das Passwort des &5Perma&fnenten &eChannel auf &f%password% &egeändert.",
+						"&eYou have changed the password of the &5perma&fnent &eChannel to &f%password%&e."}));
 		//Channels
 		languageKeys.put("CmdScc.PermanentChannel.Channels.Headline"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {

@@ -29,7 +29,6 @@ public class ARGPermanentChannel_Info extends ArgumentModule
 	public void run(CommandSender sender, String[] args)
 	{
 		ProxiedPlayer player = (ProxiedPlayer) sender;
-		String channel = args[2];
 		PermanentChannel cc = null;
 		if(args.length == 2)
 		{
@@ -41,6 +40,7 @@ public class ARGPermanentChannel_Info extends ArgumentModule
 			}
 		} else
 		{
+			String channel = args[2];
 			cc = PermanentChannel.getChannelFromName(channel);
 			if(cc == null)
 			{

@@ -2,10 +2,10 @@ package main.java.me.avankziar.scc.bungee.commands.scc;
 
 import java.util.ArrayList;
 
-import main.java.me.avankziar.interfacehub.general.assitance.ChatApi;
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
+import main.java.me.avankziar.scc.objects.ChatApi;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

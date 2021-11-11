@@ -43,13 +43,13 @@ public class MessageToBungeeAPI implements MessageToBungee
 		Player player = SimpleChatChannels.getPlugin().getServer().getPlayer(uuid);
 		if(player != null && player.isOnline())
 		{
-			sendWhenOnlineOnLocalServer(player, true, sound, message);
+			sendWhenOnlineOnLocalServer(player, s, sound, message);
 			return;
 		}
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.MTBS);
+			out.writeUTF(StaticValues.M2BS);
 			out.writeUTF(uuid.toString());
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
@@ -96,7 +96,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.MTBM);
+			out.writeUTF(StaticValues.M2BM);
 			writeUUIDs(out, uuids);
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
@@ -139,7 +139,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.MTBA);
+			out.writeUTF(StaticValues.M2BA);
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -12,8 +12,11 @@ Future =========================================================================
 - Sound beim Mention pm etc. individuell einstellbar machen.
 - Neue Replacer fürs ChatFormat machen, was den Zugang zu den chattitle Farben gewährt.
 - Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
+- Sound, wie bei msg indivisualisierbar machen.
 Build 40-2 ==================================================================================================
 - ClickEvent bei /scc channelgui gefixt.
+- Haufenweise fixe bei den mails.
+- /scc pc changepassword replacer fix. Muss language.yml überarbeiten.
 
 Build 40 ==================================================================================================
 - +Config wert für Joinnachrichten machen, der den Default mysql wert vorgibt.

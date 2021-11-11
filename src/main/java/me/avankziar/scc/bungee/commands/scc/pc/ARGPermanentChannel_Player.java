@@ -1,6 +1,7 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
@@ -39,12 +40,13 @@ public class ARGPermanentChannel_Player extends ArgumentModule
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 				return;
 			}
-			uuid = Utility.convertNameToUUID(args[2]).toString();
-			if(uuid == null)
+			UUID u = Utility.convertNameToUUID(args[2]);
+			if(u == null)
 			{
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 				return;
 			}
+			uuid = u.toString();
 			name = args[2];
 		}
 		int creators = 0;

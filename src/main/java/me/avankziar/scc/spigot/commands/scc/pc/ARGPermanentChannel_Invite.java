@@ -50,7 +50,7 @@ public class ARGPermanentChannel_Invite extends ArgumentModule
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Invite.Cooldown")));
 			return;
 		}
-		String t = args[2];
+		String t = args[3];
 		if(plugin.getServer().getPlayer(t) == null)
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));

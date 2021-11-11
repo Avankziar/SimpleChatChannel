@@ -2,13 +2,13 @@ package main.java.me.avankziar.scc.objects;
 
 public class StaticValues
 {
-	public final static String MTBS = "messagetobungeesingle";
-	public final static String MTBM = "messagetobungeemultiple";
-	public final static String MTBA = "messagetobungeeall";
+	public final static String M2BS = "messagetobungeesingle";
+	public final static String M2BM = "messagetobungeemultiple";
+	public final static String M2BA = "messagetobungeeall";
 	
-	public final static String BCTBS = "basecomponenttobungeesingle";
-	public final static String BCTBM = "basecomponenttobungeemultiple";
-	public final static String BCTBA = "basecomponenttobungeeall";
+	public final static String BC2BS = "basecomponenttobungeesingle";
+	public final static String BC2BM = "basecomponenttobungeemultiple";
+	public final static String BC2BA = "basecomponenttobungeeall";
 	
 	public final static String TM2BS = "titlemessagetobungeesingle";
 	public final static String TM2BM = "titlemessagetobungeemultiple";

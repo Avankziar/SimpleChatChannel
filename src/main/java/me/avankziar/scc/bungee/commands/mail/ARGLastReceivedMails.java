@@ -75,6 +75,10 @@ public class ARGLastReceivedMails extends ArgumentModule
 		{
 			last = true;
 			start = totalcount-10;
+			if(start < 0)
+			{
+				start = 0;
+			}
 		}
 		if(totalcount < 1)
 		{

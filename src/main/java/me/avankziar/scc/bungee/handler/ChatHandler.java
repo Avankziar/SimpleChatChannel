@@ -127,6 +127,10 @@ public class ChatHandler
 			/*
 			 * Define, whiche pc it is.
 			 */
+			if(!message.contains(" "))
+			{
+				return;
+			}
 			String[] space = message.split(" ");
 			if(space.length < 1)
 			{

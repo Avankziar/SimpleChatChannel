@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.interfacehub.general.assitance.ChatApi;
+import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.interfacehub.spigot.interfaces.ActionBarMessageToBungee;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;

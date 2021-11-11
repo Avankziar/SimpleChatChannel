@@ -45,7 +45,7 @@ public class BaseComponentToBungeeAPI implements BaseComponentToBungee
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.BCTBS);
+			out.writeUTF(StaticValues.BC2BS);
 			out.writeUTF(uuid.toString());
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
@@ -92,7 +92,7 @@ public class BaseComponentToBungeeAPI implements BaseComponentToBungee
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.BCTBM);
+			out.writeUTF(StaticValues.BC2BM);
 			writeUUIDs(out, uuids);
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
@@ -135,7 +135,7 @@ public class BaseComponentToBungeeAPI implements BaseComponentToBungee
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.BCTBA);
+			out.writeUTF(StaticValues.BC2BA);
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
 			e.printStackTrace();

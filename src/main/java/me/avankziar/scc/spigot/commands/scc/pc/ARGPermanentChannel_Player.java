@@ -1,6 +1,7 @@
 package main.java.me.avankziar.scc.spigot.commands.scc.pc;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class ARGPermanentChannel_Player extends ArgumentModule
 		Player player = (Player) sender;
 		String uuid = "";
 		String name = "";
-		if(args.length == 1)
+		if(args.length == 2)
 		{
 			uuid = player.getUniqueId().toString();
 			name = player.getName();
@@ -40,13 +41,14 @@ public class ARGPermanentChannel_Player extends ArgumentModule
 				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 				return;
 			}
-			uuid = Utility.convertNameToUUID(args[1]).toString();
-			if(uuid == null)
+			UUID u = Utility.convertNameToUUID(args[2]);
+			if(u == null)
 			{
 				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 				return;
 			}
-			name = args[1];
+			uuid = u.toString();
+			name = args[2];
 		}
 		int creators = 0;
 		int vices = 0;

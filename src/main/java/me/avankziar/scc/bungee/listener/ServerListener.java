@@ -157,14 +157,17 @@ public class ServerListener implements Listener
         		map.put(QueryType.READ, reads);
         		MysqlHandler.serverPerformance.put(server, map);
         	}
-        } else if(task.equals(StaticValues.MTBS))
+        } else if(task.equals(StaticValues.M2BS))
         {
         	String uuid = in.readUTF();
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
+        	boolean p = in.readBoolean();
+        	String permission = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
         	ArrayList<String> msg = getMessages(in);
-        	send(uuid, s, sound, false, true, null, msg);
-        } else if(task.equals(StaticValues.MTBM))
+        	send(uuid, s, sound, p, hasPermission, permission, msg);
+        } else if(task.equals(StaticValues.M2BM))
         {
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
@@ -177,7 +180,7 @@ public class ServerListener implements Listener
         	{
         		send(uuid, s, sound, p, hasPermission, permission, msg);
         	}
-        } else if(task.equals(StaticValues.MTBA))
+        } else if(task.equals(StaticValues.M2BA))
         {
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
@@ -190,14 +193,14 @@ public class ServerListener implements Listener
         		String uuid = all.getUniqueId().toString();
         		send(uuid, s, sound, p, hasPermission, permission, msg);
         	}
-        } else if(task.equals(StaticValues.BCTBS))
+        } else if(task.equals(StaticValues.BC2BS))
         {
         	String uuid = in.readUTF();
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
         	ArrayList<TextComponent> msg = getBCMessages(in);
         	sendBC(uuid, s, sound, false, true, null, msg);
-        } else if(task.equals(StaticValues.BCTBM))
+        } else if(task.equals(StaticValues.BC2BM))
         {
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
@@ -210,7 +213,7 @@ public class ServerListener implements Listener
         	{
         		sendBC(uuid, s, sound, p, hasPermission, permission, msg);
         	}
-        } else if(task.equals(StaticValues.BCTBA))
+        } else if(task.equals(StaticValues.BC2BA))
         {
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
@@ -408,18 +411,18 @@ public class ServerListener implements Listener
 				//The player must have the perm, to continue!
 				if(player.hasPermission(permission))
 				{
-					sendBCSub(player, uuid, hasPermission, sound, msg);
+					sendBCSub(player, uuid, s, sound, msg);
 				}
 			} else
 			{
 				if(!player.hasPermission(permission))
 				{
-					sendBCSub(player, uuid, hasPermission, sound, msg);
+					sendBCSub(player, uuid, s, sound, msg);
 				}
 			}
 		} else
 		{
-			sendBCSub(player, uuid, hasPermission, sound, msg);
+			sendBCSub(player, uuid, s, sound, msg);
 		}
 	}
 	

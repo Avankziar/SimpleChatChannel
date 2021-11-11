@@ -53,7 +53,7 @@ public class ARGPermanentChannel_Invite extends ArgumentModule
 					.replace("%time%", TimeHandler.getDateTime(inviteCooldown.get(player)))));
 			return;
 		}
-		String t = args[2];
+		String t = args[3];
 		if(ProxyServer.getInstance().getPlayer(t) == null)
 		{
 			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
@@ -61,7 +61,7 @@ public class ARGPermanentChannel_Invite extends ArgumentModule
 		}
 		ProxiedPlayer target = ProxyServer.getInstance().getPlayer(t);
 		String cmd = PluginSettings.settings.getCommands(KeyHandler.SCC_PC_JOIN)+cc.getName();
-		if(cc.getPassword()!=null)
+		if(cc.getPassword() != null)
 		{
 			cmd += " "+cc.getPassword();
 		}
