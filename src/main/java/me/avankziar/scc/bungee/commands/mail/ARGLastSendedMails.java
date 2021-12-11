@@ -114,7 +114,7 @@ public class ARGLastSendedMails extends ArgumentModule
 			sublist.add(tc);
 			list.add(sublist);
 		}
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastReceivedMails.Headline")
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastSendedMails.Headline")
 				.replace("%page%", String.valueOf(page))
 				.replace("%player%", othern)));
 		for(ArrayList<BaseComponent> sub : list)

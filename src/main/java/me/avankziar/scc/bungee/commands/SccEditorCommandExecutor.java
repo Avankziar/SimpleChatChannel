@@ -28,7 +28,7 @@ public class SccEditorCommandExecutor extends Command
     	ProxiedPlayer player = (ProxiedPlayer) sender;
     	if(!player.hasPermission(cc.getPermission()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.NoPermission")));
+			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 			return;
 		}
     	if(args.length == 0)

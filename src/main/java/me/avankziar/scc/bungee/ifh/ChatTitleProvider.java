@@ -1,6 +1,6 @@
 package main.java.me.avankziar.scc.bungee.ifh;
 
-import main.java.me.avankziar.interfacehub.general.chat.ChatTitle;
+import main.java.me.avankziar.ifh.general.chat.ChatTitle;
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 
 public class ChatTitleProvider implements ChatTitle

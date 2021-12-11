@@ -2,7 +2,7 @@ package main.java.me.avankziar.scc.bungee.ifh;
 
 import java.util.List;
 
-import main.java.me.avankziar.interfacehub.general.chat.Channel;
+import main.java.me.avankziar.ifh.general.chat.Channel;
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 
 public class ChannelProvider implements Channel

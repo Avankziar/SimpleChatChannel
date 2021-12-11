@@ -899,35 +899,35 @@ public class SimpleChatChannels extends JavaPlugin
 		{
 			mtb = new MessageToBungeeAPI();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.interfacehub.spigot.interfaces.MessageToBungee.class,
+            		main.java.me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee.class,
             		mtb,
             		this,
                     ServicePriority.Normal);
-            log.info(pluginName + " detected InterfaceHub. Hooking with MessageToBungee!");
+            log.info(pluginName + " detected InterfaceHub >>> MessageToBungee.class is provided!");
             
             bctb = new BaseComponentToBungeeAPI();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.interfacehub.spigot.interfaces.BaseComponentToBungee.class,
+            		main.java.me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee.class,
             		bctb,
             		this,
                     ServicePriority.Normal);
-            log.info(pluginName + " detected InterfaceHub. Hooking with BaseComponentToBungee!");
+            log.info(pluginName + " detected InterfaceHub >>> BaseComponentToBungee.class is provided!");
             
             tmtb = new TitleMessageToBungeeAPI();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.interfacehub.spigot.interfaces.TitleMessageToBungee.class,
+            		main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee.class,
             		tmtb,
             		this,
                     ServicePriority.Normal);
-            log.info(pluginName + " detected InterfaceHub. Hooking with TitleMessageToBungee!");
+            log.info(pluginName + " detected InterfaceHub >>> TitleMessageToBungee.class is provided!");
             
             abmtb = new ActionBarMessageToBungeeAPI();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.interfacehub.spigot.interfaces.ActionBarMessageToBungee.class,
+            		main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.ActionBarMessageToBungee.class,
             		abmtb,
             		this,
                     ServicePriority.Normal);
-            log.info(pluginName + " detected InterfaceHub. Hooking with ActionBarMessageToBungee!");
+            log.info(pluginName + " detected InterfaceHub >>> AczionBarMessageToBungee.class is provided!!");
         }
 	}
 	

@@ -54,7 +54,7 @@ public class ARGRead extends ArgumentModule
 			{
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CannotReadOthersMails")));
 				return;
-			}
+			} //ADDME hier eine ausnahme machen für den Sender
 			isAdmin = true;
 			readdate = "/";
 		}
@@ -75,6 +75,10 @@ public class ARGRead extends ArgumentModule
 				.replace("%id%", String.valueOf(mail.getId())))); //Headline
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Sender")
 				.replace("%sender%", mail.getSender()))); //Sender
+		
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Sender")
+				.replace("%sender%", mail.getSender()))); //Empfänger ADDME
+		
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CC")
 				.replace("%cc%", String.join(", ", ccsplit)))); //CC
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Date")

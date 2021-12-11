@@ -73,7 +73,6 @@ public class MysqlSetup
 	    		Class.forName("com.mysql.jdbc.Driver");
 	    	}
        	 	//Load Drivers
-            Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
             properties.setProperty("user", plugin.getYamlHandler().getConfig().getString("Mysql.User"));
             properties.setProperty("password", plugin.getYamlHandler().getConfig().getString("Mysql.Password"));

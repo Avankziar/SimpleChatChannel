@@ -2,7 +2,7 @@ package main.java.me.avankziar.scc.bungee.ifh;
 
 import java.util.UUID;
 
-import main.java.me.avankziar.interfacehub.general.chat.ChatEditor;
+import main.java.me.avankziar.ifh.general.chat.ChatEditor;
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.objects.ChatApi;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

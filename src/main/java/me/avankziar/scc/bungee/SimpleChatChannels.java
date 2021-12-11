@@ -9,8 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
-import main.java.me.avankziar.interfacehub.bungee.InterfaceHub;
-import main.java.me.avankziar.interfacehub.bungee.plugin.ServicePriority;
+import main.java.me.avankziar.ifh.bungee.InterfaceHub;
+import main.java.me.avankziar.ifh.bungee.plugin.ServicePriority;
 import main.java.me.avankziar.scc.bungee.assistance.BackgroundTask;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.commands.ClickChatCommandExecutor;
@@ -846,12 +846,12 @@ public class SimpleChatChannels extends Plugin
         }
         try
         {
-        	main.java.me.avankziar.interfacehub.bungee.InterfaceHub ifh = (InterfaceHub) plugin;
+        	main.java.me.avankziar.ifh.bungee.InterfaceHub ifh = (InterfaceHub) plugin;
         	try
             {
         		 ChatProvider cp = new ChatProvider();
                  ifh.getServicesManager().register(
-                 		main.java.me.avankziar.interfacehub.general.chat.Chat.class,
+                 		main.java.me.avankziar.ifh.general.chat.Chat.class,
                  		cp, plugin, ServicePriority.Normal);
                  log.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
             } catch(NoClassDefFoundError e) 
@@ -860,7 +860,7 @@ public class SimpleChatChannels extends Plugin
             {
         		ChatEditorProvider cep = new ChatEditorProvider();
                 ifh.getServicesManager().register(
-                		main.java.me.avankziar.interfacehub.general.chat.ChatEditor.class,
+                		main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
                 		cep, plugin, ServicePriority.Normal);
                 log.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
             } catch(NoClassDefFoundError e) 

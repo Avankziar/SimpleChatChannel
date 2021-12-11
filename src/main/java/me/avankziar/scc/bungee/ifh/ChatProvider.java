@@ -3,7 +3,7 @@ package main.java.me.avankziar.scc.bungee.ifh;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
-import main.java.me.avankziar.interfacehub.general.chat.Chat;
+import main.java.me.avankziar.ifh.general.chat.Chat;
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.chat.TextComponent;
 

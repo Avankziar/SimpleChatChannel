@@ -2,6 +2,8 @@ package main.java.me.avankziar.scc.spigot.database;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -9,7 +11,6 @@ import java.util.List;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
 
 import main.java.me.avankziar.scc.database.Language;
 import main.java.me.avankziar.scc.database.Language.ISO639_2B;
@@ -115,18 +116,19 @@ public class YamlHandlerOld
 		if(!config.exists()) 
 		{
 			SimpleChatChannels.log.info("Create config.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), config);
+				Files.copy(in, config.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(config, cfg))
-		{
-			return false;
-		}
+		cfg = loadYamlTask(config, cfg);
+        if(cfg == null)
+        {
+        	return false;
+        }
 		writeFile(config, cfg, plugin.getYamlManager().getConfigKey());
 		
 		languages = cfg.getString("Language", "ENG").toUpperCase();
@@ -135,90 +137,95 @@ public class YamlHandlerOld
 		if(!commands.exists()) 
 		{
 			SimpleChatChannels.log.info("Create commands.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), commands);
+				Files.copy(in, commands.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(commands, com))
-		{
-			return false;
-		}
+		com = loadYamlTask(commands, com);
+        if(com == null)
+        {
+        	return false;
+        }
 		writeFile(commands, com, plugin.getYamlManager().getCommandsKey());
 		
 		chattitle = new File(plugin.getDataFolder(), "chattitle.yml");
 		if(!chattitle.exists()) 
 		{
 			SimpleChatChannels.log.info("Create chattitle.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), chattitle);
+				Files.copy(in, chattitle.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(chattitle, cti))
-		{
-			return false;
-		}
+		cti = loadYamlTask(chattitle, cti);
+        if(cti == null)
+        {
+        	return false;
+        }
 		writeFile(chattitle, cti, plugin.getYamlManager().getChatTitleKey());
 		
 		channels = new File(plugin.getDataFolder(), "channels.yml");
 		if(!channels.exists()) 
 		{
 			SimpleChatChannels.log.info("Create channels.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), channels);
+				Files.copy(in, channels.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(channels, cha))
-		{
-			return false;
-		}
+		cha = loadYamlTask(channels, cha);
+        if(cha == null)
+        {
+        	return false;
+        }
 		writeFile(channels, cha, plugin.getYamlManager().getChannelsKey());
 		
 		emojis = new File(plugin.getDataFolder(), "emojis.yml");
 		if(!emojis.exists()) 
 		{
 			SimpleChatChannels.log.info("Create emojis.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), emojis);
+				Files.copy(in, emojis.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(emojis, eji))
-		{
-			return false;
-		}
+		eji = loadYamlTask(emojis, eji);
+        if(eji == null)
+        {
+        	return false;
+        }
 		writeFile(emojis, eji, plugin.getYamlManager().getEmojiKey());
 		
 		wordFilter = new File(plugin.getDataFolder(), "wordfilter.yml");
 		if(!wordFilter.exists()) 
 		{
 			SimpleChatChannels.log.info("Create wordfilter.yml...");
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), wordFilter);
+				Files.copy(in, wordFilter.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(wordFilter, wfr))
-		{
-			return false;
-		}
+		wfr = loadYamlTask(wordFilter, wfr);
+        if(wfr == null)
+        {
+        	return false;
+        }
 		writeFile(wordFilter, wfr, plugin.getYamlManager().getWordFilterKey());
 		return true;
 	}
@@ -260,18 +267,19 @@ public class YamlHandlerOld
 		if(!language.exists()) 
 		{
 			SimpleChatChannels.log.info("Create %lang%.yml...".replace("%lang%", languageString));
-			try
+			try(InputStream in = plugin.getResource("default.yml"))
 			{
-				FileUtils.copyToFile(plugin.getResource("default.yml"), language);
+				Files.copy(in, language.toPath());
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		if(!loadYamlTask(language, lang))
-		{
-			return false;
-		}
+		lang = loadYamlTask(language, lang);
+        if(lang == null)
+        {
+        	return false;
+        }
 		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
 		return true;
 	}
@@ -302,9 +310,9 @@ public class YamlHandlerOld
 			if(!guifile.exists()) 
 			{
 				SimpleChatChannels.log.info("Create %file%.yml...".replace("%file%", g));
-				try
+				try(InputStream in = plugin.getResource("default.yml"))
 				{
-					FileUtils.copyToFile(plugin.getResource("default.yml"), guifile);
+					Files.copy(in, guifile.toPath());
 				} catch (IOException e)
 				{
 					e.printStackTrace();
@@ -312,10 +320,11 @@ public class YamlHandlerOld
 			}
 			YamlConfiguration gyaml = new YamlConfiguration();
 			//Laden der Datei
-			if(!loadYamlTask(guifile, gyaml))
-			{
-				return false;
-			}
+			gyaml = loadYamlTask(guifile, gyaml);
+	        if(gyaml == null)
+	        {
+	        	return false;
+	        }
 			//Niederschreiben aller Werte in die Datei
 			writeFile(guifile, gyaml, plugin.getYamlManager().getGuiKeys(g));
 			gui.put(g, gyaml);
@@ -323,7 +332,7 @@ public class YamlHandlerOld
 		return true;
 	}
 	
-	private boolean loadYamlTask(File file, YamlConfiguration yaml)
+	private YamlConfiguration loadYamlTask(File file, YamlConfiguration yaml)
 	{
 		try 
 		{
@@ -334,9 +343,8 @@ public class YamlHandlerOld
 					"Could not load the %file% file! You need to regenerate the %file%! Error: ".replace("%file%", file.getName())
 					+ e.getMessage());
 			e.printStackTrace();
-			return false;
 		}
-		return true;
+		return yaml;
 	}
 	
 	private boolean writeFile(File file, YamlConfiguration yml, LinkedHashMap<String, Language> keyMap)

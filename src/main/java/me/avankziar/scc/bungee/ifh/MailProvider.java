@@ -3,7 +3,7 @@ package main.java.me.avankziar.scc.bungee.ifh;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import main.java.me.avankziar.interfacehub.general.interfaces.Mail;
+import main.java.me.avankziar.ifh.general.interfaces.Mail;
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import net.md_5.bungee.api.chat.TextComponent;
 

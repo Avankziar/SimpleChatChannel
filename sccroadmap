@@ -13,6 +13,14 @@ Future =========================================================================
 - Neue Replacer fürs ChatFormat machen, was den Zugang zu den chattitle Farben gewährt.
 - Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
 - Sound, wie bei msg indivisualisierbar machen.
+Build 41 ==================================================================================================
+- +java 17 support
+- Bugfix bei MessageToBungee.sendMessage(ArrayList<UUID>, Sound, message)
+- ItemReplacer hat einen Fehler, siehe dc Azael
+- Bugfix: mit dem Befehl /mail lastsendemail kann man seine gesendeten mails aufrufen wenn ich dan jedoch auf read 
+  glicke kann ich diese nicht einsehen da sie nicht an mich adressiert ist
+- +Pfadangabefehler bei /scceditor behoben
+  
 Build 40-2 ==================================================================================================
 - ClickEvent bei /scc channelgui gefixt.
 - Haufenweise fixe bei den mails.

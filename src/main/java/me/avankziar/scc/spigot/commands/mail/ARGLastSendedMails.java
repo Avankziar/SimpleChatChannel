@@ -109,13 +109,14 @@ public class ARGLastSendedMails extends ArgumentModule
 					, HoverEvent.Action.SHOW_TEXT,
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Hover")
 					.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
+					//ADDME Hier noch den empfänger angeben
 					.replace("%cc%", (mail.getCarbonCopyNames().isEmpty() ? "/" : mail.getCarbonCopyNames())));
 			sublist.add(tcRead);
 			sublist.add(tcForward);
 			sublist.add(tc);
 			list.add(sublist);
 		}
-		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastReceivedMails.Headline")
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastSendedMails.Headline")
 				.replace("%page%", String.valueOf(page))
 				.replace("%player%", othern)));
 		for(ArrayList<BaseComponent> sub : list)

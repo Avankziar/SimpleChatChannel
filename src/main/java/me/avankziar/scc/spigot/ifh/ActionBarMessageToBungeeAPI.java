@@ -11,7 +11,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.interfacehub.spigot.interfaces.ActionBarMessageToBungee;
+import main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.ActionBarMessageToBungee;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 import net.md_5.bungee.api.ChatMessageType;
