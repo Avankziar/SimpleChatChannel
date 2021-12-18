@@ -140,6 +140,7 @@ public class JoinLeaveListener implements Listener
 		}
 		Player player = event.getPlayer();
 		String pn = player.getName();
+		plugin.editorplayers.remove(player.getName());
 		Utility.playerUsedChannels.remove(player.getUniqueId().toString());
 		
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(pn);

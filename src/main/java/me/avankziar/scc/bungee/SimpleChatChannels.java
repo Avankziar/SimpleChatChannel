@@ -83,7 +83,6 @@ import main.java.me.avankziar.scc.bungee.database.MysqlSetup;
 import main.java.me.avankziar.scc.bungee.database.YamlHandlerOld;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
 import main.java.me.avankziar.scc.bungee.ifh.ChatEditorProvider;
-import main.java.me.avankziar.scc.bungee.ifh.ChatProvider;
 import main.java.me.avankziar.scc.bungee.listener.ChatListener;
 import main.java.me.avankziar.scc.bungee.listener.JoinLeaveListener;
 import main.java.me.avankziar.scc.bungee.listener.ServerListener;
@@ -197,7 +196,10 @@ public class SimpleChatChannels extends Plugin
 		ListenerSetup();
 		setupBstats();
 		BypassPermission.init(plugin);
-		setupIFHProvider();
+		if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing", true))
+		{
+			setupIFHProvider();
+		}
 		//setupIFHConsumer();
 	}
 	
@@ -847,7 +849,7 @@ public class SimpleChatChannels extends Plugin
         try
         {
         	main.java.me.avankziar.ifh.bungee.InterfaceHub ifh = (InterfaceHub) plugin;
-        	try
+        	/*try
             {
         		 ChatProvider cp = new ChatProvider();
                  ifh.getServicesManager().register(
@@ -855,13 +857,13 @@ public class SimpleChatChannels extends Plugin
                  		cp, plugin, ServicePriority.Normal);
                  log.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
             } catch(NoClassDefFoundError e) 
-        	{}
+        	{}*/
         	try
             {
-        		ChatEditorProvider cep = new ChatEditorProvider();
+        		ChatEditorProvider ce = new ChatEditorProvider();
                 ifh.getServicesManager().register(
                 		main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
-                		cep, plugin, ServicePriority.Normal);
+                		ce, plugin, ServicePriority.Normal);
                 log.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
             } catch(NoClassDefFoundError e) 
             {}

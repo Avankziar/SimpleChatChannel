@@ -38,15 +38,16 @@ public class SccEditorCommandExecutor implements CommandExecutor
     		}
         	if(args.length == 0)
         	{
-        		send(player);
         		if(plugin.editorplayers.contains(player.getName()))
         		{
         			plugin.editorplayers.remove(player.getName());
         			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+        			send(player, false);
         		} else
         		{
         			plugin.editorplayers.add(player.getName());
         			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+        			send(player, true);
         		}
         		return true;
         	} else if(args.length == 1)
@@ -57,23 +58,25 @@ public class SccEditorCommandExecutor implements CommandExecutor
             		{
             			plugin.editorplayers.remove(player.getName());
             			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            			send(player, false);
             		} else
             		{
             			plugin.editorplayers.add(player.getName());
             			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            			send(player, true);
             		}
-        			send(player);
             		return true;
         		} else if(args[0].equalsIgnoreCase("false"))
         		{
         			if(plugin.editorplayers.contains(player.getName()))
             		{
             			plugin.editorplayers.remove(player.getName());
+            			send(player, false);
             		} else
             		{
             			plugin.editorplayers.add(player.getName());
+            			send(player, true);
             		}
-        			send(player);
             		return true;
         		}
         	}
@@ -88,23 +91,25 @@ public class SccEditorCommandExecutor implements CommandExecutor
             		{
             			plugin.editorplayers.remove(playername);
             			sender.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            			send(Bukkit.getPlayer(playername), false);
             		} else
             		{
             			plugin.editorplayers.add(playername);
             			sender.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            			send(Bukkit.getPlayer(playername), true);
             		}
-        			send(Bukkit.getPlayer(playername));
             		return true;
         		} else if(args[0].equalsIgnoreCase("false"))
         		{
         			if(plugin.editorplayers.contains(playername))
             		{
             			plugin.editorplayers.remove(playername);
+            			send(Bukkit.getPlayer(playername), false);
             		} else
             		{
             			plugin.editorplayers.add(playername);
+            			send(Bukkit.getPlayer(playername), true);
             		}
-        			send(Bukkit.getPlayer(playername));
             		return true;
         		}
         	}
@@ -113,13 +118,14 @@ public class SccEditorCommandExecutor implements CommandExecutor
     	return false;
     }
     
-    private void send(Player player)
+    private void send(Player player, boolean toggle)
     {
     	ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
 			out.writeUTF(StaticValues.SCC_EDITOR);
 			out.writeUTF(player.getName());
+			out.writeBoolean(toggle);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

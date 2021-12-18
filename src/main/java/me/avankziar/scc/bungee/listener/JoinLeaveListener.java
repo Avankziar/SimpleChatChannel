@@ -148,6 +148,7 @@ public class JoinLeaveListener implements Listener
 		ProxiedPlayer player = event.getPlayer();
 		String pn = player.getName();
 		SimpleChatChannels.onlinePlayers.remove(player.getName());
+		plugin.editorplayers.remove(player.getName());
 		Utility.playerUsedChannels.remove(player.getUniqueId().toString());
 		
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(pn);

@@ -104,6 +104,7 @@ import main.java.me.avankziar.scc.spigot.guihandling.GuiPreListener;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
 import main.java.me.avankziar.scc.spigot.ifh.ActionBarMessageToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.ifh.BaseComponentToBungeeAPI;
+import main.java.me.avankziar.scc.spigot.ifh.ChatEditorProvider;
 import main.java.me.avankziar.scc.spigot.ifh.MessageToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.ifh.TitleMessageToBungeeAPI;
 import main.java.me.avankziar.scc.spigot.listener.ChatListener;
@@ -127,6 +128,7 @@ public class SimpleChatChannels extends JavaPlugin
 	private static BackgroundTask backgroundtask;
 	private static Utility utility;
 	
+	private static ChatEditorProvider ce;
 	private static MessageToBungeeAPI mtb;
 	private static BaseComponentToBungeeAPI bctb;
 	private static TitleMessageToBungeeAPI tmtb;
@@ -900,6 +902,14 @@ public class SimpleChatChannels extends JavaPlugin
 	{      
         if (plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
 		{
+        	ce = new ChatEditorProvider();
+        	plugin.getServer().getServicesManager().register(
+        			main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
+             		ce,
+             		this,
+             		ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
+             
 			mtb = new MessageToBungeeAPI();
             plugin.getServer().getServicesManager().register(
             		main.java.me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee.class,
@@ -930,7 +940,7 @@ public class SimpleChatChannels extends JavaPlugin
             		abmtb,
             		this,
                     ServicePriority.Normal);
-            log.info(pluginName + " detected InterfaceHub >>> AczionBarMessageToBungee.class is provided!!");
+            log.info(pluginName + " detected InterfaceHub >>> ActionBarMessageToBungee.class is provided!!");
         }
 	}
 	

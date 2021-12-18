@@ -52,13 +52,20 @@ public class ServerListener implements Listener
         if(task.equals(StaticValues.SCC_EDITOR)) 
         {
         	String playername = in.readUTF();
-        	if(plugin.editorplayers.contains(playername))
-    		{
-    			plugin.editorplayers.remove(playername);
-    		} else
-    		{
-    			plugin.editorplayers.add(playername);
-    		}
+        	boolean toggle = in.readBoolean();
+        	if(toggle)
+        	{
+        		if(!plugin.editorplayers.contains(playername))
+        		{
+        			plugin.editorplayers.add(playername);
+        		}
+        	} else
+        	{
+        		if(plugin.editorplayers.contains(playername))
+        		{
+        			plugin.editorplayers.remove(playername);
+        		}
+        	}
         } else if(task.equals(StaticValues.SCC_TASK_LOCATIONUPDATE))
         {
         	String uuid = in.readUTF();

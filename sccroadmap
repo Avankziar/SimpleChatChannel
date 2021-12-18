@@ -17,9 +17,10 @@ Build 41 =======================================================================
 - +java 17 support
 - +Bugfix bei MessageToBungee.sendMessage(ArrayList<UUID>, Sound, message)
 - ?ItemReplacer hat einen Fehler, siehe dc Azael
-- Bugfix: mit dem Befehl /mail lastsendemail kann man seine gesendeten mails aufrufen wenn ich dan jedoch auf read 
-  glicke kann ich diese nicht einsehen da sie nicht an mich adressiert ist
+- +Bugfix: mit dem Befehl /mail lastsendemail kann man seine gesendeten mails aufrufen wenn ich dan jedoch auf read 
+  klicke kann ich diese nicht einsehen da sie nicht an mich adressiert ist
 - +Pfadangabefehler bei /scceditor behoben
+- +/scceditor [true/false] [playername], mit Spielernamen angabe möglich, wenn alle 2 Argumente angegeben sind, kann es auch per Console ausgeführt werden.
   
 Build 40-2 ==================================================================================================
 - ClickEvent bei /scc channelgui gefixt.

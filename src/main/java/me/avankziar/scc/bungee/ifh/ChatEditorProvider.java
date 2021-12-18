@@ -19,9 +19,9 @@ public class ChatEditorProvider implements ChatEditor
 		}
 		if(!SimpleChatChannels.getPlugin().editorplayers.contains(player.getName()))
 		{
+			SimpleChatChannels.getPlugin().editorplayers.add(player.getName());
 			if(message)
 			{
-				SimpleChatChannels.getPlugin().editorplayers.add(player.getName());
     			player.sendMessage(ChatApi.tctl(SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Active")));
     			return true;
 			}
@@ -45,9 +45,9 @@ public class ChatEditorProvider implements ChatEditor
 		}
 		if(SimpleChatChannels.getPlugin().editorplayers.contains(player.getName()))
 		{
+			SimpleChatChannels.getPlugin().editorplayers.remove(player.getName());
 			if(message)
 			{
-				SimpleChatChannels.getPlugin().editorplayers.remove(player.getName());
     			player.sendMessage(ChatApi.tctl(SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Deactive")));
     			return true;
 			}

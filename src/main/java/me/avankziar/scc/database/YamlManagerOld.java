@@ -238,12 +238,9 @@ public class YamlManagerOld
 		configKeys.put("Mysql.TableNameVI"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"simplechatchannelsMails"}));
-		if(spigot)
-		{
-			configKeys.put("Enable.InterfaceHub.Providing"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					true}));
-		}
+		configKeys.put("Enable.InterfaceHub.Providing"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
 		configKeys.put("Logging"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
