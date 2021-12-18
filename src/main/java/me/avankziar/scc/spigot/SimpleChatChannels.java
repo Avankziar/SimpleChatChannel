@@ -212,7 +212,10 @@ public class SimpleChatChannels extends JavaPlugin
 		ListenerSetup();		
 		BypassPermission.init(plugin);
 		setupBstats();
-		setupIFH();
+		if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing", true))
+		{
+			setupIFHProviding();
+		}
 	}
 	
 	public void onDisable()
@@ -398,7 +401,7 @@ public class SimpleChatChannels extends JavaPlugin
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
-		CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
+		CommandConstructor scceditor = new CommandConstructor(baseCommandIII, true); 
 		
 		CommandConstructor msg = new CommandConstructor(baseCommandIV, false);
 		PluginSettings.settings.addCommands(KeyHandler.MSG, msg.getCommandString());
@@ -893,7 +896,7 @@ public class SimpleChatChannels extends JavaPlugin
 		}
 	}
 	
-	private void setupIFH()
+	private void setupIFHProviding()
 	{      
         if (plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
 		{

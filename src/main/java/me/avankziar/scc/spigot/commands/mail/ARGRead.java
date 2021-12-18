@@ -49,7 +49,8 @@ public class ARGRead extends ArgumentModule
 		}
 		if(!mail.getReciverUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 		{
-			if(!player.hasPermission(BypassPermission.MAIL_READOTHER))
+			if(!player.hasPermission(BypassPermission.MAIL_READOTHER)
+					&& !mail.getSenderUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 			{
 				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CannotReadOthersMails")));
 				return;

@@ -50,11 +50,12 @@ public class ARGRead extends ArgumentModule
 		String readdate = TimeHandler.getDateTime(now);
 		if(!mail.getReciverUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 		{
-			if(!player.hasPermission(BypassPermission.MAIL_READOTHER))
+			if(!player.hasPermission(BypassPermission.MAIL_READOTHER) 
+					&& !mail.getSenderUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 			{
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CannotReadOthersMails")));
 				return;
-			} //ADDME hier eine ausnahme machen für den Sender
+			}
 			isAdmin = true;
 			readdate = "/";
 		}

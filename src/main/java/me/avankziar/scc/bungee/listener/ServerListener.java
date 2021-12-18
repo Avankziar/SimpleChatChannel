@@ -169,12 +169,12 @@ public class ServerListener implements Listener
         	send(uuid, s, sound, p, hasPermission, permission, msg);
         } else if(task.equals(StaticValues.M2BM))
         {
+        	ArrayList<String> uuids = getUUIDs(in);
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
         	boolean p = in.readBoolean();
         	String permission = in.readUTF();
         	boolean hasPermission = in.readBoolean();
-        	ArrayList<String> uuids = getUUIDs(in);
         	ArrayList<String> msg = getMessages(in);
         	for(String uuid : uuids)
         	{
@@ -202,12 +202,12 @@ public class ServerListener implements Listener
         	sendBC(uuid, s, sound, false, true, null, msg);
         } else if(task.equals(StaticValues.BC2BM))
         {
+        	ArrayList<String> uuids = getUUIDs(in);
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
         	boolean p = in.readBoolean();
         	String permission = in.readUTF();
         	boolean hasPermission = in.readBoolean();
-        	ArrayList<String> uuids = getUUIDs(in);
         	ArrayList<TextComponent> msg = getBCMessages(in);
         	for(String uuid : uuids)
         	{

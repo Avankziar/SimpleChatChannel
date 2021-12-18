@@ -392,7 +392,7 @@ public class SimpleChatChannels extends Plugin
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
-		CommandConstructor scceditor = new CommandConstructor(baseCommandIII, false); 
+		CommandConstructor scceditor = new CommandConstructor(baseCommandIII, true); 
 		
 		CommandConstructor msg = new CommandConstructor(baseCommandIV, false);
 		PluginSettings.settings.addCommands(KeyHandler.MSG, msg.getCommandString());

@@ -21,33 +21,17 @@ public class SccEditorCommandExecutor extends Command
 	
     public void execute(CommandSender sender, String[] args)
     {
-    	if(!(sender instanceof ProxiedPlayer))
+    	if(sender instanceof ProxiedPlayer)
     	{
-    		return;
-    	}
-    	ProxiedPlayer player = (ProxiedPlayer) sender;
-    	if(!player.hasPermission(cc.getPermission()))
-		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
-			return;
-		}
-    	if(args.length == 0)
-    	{
-    		if(plugin.editorplayers.contains(player.getName()))
+    		ProxiedPlayer player = (ProxiedPlayer) sender;
+        	if(!player.hasPermission(cc.getPermission()))
     		{
-    			plugin.editorplayers.remove(player.getName());
-    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
-    		} else
-    		{
-    			plugin.editorplayers.add(player.getName());
-    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
+    			return;
     		}
-    		return;
-    	} else if(args.length == 1)
-    	{
-    		if(args[0].equalsIgnoreCase("true"))
-    		{
-    			if(plugin.editorplayers.contains(player.getName()))
+        	if(args.length == 0)
+        	{
+        		if(plugin.editorplayers.contains(player.getName()))
         		{
         			plugin.editorplayers.remove(player.getName());
         			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
@@ -57,17 +41,87 @@ public class SccEditorCommandExecutor extends Command
         			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
         		}
         		return;
-    		} else if(args[0].equalsIgnoreCase("false"))
-    		{
-    			if(plugin.editorplayers.contains(player.getName()))
+        	} else if(args.length == 1)
+        	{
+        		if(args[0].equalsIgnoreCase("true"))
         		{
-        			plugin.editorplayers.remove(player.getName());
-        		} else
+        			if(plugin.editorplayers.contains(player.getName()))
+            		{
+            			plugin.editorplayers.remove(player.getName());
+            			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            		} else
+            		{
+            			plugin.editorplayers.add(player.getName());
+            			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            		}
+            		return;
+        		} else if(args[0].equalsIgnoreCase("false"))
         		{
-        			plugin.editorplayers.add(player.getName());
+        			if(plugin.editorplayers.contains(player.getName()))
+            		{
+            			plugin.editorplayers.remove(player.getName());
+            		} else
+            		{
+            			plugin.editorplayers.add(player.getName());
+            		}
+            		return;
         		}
-        		return;
-    		}
-    	}
+        	} else if(args.length == 2)
+        	{
+    			String playername = args[1];
+        		if(args[0].equalsIgnoreCase("true"))
+        		{
+        			if(plugin.editorplayers.contains(playername))
+            		{
+            			plugin.editorplayers.remove(playername);
+            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            		} else
+            		{
+            			plugin.editorplayers.add(playername);
+            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            		}
+            		return;
+        		} else if(args[0].equalsIgnoreCase("false"))
+        		{
+        			if(plugin.editorplayers.contains(playername))
+            		{
+            			plugin.editorplayers.remove(playername);
+            		} else
+            		{
+            			plugin.editorplayers.add(playername);
+            		}
+            		return;
+        		}
+        	}
+    	} else
+    	{
+    		if(args.length == 2)
+        	{
+    			String playername = args[1];
+        		if(args[0].equalsIgnoreCase("true"))
+        		{
+        			if(plugin.editorplayers.contains(playername))
+            		{
+            			plugin.editorplayers.remove(playername);
+            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            		} else
+            		{
+            			plugin.editorplayers.add(playername);
+            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            		}
+            		return;
+        		} else if(args[0].equalsIgnoreCase("false"))
+        		{
+        			if(plugin.editorplayers.contains(playername))
+            		{
+            			plugin.editorplayers.remove(playername);
+            		} else
+            		{
+            			plugin.editorplayers.add(playername);
+            		}
+            		return;
+        		}
+        	}
+    	}    	
     }
 }

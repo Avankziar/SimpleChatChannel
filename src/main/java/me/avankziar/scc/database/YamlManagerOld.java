@@ -238,6 +238,12 @@ public class YamlManagerOld
 		configKeys.put("Mysql.TableNameVI"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"simplechatchannelsMails"}));
+		if(spigot)
+		{
+			configKeys.put("Enable.InterfaceHub.Providing"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+		}
 		configKeys.put("Logging"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
@@ -384,8 +390,8 @@ public class YamlManagerOld
 				"&c/scc [pagenumber] &f| Info page for all commands.");
 		commandsInput("scceditor", "scceditor", "scc.cmd.scceditor", 
 				"/scceditor", "/scceditor ",
-				"&c/scceditor [true|false] &f| ChatEditor Toggle.",
-				"&c/scceditor [true|false] &f| ChatEditor toggle.");
+				"&c/scceditor [true|false] [Spielername] &f| ChatEditor Toggle.",
+				"&c/scceditor [true|false] [playername] &f| ChatEditor toggle.");
 		commandsInput("clch", "clch", "scc.cmd.clch", 
 				"/clch [pagenumber]", "/clch ",
 				"&c/clch <Spielername> <Zahl> <Nachricht...> &f| Sendet einen klickbaren Chat für den Spieler. Geeignet für Citizen / Denizen Plugin.",
