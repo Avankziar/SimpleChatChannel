@@ -374,7 +374,6 @@ public class MysqlSetup
 			
 		    start = System.currentTimeMillis();
 		    SimpleChatChannels.log.info("Attempting to establish a connection to the MySQL server!");
-            Class.forName("com.mysql.jdbc.Driver");
             Properties properties = new Properties();
             properties.setProperty("user", plugin.getYamlHandler().getConfig().getString("Mysql.User"));
             properties.setProperty("password", plugin.getYamlHandler().getConfig().getString("Mysql.Password"));

@@ -47,15 +47,24 @@ public class ARGRead extends ArgumentModule
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.MailNotExist")));
 			return;
 		}
+		long now = System.currentTimeMillis();
+		String readdate = TimeHandler.getDateTime(now);
 		if(!mail.getReciverUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 		{
-			if(!player.hasPermission(BypassPermission.MAIL_READOTHER)
+			if(!player.hasPermission(BypassPermission.MAIL_READOTHER) 
 					&& !mail.getSenderUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
 			{
 				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CannotReadOthersMails")));
 				return;
+			} else if(player.hasPermission(BypassPermission.MAIL_READOTHER) 
+					&& !mail.getSenderUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
+			{
+				isAdmin = true;
+				readdate = "/";
+			} else
+			{
+				readdate = TimeHandler.getDateTime(mail.getReadedDate());
 			}
-			isAdmin = true;
 		}
 		String usingChannel = plugin.getYamlHandler().getConfig().getString("Mail.UseChannelForMessageParser");
 		Channel usedChannel = plugin.getChannel(usingChannel);
@@ -74,19 +83,21 @@ public class ARGRead extends ArgumentModule
 				.replace("%id%", String.valueOf(mail.getId())))); //Headline
 		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Sender")
 				.replace("%sender%", mail.getSender()))); //Sender
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Reciver")
+				.replace("%reciver%", mail.getReciver()))); //Empfänger
 		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CC")
 				.replace("%cc%", String.join(", ", ccsplit)))); //CC
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Date")
+				.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
+				.replace("%readeddate%", readdate))); //Datum
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Subject")
+				.replace("%subject%", mail.getSubject()))); //Subject
+		player.spigot().sendMessage(tc); //Message
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Bottomline"))); //Bottomline
 		if(!isAdmin)
 		{
 			mail.setReadedDate(System.currentTimeMillis());
 			plugin.getMysqlHandler().updateData(Type.MAIL, mail, "`id` = ?", mail.getId());
 		}
-		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Date")
-				.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
-				.replace("%readeddate%", TimeHandler.getDateTime(mail.getReadedDate())))); //Datum
-		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Subject")
-				.replace("%subject%", mail.getSubject()))); //Subject
-		player.spigot().sendMessage(tc); //Message
-		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Bottomline"))); //Bottomline
 	}
 }

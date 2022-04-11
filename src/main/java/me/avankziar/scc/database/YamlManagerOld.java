@@ -1007,9 +1007,13 @@ public class YamlManagerOld
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						" &6{&f%sender%&6} &d>> &r%subject%",
 						" &6{&f%sender%&6} &d>> &r%subject%"}));
+		languageKeys.put("CmdMail.Base.Subject.TextII", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						" &6{&e%reciver%&6} &d<< &r%subject%",
+						" &6{&e%reciver%&6} &d<< &r%subject%"}));
 		languageKeys.put("CmdMail.Base.Subject.Hover", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eGesendet am &f%sendeddate%~!~&cCC: &f%cc%",
+						"&eGesendet am &f%sendeddate%~!~&dGelesen am &f%readeddate%~!~&cCC: &f%cc%",
 						"&eSended on the &f%sendeddate%~!~&cCC: &f%cc%"}));
 		languageKeys.put("CmdMail.Base.Headline", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -1067,6 +1071,10 @@ public class YamlManagerOld
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cVon: &f%sender%",
 						"&cFrom: &f%sender%"}));
+		languageKeys.put("CmdMail.Read.Reciver", 
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cAn: &f%reciver%",
+						"&cTo: &f%reciver%"}));
 		languageKeys.put("CmdMail.Read.CC", 
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cCC: &7[&f%cc%&7]",

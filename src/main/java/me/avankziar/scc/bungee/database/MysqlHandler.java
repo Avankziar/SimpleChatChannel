@@ -250,7 +250,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		return table;
 	}
 	
-	public boolean deleteData(Type type, String whereColumn, Object... whereObject)
+	public int deleteData(Type type, String whereColumn, Object... whereObject)
 	{
 		String table = getTable(type);
 		PreparedStatement preparedStatement = null;
@@ -267,7 +267,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 	        }
 			int d = preparedStatement.executeUpdate();
 			MysqlHandler.addRows(QueryType.DELETE, d);
-			return true;
+			return d;
 		} catch (Exception e) 
 		{
 			e.printStackTrace();
@@ -282,7 +282,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 				e.printStackTrace();
 			}
 		}
-		return false;
+		return 0;
 	}
 	
 	public int lastID(Type type)

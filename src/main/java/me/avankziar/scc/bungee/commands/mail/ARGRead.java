@@ -55,9 +55,15 @@ public class ARGRead extends ArgumentModule
 			{
 				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CannotReadOthersMails")));
 				return;
+			} else if(player.hasPermission(BypassPermission.MAIL_READOTHER) 
+					&& !mail.getSenderUUID().toString().equalsIgnoreCase(player.getUniqueId().toString()))
+			{
+				isAdmin = true;
+				readdate = "/";
+			} else
+			{
+				readdate = TimeHandler.getDateTime(mail.getReadedDate());
 			}
-			isAdmin = true;
-			readdate = "/";
 		}
 		String usingChannel = plugin.getYamlHandler().getConfig().getString("Mail.UseChannelForMessageParser");
 		Channel usedChannel = plugin.getChannel(usingChannel);
@@ -77,8 +83,8 @@ public class ARGRead extends ArgumentModule
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Sender")
 				.replace("%sender%", mail.getSender()))); //Sender
 		
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Sender")
-				.replace("%sender%", mail.getSender()))); //Empfänger ADDME
+		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.Reciver")
+				.replace("%reciver%", mail.getReciver()))); //Empfänger
 		
 		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.CC")
 				.replace("%cc%", String.join(", ", ccsplit)))); //CC

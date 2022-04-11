@@ -1127,7 +1127,7 @@ public class Utility
         }
     }
     
-    public ItemStack fromBase64itemStack(String data) throws IOException
+    public ItemStack fromBase64itemStack(String data)
     {
     	try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
@@ -1135,9 +1135,13 @@ public class Utility
             ItemStack item = (ItemStack) dataInput.readObject();
             dataInput.close();
             return item;
-        } catch (ClassNotFoundException e) 
-    	{
-            throw new IOException("Unable to decode class type.", e);
-        }
+        } catch (IOException e)
+		{
+			e.printStackTrace();
+		} catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+    	return null;
     }
 }

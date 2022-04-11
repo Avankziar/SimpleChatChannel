@@ -85,6 +85,9 @@ public class JoinLeaveListener implements Listener
 		{
 			return;
 		}
+		cu.setLastTimeJoined(System.currentTimeMillis());
+		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+				"`player_uuid` = ?", cu.getUUID());
 		if(cu.isOptionChannelMessage())
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));

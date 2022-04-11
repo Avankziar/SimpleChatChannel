@@ -105,7 +105,9 @@ public class JoinLeaveListener implements Listener
 						}
 					}
 				}
-				
+				cu.setLastTimeJoined(System.currentTimeMillis());
+				plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+						"`player_uuid` = ?", cu.getUUID());
 				TextComponent msg = ChatApi.apiChat(
 						plugin.getYamlHandler().getLang().getString("JoinListener.Join").replace("%player%", pn), 
 						ClickEvent.Action.SUGGEST_COMMAND,

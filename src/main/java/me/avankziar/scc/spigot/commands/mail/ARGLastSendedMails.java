@@ -91,7 +91,6 @@ public class ARGLastSendedMails extends ArgumentModule
 		ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
 		for(Mail mail : mails)
 		{
-			String senders = mail.getSender();
 			ArrayList<BaseComponent> sublist = new ArrayList<>();
 			TextComponent tcRead = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Click"),
 					ClickEvent.Action.RUN_COMMAND,
@@ -103,13 +102,13 @@ public class ARGLastSendedMails extends ArgumentModule
 					PluginSettings.settings.getCommands(KeyHandler.MAIL_FORWARD)+mail.getId()+" ",
 					HoverEvent.Action.SHOW_TEXT,
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Hover"));
-			TextComponent tc = ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Text")
-					.replace("%sender%", senders)
+			TextComponent tc = ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.TextII")
+					.replace("%reciver%", mail.getReciver())
 					.replace("%subject%", mail.getSubject())
 					, HoverEvent.Action.SHOW_TEXT,
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Hover")
 					.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
-					//ADDME Hier noch den empfänger angeben
+					.replace("%readeddate%", mail.getReadedDate() == 0 ? "/" : TimeHandler.getDateTime(mail.getReadedDate()))
 					.replace("%cc%", (mail.getCarbonCopyNames().isEmpty() ? "/" : mail.getCarbonCopyNames())));
 			sublist.add(tcRead);
 			sublist.add(tcForward);

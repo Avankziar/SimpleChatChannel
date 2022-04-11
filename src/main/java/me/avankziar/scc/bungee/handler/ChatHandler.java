@@ -1387,6 +1387,7 @@ public class ChatHandler
 					{
 						name = f;
 					}
+					//FIXME am besten hier zwischen dem Erwähnten und dem nicht erwähnten unterscheiden.
 					TextComponent tc = ChatApi.hoverEvent(
 							plugin.getYamlHandler().getConfig().getString("ChatReplacer.Mention.Color")+name,
 							HoverEvent.Action.SHOW_TEXT,
