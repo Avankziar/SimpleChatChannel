@@ -795,8 +795,12 @@ public class Utility
 		return ac.substring(0, ac.length()-2);
 	}
 	
-	public boolean containsBadWords(String message)
+	public boolean containsBadWords(ProxiedPlayer player, String message)
 	{
+		if(player.hasPermission(BypassPermission.PERMBYPASSWORDFILTER))
+		{
+			return false;
+		}
 		List<String> list = plugin.getYamlHandler().getWordFilter().getStringList("WordFilter");
 		for(String s : list)
 		{

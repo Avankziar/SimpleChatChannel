@@ -719,6 +719,9 @@ public class YamlManagerOld
 		commandsKeys.put(path+"Mail.ReadOther"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				by+"mail.readother"}));
+		commandsKeys.put(path+"WordFilter"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				by+"wordfilter"}));
 		path = "Custom.";
 		commandsKeys.put(path+"ItemReplacerStorage"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {

@@ -75,7 +75,7 @@ public class ChatHandler
 		/*
 		 * Wordfilter
 		 */
-		if(plugin.getUtility().containsBadWords(message))
+		if(plugin.getUtility().containsBadWords(player, message))
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.ContainsBadWords")));
 			return false;

@@ -177,6 +177,7 @@ public class MailCommandExecutor extends Command
 						, HoverEvent.Action.SHOW_TEXT,
 						plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Hover")
 						.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
+						.replace("%readeddate%", TimeHandler.getDateTime(mail.getReadedDate()))
 						.replace("%cc%", (mail.getCarbonCopyNames().isEmpty() ? "/" : mail.getCarbonCopyNames())));
 				sublist.add(tcRead);
 				if(ccExist)

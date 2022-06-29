@@ -37,6 +37,8 @@ public class BypassPermission
 	
 	public static String MAIL_READOTHER = "";
 	
+	public static String PERMBYPASSWORDFILTER = "";
+	
 	public static void init(SimpleChatChannels plugin)
 	{
 		YamlConfiguration yml = plugin.getYamlHandler().getCommands();
@@ -71,6 +73,8 @@ public class BypassPermission
 		PERMBYPASSPC = yml.getString(bp+"PermanentChannel", by+"permanentchannel");
 		
 		MAIL_READOTHER = yml.getString(bp+"Mail.ReadOther", by+"mail.readother");
+		
+		PERMBYPASSWORDFILTER = yml.getString(bp+"WordFilter", by+"wordfilter");
 		
 		String path = "Custom.";
 		String cus = "scc.custom.";
