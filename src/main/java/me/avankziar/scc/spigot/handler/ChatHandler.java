@@ -1260,14 +1260,14 @@ public class ChatHandler
 					String start = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.RunCommandStart");
 					String spacereplacer = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SpaceReplacer");
 					String cmd = f.replace(start, "/").replace(spacereplacer, " ");
-					String textstart = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandStartReplacer");
-					String textend = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandEndReplacer");
+					String textstart = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.RunCommandStartReplacer");
+					String textend = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.RunCommandEndReplacer");
 					String text = cmd.replace("/", textstart).replace(spacereplacer, " ")+textend;
 					TextComponent tc = ChatApi.apiChat(text,
 							ClickEvent.Action.RUN_COMMAND,
 							ChatColor.stripColor(cmd),
 							HoverEvent.Action.SHOW_TEXT,
-							plugin.getYamlHandler().getConfig().getString("ChatListener.CommandRunHover"));
+							plugin.getYamlHandler().getLang().getString("ChatListener.CommandRunHover"));
 					components.addAllComponents(tc);
 					if(count < function.length)
 					{
@@ -1287,14 +1287,14 @@ public class ChatHandler
 					String start = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandStart");
 					String spacereplacer = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SpaceReplacer");
 					String cmd = f.replace(start, "/").replace(spacereplacer, " ");
-					String textstart = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandStartReplacer");
-					String textend = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.CommandEndReplacer");
+					String textstart = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandStartReplacer");
+					String textend = plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandEndReplacer");
 					String text = cmd.replace("/", textstart).replace(spacereplacer, " ")+textend;
 					TextComponent tc = ChatApi.apiChat(text,
 							ClickEvent.Action.SUGGEST_COMMAND,
 							ChatColor.stripColor(cmd),
 							HoverEvent.Action.SHOW_TEXT,
-							plugin.getYamlHandler().getConfig().getString("ChatListener.CommandSuggestHover"));
+							plugin.getYamlHandler().getLang().getString("ChatListener.CommandSuggestHover"));
 					components.addAllComponents(tc);
 					if(count < function.length)
 					{
@@ -1388,7 +1388,8 @@ public class ChatHandler
 					TextComponent tc = ChatApi.hoverEvent(
 							plugin.getYamlHandler().getConfig().getString("ChatReplacer.Mention.Color")+name,
 							HoverEvent.Action.SHOW_TEXT,
-							plugin.getYamlHandler().getLang().getString("ChatListener.Mention.YouAreMentionHover")
+							plugin.getYamlHandler().getLang().getString("ChatListener.Mention.MentionHover")
+							.replace("%target%", name)
 							.replace("%player%", player.getName()));
 					components.addAllComponents(tc).addMention(name);
 					if(count < function.length)

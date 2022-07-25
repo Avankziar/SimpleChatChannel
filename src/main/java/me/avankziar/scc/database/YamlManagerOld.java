@@ -311,10 +311,16 @@ public class YamlManagerOld
 		configKeys.put("ChatReplacer.Command.SuggestCommandStart"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"cmd/"}));
-		configKeys.put("ChatReplacer.Command.CommandStartReplacer"
+		configKeys.put("ChatReplacer.Command.RunCommandStartReplacer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"&7[&eClickCmd: "}));
+		configKeys.put("ChatReplacer.Command.RunCommandEndReplacer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"&7]"}));
+		configKeys.put("ChatReplacer.Command.SuggestCommandStartReplacer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"&7[&fClickCmd: "}));
-		configKeys.put("ChatReplacer.Command.CommandEndReplacer"
+		configKeys.put("ChatReplacer.Command.SuggestCommandEndReplacer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"&7]"}));
 		configKeys.put("ChatReplacer.Command.SpaceReplacer"
@@ -934,10 +940,10 @@ public class YamlManagerOld
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cIn diesem Channel ist das Posten von Webseiten nicht erlaubt.",
 						"&cPosting web pages is not allowed in this channel."}));
-		languageKeys.put("ChatListener.Mention.YouAreMentionHover"
+		languageKeys.put("ChatListener.Mention.MentionHover"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&eDu wurdest von &f%player% &eerwähnt!",
-						"&eYou have been &f%player% &mentioned!"}));
+						"&e%player% wurde von &f%target% &eerwähnt!",
+						"&e%player% were mentioned by &f%target%&e!"}));
 		languageKeys.put("ChatListener.Emoji.Hover"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eDieses Emoji wurde mit &f%emoji% &egeneriert!",

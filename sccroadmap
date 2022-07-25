@@ -1,20 +1,22 @@
 Future ===============================================================================================
-- Vault unterstützung anbieten um pauschal oder per Charakter geld abzuziehen, channel spezifisch.
-- Werbungsmöglichkeit implementieren.
-  - Eine Art Queue/Reihe machen, sodass jeder EINMAL dran kommt, und danach wechselt.
-  - Kosten pro Zeichen
-  - In mysql wird durch die Ersteinstellung (Zeit) bestimmt, wenn ein neuer Zyklus anfängt, wann welcher zuerststarten darf.
 - Befehl einführen um sich Texte zu speichern
 - Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
-
 - IFH für scceditor einpfegen.
 - /msgrp einfügen. & im ChatHandler bei ROLEPLAYNAME den SuggestCommand ändern.
 - Sound beim Mention pm etc. individuell einstellbar machen.
 - Neue Replacer fürs ChatFormat machen, was den Zugang zu den chattitle Farben gewährt.
 - Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
-- Sound, wie bei msg indivisualisierbar machen.
+- /scc broadcastserver <Text> | Broadcast auf dem Server machen, wo man ist.
+- /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
+- 
 
-Build 41-1-x
+Build 41-2-0
+- ChatReplacer für Run- & SuggestCommand sind nun in der config.yml getrennt.
+- ChatReplacer für Erwähnungen wurde so angepasst, dass nun dort steht, wer wen erwähnt hat.
+- ChatReplacer HoverFehler bei Run- & SuggestCommands wurde behoben.
+- IFh general.chat.Channel wird nun unterstützt.
+
+Build 41-1-0
 - MC 1.19 support
 - Wordfilter BypassPerm added
 

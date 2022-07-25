@@ -82,7 +82,10 @@ import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.database.MysqlSetup;
 import main.java.me.avankziar.scc.bungee.database.YamlHandlerOld;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
+import main.java.me.avankziar.scc.bungee.ifh.ChannelProvider;
 import main.java.me.avankziar.scc.bungee.ifh.ChatEditorProvider;
+import main.java.me.avankziar.scc.bungee.ifh.ChatProvider;
+import main.java.me.avankziar.scc.bungee.ifh.ChatTitleProvider;
 import main.java.me.avankziar.scc.bungee.listener.ChatListener;
 import main.java.me.avankziar.scc.bungee.listener.JoinLeaveListener;
 import main.java.me.avankziar.scc.bungee.listener.ServerListener;
@@ -745,7 +748,7 @@ public class SimpleChatChannels extends Plugin
 					cha.getString(key+".SeperatorBetweenSuffix", ""),
 					cha.getString(key+".MentionSound", "ENTITY_WANDERING_TRADER_REAPPEARED"),
 					serverReplacerMap, serverCommandMap, serverHoverMap,
-					worldReplacerMap, worldCommandMap, serverHoverMap,
+					worldReplacerMap, worldCommandMap, worldHoverMap,
 					cha.getBoolean(key+".UseColor", false),
 					cha.getBoolean(key+".UseItemReplacer", false),
 					cha.getBoolean(key+".UseBookReplacer", false),
@@ -841,36 +844,47 @@ public class SimpleChatChannels extends Plugin
 	
 	private void setupIFHProvider()
 	{
-		Plugin plugin = BungeeCord.getInstance().getPluginManager().getPlugin("InterfaceHub");
-        if (plugin == null) 
+		Plugin ifhp = BungeeCord.getInstance().getPluginManager().getPlugin("InterfaceHub");
+        if (ifhp == null) 
         {
             return;
         }
+        main.java.me.avankziar.ifh.bungee.InterfaceHub ifh = (InterfaceHub) ifhp;
         try
         {
-        	main.java.me.avankziar.ifh.bungee.InterfaceHub ifh = (InterfaceHub) plugin;
-        	/*try
-            {
-        		 ChatProvider cp = new ChatProvider();
-                 ifh.getServicesManager().register(
-                 		main.java.me.avankziar.ifh.general.chat.Chat.class,
-                 		cp, plugin, ServicePriority.Normal);
-                 log.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
-            } catch(NoClassDefFoundError e) 
-        	{}*/
-        	try
-            {
-        		ChatEditorProvider ce = new ChatEditorProvider();
-                ifh.getServicesManager().register(
-                		main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
-                		ce, plugin, ServicePriority.Normal);
-                log.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
-            } catch(NoClassDefFoundError e) 
-            {}
-        } catch(NoClassDefFoundError e) 
+    		ChatProvider cp = new ChatProvider();
+            ifh.getServicesManager().register(
+             		main.java.me.avankziar.ifh.general.chat.Chat.class,
+             		cp, plugin, ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
+    		
+        } catch(NoClassDefFoundError e) {}
+        try
         {
-        	//Your Log.
-        }    
+    		ChannelProvider chp = new ChannelProvider();
+            ifh.getServicesManager().register(
+             		main.java.me.avankziar.ifh.general.chat.Channel.class,
+             		chp, plugin, ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub >>> Channel.class is provided!");
+    		
+        } catch(NoClassDefFoundError e) {}
+        try
+        {
+    		ChatTitleProvider ctp = new ChatTitleProvider();
+            ifh.getServicesManager().register(
+             		main.java.me.avankziar.ifh.general.chat.ChatTitle.class,
+             		ctp, plugin, ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub >>> ChatTitle.class is provided!");
+    		
+        } catch(NoClassDefFoundError e) {}
+        try
+        {
+        	ChatEditorProvider ce = new ChatEditorProvider();
+            ifh.getServicesManager().register(
+            		main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
+            		ce, ifhp, ServicePriority.Normal);
+            log.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
+        } catch(NoClassDefFoundError e) {}    
 	}
 	
 	/*private void setupIFHConsumer()
