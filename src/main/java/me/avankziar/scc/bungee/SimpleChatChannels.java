@@ -588,24 +588,6 @@ public class SimpleChatChannels extends Plugin
 	{
 		return afkrecord;
 	}
-	
-	/*public boolean PlayerToChatEditor(String playername)
-	{
-		if(editorplayers.contains(playername))
-		{
-			editorplayers.remove(playername);
-			String message = "editor"+"µ"+playername+"µ"+"remove";
-			utility.sendSpigotMessage("simplechatchannels:sccbungee", message);
-			return false;
-		} else if(!editorplayers.contains(playername))
-		{
-			editorplayers.add(playername);
-			String message = "editor"+"µ"+playername+"µ"+"add";
-			utility.sendSpigotMessage("simplechatchannels:sccbungee", message);
-			return true;
-		}
-		return false;
-	}*/
 
 	public ArrayList<String> getPlayers()
 	{

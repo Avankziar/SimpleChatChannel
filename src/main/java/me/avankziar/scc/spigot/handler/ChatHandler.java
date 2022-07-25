@@ -569,7 +569,7 @@ public class ChatHandler
 	 * @param usedChannel
 	 * @return
 	 */
-	private Components getComponent(String placeHolder, String message, CommandSender players, Player otherplayer,
+	public Components getComponent(String placeHolder, String message, CommandSender players, Player otherplayer,
 			ArrayList<ChatTitle> prefixs, ArrayList<ChatTitle> suffixs,
 			final Channel usedChannel,
 			final TemporaryChannel tch, final PermanentChannel pc,

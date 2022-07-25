@@ -6,8 +6,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
@@ -17,6 +20,7 @@ import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.ServerLocation;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.objects.chat.Channel;
+import main.java.me.avankziar.scc.objects.chat.ChatTitle;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.CommandSender;
@@ -66,6 +70,127 @@ public class ServerListener implements Listener
         			plugin.editorplayers.remove(playername);
         		}
         	}
+        } else if(task.equals(StaticValues.SCC_REGISTERCHANNEL))
+        {
+        	String uniqueChannelName = in.readUTF();
+        	String symbol = in.readUTF();
+        	String inChatName = in.readUTF();
+        	String inChatColorMessage = in.readUTF();
+			String permission = in.readUTF();
+			String joinPart = in.readUTF(); 
+			String chatFormat = in.readUTF();
+			boolean useSpecificServer = in.readBoolean();
+			boolean useSpecificWorld = in.readBoolean();
+			int useBlockRadius = in.readInt(); 
+			long minimumTimeBetweenMessages = in.readLong();
+			long minimumTimeBetweenSameMessage = in.readLong();
+			double percentOfSimiliarityOrLess = in.readDouble();
+			String timeColor = in.readUTF();
+			String playernameCustomColor = in.readUTF();
+			String seperatorBetweenPrefix = in.readUTF();
+			String seperatorBetweenSuffix = in.readUTF();
+			String mentionSound = in.readUTF();
+			boolean useColor = in.readBoolean();
+			boolean useItemReplacer = in.readBoolean();
+			boolean useBookReplacer = in.readBoolean();
+			boolean useRunCommandReplacer = in.readBoolean();
+			boolean useSuggestCommandReplacer = in.readBoolean();
+			boolean useWebsiteReplacer = in.readBoolean();
+			boolean useEmojiReplacer = in.readBoolean();
+			boolean useMentionReplacer = in.readBoolean();
+			boolean usePositionReplacer = in.readBoolean();
+			if(uniqueChannelName == null || symbol == null || inChatName == null || inChatColorMessage == null
+					|| permission == null || joinPart == null || chatFormat == null || timeColor == null
+					|| playernameCustomColor == null || seperatorBetweenPrefix == null || seperatorBetweenSuffix == null
+					|| mentionSound == null 
+					|| uniqueChannelName.equalsIgnoreCase("permanent") || uniqueChannelName.equalsIgnoreCase("temporary")
+					|| uniqueChannelName.equalsIgnoreCase("private"))
+			{
+				return;
+			}
+			LinkedHashMap<String, String> serverReplacerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> serverCommandMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> serverHoverMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> worldReplacerMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> worldCommandMap = new LinkedHashMap<>();
+			LinkedHashMap<String, String> worldHoverMap = new LinkedHashMap<>();
+			Channel c = new Channel(
+					uniqueChannelName,
+					symbol,
+					inChatName,
+					inChatColorMessage,
+					permission,
+					joinPart,
+					chatFormat,
+					useSpecificServer,
+					useSpecificWorld,
+					useBlockRadius,
+					minimumTimeBetweenMessages,
+					minimumTimeBetweenSameMessage,
+					percentOfSimiliarityOrLess,
+					timeColor,
+					playernameCustomColor,
+					"&r",
+					seperatorBetweenPrefix,
+					seperatorBetweenSuffix,
+					mentionSound,
+					serverReplacerMap, serverCommandMap, serverHoverMap,
+					worldReplacerMap, worldCommandMap, worldHoverMap,
+					useColor, useItemReplacer, useBookReplacer,
+					useRunCommandReplacer, useSuggestCommandReplacer, useWebsiteReplacer,
+					useEmojiReplacer, useMentionReplacer, usePositionReplacer);
+			SimpleChatChannels.log.log(Level.INFO, "Register "+c.getUniqueIdentifierName()+" Channel!");
+        	return;
+        } else if(task.equals(StaticValues.SCC_REGISTERCHATTITLE))
+        {
+        	String uniquechattitle = in.readUTF();
+        	boolean isPrefix = in.readBoolean();
+        	String inChatName = in.readUTF();
+			String inChatColorCode = in.readUTF();
+			String suggestCommand = in.readUTF();
+			String hover = in.readUTF();
+			String permission = in.readUTF();
+			int weight = in.readInt();
+			if(uniquechattitle == null || inChatName == null || inChatColorCode == null
+					|| suggestCommand == null || hover == null || permission == null)
+			{
+				return;
+			}
+			for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+			{
+				if(ct.getUniqueIdentifierName().equalsIgnoreCase(uniquechattitle))
+				{
+					return;
+				}
+			}
+			for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+			{
+				if(ct.getUniqueIdentifierName().equalsIgnoreCase(uniquechattitle))
+				{
+					return;
+				}
+			}
+			ChatTitle ct = new ChatTitle(uniquechattitle,
+					isPrefix,
+					inChatName,
+					inChatColorCode,
+					suggestCommand,
+					hover,
+					permission,
+					weight);
+			if(isPrefix)
+			{
+				SimpleChatChannels.chatTitlesPrefix.add(ct);
+			} else
+			{
+				SimpleChatChannels.chatTitlesSuffix.add(ct);
+			}
+			SimpleChatChannels.chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
+			Collections.reverse(SimpleChatChannels.chatTitlesPrefix);
+			SimpleChatChannels.chatTitlesSuffix.sort(Comparator.comparing(ChatTitle::getWeight));
+			Collections.reverse(SimpleChatChannels.chatTitlesSuffix);
+			SimpleChatChannels.log.log(Level.INFO, "Register "+uniquechattitle+" ChatTitle!");
+        	return;
         } else if(task.equals(StaticValues.SCC_TASK_LOCATIONUPDATE))
         {
         	String uuid = in.readUTF();

@@ -29,4 +29,6 @@ public class StaticValues
 	public final static String SCC_TASK_MYSQLPERFORMANCE = "mysqlperformance";
 	public final static String SCC_TASK_ARG = "task_arg";
 	public final static String SCC_EDITOR = "scceditor";
+	public final static String SCC_REGISTERCHANNEL = "scc_registerchannel";
+	public final static String SCC_REGISTERCHATTITLE = "scc_registerchattitle";
 }

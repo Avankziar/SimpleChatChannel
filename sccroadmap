@@ -10,11 +10,13 @@ Future =========================================================================
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - 
 
-Build 41-2-0
+Build 42-0-0
 - ChatReplacer für Run- & SuggestCommand sind nun in der config.yml getrennt.
 - ChatReplacer für Erwähnungen wurde so angepasst, dass nun dort steht, wer wen erwähnt hat.
 - ChatReplacer HoverFehler bei Run- & SuggestCommands wurde behoben.
-- IFh general.chat.Channel wird nun unterstützt.
+- IFH general.chat.Chat wird nun auf Bungee & Spigot Ebene unterstützt.
+- IFH general.chat.Channel wird nun auf Bungee & Spigot Ebene unterstützt.
+- IFH general.chat.ChatTitle wird nun auf Bungee & Spigot Ebene unterstützt.
 
 Build 41-1-0
 - MC 1.19 support
