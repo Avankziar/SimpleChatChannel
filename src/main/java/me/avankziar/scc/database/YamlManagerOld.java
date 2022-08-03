@@ -804,6 +804,10 @@ public class YamlManagerOld
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cEiner oder einige der Argumente muss eine Zahl sein!",
 						"&cOne or some of the arguments must be a number!"}));
+		languageKeys.put("GeneralHover",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eKlick mich!",
+						"&eClick me!"}));
 		
 		languageKeys.put("BaseInfo.Headline",
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -961,6 +965,10 @@ public class YamlManagerOld
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDu hast mit keinem Spieler geschrieben!",
 						"&cYou have not written with any player!"}));
+		languageKeys.put("CmdMsg.IsAfk"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&eDer Spieler ist afk!",
+						"&eThe player is afk!"}));
 		/*
 		 * INFO:Editor
 		 */

@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import main.java.de.avankziar.afkrecord.bungee.AfkRecord;
 import main.java.me.avankziar.ifh.bungee.InterfaceHub;
+import main.java.me.avankziar.ifh.bungee.plugin.RegisteredServiceProvider;
 import main.java.me.avankziar.ifh.bungee.plugin.ServicePriority;
+import main.java.me.avankziar.ifh.general.interfaces.PlayerTimes;
 import main.java.me.avankziar.scc.bungee.assistance.BackgroundTask;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.commands.ClickChatCommandExecutor;
@@ -104,6 +106,7 @@ import main.java.me.avankziar.scc.objects.chat.ChatTitle;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
+import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.config.Configuration;
 
 public class SimpleChatChannels extends Plugin
@@ -117,7 +120,7 @@ public class SimpleChatChannels extends Plugin
 	private static MysqlHandler mysqlHandler;
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
-	private AfkRecord afkrecord;
+	private PlayerTimes playerTimesConsumer;
 	
 	public ArrayList<String> editorplayers = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<>();
@@ -161,6 +164,8 @@ public class SimpleChatChannels extends Plugin
 	 */
 	public static LinkedHashMap<String, Channel> channels = new LinkedHashMap<>();
 	
+	private ScheduledTask playerTimesRun;
+	
 	public void onEnable() 
 	{
 		plugin = this;
@@ -203,7 +208,7 @@ public class SimpleChatChannels extends Plugin
 		{
 			setupIFHProvider();
 		}
-		//setupIFHConsumer();
+		setupIFHConsumer();
 	}
 	
 	public void onDisable()
@@ -583,10 +588,9 @@ public class SimpleChatChannels extends Plugin
 		return argumentMap;
 	}
 	
-	//FIXME AfkrRecord Version update
-	public AfkRecord getAfkRecord()
+	public PlayerTimes getPlayerTimes()
 	{
-		return afkrecord;
+		return playerTimesConsumer;
 	}
 
 	public ArrayList<String> getPlayers()
@@ -869,30 +873,38 @@ public class SimpleChatChannels extends Plugin
         } catch(NoClassDefFoundError e) {}    
 	}
 	
-	/*private void setupIFHConsumer()
+	private void setupIFHConsumer()
     {
 		Plugin plugin = BungeeCord.getInstance().getPluginManager().getPlugin("InterfaceHub");
         if (plugin == null) 
         {
             return;
         }
-        main.java.me.avankziar.interfacehub.bungee.InterfaceHub ifh = (InterfaceHub) plugin;
-        RegisteredServiceProvider<Chat> rsp = ifh
-        		.getServicesManager()
-        		.getRegistration(main.java.me.avankziar.interfacehub.bungee.chat.Chat.class);
-        if (rsp == null) 
-        {
-        	log.info(pluginName + " detected InterfaceHub >>> Chat.class Provider is missing! Failing hooking!");
-            return;
-        }
-        main.java.me.avankziar.interfacehub.bungee.chat.Chat chat = rsp.getProvider();
-        if(chat != null)
-        {
-    		log.info(pluginName + " detected InterfaceHub:Chat.class >>> Hooking!");
-        }
-        log.info("chat.isEnabled: "+chat.isEnabled());
+        InterfaceHub ifh = (InterfaceHub) plugin;
+        playerTimesRun = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				RegisteredServiceProvider<PlayerTimes> rsp = ifh
+		        		.getServicesManager()
+		        		.getRegistration(PlayerTimes.class);
+		        if (rsp == null) 
+		        {
+		        	//log.info(pluginName + " detected InterfaceHub >>> Chat.class Provider is missing! Failing hooking!");
+		            return;
+		        }
+		        playerTimesConsumer = rsp.getProvider();
+		        if(playerTimesConsumer != null)
+		        {
+		    		log.info(pluginName + " detected InterfaceHub >>> PlayerTimes.class is consumed!");
+		    		playerTimesRun.cancel();
+		        }
+			}
+		}, 15L*1000, 25L, TimeUnit.MILLISECONDS);
+        
         return;
-    }*/
+    }
 	
 	public void setupBstats()
 	{

@@ -17,6 +17,8 @@ Build 42-0-0
 - IFH general.chat.Chat wird nun auf Bungee & Spigot Ebene unterstützt.
 - IFH general.chat.Channel wird nun auf Bungee & Spigot Ebene unterstützt.
 - IFH general.chat.ChatTitle wird nun auf Bungee & Spigot Ebene unterstützt.
+- IFH general.interface.PlayerTimes wird nun gehook zum checken ob Spieler afk sind in privat Gesprächen.
+- Fix Hover bei /scc
 
 Build 41-1-0
 - MC 1.19 support

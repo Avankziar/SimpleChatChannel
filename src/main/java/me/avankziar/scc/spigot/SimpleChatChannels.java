@@ -19,10 +19,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import main.java.me.avankziar.ifh.general.interfaces.PlayerTimes;
+import main.java.me.avankziar.ifh.spigot.administration.Administration;
 import main.java.me.avankziar.scc.database.YamlManagerOld;
 import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatUser;
@@ -102,14 +106,14 @@ import main.java.me.avankziar.scc.spigot.database.YamlHandlerOld;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiListener;
 import main.java.me.avankziar.scc.spigot.guihandling.GuiPreListener;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
-import main.java.me.avankziar.scc.spigot.ifh.ActionBarMessageToBungeeAPI;
-import main.java.me.avankziar.scc.spigot.ifh.BaseComponentToBungeeAPI;
+import main.java.me.avankziar.scc.spigot.ifh.ActionBarMessageToBungeeProvider;
+import main.java.me.avankziar.scc.spigot.ifh.BaseComponentToBungeeProvider;
 import main.java.me.avankziar.scc.spigot.ifh.ChannelProvider;
 import main.java.me.avankziar.scc.spigot.ifh.ChatEditorProvider;
 import main.java.me.avankziar.scc.spigot.ifh.ChatProvider;
 import main.java.me.avankziar.scc.spigot.ifh.ChatTitleProvider;
-import main.java.me.avankziar.scc.spigot.ifh.MessageToBungeeAPI;
-import main.java.me.avankziar.scc.spigot.ifh.TitleMessageToBungeeAPI;
+import main.java.me.avankziar.scc.spigot.ifh.MessageToBungeeProvider;
+import main.java.me.avankziar.scc.spigot.ifh.TitleMessageToBungeeProvider;
 import main.java.me.avankziar.scc.spigot.listener.ChatListener;
 import main.java.me.avankziar.scc.spigot.listener.JoinLeaveListener;
 import main.java.me.avankziar.scc.spigot.listener.LocationUpdateListener;
@@ -173,6 +177,9 @@ public class SimpleChatChannels extends JavaPlugin
 	 */
 	public static LinkedHashMap<String, Channel> channels = new LinkedHashMap<>();
 	
+	private PlayerTimes playerTimesConsumer;
+	private Administration administrationConsumer;
+	
 	public void onEnable()
 	{
 		plugin = this;
@@ -185,6 +192,8 @@ public class SimpleChatChannels extends JavaPlugin
 		log.info(" ╚════██║██║     ██║      | Depend Plugins: "+plugin.getDescription().getDepend().toString());
 		log.info(" ███████║╚██████╗╚██████╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepend().toString());
 		log.info(" ╚══════╝ ╚═════╝ ╚═════╝ | LoadBefore: "+plugin.getDescription().getLoadBefore().toString());
+		
+		setupIFHAdministration();
 		
 		yamlHandler = new YamlHandlerOld(this);
 		utility = new Utility(plugin);
@@ -215,6 +224,7 @@ public class SimpleChatChannels extends JavaPlugin
 		{
 			setupIFHProviding();
 		}
+		setupIFHConsumer();
 	}
 	
 	public void onDisable()
@@ -931,7 +941,7 @@ public class SimpleChatChannels extends JavaPlugin
              		ServicePriority.Normal);
             log.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
             
-        	MessageToBungeeAPI mtb = new MessageToBungeeAPI();
+        	MessageToBungeeProvider mtb = new MessageToBungeeProvider();
             plugin.getServer().getServicesManager().register(
             		main.java.me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee.class,
             		mtb,
@@ -939,7 +949,7 @@ public class SimpleChatChannels extends JavaPlugin
                     ServicePriority.Normal);
             log.info(pluginName + " detected InterfaceHub >>> MessageToBungee.class is provided!");
             
-            BaseComponentToBungeeAPI bctb = new BaseComponentToBungeeAPI();
+            BaseComponentToBungeeProvider bctb = new BaseComponentToBungeeProvider();
             plugin.getServer().getServicesManager().register(
             		main.java.me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee.class,
             		bctb,
@@ -947,7 +957,7 @@ public class SimpleChatChannels extends JavaPlugin
                     ServicePriority.Normal);
             log.info(pluginName + " detected InterfaceHub >>> BaseComponentToBungee.class is provided!");
             
-            TitleMessageToBungeeAPI tmtb = new TitleMessageToBungeeAPI();
+            TitleMessageToBungeeProvider tmtb = new TitleMessageToBungeeProvider();
             plugin.getServer().getServicesManager().register(
             		main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee.class,
             		tmtb,
@@ -955,7 +965,7 @@ public class SimpleChatChannels extends JavaPlugin
                     ServicePriority.Normal);
             log.info(pluginName + " detected InterfaceHub >>> TitleMessageToBungee.class is provided!");
             
-            ActionBarMessageToBungeeAPI abmtb = new ActionBarMessageToBungeeAPI();
+            ActionBarMessageToBungeeProvider abmtb = new ActionBarMessageToBungeeProvider();
             plugin.getServer().getServicesManager().register(
             		main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.ActionBarMessageToBungee.class,
             		abmtb,
@@ -963,6 +973,83 @@ public class SimpleChatChannels extends JavaPlugin
                     ServicePriority.Normal);
             log.info(pluginName + " detected InterfaceHub >>> ActionBarMessageToBungee.class is provided!!");
         }
+	}
+	
+	private void setupIFHConsumer()
+	{
+		setupIFHPlayerTimes();
+	}
+	
+	private void setupIFHPlayerTimes()
+	{ 
+		if(!plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
+	    {
+	    	return;
+	    }
+		new BukkitRunnable()
+        {
+        	int i = 0;
+			@Override
+			public void run()
+			{
+			    if(i == 20)
+			    {
+				cancel();
+				return;
+			    }
+			    RegisteredServiceProvider<main.java.me.avankziar.ifh.general.interfaces.PlayerTimes> rsp = 
+		                         getServer().getServicesManager().getRegistration(PlayerTimes.class);
+			    if (rsp == null) 
+			    {
+			    	i++;
+			        return;
+			    }
+			    playerTimesConsumer = rsp.getProvider();
+			    log.info(pluginName + " detected InterfaceHub >>> PlayerTimes.class is consumed!");
+			    cancel();
+			}
+        }.runTaskTimer(plugin, 20L, 20*2);
+	}
+	
+	public PlayerTimes getPlayerTimes()
+	{
+		return playerTimesConsumer;
+	}
+	
+	private void setupIFHAdministration()
+	{ 
+		if(!plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
+	    {
+	    	return;
+	    }
+		new BukkitRunnable()
+        {
+        	int i = 0;
+			@Override
+			public void run()
+			{
+			    if(i == 20)
+			    {
+				cancel();
+				return;
+			    }
+			    RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
+		                         getServer().getServicesManager().getRegistration(Administration.class);
+			    if (rsp == null) 
+			    {
+			    	i++;
+			        return;
+			    }
+			    administrationConsumer = rsp.getProvider();
+			    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+			    cancel();
+			}
+        }.runTaskTimer(plugin,  0L, 20*2);
+	}
+	
+	public Administration getAdministration()
+	{
+		return administrationConsumer;
 	}
 	
 	public void setupBstats()

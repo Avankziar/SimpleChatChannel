@@ -1811,6 +1811,7 @@ public class ChatHandler
 			}
 			isIgnored = true;
 		}
+		plugin.getUtility().isAfk(player, other);
 		if(components.isMention(player.getName()))
 		{
 			player.spigot().sendMessage(txc2);

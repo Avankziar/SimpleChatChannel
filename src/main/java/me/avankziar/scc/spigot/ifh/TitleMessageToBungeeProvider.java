@@ -14,7 +14,7 @@ import main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageTo
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 
-public class TitleMessageToBungeeAPI implements TitleMessageToBungee
+public class TitleMessageToBungeeProvider implements TitleMessageToBungee
 {
 	private int fadeIn = 1;
 	private int stay = 20;

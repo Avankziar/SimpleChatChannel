@@ -10,46 +10,42 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee;
+import main.java.me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee;
+import main.java.me.avankziar.scc.objects.ChatApi;
 import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import net.md_5.bungee.api.chat.BaseComponent;
 
-public class MessageToBungeeAPI implements MessageToBungee
+public class BaseComponentToBungeeProvider implements BaseComponentToBungee
 {
 	private Sound sound = Sound.MUSIC_CREDITS;
 	private String permission = "naavioqwinfwnwiq.hohbwfqwhaqhvj.anfuqwdf9ßpqwjvha"; //random perm :D
 	private boolean hasPermission = true;
 	
 	@Override
-	public void sendMessage(UUID uuid, String... message)
+	public void sendMessage(UUID uuid, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		sendMessage(uuid, sound, message);
 	}
-	
+
 	@Override
-	public void sendMessage(UUID uuid, Sound sound, String... message)
+	public void sendMessage(UUID uuid, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
-		boolean s = false;
+        boolean s = false;
 		if(sound != null && sound != this.sound) 
 		{
 			s = true;
 		}
 		boolean p = false;
 		/* Here not needed
-		if(permission != null && !permission.isEmpty())
+		if(permission != null && !permission.isEmpty() && permission != this.permission)
 		{
 			p = true;
 		}*/
-		Player player = SimpleChatChannels.getPlugin().getServer().getPlayer(uuid);
-		if(player != null && player.isOnline())
-		{
-			sendWhenOnlineOnLocalServer(player, s, sound, message);
-			return;
-		}
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.M2BS);
+			out.writeUTF(StaticValues.BC2BS);
 			out.writeUTF(uuid.toString());
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
@@ -59,25 +55,25 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		sendMessage(uuids, permission, hasPermission, sound, message);
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, Sound sound, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		sendMessage(uuids, permission, hasPermission, sound, message);
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		sendMessage(uuids, permission, hasPermission, sound, message);
 	}
 
 	@Override
-	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, Sound sound, String... message)
+	public void sendMessage(ArrayList<UUID> uuids, String permission, boolean hasPermission, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		if(uuids.isEmpty())
 		{
@@ -96,7 +92,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.M2BM);
+			out.writeUTF(StaticValues.BC2BM);
 			writeUUIDs(out, uuids);
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
@@ -106,25 +102,25 @@ public class MessageToBungeeAPI implements MessageToBungee
 	}
 	
 	@Override
-	public void sendMessage(String... message)
+	public void sendMessage(ArrayList<ArrayList<BaseComponent>> message)
 	{
 		sendMessage(permission, hasPermission, sound, message);
 	}
 	
 	@Override
-	public void sendMessage(Sound sound, String... message)
+	public void sendMessage(Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		sendMessage(permission, hasPermission, sound, message);
 	}
 	
 	@Override
-	public void sendMessage(String permission, boolean hasPermission, String... message)
+	public void sendMessage(String permission, boolean hasPermission, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		sendMessage(permission, hasPermission, sound, message);
 	}
 	
 	@Override
-	public void sendMessage(String permission, boolean hasPermission, Sound sound, String... message)
+	public void sendMessage(String permission, boolean hasPermission, Sound sound, ArrayList<ArrayList<BaseComponent>> message)
 	{
 		boolean s = false;
 		if(sound != null && sound != this.sound) 
@@ -139,7 +135,7 @@ public class MessageToBungeeAPI implements MessageToBungee
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
-			out.writeUTF(StaticValues.M2BA);
+			out.writeUTF(StaticValues.BC2BA);
 			addOutputStream(out, s, sound, p, permission, hasPermission, message);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -147,22 +143,10 @@ public class MessageToBungeeAPI implements MessageToBungee
         sendPluginMessage(stream);
 	}
 	
-	private void sendWhenOnlineOnLocalServer(Player player, boolean s, Sound sound, String... message)
-	{
-		if(s)
-		{
-    		player.playSound(player.getLocation(), sound, 3.0F, 0.5F);
-		}
-		for(String msg : message)
-		{
-			player.sendMessage(msg);
-		}
-	}	
-	
 	private void addOutputStream(DataOutputStream out,
 			boolean s, Sound sound,
 			boolean p, String permission, boolean hasPermission,
-			String...message) throws IOException
+			ArrayList<ArrayList<BaseComponent>> message) throws IOException
 	{
 		out.writeBoolean(s);
 		out.writeUTF(sound.toString());
@@ -172,11 +156,12 @@ public class MessageToBungeeAPI implements MessageToBungee
 		writeMessage(out, message);
 	}
 	
-	private void writeMessage(DataOutputStream out, String... message) throws IOException
+	private void writeMessage(DataOutputStream out, ArrayList<ArrayList<BaseComponent>> message) throws IOException 
 	{
-		out.writeInt(message.length);
-		for(String s : message)
+		out.writeInt(message.size());
+		for(ArrayList<BaseComponent> list : message)
 		{
+			String s = ChatApi.serialized(list);
 			out.writeUTF(s);
 		}
 	}

@@ -16,7 +16,7 @@ import main.java.me.avankziar.scc.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 import net.md_5.bungee.api.ChatMessageType;
 
-public class ActionBarMessageToBungeeAPI implements ActionBarMessageToBungee
+public class ActionBarMessageToBungeeProvider implements ActionBarMessageToBungee
 {
 	private Sound sound = Sound.MUSIC_CREDITS;
 	private String permission = "naavioqwinfwnwiq.hohbwfqwhaqhvj.anfuqwdf9ßpqwjvha"; //random perm :D
