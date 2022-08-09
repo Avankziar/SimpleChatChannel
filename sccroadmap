@@ -10,6 +10,10 @@ Future =========================================================================
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - 
 
+Build 42-0-1
+- GuiListener java.lang.IndexOutOfBoundsException fix
+- ItemJson & Base64String in Mysql in LONGTEXT umgeändert. (Anscheindend war mediumText zu klein)
+
 Build 42-0-0
 - ChatReplacer für Run- & SuggestCommand sind nun in der config.yml getrennt.
 - ChatReplacer für Erwähnungen wurde so angepasst, dass nun dort steht, wer wen erwähnt hat.

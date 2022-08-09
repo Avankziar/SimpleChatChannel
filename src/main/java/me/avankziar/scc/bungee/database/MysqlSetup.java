@@ -222,7 +222,7 @@ public class MysqlSetup
 		      {	        
 		        String data = "CREATE TABLE IF NOT EXISTS `" + plugin.getMysqlHandler().tableNameIV
 		        		+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
-		        		+ " owner TEXT, itemname TEXT, itemdisplayname TEXT, jsonstring MEDIUMTEXT, base64 MEDIUMTEXT);";
+		        		+ " owner TEXT, itemname TEXT, itemdisplayname TEXT, jsonstring LONGTEXT, base64 LONGTEXT);";
 		        query = conn.prepareStatement(data);
 		        query.execute();
 		      } catch (SQLException e) 

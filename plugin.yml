@@ -4,5 +4,5 @@ version: 41
 author: Avankziar
 api-version: 1.18
 description: A Chat Plugin
-softdepend: [AfkRecord, InterfaceHub]
+softdepend: [InterfaceHub]
 website: https://www.spigotmc.org/resources/simple-chat-channels.35220/

@@ -102,10 +102,14 @@ public class GuiListener implements Listener
 		{
 			final int slot = event.getEvent().getSlot();
 			Inventory inv = event.getEvent().getView().getTopInventory();
-			inv.setItem(slot, null);
 			ArrayList<ItemJson> list = ConvertHandler.convertListIV(
 					plugin.getMysqlHandler().getAllListAt(Type.ITEMJSON, "`id`", false, "`owner` = ? AND `itemname` != ?",
 							event.getEvent().getWhoClicked().getUniqueId().toString(), "default"));
+			if(list.size() < slot+1)
+			{
+				return;
+			}
+			inv.setItem(slot, null);
 			ItemJson ij = list.get(slot);
 			plugin.getMysqlHandler().deleteData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
 					ij.getOwner(), ij.getItemName());
