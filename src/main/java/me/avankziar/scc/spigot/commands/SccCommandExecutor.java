@@ -35,18 +35,18 @@ public class SccCommandExecutor implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String lable, String[] args) 
 	{
-		if (!(sender instanceof Player)) 
-		{
-			SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
-			return false;
-		}
-		Player player = (Player) sender;
 		if(cc == null)
 		{
 			return false;
 		}
 		if (args.length == 1) 
 		{
+			if (!(sender instanceof Player)) 
+			{
+				SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+				return false;
+			}
+			Player player = (Player) sender;
 			if(MatchApi.isInteger(args[0]))
 			{
 				if(!player.hasPermission(cc.getPermission()))
@@ -59,6 +59,12 @@ public class SccCommandExecutor implements CommandExecutor
 			}
 		} else if(args.length == 0)
 		{
+			if (!(sender instanceof Player)) 
+			{
+				SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+				return false;
+			}
+			Player player = (Player) sender;
 			if(!player.hasPermission(cc.getPermission()))
 			{
 				player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
@@ -77,7 +83,7 @@ public class SccCommandExecutor implements CommandExecutor
 				{
 					if(length >= ac.minArgsConstructor && length <= ac.maxArgsConstructor)
 					{
-						if(player.hasPermission(ac.getPermission()))
+						if(!(sender instanceof Player) && ac.canConsoleAccess())
 						{
 							ArgumentModule am = plugin.getArgumentMap().get(ac.getPath());
 							if(am != null)
@@ -93,7 +99,7 @@ public class SccCommandExecutor implements CommandExecutor
 							{
 								SimpleChatChannels.log.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
 										.replace("%ac%", ac.getName()));
-								player.spigot().sendMessage(ChatApi.tctl(
+								sender.sendMessage(ChatApi.tl(
 										"ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
 										.replace("%ac%", ac.getName())));
 								return false;
@@ -101,9 +107,41 @@ public class SccCommandExecutor implements CommandExecutor
 							return false;
 						} else
 						{
-							player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
-							return false;
+							if (!(sender instanceof Player)) 
+							{
+								SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+								return false;
+							}
+							Player player = (Player) sender;
+							if(player.hasPermission(ac.getPermission()))
+							{
+								ArgumentModule am = plugin.getArgumentMap().get(ac.getPath());
+								if(am != null)
+								{
+									try
+									{
+										am.run(sender, args);
+									} catch (IOException e)
+									{
+										e.printStackTrace();
+									}
+								} else
+								{
+									SimpleChatChannels.log.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
+											.replace("%ac%", ac.getName()));
+									player.spigot().sendMessage(ChatApi.tctl(
+											"ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
+											.replace("%ac%", ac.getName())));
+									return false;
+								}
+								return false;
+							} else
+							{
+								player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
+								return false;
+							}
 						}
+						
 					}/* else if(length > ac.maxArgsConstructor) 
 					{
 						player.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
@@ -117,7 +155,7 @@ public class SccCommandExecutor implements CommandExecutor
 				}
 			}
 		}
-		player.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
+		sender.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
 				ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
 		return false;
 	}
