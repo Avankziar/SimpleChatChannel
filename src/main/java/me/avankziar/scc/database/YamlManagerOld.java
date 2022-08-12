@@ -860,6 +860,10 @@ public class YamlManagerOld
 				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDeine Chateingabe kann in keinen Channel gepostet werden, da kein Channel passt und auch kein Channel ohne Eingangssymbol existiert!",
 						"&cYour chat entry canot be posted in any channel, because no channel fits and also no channel exists without an entry symbol!"}));
+		languageKeys.put("ChatListener.ToManyReplacer",
+				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDeine Chateingabe kann nicht gepostet werden! Zuviele Replacer sind verbaut, welche das Zeichenlimit überschreiten würde!",
+						"&cYour chat input can not be posted! Too many replacers are installed, which would exceed the character limit!"}));
 		languageKeys.put("ChatListener.NotATemporaryChannel"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cDu bist in keinem Temporären Channel!",

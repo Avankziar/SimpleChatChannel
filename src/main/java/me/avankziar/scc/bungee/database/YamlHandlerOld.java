@@ -101,6 +101,21 @@ public class YamlHandlerOld
 		return y;
 	}
 	
+	public boolean save(Configuration yml, File file) 
+	{
+		try 
+		 {
+			 ConfigurationProvider.getProvider(YamlConfiguration.class).save(yml, 
+					 //file
+					 new File(plugin.getDataFolder(), "wordfilter.yml"));
+		 } catch (IOException e) 
+		 {
+			 e.printStackTrace();
+			 return false;
+		 }
+		 return true;
+	}
+	
 	private boolean writeFile(File file, Configuration yml, LinkedHashMap<String, Language> keyMap) 
 	{
 		for(String key : keyMap.keySet())

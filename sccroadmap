@@ -10,6 +10,9 @@ Future =========================================================================
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - 
 
+Build 42-0-3
+- Item-, Buch-, Command- und WebseitenReplacer sind nun pro Nachricht auf 5 reduziert.
+
 Build 42-0-2
 - /scc broadcast, Consolefähig fix
 

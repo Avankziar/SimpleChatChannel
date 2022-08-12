@@ -1033,15 +1033,18 @@ public class SimpleChatChannels extends JavaPlugin
 				cancel();
 				return;
 			    }
-			    RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
-		                         getServer().getServicesManager().getRegistration(Administration.class);
-			    if (rsp == null) 
+			    try
 			    {
-			    	i++;
-			        return;
-			    }
-			    administrationConsumer = rsp.getProvider();
-			    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+			    	RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
+	                         getServer().getServicesManager().getRegistration(Administration.class);
+				    if (rsp == null) 
+				    {
+				    	i++;
+				        return;
+				    }
+				    administrationConsumer = rsp.getProvider();
+				    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+			    } catch(Exception e) {}		    
 			    cancel();
 			}
         }.runTaskTimer(plugin,  0L, 20*2);

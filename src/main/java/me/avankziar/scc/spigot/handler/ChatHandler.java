@@ -8,6 +8,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.scc.handlers.ColorHandler;
@@ -43,6 +44,7 @@ public class ChatHandler
 	private static LinkedHashMap<String, String> privateChatColorPerPlayers = new LinkedHashMap<>();
 	private static ArrayList<String> privateChatColor = new ArrayList<>();
 	public static LinkedHashMap<String, String> emojiList = new LinkedHashMap<>();
+	public static ArrayList<String> breakChat = new ArrayList<>();
 	
 	public ChatHandler(SimpleChatChannels plugin)
 	{
@@ -169,6 +171,11 @@ public class ChatHandler
 		Components components = getComponent(
 				player, null, msg, usedChannel.getChatFormat(), userPrefix, userSuffix, usedChannel, tc, pc, null, null, 
 				channelcolor);
+		if(breakChat.contains(player.getUniqueId().toString()))
+		{
+			breakChat.remove(player.getUniqueId().toString());
+			return;
+		}
 		sendMessage(components, player, usedChannel, tc, pc);
 	}
 	
@@ -234,6 +241,11 @@ public class ChatHandler
 				player, other, message, usedChannel.getChatFormat(),
 				userPrefix, userSuffix, usedChannel, null, null, otheruserPrefix, otheruserSuffix,
 				basecolor);
+		if(breakChat.contains(player.getUniqueId().toString()))
+		{
+			breakChat.remove(player.getUniqueId().toString());
+			return;
+		}
 		sendPrivateMessage(components, player, other, usedChannel);
 	}
 	
@@ -271,6 +283,11 @@ public class ChatHandler
 				console, other, message, usedChannel.getChatFormat(),
 				new ArrayList<>(), new ArrayList<>(), usedChannel, null, null, otheruserPrefix, otheruserSuffix,
 				usedChannel.getInChatColorMessage());
+		if(breakChat.contains("console"))
+		{
+			breakChat.remove("console");
+			return;
+		}
 		sendPrivateConsoleMessage(components, console, other, usedChannel);
 	}
 	
@@ -1138,6 +1155,7 @@ public class ChatHandler
 		int count = -1;
 		int newlineCounter = 0;
 		String lastColor = channelColor;
+		int replacerCount = 0;
 		for(String f : function)
 		{
 			++count;
@@ -1190,6 +1208,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Start"))
@@ -1246,6 +1265,7 @@ public class ChatHandler
 							TextComponent tc2 = ChatApi.tc(" ");
 							components.addAllComponents(tc2);
 						}
+						replacerCount++;
 						continue;
 					}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
@@ -1274,6 +1294,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				}				
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandStart")))
@@ -1301,6 +1322,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				}
 			} else if(f.startsWith("http") || f.endsWith(".de") || f.endsWith(".com") || f.endsWith(".net")
@@ -1324,6 +1346,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				} else
 				{
@@ -1534,6 +1557,18 @@ public class ChatHandler
 				TextComponent tc2 = ChatApi.tc(" ");
 				components.addAllComponents(tc2);
 			}
+		}
+		if(replacerCount > 5)
+		{
+			players.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("ChatListener.ToManyReplacer")));
+			if(players instanceof ConsoleCommandSender)
+			{
+				breakChat.add("console");
+			} else if(players instanceof Player)
+			{
+				breakChat.add(player.getUniqueId().toString());
+			}
+			return components;
 		}
 		return components;
 	}

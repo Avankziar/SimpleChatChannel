@@ -37,6 +37,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.command.ConsoleCommandSender;
 
 public class ChatHandler
 {
@@ -45,6 +46,7 @@ public class ChatHandler
 	private static LinkedHashMap<String, String> privateChatColorPerPlayers = new LinkedHashMap<>();
 	private static ArrayList<String> privateChatColor = new ArrayList<>();
 	public static LinkedHashMap<String, String> emojiList = new LinkedHashMap<>();
+	public static ArrayList<String> breakChat = new ArrayList<>();
 	
 	public ChatHandler(SimpleChatChannels plugin)
 	{
@@ -171,6 +173,11 @@ public class ChatHandler
 		Components components = getComponent(
 				player, null, msg, usedChannel.getChatFormat(), userPrefix, userSuffix, usedChannel, tc, pc, null, null, 
 				channelcolor);
+		if(breakChat.contains(player.getUniqueId().toString()))
+		{
+			breakChat.remove(player.getUniqueId().toString());
+			return;
+		}
 		sendMessage(components, player, usedChannel, tc, pc);
 	}
 	
@@ -236,6 +243,11 @@ public class ChatHandler
 				player, other, message, usedChannel.getChatFormat(),
 				userPrefix, userSuffix, usedChannel, null, null, otheruserPrefix, otheruserSuffix,
 				basecolor);
+		if(breakChat.contains(player.getUniqueId().toString()))
+		{
+			breakChat.remove(player.getUniqueId().toString());
+			return;
+		}
 		sendPrivateMessage(components, player, other, usedChannel);
 	}
 	
@@ -273,6 +285,11 @@ public class ChatHandler
 				console, other, message, usedChannel.getChatFormat(),
 				new ArrayList<>(), new ArrayList<>(), usedChannel, null, null, otheruserPrefix, otheruserSuffix,
 				usedChannel.getInChatColorMessage());
+		if(breakChat.contains("console"))
+		{
+			breakChat.remove("console");
+			return;
+		}
 		sendPrivateConsoleMessage(components, console, other, usedChannel);
 	}
 	
@@ -340,6 +357,19 @@ public class ChatHandler
 		Components components = getComponent(Channel.ChatFormatPlaceholder.MESSAGE.getPlaceholder(),
 				message, players, null, new ArrayList<>(), new ArrayList<>(), usedChannel, null, null, null, null,
 				usedChannel.getInChatColorMessage());
+		if(players instanceof ConsoleCommandSender && breakChat.contains("console"))
+		{
+			breakChat.remove("console");
+			return;
+		} else if(players instanceof ProxiedPlayer)
+		{
+			ProxiedPlayer player = (ProxiedPlayer) players;
+			if(breakChat.contains(player.getUniqueId().toString()))
+			{
+				breakChat.remove(player.getUniqueId().toString());
+				return;
+			}
+		}
 		TextComponent txc1 = ChatApi.tc("");
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
@@ -1139,6 +1169,7 @@ public class ChatHandler
 		int count = -1;
 		int newlineCounter = 0;
 		String lastColor = channelColor;
+		int replacerCount = 0; //Zählt den Item, Command etc. Replacer. Mehr als 5 sind zuviel und würde alle Spieler kicken, die die Nachricht erhalten.
 		for(String f : function)
 		{
 			++count;
@@ -1191,6 +1222,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Book.Start"))
@@ -1247,6 +1279,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				}
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig()
@@ -1275,6 +1308,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				}				
 			} else if(f.startsWith(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Command.SuggestCommandStart")))
@@ -1302,6 +1336,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				}
 			} else if(f.startsWith("http") || f.endsWith(".de") || f.endsWith(".com") || f.endsWith(".net")
@@ -1325,6 +1360,7 @@ public class ChatHandler
 						TextComponent tc2 = ChatApi.tc(" ");
 						components.addAllComponents(tc2);
 					}
+					replacerCount++;
 					continue;
 				} else
 				{
@@ -1538,6 +1574,18 @@ public class ChatHandler
 				components.addAllComponents(tc2);
 			}
 		}
+		if(replacerCount > 5)
+		{
+			players.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.ToManyReplacer")));
+			if(players instanceof ConsoleCommandSender)
+			{
+				breakChat.add("console");
+			} else if(players instanceof ProxiedPlayer)
+			{
+				breakChat.add(player.getUniqueId().toString());
+			}
+			return components;
+		}
 		return components;
 	}
 	
@@ -1705,6 +1753,7 @@ public class ChatHandler
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
 		plugin.getLogger().log(Level.INFO, txc2.toLegacyText());
+		
 		ArrayList<String> sendedPlayer = new ArrayList<>();
 		/*
 		 * Use the player the channel?
