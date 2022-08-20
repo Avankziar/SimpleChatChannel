@@ -886,20 +886,26 @@ public class SimpleChatChannels extends Plugin
 			@Override
 			public void run()
 			{
-				RegisteredServiceProvider<PlayerTimes> rsp = ifh
-		        		.getServicesManager()
-		        		.getRegistration(PlayerTimes.class);
-		        if (rsp == null) 
-		        {
-		        	//log.info(pluginName + " detected InterfaceHub >>> Chat.class Provider is missing! Failing hooking!");
-		            return;
-		        }
-		        playerTimesConsumer = rsp.getProvider();
-		        if(playerTimesConsumer != null)
-		        {
-		    		log.info(pluginName + " detected InterfaceHub >>> PlayerTimes.class is consumed!");
-		    		playerTimesRun.cancel();
-		        }
+				try
+				{
+					RegisteredServiceProvider<PlayerTimes> rsp = ifh
+			        		.getServicesManager()
+			        		.getRegistration(PlayerTimes.class);
+			        if (rsp == null) 
+			        {
+			        	//log.info(pluginName + " detected InterfaceHub >>> Chat.class Provider is missing! Failing hooking!");
+			            return;
+			        }
+			        playerTimesConsumer = rsp.getProvider();
+			        if(playerTimesConsumer != null)
+			        {
+			    		log.info(pluginName + " detected InterfaceHub >>> PlayerTimes.class is consumed!");
+			    		playerTimesRun.cancel();
+			        }
+				} catch(NoClassDefFoundError e)
+				{
+					playerTimesRun.cancel();
+				}
 			}
 		}, 15L*1000, 25L, TimeUnit.MILLISECONDS);
         

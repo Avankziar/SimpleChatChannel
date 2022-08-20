@@ -994,18 +994,24 @@ public class SimpleChatChannels extends JavaPlugin
 			{
 			    if(i == 20)
 			    {
-				cancel();
-				return;
+					cancel();
+					return;
 			    }
-			    RegisteredServiceProvider<main.java.me.avankziar.ifh.general.interfaces.PlayerTimes> rsp = 
-		                         getServer().getServicesManager().getRegistration(PlayerTimes.class);
-			    if (rsp == null) 
+				try
+				{
+					RegisteredServiceProvider<main.java.me.avankziar.ifh.general.interfaces.PlayerTimes> rsp = 
+	                         getServer().getServicesManager().getRegistration(PlayerTimes.class);
+				    if (rsp == null) 
+				    {
+				    	i++;
+				        return;
+				    }
+				    playerTimesConsumer = rsp.getProvider();
+				    log.info(pluginName + " detected InterfaceHub >>> PlayerTimes.class is consumed!");
+				} catch(NoClassDefFoundError e) 
 			    {
-			    	i++;
-			        return;
+			    	cancel();
 			    }
-			    playerTimesConsumer = rsp.getProvider();
-			    log.info(pluginName + " detected InterfaceHub >>> PlayerTimes.class is consumed!");
 			    cancel();
 			}
         }.runTaskTimer(plugin, 20L, 20*2);
@@ -1044,7 +1050,10 @@ public class SimpleChatChannels extends JavaPlugin
 				    }
 				    administrationConsumer = rsp.getProvider();
 				    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
-			    } catch(Exception e) {}		    
+			    } catch(NoClassDefFoundError e) 
+			    {
+			    	cancel();
+			    }		    
 			    cancel();
 			}
         }.runTaskTimer(plugin,  0L, 20*2);
