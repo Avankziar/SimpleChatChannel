@@ -9,6 +9,7 @@ Future =========================================================================
 - /scc broadcastserver <Text> | Broadcast auf dem Server machen, wo man ist.
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - 
+
 Build 42-0-5
 - MC 1.19.2 support
 - MysqlSetup aktualisiert
