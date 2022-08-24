@@ -26,7 +26,7 @@ public interface TableI
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameI 
+				String sql = "INSERT INTO `" + MysqlHandler.Type.CHATUSER.getValue() 
 						+ "`(`player_uuid`, `player_name`, `roleplay_name`, `roleplayrenamecooldown`, `mutetime`,"
 						+ " `spy`, `channelmessage`, `lasttimejoined`, `joinmessage`, `serverlocation`) " 
 						+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -83,7 +83,7 @@ public interface TableI
 		{
 			try 
 			{
-				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameI
+				String data = "UPDATE `" + MysqlHandler.Type.CHATUSER.getValue()
 						+ "` SET `player_uuid` = ?, `player_name` = ?, `roleplay_name` = ?, `roleplayrenamecooldown` = ?, `mutetime` = ?," 
 						+ " `spy` = ?, `channelmessage` = ?, `lasttimejoined` = ?, `joinmessage` = ?, `serverlocation` = ?" 
 						+ " WHERE "+whereColumn;
@@ -135,7 +135,7 @@ public interface TableI
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.CHATUSER.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -195,7 +195,7 @@ public interface TableI
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.CHATUSER.getValue()
 						+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -256,7 +256,7 @@ public interface TableI
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.CHATUSER.getValue() 
 						+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        
@@ -316,11 +316,11 @@ public interface TableI
 				String sql = "";
 				if(desc)
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI
+					sql = "SELECT * FROM `" + MysqlHandler.Type.CHATUSER.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
 				} else
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameI
+					sql = "SELECT * FROM `" + MysqlHandler.Type.CHATUSER.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
 				}
 		        preparedStatement = conn.prepareStatement(sql);

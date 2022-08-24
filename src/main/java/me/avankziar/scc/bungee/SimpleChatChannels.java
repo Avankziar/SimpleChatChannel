@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import main.java.me.avankziar.ifh.bungee.InterfaceHub;
+import main.java.me.avankziar.ifh.bungee.administration.Administration;
 import main.java.me.avankziar.ifh.bungee.plugin.RegisteredServiceProvider;
 import main.java.me.avankziar.ifh.bungee.plugin.ServicePriority;
 import main.java.me.avankziar.ifh.general.interfaces.PlayerTimes;
@@ -121,6 +122,7 @@ public class SimpleChatChannels extends Plugin
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
 	private PlayerTimes playerTimesConsumer;
+	private Administration administrationConsumer;
 	
 	public ArrayList<String> editorplayers = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<>();
@@ -165,6 +167,7 @@ public class SimpleChatChannels extends Plugin
 	public static LinkedHashMap<String, Channel> channels = new LinkedHashMap<>();
 	
 	private ScheduledTask playerTimesRun;
+	private ScheduledTask administrationRun;
 	
 	public void onEnable() 
 	{
@@ -178,6 +181,8 @@ public class SimpleChatChannels extends Plugin
 		log.info(" ╚════██║██║     ██║      | Depend Plugins: "+plugin.getDescription().getDepends().toString());
 		log.info(" ███████║╚██████╗╚██████╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepends().toString());
 		log.info(" ╚══════╝ ╚═════╝ ╚═════╝ | Have Fun^^");
+		
+		setupIFHAdministration();
 		
 		yamlHandler = new YamlHandlerOld(plugin);
 		utility = new Utility(plugin);
@@ -215,15 +220,6 @@ public class SimpleChatChannels extends Plugin
 	{
 		getProxy().getScheduler().cancel(plugin);
 		//HandlerList.unregisterAll();
-		
-		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
-		{
-			if (mysqlSetup.getConnection() != null) 
-			{
-				//backgroundtask.onShutDownDataSave();
-				mysqlSetup.closeConnection();
-			}
-		}
 		
 		log.info(pluginName + " is disabled!");
 	}
@@ -911,6 +907,48 @@ public class SimpleChatChannels extends Plugin
         
         return;
     }
+	
+	private void setupIFHAdministration()
+	{ 
+		Plugin plugin = BungeeCord.getInstance().getPluginManager().getPlugin("InterfaceHub");
+        if (plugin == null) 
+        {
+            return;
+        }
+        InterfaceHub ifh = (InterfaceHub) plugin;
+        administrationRun = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				try
+				{
+					RegisteredServiceProvider<Administration> rsp = ifh
+			        		.getServicesManager()
+			        		.getRegistration(Administration.class);
+			        if (rsp == null) 
+			        {
+			            return;
+			        }
+			        administrationConsumer = rsp.getProvider();
+			        if(administrationConsumer != null)
+			        {
+			    		log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+			    		administrationRun.cancel();
+			        }
+				} catch(NoClassDefFoundError e)
+				{
+					administrationRun.cancel();
+				}
+			}
+		}, 15L*1000, 25L, TimeUnit.MILLISECONDS);
+        return;
+	}
+	
+	public Administration getAdministration()
+	{
+		return administrationConsumer;
+	}
 	
 	public void setupBstats()
 	{

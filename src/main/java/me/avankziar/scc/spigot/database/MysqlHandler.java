@@ -18,7 +18,24 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 {
 	public enum Type
 	{
-		CHATUSER, IGNOREOBJECT, PERMANENTCHANNEL, ITEMJSON, USEDCHANNEL, MAIL;
+		CHATUSER("sccPlayerData"), 
+		IGNOREOBJECT("sccIgnorelist"),
+		PERMANENTCHANNEL("sccPermanentChannels"), 
+		ITEMJSON("sccItemJson"), 
+		USEDCHANNEL("sccPlayerUsedChannels"), 
+		MAIL("sccMails");
+		
+		private Type(String value)
+		{
+			this.value = value;
+		}
+		
+		private final String value;
+
+		public String getValue()
+		{
+			return value;
+		}
 	}
 	
 	public enum QueryType

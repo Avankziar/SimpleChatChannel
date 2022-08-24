@@ -9,6 +9,20 @@ Future =========================================================================
 - /scc broadcastserver <Text> | Broadcast auf dem Server machen, wo man ist.
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - 
+Build 42-0-5
+- MC 1.19.2 support
+- MysqlSetup aktualisiert
+- IFH Adminstration implementiert
+- MySQL Tabellen haben sich geändert und sind nun statisch:
+  simplechatchannelsPlayerData > sccPlayerData
+  simplechatchannelsIgnorelist > sccIgnorelist
+  simplechatchannelsPermanentChannels > sccPermanentChannels
+  simplechatchannelsItemJson > sccItemJson
+  simplechatchannelsPlayerUsedChannels > sccPlayerUsedChannels
+  simplechatchannelsMails > sccMails
+
+Build 42-0-4
+- MentionHover korrigiert
 
 Build 42-0-3
 - Item-, Buch-, Command- und WebseitenReplacer sind nun pro Nachricht auf 5 reduziert.

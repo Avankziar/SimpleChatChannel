@@ -25,7 +25,7 @@ public interface TableIV
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameIV 
+				String sql = "INSERT INTO `" + MysqlHandler.Type.ITEMJSON.getValue() 
 						+ "`(`owner`, `itemname`, `itemdisplayname`, `jsonstring`, `base64`) " 
 						+ "VALUES(?, ?, ?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
@@ -76,7 +76,7 @@ public interface TableIV
 		{
 			try 
 			{
-				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameIV
+				String data = "UPDATE `" + MysqlHandler.Type.ITEMJSON.getValue()
 						+ "` SET `owner` = ?, `itemname` = ?, `itemdisplayname` = ?, `jsonstring` = ?, `base64` = ?"
 						+ " WHERE "+whereColumn;
 				preparedStatement = conn.prepareStatement(data);
@@ -122,7 +122,7 @@ public interface TableIV
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIV 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.ITEMJSON.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -177,7 +177,7 @@ public interface TableIV
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIV
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.ITEMJSON.getValue()
 						+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -233,7 +233,7 @@ public interface TableIV
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIV 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.ITEMJSON.getValue() 
 						+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        
@@ -288,11 +288,11 @@ public interface TableIV
 				String sql = "";
 				if(desc)
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIV
+					sql = "SELECT * FROM `" + MysqlHandler.Type.ITEMJSON.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
 				} else
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIV
+					sql = "SELECT * FROM `" + MysqlHandler.Type.ITEMJSON.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
 				}
 		        preparedStatement = conn.prepareStatement(sql);

@@ -231,14 +231,6 @@ public class SimpleChatChannels extends JavaPlugin
 	{
 		Bukkit.getScheduler().cancelTasks(this);
 		HandlerList.unregisterAll(this);
-		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
-		{
-			if (mysqlSetup.getConnection() != null) 
-			{
-				//backgroundtask.onShutDownDataSave();
-				mysqlSetup.closeConnection();
-			}
-		}
 		
 		log.info(pluginName + " is disabled!");
 	}

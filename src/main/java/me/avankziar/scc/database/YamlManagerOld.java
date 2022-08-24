@@ -181,6 +181,12 @@ public class YamlManagerOld
 	}
 	public void initConfig(boolean spigot) //INFO:Config
 	{
+		configKeys.put("useIFHAdministration"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
+		configKeys.put("IFHAdministrationPath"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"scc"}));
 		configKeys.put("Language"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"ENG"}));
@@ -220,24 +226,6 @@ public class YamlManagerOld
 		configKeys.put("Mysql.Password"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"not_0123456789"}));
-		configKeys.put("Mysql.TableNameI"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"simplechatchannelsPlayerData"}));
-		configKeys.put("Mysql.TableNameII"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"simplechatchannelsIgnorelist"}));
-		configKeys.put("Mysql.TableNameIII"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"simplechatchannelsPermanentChannels"}));
-		configKeys.put("Mysql.TableNameIV"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"simplechatchannelsItemJson"}));
-		configKeys.put("Mysql.TableNameV"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"simplechatchannelsPlayerUsedChannels"}));
-		configKeys.put("Mysql.TableNameVI"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"simplechatchannelsMails"}));
 		configKeys.put("Enable.InterfaceHub.Providing"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				true}));
@@ -950,8 +938,8 @@ public class YamlManagerOld
 						"&cPosting web pages is not allowed in this channel."}));
 		languageKeys.put("ChatListener.Mention.MentionHover"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"&e%player% wurde von &f%target% &eerwähnt!",
-						"&e%player% were mentioned by &f%target%&e!"}));
+						"&e%player% hat &f%target% &eerwähnt!",
+						"&e%player% has mentioned &f%target%&e!"}));
 		languageKeys.put("ChatListener.Emoji.Hover"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&eDieses Emoji wurde mit &f%emoji% &egeneriert!",

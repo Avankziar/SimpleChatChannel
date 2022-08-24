@@ -25,7 +25,7 @@ public interface TableV
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameV 
+				String sql = "INSERT INTO `" + MysqlHandler.Type.USEDCHANNEL.getValue() 
 						+ "`(`uniqueidentifiername`, `player_uuid`, `used`) " 
 						+ "VALUES(?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
@@ -74,7 +74,7 @@ public interface TableV
 		{
 			try 
 			{
-				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameV
+				String data = "UPDATE `" + MysqlHandler.Type.USEDCHANNEL.getValue()
 						+ "` SET `uniqueidentifiername` = ?, `player_uuid` = ?, `used` = ?"
 						+ " WHERE "+whereColumn;
 				preparedStatement = conn.prepareStatement(data);
@@ -118,7 +118,7 @@ public interface TableV
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameV 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.USEDCHANNEL.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -171,7 +171,7 @@ public interface TableV
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameV
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.USEDCHANNEL.getValue()
 						+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -225,7 +225,7 @@ public interface TableV
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameV 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.USEDCHANNEL.getValue() 
 						+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        
@@ -278,11 +278,11 @@ public interface TableV
 				String sql = "";
 				if(desc)
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameV
+					sql = "SELECT * FROM `" + MysqlHandler.Type.USEDCHANNEL.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
 				} else
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameV
+					sql = "SELECT * FROM `" + MysqlHandler.Type.USEDCHANNEL.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
 				}
 		        preparedStatement = conn.prepareStatement(sql);
