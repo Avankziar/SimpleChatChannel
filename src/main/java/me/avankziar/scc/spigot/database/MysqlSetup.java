@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 
@@ -131,12 +130,32 @@ public class MysqlSetup
 	
 	private boolean baseSetup(String data) 
 	{
-		try (Connection conn = getConnection(); PreparedStatement query = conn.prepareStatement(data))
+		if (conn != null) 
 		{
-			query.execute();
-		} catch (SQLException e) 
-		{
-			SimpleChatChannels.log.log(Level.WARNING, "Could not build data source. Or connection is null", e);
+			PreparedStatement query = null;
+		    try 
+		    {
+		    	query = conn.prepareStatement(data);
+		    	query.execute();
+		    } catch (SQLException e) 
+		    {
+		    	e.printStackTrace();
+		    	SimpleChatChannels.log.severe("Error creating tables! Error: " + e.getMessage());
+		    	return false;
+		    } finally 
+		    {
+		    	try 
+		    	{
+		    		if (query != null) 
+		    		{
+		    			query.close();
+		    		}
+		    	} catch (Exception e) 
+		    	{
+		    		e.printStackTrace();
+		    		return false;
+		    	}
+		    }
 		}
 		return true;
 	}

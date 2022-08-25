@@ -82,57 +82,14 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 	}
 	
 	private SimpleChatChannels plugin;
-	public String tableNameI; //ChatUser
-	public String tableNameII; //IgnoreObject
-	public String tableNameIII; //Perma
-	public String tableNameIV; //ItemJson
-	public String tableNameV; //UsedChannel
-	public String tableNameVI; //UsedChannel
 	
 	public MysqlHandler(SimpleChatChannels plugin) 
 	{
 		this.plugin = plugin;
-		loadMysqlHandler();
-	}
-	
-	public boolean loadMysqlHandler()
-	{
-		tableNameI = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameI");
-		if(tableNameI == null)
-		{
-			return false;
-		}
-		tableNameII = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameII");
-		if(tableNameII == null)
-		{
-			return false;
-		}
-		tableNameIII = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameIII");
-		if(tableNameIII == null)
-		{
-			return false;
-		}
-		tableNameIV = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameIV");
-		if(tableNameIV == null)
-		{
-			return false;
-		}
-		tableNameV = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameV");
-		if(tableNameV == null)
-		{
-			return false;
-		}
-		tableNameVI = plugin.getYamlHandler().getConfig().getString("Mysql.TableNameVI");
-		if(tableNameVI == null)
-		{
-			return false;
-		}
-		return true;
 	}
 	
 	public boolean exist(Type type, String whereColumn, Object... object) 
 	{
-		String table = getTable(type);
 		PreparedStatement preparedStatement = null;
 		ResultSet result = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
@@ -140,7 +97,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		{
 			try 
 			{			
-				String sql = "SELECT `id` FROM `" + table
+				String sql = "SELECT `id` FROM `" + type.getValue()
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -240,41 +197,13 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		return null;
 	}
 	
-	private String getTable(Type type)
-	{
-		String table = "";
-		switch(type)
-		{
-		case CHATUSER:
-			table = tableNameI;
-			break;
-		case IGNOREOBJECT:
-			table = tableNameII;
-			break;
-		case PERMANENTCHANNEL:
-			table = tableNameIII;
-			break;
-		case ITEMJSON:
-			table = tableNameIV;
-			break;
-		case USEDCHANNEL:
-			table = tableNameV;
-			break;
-		case MAIL:
-			table = tableNameVI;
-			break;
-		}
-		return table;
-	}
-	
 	public int deleteData(Type type, String whereColumn, Object... whereObject)
 	{
-		String table = getTable(type);
 		PreparedStatement preparedStatement = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
 		try 
 		{
-			String sql = "DELETE FROM `" + table + "` WHERE "+whereColumn;
+			String sql = "DELETE FROM `" + type.getValue() + "` WHERE "+whereColumn;
 			preparedStatement = conn.prepareStatement(sql);
 			int i = 1;
 	        for(Object o : whereObject)
@@ -304,7 +233,6 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 	
 	public int lastID(Type type)
 	{
-		String table = getTable(type);
 		PreparedStatement preparedStatement = null;
 		ResultSet result = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
@@ -312,7 +240,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		{
 			try 
 			{			
-				String sql = "SELECT `id` FROM `" + table + "` ORDER BY `id` DESC LIMIT 1";
+				String sql = "SELECT `id` FROM `" + type.getValue() + "` ORDER BY `id` DESC LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        
 		        result = preparedStatement.executeQuery();
@@ -348,7 +276,6 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 	
 	public int countWhereID(Type type, String whereColumn, Object... whereObject)
 	{
-		String table = getTable(type);
 		PreparedStatement preparedStatement = null;
 		ResultSet result = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
@@ -356,7 +283,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		{
 			try 
 			{			
-				String sql = "SELECT `id` FROM `" + table
+				String sql = "SELECT `id` FROM `" + type.getValue()
 						+ "` WHERE "+whereColumn
 						+ " ORDER BY `id` DESC";
 		        preparedStatement = conn.prepareStatement(sql);
@@ -396,7 +323,6 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 	
 	public int getCount(Type type, String orderByColumn, String whereColumn, Object... whereObject)
 	{
-		String table = getTable(type);
 		PreparedStatement preparedStatement = null;
 		ResultSet result = null;
 		Connection conn = plugin.getMysqlSetup().getConnection();
@@ -404,7 +330,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		{
 			try 
 			{
-				String sql = " SELECT count(*) FROM `"+table
+				String sql = " SELECT count(*) FROM `"+type.getValue()
 						+"` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;

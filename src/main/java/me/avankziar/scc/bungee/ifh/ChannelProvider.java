@@ -90,6 +90,8 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 				permission,
 				joinPart,
 				chatFormat,
+				new ArrayList<>(),
+				new ArrayList<>(),
 				useSpecificServer,
 				useSpecificWorld,
 				useBlockRadius,

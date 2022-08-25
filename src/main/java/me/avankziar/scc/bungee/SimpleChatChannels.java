@@ -667,6 +667,16 @@ public class SimpleChatChannels extends Plugin
 				log.log(Level.INFO, "Channel "+key+" is not correct set.");
 				continue;
 			}
+			ArrayList<String> includedServer = new ArrayList<>();
+			if(cha.getBoolean(key+".UseIncludedServer", false) && cha.get(key+".IncludedServer") != null)
+			{
+				includedServer = (ArrayList<String>) cha.getStringList(key+".IncludedServer");
+			}
+			ArrayList<String> excludedServer = new ArrayList<>();
+			if(cha.getBoolean(key+".UseExcludedServer", false) && cha.get(key+".ExcludedServer") != null)
+			{
+				includedServer = (ArrayList<String>) cha.getStringList(key+".ExcludedServer");
+			}
 			LinkedHashMap<String, String> serverReplacerMap = new LinkedHashMap<>();
 			LinkedHashMap<String, String> serverCommandMap = new LinkedHashMap<>();
 			LinkedHashMap<String, String> serverHoverMap = new LinkedHashMap<>();
@@ -717,6 +727,8 @@ public class SimpleChatChannels extends Plugin
 					cha.getString(key+".Permission"),
 					cha.getString(key+".JoinPart"),
 					cha.getString(key+".ChatFormat"),
+					includedServer,
+					excludedServer,
 					cha.getBoolean(key+".UseSpecificServer", false),
 					cha.getBoolean(key+".UseSpecificsWorld", false),
 					cha.getInt(key+".UseBlockRadius", 0),

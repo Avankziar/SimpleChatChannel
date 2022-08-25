@@ -789,6 +789,8 @@ public class SimpleChatChannels extends JavaPlugin
 					cha.getString(key+".Permission"),
 					cha.getString(key+".JoinPart"),
 					cha.getString(key+".ChatFormat"),
+					new ArrayList<>(),
+					new ArrayList<>(),
 					cha.getBoolean(key+".UseSpecificServer", false),
 					cha.getBoolean(key+".UseSpecificsWorld", false),
 					cha.getInt(key+".UseBlockRadius", 0),

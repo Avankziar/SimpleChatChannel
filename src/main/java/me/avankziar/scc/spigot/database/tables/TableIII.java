@@ -26,7 +26,7 @@ public interface TableIII
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameIII 
+				String sql = "INSERT INTO `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue() 
 						+ "`(`channel_name`, `creator`, `vice`, `members`,"
 						+ " `password`, `banned`, `symbolextra`, `namecolor`,"
 						+ " `chatcolor`) " 
@@ -98,7 +98,7 @@ public interface TableIII
 		{
 			try 
 			{
-				String sql = "UPDATE `" + plugin.getMysqlHandler().tableNameIII
+				String sql = "UPDATE `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue()
 						+ "` SET `channel_name` = ?, `creator` = ?, `vice` = ?, `members` = ?," 
 						+ " `password` = ?, `banned` = ?, `symbolextra` = ?, `namecolor` = ?," 
 						+ " `chatcolor` = ?" 
@@ -165,7 +165,7 @@ public interface TableIII
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -240,7 +240,7 @@ public interface TableIII
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue() 
 						+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -319,11 +319,11 @@ public interface TableIII
 				String sql = "";
 				if(desc)
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII 
+					sql = "SELECT * FROM `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue() 
 							+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 				} else
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII 
+					sql = "SELECT * FROM `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue() 
 							+ "` ORDER BY "+orderByColumn+" ASC LIMIT "+start+", "+end;
 				}
 				
@@ -400,11 +400,11 @@ public interface TableIII
 				String sql = "";
 				if(desc)
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII
+					sql = "SELECT * FROM `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
 				} else
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameIII
+					sql = "SELECT * FROM `" + MysqlHandler.Type.PERMANENTCHANNEL.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
 				}
 		        preparedStatement = conn.prepareStatement(sql);

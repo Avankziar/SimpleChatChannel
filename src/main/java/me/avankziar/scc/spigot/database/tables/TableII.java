@@ -25,7 +25,7 @@ public interface TableII
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameII 
+				String sql = "INSERT INTO `" + MysqlHandler.Type.IGNOREOBJECT.getValue() 
 						+ "`(`player_uuid`, `ignore_uuid`, `ignore_name`) " 
 						+ "VALUES(?, ?, ?)";
 				preparedStatement = conn.prepareStatement(sql);
@@ -74,7 +74,7 @@ public interface TableII
 		{
 			try 
 			{
-				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameII
+				String data = "UPDATE `" + MysqlHandler.Type.IGNOREOBJECT.getValue()
 						+ "` SET `player_uuid` = ?, `ignore_uuid` = ?, `ignore_name` = ?" 
 						+ " WHERE "+whereColumn;
 				preparedStatement = conn.prepareStatement(data);
@@ -118,7 +118,7 @@ public interface TableII
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameII 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.IGNOREOBJECT.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -171,7 +171,7 @@ public interface TableII
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameII
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.IGNOREOBJECT.getValue()
 						+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -225,7 +225,7 @@ public interface TableII
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameII 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.IGNOREOBJECT.getValue() 
 						+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        
@@ -278,11 +278,11 @@ public interface TableII
 				String sql = "";
 				if(desc)
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameII
+					sql = "SELECT * FROM `" + MysqlHandler.Type.IGNOREOBJECT.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
 				} else
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameII
+					sql = "SELECT * FROM `" + MysqlHandler.Type.IGNOREOBJECT.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
 				}
 		        preparedStatement = conn.prepareStatement(sql);

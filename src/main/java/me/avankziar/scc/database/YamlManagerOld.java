@@ -868,6 +868,10 @@ public class YamlManagerOld
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&7Du hast diesen Channel ausgeschaltet. Bitte schalte ihn zum Benutzen wieder an.",
 						"&7You have turned off this channel. Please turn it on again to use it."}));
+		languageKeys.put("ChatListener.YourAreOnTheSpecificServer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"&cDu bist auf einem Server, wo man in diesem Channel nicht schreiben kann!",
+						"&cYou are on a server where you can not write in this channel!"}));
 		languageKeys.put("ChatListener.ContainsBadWords"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"&cEiner deiner geschriebenen Wörter ist im Wortfilter enthalten, bitte unterlasse solche Ausdrücke!",
@@ -2043,6 +2047,20 @@ public class YamlManagerOld
 		channelsKeys.put("global.ChatFormat"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"&7[%time%&7] %channel% %prefixall% %playername_with_prefixhighcolorcode% %suffixall%&7: %message%"}));
+		channelsKeys.put("global.UseIncludedServer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
+		channelsKeys.put("global.IncludedServer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"servername1",
+				"servername2"}));
+		channelsKeys.put("global.UseExcludedServer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
+		channelsKeys.put("global.ExcludedServer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"servername1",
+				"servername2"}));
 		channelsKeys.put("global.UseSpecificServer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				false}));

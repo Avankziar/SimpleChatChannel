@@ -430,6 +430,26 @@ public class ChatHandler
 		}
 		
 		/*
+		 * Is Player on the server?
+		 */
+		if(!usedChannel.getIncludedServer().isEmpty())
+		{
+			if(!usedChannel.getIncludedServer().contains(player.getServer().getInfo().getName()))
+			{
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.YourAreOnTheSpecificServer")));
+				return false;
+			}
+		}
+		if(!usedChannel.getExcludedServer().isEmpty())
+		{
+			if(usedChannel.getExcludedServer().contains(player.getServer().getInfo().getName()))
+			{
+				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.YourAreOnTheSpecificServer")));
+				return false;
+			}
+		}
+		
+		/*
 		 * Spam Protection Wall
 		 */
 		long now = System.currentTimeMillis();
@@ -1726,6 +1746,18 @@ public class ChatHandler
 			} else if(usedChannel.getBlockRadius() > 0)
 			{
 				if(!isInRadius(player, toMessage, usedChannel.getBlockRadius()))
+				{
+					continue;
+				}
+			} else if(!usedChannel.getIncludedServer().isEmpty())
+			{
+				if(!usedChannel.getIncludedServer().contains(player.getServer().getInfo().getName()))
+				{
+					continue;
+				}
+			} else if(!usedChannel.getExcludedServer().isEmpty())
+			{
+				if(usedChannel.getExcludedServer().contains(player.getServer().getInfo().getName()))
 				{
 					continue;
 				}

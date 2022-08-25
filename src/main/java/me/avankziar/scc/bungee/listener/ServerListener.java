@@ -122,6 +122,8 @@ public class ServerListener implements Listener
 					permission,
 					joinPart,
 					chatFormat,
+					new ArrayList<>(),
+					new ArrayList<>(),
 					useSpecificServer,
 					useSpecificWorld,
 					useBlockRadius,

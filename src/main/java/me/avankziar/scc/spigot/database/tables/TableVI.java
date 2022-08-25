@@ -26,7 +26,7 @@ public interface TableVI
 		if (conn != null) {
 			try 
 			{
-				String sql = "INSERT INTO `" + plugin.getMysqlHandler().tableNameVI 
+				String sql = "INSERT INTO `" + MysqlHandler.Type.MAIL.getValue()
 						+ "`(`sender_uuid`, `sender_name`, `reciver_uuid`, `reciver_name`,"
 						+ " `carboncopy_uuid`, `carboncopy_name`, `sendeddate`,"
 						+ " `readeddate`, `subject`, `rawmessage`) " 
@@ -86,7 +86,7 @@ public interface TableVI
 		{
 			try 
 			{
-				String data = "UPDATE `" + plugin.getMysqlHandler().tableNameVI
+				String data = "UPDATE `" + MysqlHandler.Type.MAIL.getValue()
 						+ "` SET `sender_uuid` = ?, `sender_name` = ?, `reciver_uuid` = ?, `reciver_name` = ?,"
 						+ " `carboncopy_uuid` = ?, `carboncopy_name` = ?,"
 						+ " `sendeddate` = ?, `readeddate` = ?, `subject`= ?, `rawmessage` = ?"
@@ -139,7 +139,7 @@ public interface TableVI
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameVI 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.MAIL.getValue() 
 						+ "` WHERE "+whereColumn+" LIMIT 1";
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -200,7 +200,7 @@ public interface TableVI
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameVI
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.MAIL.getValue()
 						+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        int i = 1;
@@ -262,7 +262,7 @@ public interface TableVI
 		{
 			try 
 			{			
-				String sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameVI 
+				String sql = "SELECT * FROM `" + MysqlHandler.Type.MAIL.getValue() 
 						+ "` ORDER BY "+orderByColumn+" DESC LIMIT "+start+", "+end;
 		        preparedStatement = conn.prepareStatement(sql);
 		        
@@ -323,11 +323,11 @@ public interface TableVI
 				String sql = "";
 				if(desc)
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameVI
+					sql = "SELECT * FROM `" + MysqlHandler.Type.MAIL.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" DESC";
 				} else
 				{
-					sql = "SELECT * FROM `" + plugin.getMysqlHandler().tableNameVI
+					sql = "SELECT * FROM `" + MysqlHandler.Type.MAIL.getValue()
 							+ "` WHERE "+whereColumn+" ORDER BY "+orderByColumn+" ASC";
 				}
 		        preparedStatement = conn.prepareStatement(sql);

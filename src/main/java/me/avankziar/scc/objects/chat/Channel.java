@@ -1,5 +1,6 @@
 package main.java.me.avankziar.scc.objects.chat;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Channel
@@ -98,8 +99,16 @@ public class Channel
 	 */
 	private String chatFormat;
 	/**
-	 * Specifies whether the channel is for a Specific Server only.
+	 * Specifies all server, where the player must be, to recieve the message.
 	 */
+	private ArrayList<String> includedServer;
+	/*
+	 * Specifies all server, where the player must not be, to recieve the message.
+	 */
+	private ArrayList<String> excludedServer;
+	/**
+	 * Specifies whether the channel is for a Specific Server only.
+	 */	
 	private boolean specificServer;
 	/**
 	 * Specifies whether the channel is for a Specific world only.
@@ -166,6 +175,7 @@ public class Channel
 	
 	public Channel(String uniqueIdentifierName, String symbol,
 			String inChatName, String inChatColorMessage, String permission, String joinPart, String chatFormat,
+			ArrayList<String> includedServer, ArrayList<String> excludedServer,
 			boolean specificServer, boolean specificWorld, int blockRadius,
 			long timeBetweenMessages, long timeBetweenSameMessages, double percentOfSimilarity,
 			String timeColor, String playernameCustomColor, String otherplayernameCustomColor,
@@ -184,6 +194,8 @@ public class Channel
 		setPermission(permission);
 		setJoinPart(joinPart);
 		setChatFormat(chatFormat);
+		setIncludedServer(includedServer);
+		setExcludedServer(excludedServer);
 		setSpecificServer(specificServer);
 		setSpecificWorld(specificWorld);
 		setBlockRadius(blockRadius);
@@ -281,6 +293,38 @@ public class Channel
 	public void setChatFormat(String chatFormat)
 	{
 		this.chatFormat = chatFormat;
+	}
+
+	/**
+	 * @return the includedServer
+	 */
+	public ArrayList<String> getIncludedServer()
+	{
+		return includedServer;
+	}
+
+	/**
+	 * @param includedServer the includedServer to set
+	 */
+	public void setIncludedServer(ArrayList<String> includedServer)
+	{
+		this.includedServer = includedServer;
+	}
+
+	/**
+	 * @return the excludedServer
+	 */
+	public ArrayList<String> getExcludedServer()
+	{
+		return excludedServer;
+	}
+
+	/**
+	 * @param excludedServer the excludedServer to set
+	 */
+	public void setExcludedServer(ArrayList<String> excludedServer)
+	{
+		this.excludedServer = excludedServer;
 	}
 
 	public boolean isSpecificServer()
