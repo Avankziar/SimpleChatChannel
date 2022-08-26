@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
 
@@ -27,6 +28,10 @@ public class MysqlSetup
 		if(plugin.getAdministration() == null || plugin.getAdministration().getHost(path) == null)
 		{
 			adm = false;
+		}
+		if(adm)
+		{
+			SimpleChatChannels.log.log(Level.INFO, "Using IFH Administration");
 		}
 		host = adm ? plugin.getAdministration().getHost(path)
 				: plugin.getYamlHandler().getConfig().getString("Mysql.Host");
