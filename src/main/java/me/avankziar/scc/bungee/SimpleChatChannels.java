@@ -675,7 +675,7 @@ public class SimpleChatChannels extends Plugin
 			ArrayList<String> excludedServer = new ArrayList<>();
 			if(cha.getBoolean(key+".UseExcludedServer", false) && cha.get(key+".ExcludedServer") != null)
 			{
-				includedServer = (ArrayList<String>) cha.getStringList(key+".ExcludedServer");
+				excludedServer = (ArrayList<String>) cha.getStringList(key+".ExcludedServer");
 			}
 			LinkedHashMap<String, String> serverReplacerMap = new LinkedHashMap<>();
 			LinkedHashMap<String, String> serverCommandMap = new LinkedHashMap<>();
