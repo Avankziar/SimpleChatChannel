@@ -121,8 +121,8 @@ public class SimpleChatChannels extends Plugin
 	private static MysqlHandler mysqlHandler;
 	private static Utility utility;
 	private static BackgroundTask backgroundtask;
-	private PlayerTimes playerTimesConsumer;
-	private Administration administrationConsumer;
+	private static PlayerTimes playerTimesConsumer;
+	private static Administration administrationConsumer;
 	
 	public ArrayList<String> editorplayers = new ArrayList<>();
 	private ArrayList<String> players = new ArrayList<>();
@@ -167,7 +167,6 @@ public class SimpleChatChannels extends Plugin
 	public static LinkedHashMap<String, Channel> channels = new LinkedHashMap<>();
 	
 	private ScheduledTask playerTimesRun;
-	private ScheduledTask administrationRun;
 	
 	public void onEnable() 
 	{
@@ -187,7 +186,9 @@ public class SimpleChatChannels extends Plugin
 		yamlHandler = new YamlHandlerOld(plugin);
 		utility = new Utility(plugin);
 		
-		if(yamlHandler.getConfig().getBoolean("Mysql.Status", false))
+		String path = plugin.getYamlHandler().getConfig().getString("IFHAdministrationPath");
+		boolean check = plugin.getAdministration() != null && plugin.getAdministration().getHost(path) != null;
+		if(check || yamlHandler.getConfig().getBoolean("Mysql.Status", false))
 		{
 			mysqlHandler = new MysqlHandler(plugin);
 			mysqlSetup = new MysqlSetup(plugin);
@@ -928,32 +929,18 @@ public class SimpleChatChannels extends Plugin
             return;
         }
         InterfaceHub ifh = (InterfaceHub) plugin;
-        administrationRun = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					RegisteredServiceProvider<Administration> rsp = ifh
-			        		.getServicesManager()
-			        		.getRegistration(Administration.class);
-			        if (rsp == null) 
-			        {
-			            return;
-			        }
-			        administrationConsumer = rsp.getProvider();
-			        if(administrationConsumer != null)
-			        {
-			    		log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
-			    		administrationRun.cancel();
-			        }
-				} catch(NoClassDefFoundError e)
-				{
-					administrationRun.cancel();
-				}
-			}
-		}, 15L*1000, 25L, TimeUnit.MILLISECONDS);
+        RegisteredServiceProvider<Administration> rsp = ifh
+        		.getServicesManager()
+        		.getRegistration(Administration.class);
+        if (rsp == null) 
+        {
+            return;
+        }
+        administrationConsumer = rsp.getProvider();
+        if(administrationConsumer != null)
+        {
+    		log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+        }
         return;
 	}
 	

@@ -28,7 +28,6 @@ public class MysqlSetup
 		{
 			adm = false;
 		}
-		
 		host = adm ? plugin.getAdministration().getHost(path)
 				: plugin.getYamlHandler().getConfig().getString("Mysql.Host");
 		port = adm ? plugin.getAdministration().getPort(path)
