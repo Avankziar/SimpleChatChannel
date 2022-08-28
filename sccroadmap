@@ -10,7 +10,10 @@ Future =========================================================================
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - 
 
-Build 42-0-5
+Build 42-0-7
+- IFH Administration aktualisiert
+
+Build 42-0-6
 - MC 1.19.2 support
 - MysqlSetup aktualisiert
 - IFH Adminstration implementiert

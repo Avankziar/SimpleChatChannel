@@ -131,7 +131,9 @@ public class YamlHandlerOld
         }
 		writeFile(config, cfg, plugin.getYamlManager().getConfigKey());
 		
-		languages = cfg.getString("Language", "ENG").toUpperCase();
+		languages = plugin.getAdministration() == null 
+				? cfg.getString("Language", "ENG").toUpperCase() 
+				: plugin.getAdministration().getLanguage();
 		
 		commands = new File(plugin.getDataFolder(), "commands.yml");
 		if(!commands.exists()) 
@@ -347,6 +349,7 @@ public class YamlHandlerOld
 		return yaml;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean writeFile(File file, YamlConfiguration yml, LinkedHashMap<String, Language> keyMap)
 	{
 		yml.options().header("For more explanation see \n https://www.spigotmc.org/resources/simple-chat-channels.35220/");
