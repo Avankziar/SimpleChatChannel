@@ -10,6 +10,9 @@ Future =========================================================================
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - 
 
+Build 42-0-8
+- IFH BaseComponentToBungee fix
+
 Build 42-0-7
 - IFH Administration aktualisiert
 

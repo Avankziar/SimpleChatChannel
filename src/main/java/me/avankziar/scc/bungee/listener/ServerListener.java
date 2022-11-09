@@ -332,6 +332,9 @@ public class ServerListener implements Listener
         	String uuid = in.readUTF();
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
+        	boolean p = in.readBoolean();
+        	String permission = in.readUTF();
+        	boolean hasPermission = in.readBoolean();
         	ArrayList<TextComponent> msg = getBCMessages(in);
         	sendBC(uuid, s, sound, false, true, null, msg);
         } else if(task.equals(StaticValues.BC2BM))
