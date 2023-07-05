@@ -8,7 +8,12 @@ Future =========================================================================
 - Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
 - /scc broadcastserver <Text> | Broadcast auf dem Server machen, wo man ist.
 - /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
-- 
+- From dc: Ability do disable the global chat channel without the plugin cancelling the ChatEvent so that we can use different plugins for global chat OR Integration for DiscordSRV :)
+- OPEN_URL macht genau das nicht mehr, warum?
+- Silent Login und Silent Logout, befehle etc.
+
+Build 42-1-0
+- Spigot 1.20.1 support
 
 Build 42-0-8
 - IFH BaseComponentToBungee fix
