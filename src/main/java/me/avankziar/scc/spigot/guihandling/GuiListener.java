@@ -75,7 +75,8 @@ public class GuiListener implements Listener
 		ItemJson ij = new ItemJson(player.getUniqueId().toString(), 
 				String.valueOf(count),
 				name, 
-				plugin.getUtility().convertItemStackToJson(iij), plugin.getUtility().toBase64itemStack(iij));
+				plugin.getUtility().convertItemStackToJson(iij),
+				plugin.getUtility().toBase64itemStack(iij));
 		plugin.getMysqlHandler().create(Type.ITEMJSON, ij);
 	}
 	

@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import main.java.me.avankziar.scc.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.objects.ChatApi;
@@ -39,98 +40,105 @@ public class JoinLeaveListener implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onJoin(PlayerJoinEvent event)
 	{
-		Player player = event.getPlayer();
-		String pn = player.getName();
+		final Player player = event.getPlayer();
+		final String pn = player.getName();
 		final boolean firsttimejoin = !plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString());
+		event.setJoinMessage("");
 		/*
 		 * Player check and init
 		 */
-		ChatUser cu = plugin.getUtility().controlUsedChannels(player);
-		ArrayList<UsedChannel> usedChannelslist = ConvertHandler.convertListV(plugin.getMysqlHandler().getAllListAt(Type.USEDCHANNEL,
-				"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
-		LinkedHashMap<String, UsedChannel> usedChannels = new LinkedHashMap<>();
-		for(UsedChannel uc : usedChannelslist)
+		new BukkitRunnable()
 		{
-			usedChannels.put(uc.getUniqueIdentifierName(), uc);
-		}
-		
-		Utility.playerUsedChannels.put(player.getUniqueId().toString(),	usedChannels);
-		
-		//Names Aktualisierung
-		if(!cu.getName().equals(pn))
-		{
-			cu.setName(pn);
-			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
-					"`player_uuid` = ?", cu.getUUID());
-			
-			
-			ArrayList<IgnoreObject> iolist = ConvertHandler.convertListII(
-					plugin.getMysqlHandler().getAllListAt(MysqlHandler.Type.IGNOREOBJECT, "`id`", true,
-							"`ignore_uuid` = ?", player.getUniqueId().toString()));
-			for(IgnoreObject io : iolist)
+			@Override
+			public void run()
 			{
-				if(io.getIgnoreUUID().equals(player.getUniqueId().toString()))
+				ChatUser cu = plugin.getUtility().controlUsedChannels(player);
+				ArrayList<UsedChannel> usedChannelslist = ConvertHandler.convertListV(plugin.getMysqlHandler().getAllListAt(Type.USEDCHANNEL,
+						"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
+				LinkedHashMap<String, UsedChannel> usedChannels = new LinkedHashMap<>();
+				for(UsedChannel uc : usedChannelslist)
 				{
-					IgnoreObject newio = io;
-					newio.setIgnoreName(pn);
-					plugin.getMysqlHandler().updateData(MysqlHandler.Type.IGNOREOBJECT, newio,
-							"`player_uuid` = ? AND `ignore_uuid` = ?",
-							io.getUUID(), io.getIgnoreUUID());
+					usedChannels.put(uc.getUniqueIdentifierName(), uc);
 				}
-			}
-		}
-		event.setJoinMessage("");
-		if(PluginSettings.settings.isBungee())
-		{
-			return;
-		}
-		cu.setLastTimeJoined(System.currentTimeMillis());
-		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
-				"`player_uuid` = ?", cu.getUUID());
-		if(cu.isOptionChannelMessage())
-		{
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));
-			if(firsttimejoin)
-			{
-				TextComponent tc = ChatApi.tctl(plugin.getYamlHandler().getLang().getString(
-						"JoinListener.Welcome").replace("%player%", pn));
+				
+				Utility.playerUsedChannels.put(player.getUniqueId().toString(),	usedChannels);
+				
+				//Names Aktualisierung
+				if(!cu.getName().equals(pn))
+				{
+					cu.setName(pn);
+					plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+							"`player_uuid` = ?", cu.getUUID());
+					
+					
+					ArrayList<IgnoreObject> iolist = ConvertHandler.convertListII(
+							plugin.getMysqlHandler().getAllListAt(MysqlHandler.Type.IGNOREOBJECT, "`id`", true,
+									"`ignore_uuid` = ?", player.getUniqueId().toString()));
+					for(IgnoreObject io : iolist)
+					{
+						if(io.getIgnoreUUID().equals(player.getUniqueId().toString()))
+						{
+							IgnoreObject newio = io;
+							newio.setIgnoreName(pn);
+							plugin.getMysqlHandler().updateData(MysqlHandler.Type.IGNOREOBJECT, newio,
+									"`player_uuid` = ? AND `ignore_uuid` = ?",
+									io.getUUID(), io.getIgnoreUUID());
+						}
+					}
+				}
+				if(PluginSettings.settings.isBungee())
+				{
+					return;
+				}
+				cu.setLastTimeJoined(System.currentTimeMillis());
+				plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+						"`player_uuid` = ?", cu.getUUID());
+				if(cu.isOptionChannelMessage())
+				{
+					player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));
+					if(firsttimejoin)
+					{
+						TextComponent tc = ChatApi.tctl(plugin.getYamlHandler().getLang().getString(
+								"JoinListener.Welcome").replace("%player%", pn));
+						for(Player all : plugin.getServer().getOnlinePlayers())
+						{
+							all.spigot().sendMessage(tc);
+						}
+					}
+				}
+				
+				TextComponent msg = ChatApi.apiChat(
+						plugin.getYamlHandler().getLang().getString("JoinListener.Join").replace("%player%", pn), 
+						ClickEvent.Action.SUGGEST_COMMAND,
+						plugin.getUtility().getPlayerMsgCommand(pn), 
+						HoverEvent.Action.SHOW_TEXT, 
+						plugin.getUtility().getPlayerHover(pn));
 				for(Player all : plugin.getServer().getOnlinePlayers())
 				{
-					all.spigot().sendMessage(tc);
+					ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
+					if(allcu != null)
+					{
+						if(allcu.isOptionJoinMessage())
+						{
+							all.spigot().sendMessage(msg);
+						}
+					}
 				}
-			}
-		}
-		
-		TextComponent msg = ChatApi.apiChat(
-				plugin.getYamlHandler().getLang().getString("JoinListener.Join").replace("%player%", pn), 
-				ClickEvent.Action.SUGGEST_COMMAND,
-				plugin.getUtility().getPlayerMsgCommand(pn), 
-				HoverEvent.Action.SHOW_TEXT, 
-				plugin.getUtility().getPlayerHover(pn));
-		for(Player all : plugin.getServer().getOnlinePlayers())
-		{
-			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
-			if(allcu != null)
-			{
-				if(allcu.isOptionJoinMessage())
+				int unreadedMails = plugin.getMysqlHandler().getCount(Type.MAIL, "`id`",
+						"`reciver_uuid` = ? AND `readeddate` = ?", player.getUniqueId().toString(), 0);
+				if(unreadedMails > 0)
 				{
-					all.spigot().sendMessage(msg);
+					player.spigot().sendMessage(ChatApi.apiChat(
+							plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
+							.replace("%count%", String.valueOf(unreadedMails)),
+							ClickEvent.Action.RUN_COMMAND,
+							PluginSettings.settings.getCommands(KeyHandler.MAIL),
+							HoverEvent.Action.SHOW_TEXT,
+							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
 				}
 			}
-		}
-		int unreadedMails = plugin.getMysqlHandler().getCount(Type.MAIL, "`id`",
-				"`reciver_uuid` = ? AND `readeddate` = ?", player.getUniqueId().toString(), 0);
-		if(unreadedMails > 0)
-		{
-			player.spigot().sendMessage(ChatApi.apiChat(
-					plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
-					.replace("%count%", String.valueOf(unreadedMails)),
-					ClickEvent.Action.RUN_COMMAND,
-					PluginSettings.settings.getCommands(KeyHandler.MAIL),
-					HoverEvent.Action.SHOW_TEXT,
-					plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
-		}
+		}.runTaskAsynchronously(plugin);
 	}
 	
 	@EventHandler
@@ -141,45 +149,54 @@ public class JoinLeaveListener implements Listener
 		{
 			return;
 		}
-		Player player = event.getPlayer();
-		String pn = player.getName();
-		plugin.editorplayers.remove(player.getName());
-		Utility.playerUsedChannels.remove(player.getUniqueId().toString());
+		final Player player = event.getPlayer();
+		final String pn = player.getName();
 		
-		TemporaryChannel cc = TemporaryChannel.getCustomChannel(pn);
-		if(cc != null)
+		new BukkitRunnable()
 		{
-			cc.removeMembers(event.getPlayer());
-			if(cc.getCreator().getName().equals(pn))
+			@Override
+			public void run()
 			{
-				Player newcreator = null;
-    			for(Player pp : cc.getMembers())
-    			{
-    				if(pp != null)
-    				{
-    					newcreator = pp;
-    				}
-    			}
-    			cc.setCreator(newcreator);
-    			if(newcreator !=  null)
-    			{
-    				newcreator.spigot().sendMessage(ChatApi.tctl(
-    						plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.NewCreator")
-        					.replace("%channel%", cc.getName())));
-    			}
-			}
-		}
-		String msg = plugin.getYamlHandler().getLang().getString("LeaveListener.Leave").replace("%player%", pn);
-		for(Player all : plugin.getServer().getOnlinePlayers())
-		{
-			ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
-			if(allcu != null)
-			{
-				if(allcu.isOptionJoinMessage())
+				plugin.editorplayers.remove(player.getName());
+				Utility.playerUsedChannels.remove(player.getUniqueId().toString());
+				
+				TemporaryChannel cc = TemporaryChannel.getCustomChannel(pn);
+				if(cc != null)
 				{
-					all.spigot().sendMessage(ChatApi.tctl(msg));
+					cc.removeMembers(player);
+					if(cc.getCreator().getName().equals(pn))
+					{
+						Player newcreator = null;
+		    			for(Player pp : cc.getMembers())
+		    			{
+		    				if(pp != null)
+		    				{
+		    					newcreator = pp;
+		    				}
+		    			}
+		    			cc.setCreator(newcreator);
+		    			if(newcreator !=  null)
+		    			{
+		    				newcreator.spigot().sendMessage(ChatApi.tctl(
+		    						plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.NewCreator")
+		        					.replace("%channel%", cc.getName())));
+		    			}
+					}
+				}
+				String msg = plugin.getYamlHandler().getLang().getString("LeaveListener.Leave").replace("%player%", pn);
+				for(Player all : plugin.getServer().getOnlinePlayers())
+				{
+					ChatUser allcu = ChatUserHandler.getChatUser(all.getUniqueId());
+					if(allcu != null)
+					{
+						if(allcu.isOptionJoinMessage())
+						{
+							all.spigot().sendMessage(ChatApi.tctl(msg));
+						}
+					}
 				}
 			}
-		}
+		}.runTaskAsynchronously(plugin);
+		
 	}
 }

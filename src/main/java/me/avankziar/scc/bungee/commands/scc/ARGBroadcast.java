@@ -37,6 +37,6 @@ public class ARGBroadcast extends ArgumentModule
 			return;
 		}
 		ChatHandler ch = new ChatHandler(plugin);
-		ch.sendBroadCast(sender, usedChannel, message);
+		ch.sendBroadCast(sender, usedChannel, message, null);
 	}
 }

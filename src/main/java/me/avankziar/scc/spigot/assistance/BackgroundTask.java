@@ -164,7 +164,7 @@ public class BackgroundTask
 					sendLocationToBungee(player);
 				}
 			}
-		}.runTaskTimerAsynchronously(plugin, 20L, 20L*30);
+		}.runTaskTimerAsynchronously(plugin, 20L, 20L*15);
 	}
 	
 	public static void sendLocationToBungee(Player player)

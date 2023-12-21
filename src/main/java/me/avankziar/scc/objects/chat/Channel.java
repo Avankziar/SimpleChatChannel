@@ -59,6 +59,10 @@ public class Channel
 	 */
 	private String uniqueIdentifierName;
 	/**
+	 * If the Chat which is posted to log in the console.
+	 */
+	private boolean logInConsole;
+	/**
 	 * The symbol to use the Channel.
 	 */
 	private String symbol;
@@ -173,7 +177,7 @@ public class Channel
 	
 	private boolean usePositionReplacer;
 	
-	public Channel(String uniqueIdentifierName, String symbol,
+	public Channel(String uniqueIdentifierName, boolean logInConsole, String symbol,
 			String inChatName, String inChatColorMessage, String permission, String joinPart, String chatFormat,
 			ArrayList<String> includedServer, ArrayList<String> excludedServer,
 			boolean specificServer, boolean specificWorld, int blockRadius,
@@ -188,6 +192,7 @@ public class Channel
 			boolean useEmojiReplacer, boolean useMentionReplacer, boolean usePositionReplacer)
 	{
 		setUniqueIdentifierName(uniqueIdentifierName);
+		setLogInConsole(logInConsole);
 		setSymbol(symbol);
 		setInChatName(inChatName);
 		setInChatColorMessage(inChatColorMessage);
@@ -233,6 +238,16 @@ public class Channel
 	public void setUniqueIdentifierName(String uniqueIdentifierName)
 	{
 		this.uniqueIdentifierName = uniqueIdentifierName;
+	}
+
+	public boolean isLogInConsole()
+	{
+		return logInConsole;
+	}
+
+	public void setLogInConsole(boolean logInConsole)
+	{
+		this.logInConsole = logInConsole;
 	}
 
 	public String getSymbol()

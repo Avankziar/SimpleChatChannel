@@ -352,7 +352,7 @@ public class ChatHandler
 		}
 	}
 	
-	public void sendBroadCast(CommandSender players, Channel usedChannel, String message)
+	public void sendBroadCast(CommandSender players, Channel usedChannel, String message, String server)
 	{
 		Components components = getComponent(Channel.ChatFormatPlaceholder.MESSAGE.getPlaceholder(),
 				message, players, null, new ArrayList<>(), new ArrayList<>(), usedChannel, null, null, null, null,
@@ -376,6 +376,13 @@ public class ChatHandler
 		txc2.setExtra(components.getComponentsWithMentions());
 		for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 		{
+			if(server != null)
+			{
+				if(!all.getServer().getInfo().getName().equals(server))
+				{
+					continue;
+				}
+			}
 			if(components.isMention(all.getName()))
 			{
 				all.sendMessage(txc2);
@@ -1652,15 +1659,6 @@ public class ChatHandler
 		return false;
 	}
 	
-	private double absoluteValue(double d)
-	{
-		if(d < 0)
-		{
-			return -1*d;
-		}
-		return d;
-	}
-	
 	private boolean isInRadius(ProxiedPlayer p1, ProxiedPlayer p2, int blockRadius)
 	{
 		if(!ChatListener.playerLocation.containsKey(p1.getUniqueId().toString())
@@ -1673,15 +1671,31 @@ public class ChatHandler
 		if(l1.getServer().equals(l2.getServer())
 				&& l1.getWordName().equals(l2.getWordName()))
 		{
-			double x = Math.max(absoluteValue(l1.getX()), absoluteValue(l2.getX()))-Math.min(absoluteValue(l1.getX()), absoluteValue(l2.getX()));
-			double y = Math.max(absoluteValue(l1.getY()), absoluteValue(l2.getY()))-Math.min(absoluteValue(l1.getY()), absoluteValue(l2.getY()));
-			double z = Math.max(absoluteValue(l1.getZ()), absoluteValue(l2.getZ()))-Math.min(absoluteValue(l1.getZ()), absoluteValue(l2.getZ()));
-			if(x <= blockRadius && y <= blockRadius && z <= blockRadius)
-			{
-				return true;
-			}
+			return isPointInCircle(l1.getX(), l1.getZ(), blockRadius, l2.getX(), l2.getZ());
 		}
 		return false;
+	}
+	
+	private boolean isInRectangle(double centerX, double centerZ, double radius, 
+		    double x, double z)
+	{
+	        return x >= centerX - radius && x <= centerX + radius && 
+	            z >= centerZ - radius && z <= centerZ + radius;
+	} 
+	
+	private boolean isPointInCircle(double centerX, double centerZ, double radius, double x, double z)
+	{
+	    if(isInRectangle(centerX, centerZ, radius, x, z))
+	    {
+	        double dx = centerX - x;
+	        double dz = centerZ - z;
+	        dx *= dx;
+	        dz *= dz;
+	        double distanceSquared = dx + dz;
+	        double radiusSquared = radius * radius;
+	        return distanceSquared <= radiusSquared;
+	    }
+	    return false;
 	}
 	
 	private void sendMessage(Components components, ProxiedPlayer player, Channel usedChannel, TemporaryChannel tch, PermanentChannel pc)
@@ -1690,7 +1704,7 @@ public class ChatHandler
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
-		plugin.getLogger().log(Level.INFO, txc2.toLegacyText());
+		logging(txc2, usedChannel);
 		ArrayList<String> sendedPlayer = new ArrayList<>();
 		for(ProxiedPlayer toMessage : plugin.getProxy().getPlayers())
 		{
@@ -1784,7 +1798,7 @@ public class ChatHandler
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
-		plugin.getLogger().log(Level.INFO, txc2.toLegacyText());
+		logging(txc2, usedChannel);
 		
 		ArrayList<String> sendedPlayer = new ArrayList<>();
 		/*
@@ -1853,7 +1867,7 @@ public class ChatHandler
 		txc1.setExtra(components.getComponents());
 		TextComponent txc2 = ChatApi.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
-		plugin.getLogger().log(Level.INFO, txc2.toLegacyText());
+		logging(txc2, usedChannel);
 		if(components.isMention(other.getName()))
 		{
 			other.sendMessage(txc2);
@@ -1866,7 +1880,7 @@ public class ChatHandler
 		{
 			sendMentionPing(other, usedChannel.getMentionSound());
 		}
-		logging(txc1);
+		logging(txc1, usedChannel);
 	}
 	
 	private void spy(ArrayList<String> sendedPlayer, final Components components, final TextComponent txc1, final TextComponent txc2)
@@ -1886,9 +1900,12 @@ public class ChatHandler
 		}
 	}
 	
-	private void logging(final TextComponent txc)
+	private void logging(final TextComponent txc, Channel c)
 	{
-		plugin.getLogger().log(Level.INFO, txc.toLegacyText());
+		if(c.isLogInConsole())
+		{
+			plugin.getLogger().log(Level.INFO, txc.toLegacyText());
+		}
 	}
 	
 	public void sendMentionPing(ProxiedPlayer player, String soundEnum)

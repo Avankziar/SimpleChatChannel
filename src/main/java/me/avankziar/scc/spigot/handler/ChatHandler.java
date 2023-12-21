@@ -349,7 +349,7 @@ public class ChatHandler
 		}
 	}
 	
-	public void sendBroadCast(CommandSender players, Channel usedChannel, String message)
+	public void sendBroadCast(CommandSender players, Channel usedChannel, String message, String world)
 	{
 		Components components = getComponent(Channel.ChatFormatPlaceholder.MESSAGE.getPlaceholder(),
 				message, players, null, new ArrayList<>(), new ArrayList<>(), usedChannel, null, null, null, null,
@@ -362,6 +362,13 @@ public class ChatHandler
 		
 		for(Player all : plugin.getServer().getOnlinePlayers())
 		{
+			if(world != null)
+			{
+				if(!world.equals(all.getWorld().getName()))
+				{
+					continue;
+				}
+			}
 			if(components.isMention(all.getName()))
 			{
 				all.spigot().sendMessage(txc2);

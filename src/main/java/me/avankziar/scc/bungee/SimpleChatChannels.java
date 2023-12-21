@@ -32,6 +32,7 @@ import main.java.me.avankziar.scc.bungee.commands.mail.ARGRead;
 import main.java.me.avankziar.scc.bungee.commands.mail.ARGSend;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBook;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcast;
+import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcastServer;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannel;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGChannelGui;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGDebug;
@@ -328,6 +329,7 @@ public class SimpleChatChannels extends Plugin
 		ArgumentConstructor book = new ArgumentConstructor(baseCommandI+"_book", 0, 1, 2, false, null);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_BOOK, book.getCommandString());
 		ArgumentConstructor broadcast = new ArgumentConstructor(baseCommandI+"_broadcast", 0, 1, 9999, true, null);
+		ArgumentConstructor broadcastserver = new ArgumentConstructor(baseCommandI+"_broadcastserver", 0, 1, 9999, false, null);
 		ArgumentConstructor channel = new ArgumentConstructor(baseCommandI+"_channel", 0, 1, 1, false, channelMap);
 		ArgumentConstructor channelgui = new ArgumentConstructor(baseCommandI+"_channelgui", 0, 0, 0, false, null);
 		
@@ -395,7 +397,7 @@ public class SimpleChatChannels extends Plugin
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban);
 		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
-				book, broadcast, channel, channelgui, debug,
+				book, broadcast, broadcastserver, channel, channelgui, debug,
 				ignore, ignorelist, item, mute, performance, pc, option, tc, unmute, updateplayer
 				);
 		
@@ -422,7 +424,7 @@ public class SimpleChatChannels extends Plugin
 		
 		addingHelps(
 				scc,
-					book, broadcast, channel, channelgui, debug,
+					book, broadcast, broadcastserver, channel, channelgui, debug,
 					ignore, ignorelist,
 					item, item_rename, item_replacers,
 					mute, performance,
@@ -436,6 +438,7 @@ public class SimpleChatChannels extends Plugin
 		
 		new ARGBook(plugin, book, scc.getName());
 		new ARGBroadcast(plugin, broadcast);
+		new ARGBroadcastServer(plugin, broadcastserver);
 		
 		new ARGChannel(plugin, channel);
 		new ARGChannelGui(plugin, channelgui, scc.getName());
@@ -586,11 +589,6 @@ public class SimpleChatChannels extends Plugin
 	{
 		return argumentMap;
 	}
-	
-	public PlayerTimes getPlayerTimes()
-	{
-		return playerTimesConsumer;
-	}
 
 	public ArrayList<String> getPlayers()
 	{
@@ -724,6 +722,7 @@ public class SimpleChatChannels extends Plugin
 			}
 			Channel c = new Channel(
 					cha.getString(key+".UniqueIdentifierName"),
+					cha.getBoolean(key+".LogInConsole", false),
 					cha.getString(key+".Symbol"),
 					cha.getString(key+".InChatName"),
 					cha.getString(key+".InChatColorMessage"),
@@ -922,6 +921,11 @@ public class SimpleChatChannels extends Plugin
         
         return;
     }
+	
+	public PlayerTimes getPlayerTimes()
+	{
+		return playerTimesConsumer;
+	}
 	
 	private void setupIFHAdministration()
 	{ 

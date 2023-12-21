@@ -53,6 +53,7 @@ import main.java.me.avankziar.scc.spigot.commands.mail.ARGRead;
 import main.java.me.avankziar.scc.spigot.commands.mail.ARGSend;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGBook;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGBroadcast;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGBroadcastWorld;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannel;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannelGui;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGIgnore;
@@ -333,6 +334,7 @@ public class SimpleChatChannels extends JavaPlugin
 		ArgumentConstructor book = new ArgumentConstructor(baseCommandI+"_book", 0, 1, 2, false, null);
 		PluginSettings.settings.addCommands(KeyHandler.SCC_BOOK, book.getCommandString());
 		ArgumentConstructor broadcast = new ArgumentConstructor(baseCommandI+"_broadcast", 0, 1, 9999, true, null);
+		ArgumentConstructor broadcastworld = new ArgumentConstructor(baseCommandI+"_broadcastworld", 0, 1, 9999, false, null);
 		ArgumentConstructor channel = new ArgumentConstructor(baseCommandI+"_channel", 0, 1, 1, false, channelMap);
 		ArgumentConstructor channelgui = new ArgumentConstructor(baseCommandI+"_channelgui", 0, 0, 0, false, null);
 
@@ -398,7 +400,7 @@ public class SimpleChatChannels extends JavaPlugin
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban);
 		
 		CommandConstructor scc = new CommandConstructor(baseCommandI, true,
-				book, broadcast, channel, channelgui,
+				book, broadcast, broadcastworld, channel, channelgui,
 				ignore, ignorelist, 
 				item,
 				mute, option, performance, unmute, updateplayer,
@@ -444,7 +446,7 @@ public class SimpleChatChannels extends JavaPlugin
 		getCommand(w.getName()).setTabCompleter(new TABCompletion(plugin));
 				
 		addingHelps(scc,
-				book, broadcast, channel, channelgui,
+				book, broadcast, broadcastworld, channel, channelgui,
 				ignore, ignorelist, 
 				item, item_rename, item_replacers,
 				mute, unmute, performance,
@@ -504,6 +506,7 @@ public class SimpleChatChannels extends JavaPlugin
 		}
 		new ARGBook(plugin, book);
 		new ARGBroadcast(plugin, broadcast);
+		new ARGBroadcastWorld(plugin, broadcastworld);
 		new ARGChannelGui(plugin, channelgui);
 		new ARGItem(plugin, item);
 		new ARGItem_Rename(plugin, item_rename);
@@ -787,6 +790,7 @@ public class SimpleChatChannels extends JavaPlugin
 			}
 			Channel c = new Channel(
 					cha.getString(key+".UniqueIdentifierName"),
+					cha.getBoolean(key+".LogInConsole", false),
 					cha.getString(key+".Symbol"),
 					cha.getString(key+".InChatName"),
 					cha.getString(key+".InChatColorMessage"),

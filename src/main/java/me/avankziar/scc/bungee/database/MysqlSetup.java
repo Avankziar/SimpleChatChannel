@@ -86,7 +86,8 @@ public class MysqlSetup
 			}
 		} catch (Exception e) 
 		{
-			SimpleChatChannels.log.severe("Could not reconnect to Database! Error: " + e.getMessage());
+			SimpleChatChannels.log.severe("Could not reconnect to Database! Error: ");
+			e.printStackTrace();
 		}
 	}
 	
@@ -121,7 +122,8 @@ public class MysqlSetup
             return conn;
 		} catch (Exception e) 
 		{
-			SimpleChatChannels.log.severe("Error (re-)connecting to the database! Error: " + e.getMessage());
+			SimpleChatChannels.log.severe("Error (re-)connecting to the database! Error: ");
+			e.printStackTrace();
 			return null;
 		}
 	}

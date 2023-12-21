@@ -11,9 +11,9 @@ import java.util.UUID;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,8 +30,7 @@ import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
 import main.java.me.avankziar.scc.spigot.guihandling.GUIApi.SettingsLevel;
 
 public class ItemGenerator
-{	
-	@SuppressWarnings("deprecation")
+{
 	public static ItemStack create(String ID, YamlConfiguration itm, GuiType type, 
 			boolean mustReplaceLore, SettingsLevel settingLevel,
 			Boolean channel) throws IOException
@@ -76,7 +75,8 @@ public class ItemGenerator
 			{
 				String[] a = ech.get(i).split(";");
 				String b = a[0].toUpperCase();
-				Enchantment eh = EnchantmentWrapper.getByName(b);
+				NamespacedKey key = NamespacedKey.minecraft(b.toLowerCase());
+				Enchantment eh = Registry.ENCHANTMENT.get(key);
 				int d = Integer.parseInt(a[1]);
 				if(eh != null)
 				{

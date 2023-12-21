@@ -6,11 +6,21 @@ Future =========================================================================
 - Sound beim Mention pm etc. individuell einstellbar machen.
 - Neue Replacer fürs ChatFormat machen, was den Zugang zu den chattitle Farben gewährt.
 - Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
-- /scc broadcastserver <Text> | Broadcast auf dem Server machen, wo man ist.
-- /scc broadcastworld <Test> | Broadcast auf dem Welt machen, wo man ist.
 - From dc: Ability do disable the global chat channel without the plugin cancelling the ChatEvent so that we can use different plugins for global chat OR Integration for DiscordSRV :)
 - OPEN_URL macht genau das nicht mehr, warum?
 - Silent Login und Silent Logout, befehle etc.
+- Wenn spieler afk oder offline sind, /msg nachricht werden als Simpel mail gespeichert.
+
+Build 42-2-0
+- Spigot 1.20.4 Support
+- Async PlayerJoin
+- Async PlayerQuit
+- /scc mute|unmute, schickt nun die Nachricht an alle Spieler, nicht mehr alle Nachricht an einen Spieler.
+- BlockRadius Logik angepasst
+- /scc broadcastserver <Nachricht>, hinzugefügt. Nachricht geht an alle Spieler auf dem gleichen Server. Console kann dies nicht ausführen.
+- /scc broadcastworld <Nachricht>, hinzugefügt. Nachricht geht an alle Spieler auf der gleichen Welt. Console kann dies nicht ausführen.
+- Channels haben nun den Pfad <channelname>.LogInConsole. Ein Boolean der definiert, ob das geschriebene auch in der Console geloggt werden soll.
+  Defaut auf false.
 
 Build 42-1-0
 - Spigot 1.20.1 support

@@ -46,6 +46,7 @@ public class ARGBroadcast extends ArgumentModule
 				out.writeUTF(StaticValues.SCC_TASK_BROADCAST);
 				out.writeUTF((sender instanceof Player) ? ((Player) sender).getUniqueId().toString() : "Console");
 				out.writeUTF(message);
+				out.writeUTF("null");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -66,6 +67,6 @@ public class ARGBroadcast extends ArgumentModule
 			return;
 		}
 		ChatHandler ch = new ChatHandler(plugin);
-		ch.sendBroadCast(sender, usedChannel, message);
+		ch.sendBroadCast(sender, usedChannel, message, null);
 	}
 }

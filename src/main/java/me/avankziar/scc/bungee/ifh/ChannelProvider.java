@@ -84,6 +84,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 		LinkedHashMap<String, String> worldHoverMap = new LinkedHashMap<>();
 		Channel c = new Channel(
 				uniqueChannelName,
+				false,
 				symbol,
 				inChatName,
 				inChatColorMessage,

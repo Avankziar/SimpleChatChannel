@@ -116,7 +116,7 @@ public class ARGMute extends ArgumentModule
 				{
 					continue;
 				}
-				player.sendMessage(ChatApi.tctl(msg));
+				all.sendMessage(ChatApi.tctl(msg));
 			}
 		}
 	}

@@ -116,6 +116,7 @@ public class ServerListener implements Listener
 			LinkedHashMap<String, String> worldHoverMap = new LinkedHashMap<>();
 			Channel c = new Channel(
 					uniqueChannelName,
+					false,
 					symbol,
 					inChatName,
 					inChatColorMessage,
@@ -214,6 +215,7 @@ public class ServerListener implements Listener
         {
         	String uuid = in.readUTF();
         	String message = in.readUTF();
+        	String server = in.readUTF();
         	ChatHandler ch = new ChatHandler(plugin);
         	Channel usedChannel = plugin.getChannel(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
     		if(usedChannel == null)
@@ -223,11 +225,11 @@ public class ServerListener implements Listener
         	if(uuid.equalsIgnoreCase("Console"))
         	{
         		CommandSender console = plugin.getProxy().getConsole();
-        		ch.sendBroadCast(console, usedChannel, message);
+        		ch.sendBroadCast(console, usedChannel, message, server.equals("null") ? null : server);
         	} else
         	{
         		ProxiedPlayer player = plugin.getProxy().getPlayer(UUID.fromString(uuid));
-        		ch.sendBroadCast(player, usedChannel, message);
+        		ch.sendBroadCast(player, usedChannel, message, server.equals("null") ? null : server);
         	}
         } else if(task.equals(StaticValues.SCC_TASK_W))
         {
@@ -336,7 +338,7 @@ public class ServerListener implements Listener
         	String permission = in.readUTF();
         	boolean hasPermission = in.readBoolean();
         	ArrayList<TextComponent> msg = getBCMessages(in);
-        	sendBC(uuid, s, sound, false, true, null, msg);
+        	sendBC(uuid, s, sound,  p, hasPermission, permission, msg);
         } else if(task.equals(StaticValues.BC2BM))
         {
         	ArrayList<String> uuids = getUUIDs(in);

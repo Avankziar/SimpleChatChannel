@@ -414,6 +414,14 @@ public class YamlManagerOld
 				"/scc broadcast <message...>", "/scc broadcast ",
 				"&c/scc broadcast <Nachricht> &f| Zum Senden einer Broadcast Nachricht. Falls Bungeecord aktiviert ist, kann man auch von Spigot als Console, bungeecordübergreifend dies an alle Spieler senden.",
 				"&c/scc broadcast <message> &f| To send a broadcast message. If bungeecord is enabled, you can also send this to all players from Spigot as a console, across bungeecords.");
+		argumentInput(path+"broadcastserver", "broadcastserver", basePermission,
+				"/scc broadcastserver <message...>", "/scc broadcastserver ",
+				"&c/scc broadcastserver <Nachricht> &f| Zum Senden einer Broadcast Nachricht an alle Spieler, welche auf dem gleichen Server sind.",
+				"&c/scc broadcastserver <message> &f| To send a broadcast message to all players who are on the same server.");
+		argumentInput(path+"broadcastworld", "broadcastworld", basePermission,
+				"/scc broadcastworld <message...>", "/scc broadcastserver ",
+				"&c/scc broadcastworld <Nachricht> &f| Zum Senden einer Broadcast Nachricht an alle Spieler, welche auf der gleichen Welt sind.",
+				"&c/scc broadcastworld <message> &f| To send a broadcast message to all players who are on the same world.");
 		argumentInput(path+"channel", "channel", basePermission,
 				"/scc channel <channel>", "/scc channel ",
 				"&c/scc channel <Channelname> &f| Zum An- & Ausstellen des angegebenen Channels.",
@@ -1774,6 +1782,9 @@ public class YamlManagerOld
 		channelsKeys.put("private.UniqueIdentifierName"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"Private"}));
+		channelsKeys.put("private.LogInConsole"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("private.Symbol"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"/msg"}));
@@ -1856,6 +1867,9 @@ public class YamlManagerOld
 		channelsKeys.put("permanent.UniqueIdentifierName"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"Permanent"}));
+		channelsKeys.put("permanent.LogInConsole"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("permanent.Symbol"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"."}));
@@ -1944,6 +1958,9 @@ public class YamlManagerOld
 		channelsKeys.put("temporary.UniqueIdentifierName"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"Temporary"}));
+		channelsKeys.put("temporary.LogInConsole"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("temporary.Symbol"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				";"}));
@@ -2029,6 +2046,9 @@ public class YamlManagerOld
 		channelsKeys.put("global.UniqueIdentifierName"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"Global"}));
+		channelsKeys.put("global.LogInConsole"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("global.Symbol"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"NULL"}));
