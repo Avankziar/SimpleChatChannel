@@ -10,6 +10,10 @@ Future =========================================================================
 - OPEN_URL macht genau das nicht mehr, warum?
 - Silent Login und Silent Logout, befehle etc.
 - Wenn spieler afk oder offline sind, /msg nachricht werden als Simpel mail gespeichert.
+- Messages von Spielern welche offline sind abspeichern aka mail send, nur weniger kompliziert. 
+  Ausgabe im Chat für den Versender der Nachricht könnte sein: Spieler ist offline, die Nachricht wird für Empfänger (%player%) gespeichert. 
+  Abrufen könnte man über /msg read, Meldung via Bungee bis Spieler Nachricht abgerufen hat, 
+  nach Abruf automatisch löschen aus der DB oder (feature Request II) /msg save zum Speichern der Nachrichten oder /msg delete zum Löschen selbiger.
 
 Build 42-2-0
 - Spigot 1.20.4 Support
