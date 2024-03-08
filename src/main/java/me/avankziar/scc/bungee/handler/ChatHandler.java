@@ -1192,7 +1192,7 @@ public class ChatHandler
 			isNotConsole = true;
 		}
 		Components components = new Components();
-		String[] function = message.split(" ");
+		String[] function = message.split(" "); //TODO split("\s+") um alle Leerzeichen rauszuholen
 		int count = -1;
 		int newlineCounter = 0;
 		String lastColor = channelColor;
