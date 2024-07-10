@@ -164,6 +164,7 @@ public class YamlHandler implements YamlHandling
 		} catch(Exception e)
 		{
 			logger.severe("Could not create/load %f%.yml file! Plugin will shut down!".replace("%f%", f));
+			return false;
 		}
 		return true;
 	}
@@ -219,21 +220,18 @@ public class YamlHandler implements YamlHandling
 	
 	private boolean mkdirDynamicFiles(YamlManager.Type type)
 	{
-		if(!mkdirLanguage())
+		if(!mkdirLanguage(type))
 		{
 			return false;
 		}
-		if(type == YamlManager.Type.SPIGOT)
+		if(!mkdirGuis(type))
 		{
-			if(!mkdirGuis())
-			{
-				return false;
-			}
+			return false;
 		}
 		return true;
 	}
 	
-	private boolean mkdirLanguage()
+	private boolean mkdirLanguage(YamlManager.Type type)
 	{
 		String languageString = yamlManager.getLanguageType().toString().toLowerCase();
 		File directory = new File(dataDirectory.getParent().toFile(), "/"+pluginname+"/Languages/");
@@ -241,29 +239,29 @@ public class YamlHandler implements YamlHandling
 		{
 			directory.mkdirs();
 		}
+		String f = languageString;
 		try
 	    {
-	    	lang = YamlDocument.create(new File(directory, "%f%.yml".replace("%f%", languageString)),
-	    			getClass().getResourceAsStream("/default.yml"),
-	    			GeneralSettings.DEFAULT,
-	    			LoaderSettings.builder().setAutoUpdate(true).build(),
-	    			DumperSettings.DEFAULT,
-	    			UpdaterSettings.builder().setVersioning(new BasicVersioning("file-version")).setKeepAll(true)
-	    			.setOptionSorting(UpdaterSettings.OptionSorting.SORT_BY_DEFAULTS).build());
-	    	lang.update();
-	    	writeFile(lang, yamlManager.getLanguageKey());
+			lang = YamlDocument.create(new File(directory,"%f%.yml".replace("%f%", f)),
+					getClass().getResourceAsStream("/default.yml"),gsd,lsd,dsd,usd);
+			if(!setupStaticFile(f, lang, yamlManager.getLanguageKey()))
+			{
+				return false;
+			}
 	    } catch (Exception e)
 	    {
-	    	e.printStackTrace();
 	    	logger.severe("Could not create/load %f%.yml file! Plugin will shut down!".replace("%f%", languageString));
 	    	return false;
-	    	//plugin.onDisable();
 	    }
 		return true;
 	}
 	
-	private boolean mkdirGuis()
+	private boolean mkdirGuis(YamlManager.Type type)
 	{
+		if(type != YamlManager.Type.SPIGOT)
+		{
+			return true;
+		}
 		File directory = new File(dataDirectory.getParent().toFile(), "/"+pluginname+"/Guis/");
 		if(!directory.exists())
 		{
@@ -286,45 +284,17 @@ public class YamlHandler implements YamlHandling
 			}
 			try
 			{
-				YamlDocument yd = YamlDocument.create(new File(directory, g+".yml"),
-						getClass().getResourceAsStream("/default.yml"),
-						GeneralSettings.DEFAULT,
-						LoaderSettings.builder().setAutoUpdate(true).build(),
-						DumperSettings.DEFAULT,
-						UpdaterSettings.builder().setVersioning(new BasicVersioning("file-version")).setKeepAll(true)
-						.setOptionSorting(UpdaterSettings.OptionSorting.SORT_BY_DEFAULTS).build());
-				yd.update();
-		    	writeFile(yd, yamlManager.getGuiKeys(g));
+				YamlDocument yd = YamlDocument.create(new File(directory,"%f%.yml".replace("%f%", g)),
+						getClass().getResourceAsStream("/default.yml"),gsd,lsd,dsd,usd);
+				if(!setupStaticFile(g, lang, yamlManager.getGuiKeys(g)))
+				{
+					return false;
+				}
 				gui.put(g, yd);
 			} catch (IOException e)
 			{
 				e.printStackTrace();
 			}
-		}
-		return true;
-	}
-	
-	private boolean writeFile(YamlDocument yml, LinkedHashMap<String, Language> keyMap)
-	{
-		try
-		{
-			for(String key : keyMap.keySet())
-			{
-				Language languageObject = keyMap.get(key);
-				if(languageObject.languageValues.containsKey(yamlManager.getLanguageType()) == true)
-				{
-					yamlManager.setFileInput(yml, keyMap, key, yamlManager.getLanguageType());
-				} else if(languageObject.languageValues.containsKey(yamlManager.getDefaultLanguageType()) == true)
-				{
-					yamlManager.setFileInput(yml, keyMap, key, yamlManager.getDefaultLanguageType());
-				}
-			}
-			yml.save();
-		} catch(Exception e)
-		{
-			logger.warning("Could not write file %file%".replace("%file%", yml.getNameAsString()));
-			e.printStackTrace();
-			return false;
 		}
 		return true;
 	}
