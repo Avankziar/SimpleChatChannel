@@ -11,21 +11,21 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.ItemJson;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.objects.ItemJson;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannel;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGChannelGui;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.guihandling.events.BottomGuiClickEvent;
 import main.java.me.avankziar.scc.spigot.guihandling.events.UpperGuiClickEvent;
 
 public class GuiListener implements Listener
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public GuiListener(SimpleChatChannels plugin)
+	public GuiListener(SCC plugin)
 	{
 		this.plugin = plugin;
 		InventarHandler.initEnchantments();
@@ -48,18 +48,18 @@ public class GuiListener implements Listener
 		Player player = (Player) event.getEvent().getWhoClicked();
 		if(InventarHandler.isSimilarShort(clicked, inv.getContents()))
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdAsh.InventoryClick.ItemExist")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdAsh.InventoryClick.ItemExist")));
 			return;
 		}
 		if(InventarHandler.isFull(inv))
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdAsh.InventoryClick.InventoryFull")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdAsh.InventoryClick.InventoryFull")));
 			return;
 		}
 		clicked = GUIApi.recreate(clicked, GuiValues.PLUGINNAME, GuiValues.ITEM_REPLACER_INVENTORY,
 				GuiValues.ITEM_REPLACER_FUNCTION, GUIApi.SettingsLevel.NOLEVEL, true, null);
 		inv.addItem(clicked);
-		int count = plugin.getMysqlHandler().lastID(Type.ITEMJSON)+1;
+		int count = plugin.getMysqlHandler().lastID(MysqlType.ITEMJSON)+1;
 		String name = "";
 		if(iij.getType() == Material.WRITTEN_BOOK
 				&& iij.getItemMeta() instanceof BookMeta)
@@ -77,7 +77,7 @@ public class GuiListener implements Listener
 				name, 
 				plugin.getUtility().convertItemStackToJson(iij),
 				plugin.getUtility().toBase64itemStack(iij));
-		plugin.getMysqlHandler().create(Type.ITEMJSON, ij);
+		plugin.getMysqlHandler().create(MysqlType.ITEMJSON, ij);
 	}
 	
 	@EventHandler
@@ -104,7 +104,7 @@ public class GuiListener implements Listener
 			final int slot = event.getEvent().getSlot();
 			Inventory inv = event.getEvent().getView().getTopInventory();
 			ArrayList<ItemJson> list = ConvertHandler.convertListIV(
-					plugin.getMysqlHandler().getAllListAt(Type.ITEMJSON, "`id`", false, "`owner` = ? AND `itemname` != ?",
+					plugin.getMysqlHandler().getFullList(MysqlType.ITEMJSON, "`id` ASC", "`owner` = ? AND `itemname` != ?",
 							event.getEvent().getWhoClicked().getUniqueId().toString(), "default"));
 			if(list.size() < slot+1)
 			{
@@ -112,7 +112,7 @@ public class GuiListener implements Listener
 			}
 			inv.setItem(slot, null);
 			ItemJson ij = list.get(slot);
-			plugin.getMysqlHandler().deleteData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
+			plugin.getMysqlHandler().deleteData(MysqlType.ITEMJSON, "`owner` = ? AND `itemname` = ?",
 					ij.getOwner(), ij.getItemName());
 		}
 	}

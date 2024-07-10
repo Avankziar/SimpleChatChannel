@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 public class GUIApi
 {
@@ -75,7 +75,7 @@ public class GUIApi
 			String function, SettingsLevel settingsLevel, boolean clickEventCancel,
 			LinkedHashMap<String, Entry<Type, Object>> values)
 	{
-		SimpleChatChannels plugin = SimpleChatChannels.getPlugin();
+		SCC plugin = SCC.getPlugin();
 		ItemStack i = itemstack.clone();
 		ItemMeta im = i.getItemMeta();
 		PersistentDataContainer pdc = im.getPersistentDataContainer();
@@ -162,7 +162,7 @@ public class GUIApi
 	public void add(int slot, ItemStack itemstack, String function, SettingsLevel settingsLevel, boolean clickEventCancel,
 			LinkedHashMap<String, Entry<Type, Object>> values)
 	{
-		SimpleChatChannels plugin = SimpleChatChannels.getPlugin();
+		SCC plugin = SCC.getPlugin();
 		ItemStack i = itemstack.clone();
 		ItemMeta im = i.getItemMeta();
 		PersistentDataContainer pdc = im.getPersistentDataContainer();

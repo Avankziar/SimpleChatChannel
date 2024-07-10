@@ -1,0 +1,252 @@
+Future ===============================================================================================
+- Befehl einführen um sich Texte zu speichern
+- Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
+- IFH für scceditor einpfegen.
+- /msgrp einfügen. & im ChatHandler bei ROLEPLAYNAME den SuggestCommand ändern.
+- Sound beim Mention pm etc. individuell einstellbar machen.
+- Neue Replacer fürs ChatFormat machen, was den Zugang zu den chattitle Farben gewährt.
+- Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
+- From dc: Ability do disable the global chat channel without the plugin cancelling the ChatEvent so that we can use different plugins for global chat OR Integration for DiscordSRV :)
+- OPEN_URL macht genau das nicht mehr, warum?
+- Silent Login und Silent Logout, befehle etc.
+- Wenn spieler afk oder offline sind, /msg nachricht werden als Simpel mail gespeichert.
+- Messages von Spielern welche offline sind abspeichern aka mail send, nur weniger kompliziert. 
+  Ausgabe im Chat für den Versender der Nachricht könnte sein: Spieler ist offline, die Nachricht wird für Empfänger (%player%) gespeichert. 
+  Abrufen könnte man über /msg read, Meldung via Bungee bis Spieler Nachricht abgerufen hat, 
+  nach Abruf automatisch löschen aus der DB oder (feature Request II) /msg save zum Speichern der Nachrichten oder /msg delete zum Löschen selbiger.
+
+Build 42-3-0
+- Spigot 1.21 support
+- Java 21 Dependency
+- Velocity support
+- Bungee  & Spigot Ebenen wechseln von md_5.BaseComponent zu kyori.Adventure MiniMessage.
+  Velocity wird mit kyori.Adventure MiniMessage starten.
+  Alle Yaml Datein, werden zu kyori.Adventure MiniMessage geändert. Bspw. &f wird <white>
+- Intern Klassen sehr aufgeräumt
+- Auf Velocity wird die Mails nicht mehr angeboten. Sowie werden sie für Bungee und Spigot auch bald entfernt und in einem neuen Plugin umgewandelt.
+- Für die config.yml gibt es nun Kommentare für Erklärungen. (Bungee kann es nicht)
+- ChatHistorie eingebaut, welche die letzten 50 über den Chat Verlaufende Nachrichten behält. (Keine Befehlsausgaben etc.)
+- <item> & <book> Replacer sind noch wobbelig. Arbeite ich später noch mal dran.
+  Somit funktioniert /scc item auch nicht mehr.
+- IFH spigot.tovelocity.chatlike.MessageToVelocity wird auf Spigot & Velocity Ebene unterstützt.
+- Der Webseiten Replacer wird nun die Webseite zum Clipboard kopieren. Sodass man mit Strg+v diese einfügen kann.
+
+Build 42-2-0
+- Spigot 1.20.4 Support
+- Async PlayerJoin
+- Async PlayerQuit
+- /scc mute|unmute, schickt nun die Nachricht an alle Spieler, nicht mehr alle Nachricht an einen Spieler.
+- BlockRadius Logik angepasst
+- /scc broadcastserver <Nachricht>, hinzugefügt. Nachricht geht an alle Spieler auf dem gleichen Server. Console kann dies nicht ausführen.
+- /scc broadcastworld <Nachricht>, hinzugefügt. Nachricht geht an alle Spieler auf der gleichen Welt. Console kann dies nicht ausführen.
+- Channels haben nun den Pfad <channelname>.LogInConsole. Ein Boolean der definiert, ob das geschriebene auch in der Console geloggt werden soll.
+  Defaut auf false.
+
+Build 42-1-0
+- Spigot 1.20.1 support
+
+Build 42-0-8
+- IFH BaseComponentToBungee fix
+
+Build 42-0-7
+- IFH Administration aktualisiert
+
+Build 42-0-6
+- MC 1.19.2 support
+- MysqlSetup aktualisiert
+- IFH Adminstration implementiert
+- MySQL Tabellen haben sich geändert und sind nun statisch:
+  simplechatchannelsPlayerData > sccPlayerData
+  simplechatchannelsIgnorelist > sccIgnorelist
+  simplechatchannelsPermanentChannels > sccPermanentChannels
+  simplechatchannelsItemJson > sccItemJson
+  simplechatchannelsPlayerUsedChannels > sccPlayerUsedChannels
+  simplechatchannelsMails > sccMails
+
+Build 42-0-4
+- MentionHover korrigiert
+
+Build 42-0-3
+- Item-, Buch-, Command- und WebseitenReplacer sind nun pro Nachricht auf 5 reduziert.
+
+Build 42-0-2
+- /scc broadcast, Consolefähig fix
+
+Build 42-0-1
+- GuiListener java.lang.IndexOutOfBoundsException fix
+- ItemJson & Base64String in Mysql in LONGTEXT umgeändert. (Anscheindend war mediumText zu klein)
+
+Build 42-0-0
+- ChatReplacer für Run- & SuggestCommand sind nun in der config.yml getrennt.
+- ChatReplacer für Erwähnungen wurde so angepasst, dass nun dort steht, wer wen erwähnt hat.
+- ChatReplacer HoverFehler bei Run- & SuggestCommands wurde behoben.
+- IFH general.chat.Chat wird nun auf Bungee & Spigot Ebene unterstützt.
+- IFH general.chat.Channel wird nun auf Bungee & Spigot Ebene unterstützt.
+- IFH general.chat.ChatTitle wird nun auf Bungee & Spigot Ebene unterstützt.
+- IFH general.interface.PlayerTimes wird nun gehook zum checken ob Spieler afk sind in privat Gesprächen.
+- Fix Hover bei /scc
+
+Build 41-1-0
+- MC 1.19 support
+- Wordfilter BypassPerm added
+
+Build 41 ==================================================================================================
+- +java 17 support
+- +Bugfix bei MessageToBungee.sendMessage(ArrayList<UUID>, Sound, message)
+- ?ItemReplacer hat einen Fehler, siehe dc Azael
+- +Bugfix: mit dem Befehl /mail lastsendemail kann man seine gesendeten mails aufrufen wenn ich dan jedoch auf read 
+  klicke kann ich diese nicht einsehen da sie nicht an mich adressiert ist
+- +Pfadangabefehler bei /scceditor behoben
+- +/scceditor [true/false] [playername], mit Spielernamen angabe möglich, wenn alle 2 Argumente angegeben sind, kann es auch per Console ausgeführt werden.
+  
+Build 40-2 ==================================================================================================
+- ClickEvent bei /scc channelgui gefixt.
+- Haufenweise fixe bei den mails.
+- /scc pc changepassword replacer fix. Muss language.yml überarbeiten.
+
+Build 40 ==================================================================================================
+- +Config wert für Joinnachrichten machen, der den Default mysql wert vorgibt.
+- +Spam Schutz. Einmal durch einen Zeitinterval und einmal durch die Prüfung, ob es die gleiche Nachricht ist.
+- +Dynamische Channel
+- +Dynamische ChatTitel (Pre- und Suffix)
+- +ChatFormat pro Channel möglich.
+- +PrivateChat, kann pro SpielerPaar die Farbe darstellen. Per Config einstellbar.
+- +ItemReplacer mit mysql und Namen erweitert.
+- +ItemReplacer Gui eingefügt. Anzahl an Item (Reihen im Inventar) mit Permission geregelt.
+- +BookReplacer mit RunCommand eingefügt.
+- +CommandReplacer ist aufgeteilt auf Run. & SuggestCommandReplacer
+- +WebseitenReplacer verbessert
+- +EmojiReplacer eingefügt.
+- +SpielerErwähnung eingefügt.
+- +PositionsReplacer eingefügt.
+- +Neue Linie Replacer eingefügt.
+- +/msg <Spieler>, nur noch mit allen OnlinePlayer als Tab
+- +/re <Spieler>, hinzugefügt. Hat als Tab nur noch die Spieler, mit denen man zur laufzeit geschrieben hat.
+- +/r, hinzugefügt. Schreibt nur direkt der zu letzt geschriebenen Person.
+- +/w <Spieler>, hinzugefügt. Dediziertes /msg für die Console.
+- +/scceditor [true/false], nun mit optionalem Argument. true, damit die Nachricht gesendet wird. false, dann nicht.
+- +CommandTree update eingebaut.
+- +ChannelGui eingefügt.
+- +BackgroundTask CleanUp, welcher den Letzten Join abgleicht und diese nach der gegeben Zeit löscht.
+- +Mailfunktion
+- +der Spigot broadcast befehl auch auf bungee führen.
+- +Spieler direkt und per Zeiteinheit löschen. (Spieler die länger x Tage nicht da sind).
+- +Ignorelist mit zusatz argument ausstatten um einen spielernamen abzufragen.
+- +logging korrekt alles anzeigen
+- +Permanente und Temporäre Channel Befehle werden nun aus übersichtgründen auseinander geschrieben
+
+- Mysql:
+  - TableI: 
+
+Build 38 =================================================================================================
+- +broadcast consolenfähig machen (Bungee)
+- +/scc => nach permission abfragen
+- +CommandTree, commands.yml etc.
+
+Build 36 ================================================================================================
+- +/ignore => gibt es einen null fehler
+- +wordfilter.yml erstellen
+- +/msg
+- +HexColor
+- +commands.yml
+- +event Channel
+- +11 Language Files
+- +Bstats
+
+Build 35 =================================================================================================
+- +/scc bungee wurde entfernen
+- +Api Methode "PlayerToChatEditor" hinzugefügt. Returns false for remove and true for adding
+- +Neue Bypass scc.channels.bypass.itemupload, dass überhaupt das Item hochgeladen wird.
+- +Perm scc.channels.bypass.item wird zu scc.channels.bypass.item.<channelname>
+- +fehler in der language
+- +Permissionfehler bei /scc team gefixt
+- +Cmd: /scc updateplayer <playername> | Updated alle aktiven channels des Spielers nach seinen perms. | scc.cmd.updateplayer
+  | new language path!
+- +@r fix
+
+Build 34 =================================================================================================
+- Bugfix Tabcompleter, /scc tc/pcinvite
+
+Build 33 ==================================================================================================
+- +Ignorelist und Ignore gefixt
+- +Farben in der zweiten Zeile werden korrekt übernommen.
+
+- +/scc wordfiler <add/remove> <word> => /scc wordfilter <word>
+- +/scc broadcast, neuer Alias = "ausstrahlung"
+- +Spieler die Afk sind, bekommen trotzdem die PrivateNachricht
+- +Besseres TabComplete eingebaut
+- +Commands in neuerer Struktur gebaut. Ist übersichtlicher generell und leichter neue Argumente einzubauen.
+- +Wortfilter ignoriert nun die Groß und Kleinschreibung
+- +Aus CustomChannel wird Temporärer Channel.
+
+- +PermissionÄnderung: aus allen scc.cmd.cc.XXXX wird scc.cmd.tc.XXXX
+
+- +BypassPerm für Admins der Ignore | scc.channels.bypass.ignore
+- +BypassPerm für Admins um jemanden anzuschreiben, der Pm Channel aus hat. | scc.channel.bypass.privacy
+- +BypassPerm für Admins um permanente Channels zu löschen oder beerben zu lassen | scc.cmd.bypass.permanentchannel
+
+- +Änderungen in der language.yml bei Chatsplit
+- +Namen von configs & language neu benennen nach der neuen Konform
+- +Prefix in config.yml einbauen
+
+- +In der Mysql muss nun aus der Spalte "channel_custom" => "channel_temp" werden.
+- +In der Mysql muss nun eine neue Spalte hinzugefügt werden, falls sie nicht das erste Mal starten:
+  Name: "channel_perma", TinyInt(1), Default:1 (ihr könnt auch 0 bei default machen, hängt davon ab, ob alle spieler es sofort
+  aktiviert haben sollen oder nicht.
+
+- +Neuer Channel ist hinzugefügt worden: PermanenterChannel => DefaultSymbol ".<Spieler spezifisches Channelsymbol Extra>"
+- +ignore_name aktualisierungsmethode einfügen
+- +AfkRecord bekommt nun ab Build 6(!!) bei jedem ChatEvent einen SoftSave(Zeiten des Spielers werden im RAM gespeichert)
+- +Namensänderungen werden nun bei jedem Join überprüft und gegebenfalls aktualisiert
+- +Aktualisierungsmethode für die Mute & Unmute Commands
+
+- +Neue Commands:
+  */scc tcinvite <Spieler> | Lädt den Spieler in deinen Temporären Channel ein (Mit Cooldown) | scc.cmd.tc.invite
+  */scc bungeereload | Lädt die Yaml und die Mysql neu
+  */scc pcban <ChannelName> <spieler> | Bannt den Spieler aus dem PChannel (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.ban
+  */scc pcchangepassword <ChannelName> <pw> | Ändert das Passwort. Nur Ersteller oder Stellvertreter | scc.cmd.pc.changepassword
+  */scc pccreate <ChannelName> [Pw] | Erstellt einen PChannel, der ausführende Spieler ist somit für immer Ersteller | scc.cmd.pc.create
+  */scc pcinfo <ChannelName> | Zeigt alle Infos des Channels (Passwort nur für Ersteller und Stellvertreter sichtbar) | scc.cmd.pc.info
+  */scc pcinvite <ChannelName> <spieler> | Lädt den Spieler in deinen channel ein (Nur für Ersteller & Stellvertreter) | scc.cmd.pc.invite
+  */scc pcjoin <Channelname> [pw] | Joint dem Channel (Passwort muss natürlich übereinstimmen) | scc.cmd.pc.join
+  */scc pckick <ChannelName> <spieler> | Kickt den Spieler aus dem Channel (Nur für Ersteller & Stellvertreter). Dabei kann der Ersteller
+  die Stellvertreter kicken aber nicht umgekehrt. | scc.cmd.pc.kick
+  */scc pcleave [bestätigen] | Verlässt den Channel. Ersteller müssen bestätigen. Bei Bestätigung wird der gesamte Channel
+  gelöscht und alle Mitglieder verlassen diesen | scc.cmd.pc.leave
+  */scc pcunban <ChannelName> <spieler> | Begnadigt den Spieler. ABER er wird kein Mitglied dadurch, falls er vorher eins war | scc.cmd.pc.unban
+  */scc pcvice <ChannelName> <spieler> | Befördert oder degradiert einen Spieler zum Stellvertreter oder zum Mitglied.
+  */scc pcchatcolor <Channelname> <Farben> | Ändert die Farben, die für den Channel im chat benutzt werden | scc.cmd.pc.chatcolor
+  */scc pcnamecolor <channelname> <Farben> | Ändert die Farben, die für den Channelnamen benutzt werden | scc.cmd.pc.namecolor
+  */scc pcsymbol <channelname> <Symbol> | Ändert das Symbol, welches benutzt wird um den Channel zu erreichen.
+  (Der ConfigSymbol von den Permanenten Channel wird immer davor gesetzt) | scc.cmd.pc.symbol
+  */scc pcrename <Channelname> <Neuer Channelname> | um den channel umzubenennen | scc.cmd.pc.rename
+  */scc pcplayer <Player>  | Fragt ab, in welchem Channel der Spieler aktiv ist | scc.cmd.pc.player
+  */scc pcinherit <Channelname> <Player> | um den Spieler zum neuen Ersteller zu ernennen | scc.cmd.pc.inherit
+  */scc pcdelete <Channelname> | um den Channel von admins löschen zu lassen | scc.cmd.pc.delete
+  */scc pcchannels | Listet alle Channels auf | scc.cmd.pc.channels
+  */scc perma | Togglet den Permanenten Channel | scc.cmd.perma
+  */scc temp | Togglet den Temporären Channel | scc.cmd.temp (Nachfolger und Ersetzt /scc custom)
+=============================================================================================================
+
+Build 31
+- +Hover bei Commands in chat
+- +CommandHandler
+- +Item und Command replacerblocks in language.yml änderbar gemacht um missbrauch vorzubeugen
+ 
+Build 30
+- afk, spigot und bungee. Ist bungee aktive, wird es in spigot ausgelassen
+- chatformat, naja
+- +custom channel
+- +subcmd tabbar machen
+- +pre und suffixe channel nur für die einsichtbar
+- +serverzeit einfügbar machen
+- +/scceditor einbauen, um jedwede chateingabe zu returnen (nicht canceln)
+- +/scc channelcreate etc. zu /scc cccreate geändert (für alle custom channels commands)
+- +customchannel perms zu scc.cmd.cc.=> geändert
+- +scc.admin/scc.spy/scc.join geändert zu scc.option.=>
+- +in den Config neue Punkt => useprefixforplayercolor: 'true' hinzugefügt. Dieser setzt fest,
+   ob man für die Spieler vom ersten eingesetzten Prefix die Farben für den Spieler übernehmen will
+- +showjoinmessageglobal: 'false' , neu hinzugefügt um global joinnachrichten auszuschalten
+- +showleavemessageglobal: 'false' , neu hinzugefügt um global leavenachrichten auszuschalten
+- +farbig schreiben können, per perm => scc.channels.colorbypass
+- +broadcast soll farbe in der zweiten zeile behalten

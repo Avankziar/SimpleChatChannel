@@ -8,27 +8,27 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.ifh.general.chat.ChatEditor;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 public class ChatEditorProvider implements ChatEditor
 {
 	@Override
 	public boolean addOnEditor(UUID uuid, boolean message)
 	{
-		Player player = SimpleChatChannels.getPlugin().getServer().getPlayer(uuid);
+		Player player = SCC.getPlugin().getServer().getPlayer(uuid);
 		if(player == null)
 		{
 			return false;
 		}
-		if(!SimpleChatChannels.getPlugin().editorplayers.contains(player.getName()))
+		if(!SCC.getPlugin().editorplayers.contains(player.getName()))
 		{
-			SimpleChatChannels.getPlugin().editorplayers.add(player.getName());
+			SCC.getPlugin().editorplayers.add(player.getName());
 			send(player, message);
 			if(message)
 			{
-    			player.sendMessage(ChatApi.tl(SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Active")));
+				player.spigot().sendMessage(ChatApi.tctl(SCC.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Active")));
     			return true;
 			}
 		}
@@ -38,24 +38,24 @@ public class ChatEditorProvider implements ChatEditor
 	@Override
 	public String getProvider()
 	{
-		return SimpleChatChannels.pluginName;
+		return SCC.pluginName;
 	}
 
 	@Override
 	public boolean removeFromEditor(UUID uuid, boolean message)
 	{
-		Player player = SimpleChatChannels.getPlugin().getServer().getPlayer(uuid);
+		Player player = SCC.getPlugin().getServer().getPlayer(uuid);
 		if(player == null)
 		{
 			return false;
 		}
-		if(SimpleChatChannels.getPlugin().editorplayers.contains(player.getName()))
+		if(SCC.getPlugin().editorplayers.contains(player.getName()))
 		{
-			SimpleChatChannels.getPlugin().editorplayers.remove(player.getName());
+			SCC.getPlugin().editorplayers.remove(player.getName());
 			send(player, message);
 			if(message)
 			{
-    			player.sendMessage(ChatApi.tl(SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+				player.spigot().sendMessage(ChatApi.tctl(SCC.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Deactive")));
     			return true;
 			}
 		}
@@ -73,6 +73,6 @@ public class ChatEditorProvider implements ChatEditor
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        player.sendPluginMessage(SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+        player.sendPluginMessage(SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
     }
 }

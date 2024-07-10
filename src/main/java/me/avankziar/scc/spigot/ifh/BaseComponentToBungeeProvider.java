@@ -11,10 +11,11 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 
 public class BaseComponentToBungeeProvider implements BaseComponentToBungee
 {
@@ -161,7 +162,9 @@ public class BaseComponentToBungeeProvider implements BaseComponentToBungee
 		out.writeInt(message.size());
 		for(ArrayList<BaseComponent> list : message)
 		{
-			String s = ChatApi.serialized(list);
+			TextComponent tc = new TextComponent("");
+			tc.setExtra(list);
+			String s = ComponentSerializer.toString(tc);
 			out.writeUTF(s);
 		}
 	}
@@ -182,7 +185,7 @@ public class BaseComponentToBungeeProvider implements BaseComponentToBungee
 			if(player != null)
 			{
 				player.sendPluginMessage(
-		        		SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+		        		SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
 				break;
 			}
 		}

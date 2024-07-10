@@ -1,23 +1,23 @@
 package main.java.me.avankziar.scc.bungee.commands.scc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
-import main.java.me.avankziar.scc.handlers.MatchApi;
-import main.java.me.avankziar.scc.handlers.TimeHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.MatchApi;
+import main.java.me.avankziar.scc.general.handlers.TimeHandler;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGMute extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGMute(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGMute(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -31,13 +31,13 @@ public class ARGMute extends ArgumentModule
 		ProxiedPlayer t = ProxyServer.getInstance().getPlayer(target);
 		if(t == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
 		ChatUser cu = ChatUserHandler.getChatUser(t.getUniqueId());
 		if(cu == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
 		long time = 0;
@@ -45,7 +45,7 @@ public class ARGMute extends ArgumentModule
 		{
 			time = Long.MAX_VALUE;
 			cu.setMuteTime(time);
-			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
+			plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
 		} else if(args.length >= 3)
 		{
 			time = System.currentTimeMillis();
@@ -92,15 +92,15 @@ public class ARGMute extends ArgumentModule
 				i++;
 			}
 			cu.setMuteTime(time);
-			plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
+			plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
 		}
 		if(t != null)
 		{
-			t.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.YouHaveBeenMuted")
+			t.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.YouHaveBeenMuted")
 					.replace("%time%", TimeHandler.getDateTime(time))));
 		}
 		
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.YouhaveMuteThePlayer")
+		player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.YouhaveMuteThePlayer")
 				.replace("%player%", t.getName())
 				.replace("%time%", TimeHandler.getDateTime(time))));
 		if(plugin.getYamlHandler().getConfig().getBoolean("Mute.SendGlobal", false))
@@ -116,7 +116,7 @@ public class ARGMute extends ArgumentModule
 				{
 					continue;
 				}
-				all.sendMessage(ChatApi.tctl(msg));
+				all.sendMessage(ChatApiOld.tctl(msg));
 			}
 		}
 	}

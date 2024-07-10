@@ -1,5 +1,8 @@
-/bin/
-/.gitignore
 /.classpath
+/.gitignore
 /.project
-/sccroadmap
+/target/
+/.settings/
+/bin/
+/oldpom.xml
+/dependency-reduced-pom.xml

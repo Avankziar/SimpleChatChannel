@@ -10,17 +10,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 public class SccEditorCommandExecutor implements CommandExecutor
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public SccEditorCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public SccEditorCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		this.plugin = plugin;
 		SccEditorCommandExecutor.cc = cc;
@@ -90,12 +90,12 @@ public class SccEditorCommandExecutor implements CommandExecutor
         			if(plugin.editorplayers.contains(playername))
             		{
             			plugin.editorplayers.remove(playername);
-            			sender.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            			sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
             			send(Bukkit.getPlayer(playername), false);
             		} else
             		{
             			plugin.editorplayers.add(playername);
-            			sender.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            			sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
             			send(Bukkit.getPlayer(playername), true);
             		}
             		return true;
@@ -129,6 +129,6 @@ public class SccEditorCommandExecutor implements CommandExecutor
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        player.sendPluginMessage(plugin, StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+        player.sendPluginMessage(plugin, StaticValues.SCC_TOPROXY, stream.toByteArray());
     }
 }

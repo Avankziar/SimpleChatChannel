@@ -1,23 +1,22 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Leave extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Leave(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Leave(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -32,7 +31,7 @@ public class ARGPermanentChannel_Leave extends ArgumentModule
 		PermanentChannel cc = PermanentChannel.getChannelFromName(channel);
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", channel)));
 			return;
 		}
@@ -40,8 +39,8 @@ public class ARGPermanentChannel_Leave extends ArgumentModule
 		{
 			if(args.length == 3)
 			{
-				player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Leave.Confirm"),
-						ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.SCC_PC_LEAVE)+channel+" confirm"));
+				player.sendMessage(ChatApiOld.click(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Leave.Confirm"),
+						"SUGGEST_COMMAND", PluginSettings.settings.getCommands(KeyHandler.SCC_PC_LEAVE)+channel+" confirm"));
 				return;
 			} else if(args.length == 4)
 			{
@@ -54,16 +53,16 @@ public class ARGPermanentChannel_Leave extends ArgumentModule
 					{
 						if(cc.getMembers().contains(members.getUniqueId().toString()))
 						{
-							members.sendMessage(ChatApi.tctl(msg));
+							members.sendMessage(ChatApiOld.tctl(msg));
 						}
 					}
-					plugin.getMysqlHandler().deleteData(MysqlHandler.Type.PERMANENTCHANNEL, "`id` = ?", cc.getId());
+					plugin.getMysqlHandler().deleteData(MysqlType.PERMANENTCHANNEL, "`id` = ?", cc.getId());
 					PermanentChannel.removeCustomChannel(cc);
 					return;
 				} else
 				{
-					player.sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Leave.Confirm"),
-							ClickEvent.Action.SUGGEST_COMMAND, PluginSettings.settings.getCommands(KeyHandler.SCC_PC_LEAVE)+channel+" confirm"));
+					player.sendMessage(ChatApiOld.click(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Leave.Confirm"),
+							"SUGGEST_COMMAND", PluginSettings.settings.getCommands(KeyHandler.SCC_PC_LEAVE)+channel+" confirm"));
 					return;
 				}
 			}
@@ -71,7 +70,7 @@ public class ARGPermanentChannel_Leave extends ArgumentModule
 		cc.removeMembers(player.getUniqueId().toString());
 		cc.removeVice(player.getUniqueId().toString());
 		plugin.getUtility().updatePermanentChannels(cc);
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Leave.YouLeft")
 				.replace("%channel%", cc.getNameColor()+cc.getName())));
 		String msg = plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Leave.PlayerLeft")
@@ -80,7 +79,7 @@ public class ARGPermanentChannel_Leave extends ArgumentModule
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.sendMessage(ChatApi.tctl(msg));
+				members.sendMessage(ChatApiOld.tctl(msg));
 			}
 		}
 	}

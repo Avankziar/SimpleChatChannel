@@ -1,21 +1,16 @@
 package main.java.me.avankziar.scc.spigot.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import main.java.me.avankziar.scc.general.database.MysqlBaseHandler;
+import main.java.me.avankziar.scc.spigot.SCC;
 
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.database.tables.TableI;
-import main.java.me.avankziar.scc.spigot.database.tables.TableII;
-import main.java.me.avankziar.scc.spigot.database.tables.TableIII;
-import main.java.me.avankziar.scc.spigot.database.tables.TableIV;
-import main.java.me.avankziar.scc.spigot.database.tables.TableV;
-import main.java.me.avankziar.scc.spigot.database.tables.TableVI;
-
-public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV, TableVI
-{
+public class MysqlHandler extends MysqlBaseHandler
+//implements TableI, TableII, TableIII, TableIV, TableV, TableVI
+{		
+	public MysqlHandler(SCC plugin)
+	{
+		super(plugin.getLogger(), plugin.getMysqlSetup());
+	}
+	/*
 	public enum Type
 	{
 		CHATUSER("sccPlayerData"), 
@@ -46,7 +41,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 	/*
 	 * Alle Mysql Reihen, welche durch den Betrieb aufkommen.
 	 */
-	public static long startRecordTime = System.currentTimeMillis();
+	/*public static long startRecordTime = System.currentTimeMillis();
 	public static int inserts = 0;
 	public static int updates = 0;
 	public static int deletes = 0;
@@ -78,9 +73,9 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		deletes = 0;
 	}
 	
-	private SimpleChatChannels plugin;	
+	private SCC plugin;	
 	
-	public MysqlHandler(SimpleChatChannels plugin) 
+	public MysqlHandler(SCC plugin) 
 	{
 		this.plugin = plugin;
 	}
@@ -112,7 +107,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		        }
 		    } catch (SQLException e) 
 			{
-				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  SCC.log.warning("Error: " + e.getMessage());
 				  e.printStackTrace();
 		    } finally 
 			{
@@ -345,7 +340,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 		        }
 		    } catch (SQLException e) 
 			{
-				  SimpleChatChannels.log.warning("Error: " + e.getMessage());
+				  SCC.log.warning("Error: " + e.getMessage());
 				  e.printStackTrace();
 		    } finally 
 			{
@@ -425,5 +420,5 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 			return TableVI.super.getAllListAtVI(plugin, orderByColumn, desc, whereColumn, whereObject);
 		}
 		return null;
-	}
+	}*/
 }

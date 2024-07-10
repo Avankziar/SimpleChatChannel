@@ -2,21 +2,21 @@ package main.java.me.avankziar.scc.bungee.commands.scc;
 
 import java.util.UUID;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.IgnoreObject;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGIgnore extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGIgnore(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGIgnore(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -30,24 +30,24 @@ public class ARGIgnore extends ArgumentModule
 		UUID uuid = Utility.convertNameToUUID(t);
 		if(uuid == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
-		IgnoreObject io = (IgnoreObject) plugin.getMysqlHandler().getData(MysqlHandler.Type.IGNOREOBJECT,
+		IgnoreObject io = (IgnoreObject) plugin.getMysqlHandler().getData(MysqlType.IGNOREOBJECT,
 				"`player_uuid` = ? AND `ignore_uuid` = ?",
 				player.getUniqueId().toString(), uuid.toString());
 		if(io != null)
 		{
-			plugin.getMysqlHandler().deleteData(MysqlHandler.Type.IGNOREOBJECT,
+			plugin.getMysqlHandler().deleteData(MysqlType.IGNOREOBJECT,
 					"`player_uuid` = ? AND `ignore_uuid` = ?",
 					player.getUniqueId().toString(), uuid.toString());
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Deactive")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Deactive")
 					.replace("%player%", t)));
 		} else
 		{
-			plugin.getMysqlHandler().create(MysqlHandler.Type.IGNOREOBJECT,
+			plugin.getMysqlHandler().create(MysqlType.IGNOREOBJECT,
 					new IgnoreObject(player.getUniqueId().toString(), uuid.toString(), t));
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Active")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Active")
 					.replace("%player%", t)));
 		}
 	}

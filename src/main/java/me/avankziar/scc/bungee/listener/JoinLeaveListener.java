@@ -4,22 +4,19 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
 import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
-import main.java.me.avankziar.scc.objects.chat.UsedChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.general.objects.IgnoreObject;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.UsedChannel;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -29,10 +26,10 @@ import net.md_5.bungee.event.EventHandler;
 
 public class JoinLeaveListener implements Listener
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	//private LinkedHashMap<String, ScheduledTask> map = new LinkedHashMap<>();
 	
-	public JoinLeaveListener(SimpleChatChannels plugin)
+	public JoinLeaveListener(SCC plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -42,7 +39,7 @@ public class JoinLeaveListener implements Listener
 	{
 		final ProxiedPlayer player = event.getPlayer();
 		String pn = player.getName();
-		final boolean firsttimejoin = !plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
+		final boolean firsttimejoin = !plugin.getMysqlHandler().exist(MysqlType.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString());
 		/*
 		 * Player check and init
@@ -58,8 +55,8 @@ public class JoinLeaveListener implements Listener
 					return;
 				}
 				ChatUser cu = plugin.getUtility().controlUsedChannels(player);
-				ArrayList<UsedChannel> usedChannelslist = ConvertHandler.convertListV(plugin.getMysqlHandler().getAllListAt(Type.USEDCHANNEL,
-						"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
+				ArrayList<UsedChannel> usedChannelslist = ConvertHandler.convertListV(plugin.getMysqlHandler().getFullList(MysqlType.USEDCHANNEL,
+						"`id` ASC", "`player_uuid` = ?", player.getUniqueId().toString()));
 				LinkedHashMap<String, UsedChannel> usedChannels = new LinkedHashMap<>();
 				for(UsedChannel uc : usedChannelslist)
 				{
@@ -67,17 +64,17 @@ public class JoinLeaveListener implements Listener
 				}
 				
 				Utility.playerUsedChannels.put(player.getUniqueId().toString(),	usedChannels);
-				SimpleChatChannels.onlinePlayers.add(player.getName());
+				SCC.onlinePlayers.add(player.getName());
 				//Names Aktualisierung
 				if(!cu.getName().equals(pn))
 				{
 					cu.setName(pn);
-					plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+					plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu,
 							"`player_uuid` = ?", cu.getUUID());
 					
 					
 					ArrayList<IgnoreObject> iolist = ConvertHandler.convertListII(
-							plugin.getMysqlHandler().getAllListAt(MysqlHandler.Type.IGNOREOBJECT, "`id`", true,
+							plugin.getMysqlHandler().getFullList(MysqlType.IGNOREOBJECT, "`id` DESC",
 									"`ignore_uuid` = ?", player.getUniqueId().toString()));
 					for(IgnoreObject io : iolist)
 					{
@@ -85,7 +82,7 @@ public class JoinLeaveListener implements Listener
 						{
 							IgnoreObject newio = io;
 							newio.setIgnoreName(pn);
-							plugin.getMysqlHandler().updateData(MysqlHandler.Type.IGNOREOBJECT, newio,
+							plugin.getMysqlHandler().updateData(MysqlType.IGNOREOBJECT, newio,
 									"`player_uuid` = ? AND `ignore_uuid` = ?",
 									io.getUUID(), io.getIgnoreUUID());
 						}
@@ -94,25 +91,25 @@ public class JoinLeaveListener implements Listener
 				
 				if(cu.isOptionChannelMessage())
 				{
-					player.sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));
+					player.sendMessage(ChatApiOld.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));
 					if(firsttimejoin)
 					{
-						TextComponent tc = ChatApi.tctl(plugin.getYamlHandler().getLang().getString(
-								"JoinListener.Welcome").replace("%player%", pn));
+						String tc = plugin.getYamlHandler().getLang().getString(
+								"JoinListener.Welcome").replace("%player%", pn);
 						for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 						{
-							all.sendMessage(tc);
+							all.sendMessage(ChatApiOld.tctl(tc));
 						}
 					}
 				}
 				cu.setLastTimeJoined(System.currentTimeMillis());
-				plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+				plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu,
 						"`player_uuid` = ?", cu.getUUID());
-				TextComponent msg = ChatApi.apiChat(
+				TextComponent msg = ChatApiOld.clickHover(
 						plugin.getYamlHandler().getLang().getString("JoinListener.Join").replace("%player%", pn), 
-						ClickEvent.Action.SUGGEST_COMMAND,
+						"SUGGEST_COMMAND",
 						plugin.getUtility().getPlayerMsgCommand(pn), 
-						HoverEvent.Action.SHOW_TEXT, 
+						"SHOW_TEXT", 
 						plugin.getUtility().getPlayerHover(pn));
 				for(ProxiedPlayer all : plugin.getProxy().getPlayers())
 				{
@@ -125,15 +122,15 @@ public class JoinLeaveListener implements Listener
 						}
 					}
 				}
-				int unreadedMails = plugin.getMysqlHandler().getCount(Type.MAIL, "`id`",
+				int unreadedMails = plugin.getMysqlHandler().getCount(MysqlType.MAIL,
 						"`reciver_uuid` = ? AND `readeddate` = ?", player.getUniqueId().toString(), 0);
 				if(unreadedMails > 0)
 				{
-					player.sendMessage(ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
+					player.sendMessage(ChatApiOld.clickHover(plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
 							.replace("%count%", String.valueOf(unreadedMails)),
-							ClickEvent.Action.RUN_COMMAND,
+							"RUN_COMMAND",
 							PluginSettings.settings.getCommands(KeyHandler.MAIL).trim(),
-							HoverEvent.Action.SHOW_TEXT,
+							"SHOW_TEXT",
 							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
 				}
 				//map.get(pn).cancel();
@@ -149,7 +146,7 @@ public class JoinLeaveListener implements Listener
 		//ADDME:Wenn ein Spieler wegen der Whitelist disconnetet, so soll der hier nicht auftauchen.
 		ProxiedPlayer player = event.getPlayer();
 		String pn = player.getName();
-		SimpleChatChannels.onlinePlayers.remove(player.getName());
+		SCC.onlinePlayers.remove(player.getName());
 		plugin.editorplayers.remove(player.getName());
 		Utility.playerUsedChannels.remove(player.getUniqueId().toString());
 		
@@ -170,7 +167,7 @@ public class JoinLeaveListener implements Listener
     			cc.setCreator(newcreator);
     			if(newcreator!=null)
     			{
-    				newcreator.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.NewCreator")
+    				newcreator.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.NewCreator")
         					.replace("%channel%", cc.getName())));
     			}
 			}
@@ -183,7 +180,7 @@ public class JoinLeaveListener implements Listener
 			{
 				if(allcu.isOptionJoinMessage())
 				{
-					all.sendMessage(ChatApi.tctl(msg));
+					all.sendMessage(ChatApiOld.tctl(msg));
 				}
 			}
 		}

@@ -6,10 +6,10 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.objects.chat.UsedChannel;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.UsedChannel;
 
 public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.Channel
 {	
@@ -17,7 +17,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	public ArrayList<String> getChannels()
 	{
 		ArrayList<String> list = new ArrayList<>();
-		for(String c : SimpleChatChannels.channels.keySet())
+		for(String c : SCC.channels.keySet())
 		{
 			list.add(c);
 		}
@@ -29,7 +29,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	{
 		ArrayList<String> list = new ArrayList<>();
 		LinkedHashMap<String, UsedChannel> map = Utility.playerUsedChannels.get(uuid.toString());
-		for(String c : SimpleChatChannels.channels.keySet())
+		for(String c : SCC.channels.keySet())
 		{
 			if(map.containsKey(c))
 			{
@@ -110,7 +110,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 				useColor, useItemReplacer, useBookReplacer,
 				useRunCommandReplacer, useSuggestCommandReplacer, useWebsiteReplacer,
 				useEmojiReplacer, useMentionReplacer, usePositionReplacer);
-		SimpleChatChannels.log.log(Level.INFO, "Register "+c.getUniqueIdentifierName()+" Channel!");
+		SCC.logger.log(Level.INFO, "Register "+c.getUniqueIdentifierName()+" Channel!");
 		return true;
 	}
 	
@@ -139,7 +139,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public String getSymbol(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -152,7 +152,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public String getInChatName(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -165,7 +165,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public String getInChatColor(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -178,7 +178,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public String getPermission(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -191,7 +191,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public String getChatFormat(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -204,7 +204,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public Boolean isSpecificServer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -217,7 +217,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public Boolean isSpecificWorld(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -230,7 +230,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public Boolean hasBlockRadius(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -243,7 +243,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public Integer getBlockRadius(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -256,7 +256,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public String getMentionSound(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -269,7 +269,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedColor(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -282,7 +282,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedItemReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -295,7 +295,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedBookReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -308,7 +308,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedRunCommandReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -321,7 +321,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedSuggestCommandReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -334,7 +334,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedWebsiteReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -347,7 +347,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedEmojiReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -360,7 +360,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedMentionReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{
@@ -373,7 +373,7 @@ public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.
 	@Override
 	public boolean isUsedPositionReplacer(String uniqueChannelName)
 	{
-		for(Entry<String, Channel> c : SimpleChatChannels.channels.entrySet())
+		for(Entry<String, Channel> c : SCC.channels.entrySet())
 		{
 			if(uniqueChannelName.equalsIgnoreCase(c.getKey()))
 			{

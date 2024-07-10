@@ -1,19 +1,19 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Vice extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Vice(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Vice(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -28,24 +28,24 @@ public class ARGPermanentChannel_Vice extends ArgumentModule
 		PermanentChannel cc = PermanentChannel.getChannelFromName(channel);
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", channel)));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotTheOwner")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotTheOwner")));
 			return;
 		}
 		if(plugin.getProxy().getPlayer(otherplayer) == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
 		ProxiedPlayer target = plugin.getProxy().getPlayer(otherplayer); 
 		if(!cc.getMembers().contains(target.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.NotAChannelMember")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.NotAChannelMember")));
 			return;
 		}
 		if(cc.getVice().contains(target.getUniqueId().toString()))
@@ -58,7 +58,7 @@ public class ARGPermanentChannel_Vice extends ArgumentModule
 			{
 				if(cc.getMembers().contains(members.getUniqueId().toString()))
 				{
-					members.sendMessage(ChatApi.tctl(msg));
+					members.sendMessage(ChatApiOld.tctl(msg));
 				}
 			}
 		} else
@@ -71,7 +71,7 @@ public class ARGPermanentChannel_Vice extends ArgumentModule
 			{
 				if(cc.getMembers().contains(members.getUniqueId().toString()))
 				{
-					members.sendMessage(ChatApi.tctl(msg));
+					members.sendMessage(ChatApiOld.tctl(msg));
 				}
 			}
 		}

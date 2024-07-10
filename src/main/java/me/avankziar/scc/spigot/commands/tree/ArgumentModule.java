@@ -2,9 +2,8 @@ package main.java.me.avankziar.scc.spigot.commands.tree;
 
 import java.io.IOException;
 
-import org.bukkit.command.CommandSender;
-
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.commands.tree.BaseConstructor;
 
 public abstract class ArgumentModule
 {
@@ -13,10 +12,9 @@ public abstract class ArgumentModule
     public ArgumentModule(ArgumentConstructor argumentConstructor)
     {
        this.argumentConstructor = argumentConstructor;
-       SimpleChatChannels.getPlugin().getArgumentMap().put(argumentConstructor.getPath(), this);
+       BaseConstructor.getArgumentMapSpigot().put(argumentConstructor.getPath(), this);
     }
     
-    //This method will process the command.
-    public abstract void run(CommandSender sender, String[] args) throws IOException;
-
+    //This method will process the command.    
+    public abstract void run(org.bukkit.command.CommandSender sender, String[] args) throws IOException;
 }

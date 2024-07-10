@@ -369,7 +369,8 @@ public class Metrics {
      * @param data The data to send.
      * @throws Exception If the request failed.
      */
-    private static void sendData(Plugin plugin, JsonObject data) throws Exception {
+    @SuppressWarnings("deprecation")
+	private static void sendData(Plugin plugin, JsonObject data) throws Exception {
         if (data == null) {
             throw new IllegalArgumentException("Data cannot be null");
         }

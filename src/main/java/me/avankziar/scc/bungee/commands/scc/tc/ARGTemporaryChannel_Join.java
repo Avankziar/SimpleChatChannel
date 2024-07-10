@@ -1,18 +1,18 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.tc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGTemporaryChannel_Join extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGTemporaryChannel_Join(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGTemporaryChannel_Join(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -36,44 +36,44 @@ public class ARGTemporaryChannel_Join extends ArgumentModule
 		TemporaryChannel oldcc = TemporaryChannel.getCustomChannel(player);
 		if(oldcc != null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.AlreadyInAChannel")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.AlreadyInAChannel")));
 			return;
 		}
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(
+			player.sendMessage(ChatApiOld.tctl(
 					plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.UnknownChannel")
 					.replace("%name%", name)));
 			return;
 		}
 		if(cc.getBanned().contains(player))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.Banned")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.Banned")));
 			return;
 		}
 		if(password == null)
 		{
 			if(cc.getPassword() != null)
 			{
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.ChannelHasPassword")));
+				player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.ChannelHasPassword")));
 				return;
 			}
 		} else
 		{
 			if(!cc.getPassword().equals(password))
 			{
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.PasswordIncorrect")));
+				player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.PasswordIncorrect")));
 				return;
 			}
 		}
 		cc.addMembers(player);
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.ChannelJoined")
+		player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.ChannelJoined")
 				.replace("%channel%", cc.getName())));
 		String msg = plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Join.PlayerIsJoined")
 				.replace("%player%", player.getName());
 		for(ProxiedPlayer members : cc.getMembers())
 		{
-			members.sendMessage(ChatApi.tctl(msg));
+			members.sendMessage(ChatApiOld.tctl(msg));
 		}
 	}
 }

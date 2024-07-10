@@ -12,7 +12,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -24,21 +23,22 @@ import org.bukkit.persistence.PersistentDataType;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
-import main.java.me.avankziar.scc.database.YamlManager.GuiType;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.database.YamlManager.GuiType;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.guihandling.GUIApi.SettingsLevel;
 
 public class ItemGenerator
 {
-	public static ItemStack create(String ID, YamlConfiguration itm, GuiType type, 
+	public static ItemStack create(String ID, YamlDocument itm, GuiType type, 
 			boolean mustReplaceLore, SettingsLevel settingLevel,
 			Boolean channel) throws IOException
 	{
 		ItemStack is = null;
 		if(itm.getString(ID+"."+settingLevel.getName()+".Material") == null)
 		{
-			SimpleChatChannels.log.info("ItemGenerator cannot read the material of "+ID+"."+settingLevel.getName()+".Material");
+			SCC.logger.info("ItemGenerator cannot read the material of "+ID+"."+settingLevel.getName()+".Material");
 			return null;
 		}
 		Material mat = Material.matchMaterial(itm.getString(ID+"."+settingLevel.getName()+".Material"));
@@ -52,11 +52,11 @@ public class ItemGenerator
 		ItemMeta im = is.getItemMeta();
 		if(itm.getString(ID+"."+settingLevel.getName()+".Name") == null)
 		{
-			SimpleChatChannels.log.info("ItemGenerator cannot read the name of "+ID+"."+settingLevel.getName()+".Name");
+			SCC.logger.info("ItemGenerator cannot read the name of "+ID+"."+settingLevel.getName()+".Name");
 			return null;
 		}
 		String name = itm.getString(ID+"."+settingLevel.getName()+".Name");
-		im.setDisplayName(ChatApi.tl(replace(name, channel)));
+		im.setDisplayName(ChatApiOld.tl(replace(name, channel)));
 		ArrayList<String> itf = null;
 		if(itm.getStringList(ID+"."+settingLevel.getName()+".Itemflag") != null)
 		{
@@ -98,7 +98,7 @@ public class ItemGenerator
 		}
 		im.setLore(desc);
 		
-		NamespacedKey gt = new NamespacedKey(SimpleChatChannels.getPlugin(), "guitype");
+		NamespacedKey gt = new NamespacedKey(SCC.getPlugin(), "guitype");
 		PersistentDataContainer pdc = im.getPersistentDataContainer();
 		pdc.set(gt, PersistentDataType.STRING, type.toString());
 		
@@ -117,7 +117,7 @@ public class ItemGenerator
 		ArrayList<String> desc = new ArrayList<String>();
 		for(String s : lore)
 		{
-			s = ChatApi.tl(replace(s, channel));
+			s = ChatApiOld.tl(replace(s, channel));
 			desc.add(s);
 		}
 		return desc;
@@ -130,10 +130,10 @@ public class ItemGenerator
 		{
 			if(channel)
 			{
-				st = st.replace("%boolean%", SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.ActiveTerm"));
+				st = st.replace("%boolean%", SCC.getPlugin().getYamlHandler().getConfig().getString("Gui.ActiveTerm"));
 			} else
 			{
-				st = st.replace("%boolean%", SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.DeactiveTerm"));
+				st = st.replace("%boolean%", SCC.getPlugin().getYamlHandler().getConfig().getString("Gui.DeactiveTerm"));
 			}
 		}
 		return st;
@@ -169,11 +169,11 @@ public class ItemGenerator
 	{
 		if(boo)
 		{
-			String s = SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.ActiveTerm");
+			String s = SCC.getPlugin().getYamlHandler().getConfig().getString("Gui.ActiveTerm");
 			return s;
 		} else
 		{
-			String s = SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("Gui.DeactiveTerm");
+			String s = SCC.getPlugin().getYamlHandler().getConfig().getString("Gui.DeactiveTerm");
 			return s;
 		}
 	}
@@ -183,7 +183,7 @@ public class ItemGenerator
 		ArrayList<String> list = new ArrayList<String>();
 		for(String s : lore)
 		{
-			list.add(ChatApi.tl(s));
+			list.add(ChatApiOld.tl(s));
 		}
 	    return list;
 	}

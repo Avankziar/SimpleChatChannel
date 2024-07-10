@@ -5,18 +5,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 public class ClickChatCommandExecutor implements CommandExecutor
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public ClickChatCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public ClickChatCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		this.plugin = plugin;
 		ClickChatCommandExecutor.cc = cc;
@@ -52,9 +50,10 @@ public class ClickChatCommandExecutor implements CommandExecutor
     	{
     		msg += args[i]+" "; 
     	}
-		t.spigot().sendMessage(ChatApi.apiChat(msg, ClickEvent.Action.RUN_COMMAND, args[1],
-				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("CmdClickChat.ClickAnswer")
-				.replace("%number%", args[1])));
+    	t.spigot().sendMessage(ChatApi.tctl(ChatApi.clickHover(msg, 
+    			"RUN_COMMAND", args[1],
+				"SHOW_TEXT", plugin.getYamlHandler().getLang().getString("CmdClickChat.ClickAnswer")
+				.replace("%number%", args[1]))));
     	return false;
 	}
 }

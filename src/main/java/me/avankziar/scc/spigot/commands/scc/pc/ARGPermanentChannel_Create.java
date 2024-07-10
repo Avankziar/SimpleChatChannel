@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
 
 public class ARGPermanentChannel_Create extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Create(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Create(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -41,7 +41,8 @@ public class ARGPermanentChannel_Create extends ArgumentModule
 		PermanentChannel check = PermanentChannel.getChannelFromName(name);
 		if(check != null)
 		{
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Create.ChannelNameAlreadyExist")));
+			player.spigot().sendMessage(ChatApi.tctl(
+					plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Create.ChannelNameAlreadyExist")));
 			return;
 		}
 		int amount = 0;
@@ -54,7 +55,8 @@ public class ARGPermanentChannel_Create extends ArgumentModule
 		}
 		if(plugin.getYamlHandler().getConfig().getInt("PermanentChannel.AmountPerPlayer") <= amount)
 		{
-			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Create.MaximumAmount")));
+			player.spigot().sendMessage(ChatApi.tctl(
+					plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Create.MaximumAmount")));
 			return;
 		}
 		String symbol = name;
@@ -78,8 +80,8 @@ public class ARGPermanentChannel_Create extends ArgumentModule
 		PermanentChannel cc = new PermanentChannel(0, name, player.getUniqueId().toString(), new ArrayList<String>(), 
 				members, password, new ArrayList<String>(),
 				symbol, color, color);
-		plugin.getMysqlHandler().create(MysqlHandler.Type.PERMANENTCHANNEL, cc);
-		int last = plugin.getMysqlHandler().lastID(MysqlHandler.Type.PERMANENTCHANNEL);
+		plugin.getMysqlHandler().create(MysqlType.PERMANENTCHANNEL, cc);
+		int last = plugin.getMysqlHandler().lastID(MysqlType.PERMANENTCHANNEL);
 		cc.setId(last);
 		PermanentChannel.addCustomChannel(cc);
 		if(password == null)

@@ -11,8 +11,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee;
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 public class TitleMessageToBungeeProvider implements TitleMessageToBungee
 {
@@ -80,7 +80,7 @@ public class TitleMessageToBungeeProvider implements TitleMessageToBungee
 		{
 			p = true;
 		}
-		Player player = SimpleChatChannels.getPlugin().getServer().getPlayer(uuid);
+		Player player = SCC.getPlugin().getServer().getPlayer(uuid);
 		if(player != null && player.isOnline())
 		{
 			sendWhenOnlineOnLocalServer(player, title, subtitle, fadeIn, stay, fadeOut, s, sound,
@@ -299,7 +299,7 @@ public class TitleMessageToBungeeProvider implements TitleMessageToBungee
 			if(player != null)
 			{
 				player.sendPluginMessage(
-		        		SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+		        		SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
 				break;
 			}
 		}

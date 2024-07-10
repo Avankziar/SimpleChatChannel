@@ -3,23 +3,23 @@ package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
-import main.java.me.avankziar.scc.objects.chat.Channel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Info extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Info(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Info(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -35,7 +35,7 @@ public class ARGPermanentChannel_Info extends ArgumentModule
 			cc = PermanentChannel.getChannelFromPlayer(player.getUniqueId().toString());
 			if(cc == null)
 			{
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")));
+				player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")));
 				return;
 			}
 		} else
@@ -44,26 +44,26 @@ public class ARGPermanentChannel_Info extends ArgumentModule
 			cc = PermanentChannel.getChannelFromName(channel);
 			if(cc == null)
 			{
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
+				player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 						.replace("%channel%", channel)));
 				return;
 			}
 		}
 		Channel c = plugin.getChannel("Permanent");
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Headline")
 				.replace("%channel%", cc.getNameColor()+cc.getName())));
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.ID")
 				.replace("%id%", cc.getId()+"")));
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Creator")
 				.replace("%creator%", getPlayer(cc.getCreator()))));
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Vice")
 				.replace("%amount%", String.valueOf(cc.getVice().size()))
 				.replace("%vice%", getPlayers(cc.getVice()))));
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Members")
 				.replace("%amount%", String.valueOf(cc.getMembers().size()))
 				.replace("%members%", getPlayers(cc.getMembers()))));
@@ -73,21 +73,21 @@ public class ARGPermanentChannel_Info extends ArgumentModule
 					|| cc.getVice().contains(player.getUniqueId().toString())
 					|| player.hasPermission(BypassPermission.PERMBYPASSPC))
 			{
-				player.sendMessage(ChatApi.tctl(
+				player.sendMessage(ChatApiOld.tctl(
 						plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Password")
 						.replace("%password%", cc.getPassword())));
 			}
 		}
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Symbol")
 				.replace("%symbol%", (c != null) ? c.getSymbol() : "" + cc.getSymbolExtra())));
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.NameColor")
 				.replace("%color%", cc.getNameColor()+cc.getName())));
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.ChatColor")
 				.replace("%color%", cc.getChatColor())));
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Info.Banned")
 				.replace("%amount%", String.valueOf(cc.getBanned().size()))
 				.replace("%banned%", getPlayers(cc.getBanned()))));

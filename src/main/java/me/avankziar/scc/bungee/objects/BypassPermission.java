@@ -1,7 +1,7 @@
 package main.java.me.avankziar.scc.bungee.objects;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import net.md_5.bungee.config.Configuration;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import main.java.me.avankziar.scc.bungee.SCC;
 
 public class BypassPermission
 {
@@ -34,9 +34,9 @@ public class BypassPermission
 	
 	public static String PERMBYPASSWORDFILTER = "";
 	
-	public static void init(SimpleChatChannels plugin)
+	public static void init(SCC plugin)
 	{
-		Configuration yml = plugin.getYamlHandler().getCommands();
+		YamlDocument yml = plugin.getYamlHandler().getCommands();
 		String bp = "Bypass.";
 		String normal = "scc.channel.";
 		String by = "scc.bypass.";

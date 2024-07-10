@@ -4,24 +4,23 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler.Type;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
 public class BackgroundTask 
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private ArrayList<String> players;
 	private ScheduledTask runCleanUp;
 	
-	public BackgroundTask(SimpleChatChannels plugin)
+	public BackgroundTask(SCC plugin)
 	{
 		this.plugin = plugin;
 		players = new ArrayList<String>();
@@ -45,7 +44,7 @@ public class BackgroundTask
 		final int days = plugin.getYamlHandler().getConfig().getInt("CleanUp.DeleteReadedMailWhichIsOlderThanDays", 120);
 		final long d = (long)days*1000L*60*60*24;
 		final long lasttime = System.currentTimeMillis()-d;
-		plugin.getMysqlHandler().deleteData(Type.MAIL, "`readeddate` != ? AND `readeddate` < ?", 0, lasttime);
+		plugin.getMysqlHandler().deleteData(MysqlType.MAIL, "`readeddate` != ? AND `readeddate` < ?", 0, lasttime);
 	}
 	
 	private void runTaskCleanUp()
@@ -54,7 +53,7 @@ public class BackgroundTask
 		final long d = (long)days*1000L*60*60*24;
 		final long lasttime = System.currentTimeMillis()-d;
 		final ArrayList<ChatUser> users = ConvertHandler.convertListI(plugin.getMysqlHandler()
-				.getAllListAt(Type.CHATUSER, "`id`", false, "?", 1));
+				.getFullList(MysqlType.CHATUSER, "`id` ASC", "?", 1));
 		runCleanUp = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
 		{
 			int count = 0;
@@ -72,10 +71,10 @@ public class BackgroundTask
 				if(lasttime >= user.getLastTimeJoined())
 				{
 					final String uuid = user.getUUID();
-					plugin.getMysqlHandler().deleteData(Type.USEDCHANNEL, "`player_uuid` = ?", uuid);
-					plugin.getMysqlHandler().deleteData(Type.ITEMJSON, "`owner` = ?", uuid);
-					plugin.getMysqlHandler().deleteData(Type.IGNOREOBJECT, "`player_uuid` = ? OR `ignore_uuid` = ?", uuid, uuid);
-					plugin.getMysqlHandler().deleteData(Type.CHATUSER, "`player_uuid` = ?", uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.USEDCHANNEL, "`player_uuid` = ?", uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.ITEMJSON, "`owner` = ?", uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.IGNOREOBJECT, "`player_uuid` = ? OR `ignore_uuid` = ?", uuid, uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.CHATUSER, "`player_uuid` = ?", uuid);
 					deleted++;
 				}
 				count++;
@@ -111,7 +110,7 @@ public class BackgroundTask
 			{
 				for(ProxiedPlayer player : plugin.getProxy().getPlayers())
 				{
-					ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER, "`player_uuid` = ?",
+					ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlType.CHATUSER, "`player_uuid` = ?",
 							player.getUniqueId().toString());
 					if(cu == null)
 					{
@@ -123,14 +122,14 @@ public class BackgroundTask
 						if(mutetime < System.currentTimeMillis())
 						{
 							cu.setMuteTime(0L);
-							plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?",
+							plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu, "`player_uuid` = ?",
 									player.getUniqueId().toString());
 							ChatUser chu = ChatUserHandler.getChatUser(player.getUniqueId());
 							if(chu != null)
 							{
 								chu.setMuteTime(0L);
 							}
-							player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.YouHaveBeenUnmute")));
+							player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.YouHaveBeenUnmute")));
 						}
 					}
 				}
@@ -140,16 +139,16 @@ public class BackgroundTask
 	
 	public void initPermanentChannels()
 	{
-		int lastid = plugin.getMysqlHandler().lastID(MysqlHandler.Type.PERMANENTCHANNEL);
+		int lastid = plugin.getMysqlHandler().lastID(MysqlType.PERMANENTCHANNEL);
 		if(lastid == 0)
 		{
 			return;
 		}
 		for(int i = 1; i <= lastid; i++)
 		{
-			if(plugin.getMysqlHandler().exist(MysqlHandler.Type.PERMANENTCHANNEL, "`id` = ?", i))
+			if(plugin.getMysqlHandler().exist(MysqlType.PERMANENTCHANNEL, "`id` = ?", i))
 			{
-				PermanentChannel pc = (PermanentChannel) plugin.getMysqlHandler().getData(MysqlHandler.Type.PERMANENTCHANNEL,
+				PermanentChannel pc = (PermanentChannel) plugin.getMysqlHandler().getData(MysqlType.PERMANENTCHANNEL,
 						"`id` = ?", i);
 				PermanentChannel.addCustomChannel(pc);
 			}

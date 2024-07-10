@@ -1,20 +1,20 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Unban extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Unban(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Unban(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -28,32 +28,32 @@ public class ARGPermanentChannel_Unban extends ArgumentModule
 		PermanentChannel cc = PermanentChannel.getChannelFromName(channel);
 		if(cc==null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", channel)));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString())
 				&& !cc.getVice().contains(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl("CmdScc.PermanentChannel.YouAreNotTheOwnerOrVice"));
+			player.sendMessage(ChatApiOld.tctl("CmdScc.PermanentChannel.YouAreNotTheOwnerOrVice"));
 			return;
 		}
 		String otherplayer = args[3];
 		String targetuuid = Utility.convertNameToUUID(otherplayer).toString();
 		if(targetuuid == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
 		if(!cc.getBanned().contains(targetuuid))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Unban.PlayerNotBanned")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Unban.PlayerNotBanned")));
 			return;
 		}
 		
 		cc.removeBanned(targetuuid);
 		plugin.getUtility().updatePermanentChannels(cc);
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Unban.YouUnbanPlayer")
+		player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Unban.YouUnbanPlayer")
 				.replace("%player%", otherplayer)));
 		
 		ProxiedPlayer target = ProxyServer.getInstance().getPlayer(otherplayer);
@@ -62,13 +62,13 @@ public class ARGPermanentChannel_Unban extends ArgumentModule
 				.replace("%channel%", cc.getNameColor()+cc.getName());
 		if(target != null)
 		{
-			target.sendMessage(ChatApi.tctl(msg));
+			target.sendMessage(ChatApiOld.tctl(msg));
 		}
 		for(ProxiedPlayer members : ProxyServer.getInstance().getPlayers())
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.sendMessage(ChatApi.tctl(msg));
+				members.sendMessage(ChatApiOld.tctl(msg));
 			}
 		}
 	}

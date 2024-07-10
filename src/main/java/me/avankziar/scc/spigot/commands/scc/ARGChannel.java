@@ -3,20 +3,20 @@ package main.java.me.avankziar.scc.spigot.commands.scc;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.objects.chat.UsedChannel;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.UsedChannel;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 
 public class ARGChannel extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGChannel(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGChannel(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -30,7 +30,7 @@ public class ARGChannel extends ArgumentModule
 		updateUsedChannel(plugin, player, channel);
 	}
 	
-	public static boolean updateUsedChannel(SimpleChatChannels plugin, final Player player, String channelString)
+	public static boolean updateUsedChannel(SCC plugin, final Player player, String channelString)
 	{
 		Channel channel = plugin.getChannel(channelString);
 		if(channel == null)
@@ -57,7 +57,7 @@ public class ARGChannel extends ArgumentModule
 					.replace("%channel%", usedChannel.getUniqueIdentifierName())));
 		}
 		Utility.playerUsedChannels.get(player.getUniqueId().toString()).replace(channel.getUniqueIdentifierName(), usedChannel);
-		plugin.getMysqlHandler().updateData(Type.USEDCHANNEL, usedChannel,
+		plugin.getMysqlHandler().updateData(MysqlType.USEDCHANNEL, usedChannel,
 				"`uniqueidentifiername` = ? AND `player_uuid` = ?", usedChannel.getUniqueIdentifierName(), usedChannel.getPlayerUUID());
 		return true;
 	}

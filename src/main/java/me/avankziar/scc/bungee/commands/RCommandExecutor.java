@@ -2,20 +2,20 @@ package main.java.me.avankziar.scc.bungee.commands;
 
 import java.util.UUID;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 public class RCommandExecutor extends Command
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public RCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public RCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		super(cc.getName(), null);
 		this.plugin = plugin;
@@ -27,29 +27,29 @@ public class RCommandExecutor extends Command
 	{
 		if (!(sender instanceof ProxiedPlayer)) 
 		{
-			SimpleChatChannels.log.info("/%cmd% is only for ProxiedPlayer!".replace("%cmd%", cc.getName()));
+			plugin.getLogger().info("/%cmd% is only for ProxiedPlayer!".replace("%cmd%", cc.getName()));
 			return;
 		}
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		if(!player.hasPermission(cc.getPermission()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 			return;
 		}
 		if(args.length <= 0)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.PleaseEnterAMessage")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.PleaseEnterAMessage")));
 			return;
 		}
-		if(!SimpleChatChannels.rPlayers.containsKey(player.getUniqueId().toString()))
+		if(!SCC.rPlayers.containsKey(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.YouHaveNoPrivateMessagePartner")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.YouHaveNoPrivateMessagePartner")));
 			return;
 		}
-		ProxiedPlayer other = plugin.getProxy().getPlayer(UUID.fromString(SimpleChatChannels.rPlayers.get(player.getUniqueId().toString())));
+		ProxiedPlayer other = plugin.getProxy().getPlayer(UUID.fromString(SCC.rPlayers.get(player.getUniqueId().toString())));
 		if(other == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotOnline")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotOnline")));
 			return;
 		}
 		String message = "";

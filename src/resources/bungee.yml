@@ -1,0 +1,5 @@
+name: SimpleChatChannels
+main: main.java.me.avankziar.scc.bungee.SCC
+version: 42
+author: Avankziar
+softDepends: [InterfaceHub, RootAdministration]

@@ -3,18 +3,18 @@ package main.java.me.avankziar.scc.spigot.commands.scc;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.handler.ChatHandlerAdventure;
 
 public class ARGBroadcastWorld extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGBroadcastWorld(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGBroadcastWorld(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -33,13 +33,13 @@ public class ARGBroadcastWorld extends ArgumentModule
 				message += " ";
 			}
         }
-		Channel usedChannel = SimpleChatChannels.channels.get(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
+		Channel usedChannel = SCC.channels.get(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
 		if(usedChannel == null)
 		{
 			sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.UsedChannelForBroadCastDontExist")));
 			return;
 		}
-		ChatHandler ch = new ChatHandler(plugin);
+		ChatHandlerAdventure ch = new ChatHandlerAdventure(plugin);
 		ch.sendBroadCast(sender, usedChannel, message, player.getWorld().getName());
 	}
 }

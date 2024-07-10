@@ -2,20 +2,20 @@ package main.java.me.avankziar.scc.bungee.commands.scc;
 
 import java.util.LinkedHashMap;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler.QueryType;
-import main.java.me.avankziar.scc.handlers.TimeHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.QueryType;
+import main.java.me.avankziar.scc.general.handlers.TimeHandler;
 import net.md_5.bungee.api.CommandSender;
 
 public class ARGPerformance extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPerformance(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPerformance(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -24,10 +24,10 @@ public class ARGPerformance extends ArgumentModule
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Performance.Headline")
+		sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Performance.Headline")
 				.replace("%time%", TimeHandler.getDateTime(System.currentTimeMillis()))));
 		String msg = plugin.getYamlHandler().getLang().getString("CmdScc.Performance.Text");
-		sender.sendMessage(ChatApi.tctl(msg
+		sender.sendMessage(ChatApiOld.tctl(msg
 				.replace("%server%", "BungeeCord")
 				.replace("%insert%", String.valueOf(MysqlHandler.inserts))
 				.replace("%update%", String.valueOf(MysqlHandler.updates))
@@ -48,14 +48,14 @@ public class ARGPerformance extends ArgumentModule
 			totalUpdates += update;
 			totalDeletes += delete;
 			totalReads += read;
-			sender.sendMessage(ChatApi.tctl(msg
+			sender.sendMessage(ChatApiOld.tctl(msg
 				.replace("%server%", server)
 				.replace("%insert%", String.valueOf(insert))
 				.replace("%update%", String.valueOf(update))
 				.replace("%delete%", String.valueOf(delete))
 				.replace("%read%", String.valueOf(read))));
 		}
-		sender.sendMessage(ChatApi.tctl(msg
+		sender.sendMessage(ChatApiOld.tctl(msg
 				.replace("%server%", "Total")
 				.replace("%insert%", String.valueOf(totalInserts))
 				.replace("%update%", String.valueOf(totalUpdates))
@@ -63,7 +63,7 @@ public class ARGPerformance extends ArgumentModule
 				.replace("%read%", String.valueOf(totalReads))));
 		long diff = System.currentTimeMillis()-MysqlHandler.startRecordTime;
 		int sec = (int)((double)diff/1000);
-		sender.sendMessage(ChatApi.tctl(msg
+		sender.sendMessage(ChatApiOld.tctl(msg
 				.replace("%server%", "Total/sec")
 				.replace("%insert%", String.valueOf(totalInserts/sec))
 				.replace("%update%", String.valueOf(totalUpdates/sec))

@@ -3,19 +3,19 @@ package main.java.me.avankziar.scc.spigot.commands.scc.pc;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
 
 public class ARGPermanentChannel_Kick extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Kick(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Kick(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -41,7 +41,7 @@ public class ARGPermanentChannel_Kick extends ArgumentModule
 					.replace("%channel%", cc.getNameColor()+cc.getName())));
 			return;
 		}
-		ChatUser cuoffline = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,"`player_name` = ?", other);
+		ChatUser cuoffline = (ChatUser) plugin.getMysqlHandler().getData(MysqlType.CHATUSER,"`player_name` = ?", other);
 		if(cuoffline == null)
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));

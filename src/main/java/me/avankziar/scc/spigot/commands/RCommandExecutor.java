@@ -7,17 +7,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
-import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.spigot.SCC;
+import main.java.me.avankziar.scc.spigot.handler.ChatHandlerAdventure;
 
 public class RCommandExecutor implements CommandExecutor
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public RCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public RCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		this.plugin = plugin;
 		RCommandExecutor.cc = cc;
@@ -28,7 +28,7 @@ public class RCommandExecutor implements CommandExecutor
 	{
 		if (!(sender instanceof Player)) 
 		{
-			SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+			SCC.logger.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
 			return false;
 		}
 		Player player = (Player) sender;
@@ -42,12 +42,12 @@ public class RCommandExecutor implements CommandExecutor
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.PleaseEnterAMessage")));
 			return false;
 		}
-		if(!SimpleChatChannels.rPlayers.containsKey(player.getUniqueId().toString()))
+		if(!SCC.rPlayers.containsKey(player.getUniqueId().toString()))
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMsg.YouHaveNoPrivateMessagePartner")));
 			return false;
 		}
-		Player other = plugin.getServer().getPlayer(UUID.fromString(SimpleChatChannels.rPlayers.get(player.getUniqueId().toString())));
+		Player other = plugin.getServer().getPlayer(UUID.fromString(SCC.rPlayers.get(player.getUniqueId().toString())));
 		if(other == null)
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotOnline")));
@@ -64,7 +64,7 @@ public class RCommandExecutor implements CommandExecutor
 			}
 			i++;
 		}
-		ChatHandler ch = new ChatHandler(plugin);
+		ChatHandlerAdventure ch = new ChatHandlerAdventure(plugin);
 		if(!ch.prePreCheck(player, message))
 		{
 			return false;

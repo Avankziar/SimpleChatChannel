@@ -5,25 +5,23 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.Mail;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.Mail;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGSend extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGSend(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGSend(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -55,7 +53,7 @@ public class ARGSend extends ArgumentModule
 				UUID uuid = Utility.convertNameToUUID(s);
 				if(uuid == null)
 				{
-					sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
+					sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
 					return;
 				}
 				ccuuid += uuid.toString()+ccseperator;
@@ -69,7 +67,7 @@ public class ARGSend extends ArgumentModule
 			UUID uuid = Utility.convertNameToUUID(reciver);
 			if(uuid == null)
 			{
-				sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
+				sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.PlayerNotExist")));
 				return;
 			}
 			ccuuid += uuid.toString();
@@ -97,7 +95,7 @@ public class ARGSend extends ArgumentModule
 		}
 		if(rawText.isEmpty())
 		{
-			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.OneWordMinimum")));
+			sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Send.OneWordMinimum")));
 			return;
 		}
 		boolean alreadySended = false;
@@ -123,13 +121,13 @@ public class ARGSend extends ArgumentModule
 			}
 			Mail mail = new Mail(0, senderuuid, sendername, u, s,
 					ccu, ccn, System.currentTimeMillis(), 0L, subject, rawText);
-			plugin.getMysqlHandler().create(Type.MAIL, mail);
+			plugin.getMysqlHandler().create(MysqlType.MAIL, mail);
 			if(isPlayer && !alreadySended)
 			{
 				alreadySended = true;
 				ProxiedPlayer originPlayer = (ProxiedPlayer) sender;
-				originPlayer.sendMessage(ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Send.Sended"),
-						HoverEvent.Action.SHOW_TEXT,
+				originPlayer.sendMessage(ChatApiOld.hover(plugin.getYamlHandler().getLang().getString("CmdMail.Send.Sended"),
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Send.SendedHover")
 						.replace("%subject%", subject)
 						.replace("%cc%", (ccn.isEmpty() ? reciver : ccn))));
@@ -137,11 +135,11 @@ public class ARGSend extends ArgumentModule
 			ProxiedPlayer player = plugin.getProxy().getPlayer(u);
 			if(player != null)
 			{
-				player.sendMessage(ChatApi.apiChat(
+				player.sendMessage(ChatApiOld.clickHover(
 						plugin.getYamlHandler().getLang().getString("CmdMail.Send.HasNewMail"),
-						ClickEvent.Action.RUN_COMMAND,
+						"RUN_COMMAND",
 						PluginSettings.settings.getCommands(KeyHandler.MAIL).trim(),
-						HoverEvent.Action.SHOW_TEXT,
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
 			}
 		}

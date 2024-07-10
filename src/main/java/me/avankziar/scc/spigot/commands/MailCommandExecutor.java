@@ -8,29 +8,25 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.handlers.MatchApi;
-import main.java.me.avankziar.scc.handlers.TimeHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.Mail;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.handlers.MatchApi;
+import main.java.me.avankziar.scc.general.handlers.TimeHandler;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.Mail;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class MailCommandExecutor implements CommandExecutor
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public MailCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public MailCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		this.plugin = plugin;
 		MailCommandExecutor.cc = cc;
@@ -41,7 +37,7 @@ public class MailCommandExecutor implements CommandExecutor
 	{
 		if (!(sender instanceof Player)) 
 		{
-			SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+			SCC.logger.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
 			return false;
 		}
 		Player player = (Player) sender;
@@ -95,7 +91,7 @@ public class MailCommandExecutor implements CommandExecutor
 								}
 							} else
 							{
-								SimpleChatChannels.log.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
+								SCC.logger.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
 										.replace("%ac%", ac.getName()));
 								player.spigot().sendMessage(ChatApi.tctl(
 										"ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
@@ -110,8 +106,9 @@ public class MailCommandExecutor implements CommandExecutor
 						}
 					} else if(length > ac.maxArgsConstructor) 
 					{
-						player.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
-								ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
+						player.spigot().sendMessage(ChatApi.tctl(ChatApi.click(
+								plugin.getYamlHandler().getLang().getString("InputIsWrong"),
+								"RUN_COMMAND", SCC.infoCommand)));
 						return false;
 					} else
 					{
@@ -121,8 +118,9 @@ public class MailCommandExecutor implements CommandExecutor
 				}
 			}
 		}
-		player.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
-				ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
+		player.spigot().sendMessage(ChatApi.tctl(ChatApi.click(
+				plugin.getYamlHandler().getLang().getString("InputIsWrong"),
+				"RUN_COMMAND", SCC.infoCommand)));
 		return false;
 	}
 	
@@ -131,19 +129,19 @@ public class MailCommandExecutor implements CommandExecutor
 		int start = page*10;
 		int amount = 10;
 		String uuid = player.getUniqueId().toString();
-		int unreadedMails = plugin.getMysqlHandler().getCount(Type.MAIL, "`id`",
+		int unreadedMails = plugin.getMysqlHandler().getCount(MysqlType.MAIL,
 				"`reciver_uuid` = ? AND `readeddate` = ?", uuid, 0);
 		if(unreadedMails == 0)
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Base.NoUnreadMail")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Base.NoUnreadMail")));
 		} else
 		{
 			ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getList(
-					Type.MAIL, "`sendeddate`", false, start, amount, "`reciver_uuid` = ? AND `readeddate` = ?", uuid, 0));
-			ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
+					MysqlType.MAIL, "`sendeddate` ASC", start, amount, "`reciver_uuid` = ? AND `readeddate` = ?", uuid, 0));
+			ArrayList<String> list = new ArrayList<>();
 			for(Mail mail : mails)
 			{
-				ArrayList<BaseComponent> sublist = new ArrayList<>();
+				ArrayList<String> sublist = new ArrayList<>();
 				String cc = mail.getCarbonCopyNames();
 				boolean ccExist = true;
 				String senders = mail.getSender();
@@ -152,30 +150,30 @@ public class MailCommandExecutor implements CommandExecutor
 				{
 					ccExist = false;
 				}
-				TextComponent tcRead = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Click"),
-						ClickEvent.Action.RUN_COMMAND,
+				String tcRead = ChatApi.clickHover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Click"),
+						"RUN_COMMAND",
 						PluginSettings.settings.getCommands(KeyHandler.MAIL_READ)+mail.getId(),
-						HoverEvent.Action.SHOW_TEXT,
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Hover"));
-				TextComponent tcSendPlus = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendPlus.Click"),
-						ClickEvent.Action.SUGGEST_COMMAND,
+				String tcSendPlus = ChatApi.clickHover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendPlus.Click"),
+						"SUGGEST_COMMAND",
 						PluginSettings.settings.getCommands(KeyHandler.MAIL_SEND)+cc+" Re:"+mail.getSubject()+" "+sep+" ",
-						HoverEvent.Action.SHOW_TEXT,
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendPlus.Hover"));
-				TextComponent tcSendMinus = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendMinus.Click"),
-						ClickEvent.Action.SUGGEST_COMMAND,
+				String tcSendMinus = ChatApi.clickHover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendMinus.Click"),
+						"SUGGEST_COMMAND",
 						PluginSettings.settings.getCommands(KeyHandler.MAIL_SEND)+senders+" Re:"+mail.getSubject()+" "+sep+" ",
-						HoverEvent.Action.SHOW_TEXT,
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Base.SendMinus.Hover"));
-				TextComponent tcForward = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Click"),
-						ClickEvent.Action.SUGGEST_COMMAND,
+				String tcForward = ChatApi.clickHover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Click"),
+						"SUGGEST_COMMAND",
 						PluginSettings.settings.getCommands(KeyHandler.MAIL_FORWARD)+mail.getId()+" ",
-						HoverEvent.Action.SHOW_TEXT,
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Hover"));
-				TextComponent tc = ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Text")
+				String tc = ChatApi.hover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Text")
 						.replace("%sender%", senders)
-						.replace("%subject%", mail.getSubject())
-						, HoverEvent.Action.SHOW_TEXT,
+						.replace("%subject%", mail.getSubject()), 
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Hover")
 						.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
 						.replace("%readeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
@@ -188,15 +186,13 @@ public class MailCommandExecutor implements CommandExecutor
 				sublist.add(tcSendMinus);
 				sublist.add(tcForward);
 				sublist.add(tc);
-				list.add(sublist);
+				list.add(String.join("", sublist));
 			}
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Headline")
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Headline")
 					.replace("%mailscount%", String.valueOf(unreadedMails))));
-			for(ArrayList<BaseComponent> sub : list)
+			for(String sub : list)
 			{
-				TextComponent tc = ChatApi.tc("");
-				tc.setExtra(sub);
-				player.spigot().sendMessage(tc);
+				player.spigot().sendMessage(ChatApi.tctl(sub));
 			}
 		}
 	}

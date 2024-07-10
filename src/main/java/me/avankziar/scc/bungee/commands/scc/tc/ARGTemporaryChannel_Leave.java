@@ -1,18 +1,18 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.tc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGTemporaryChannel_Leave extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGTemporaryChannel_Leave(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGTemporaryChannel_Leave(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -25,7 +25,7 @@ public class ARGTemporaryChannel_Leave extends ArgumentModule
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.YouAreNotInAChannel")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.YouAreNotInAChannel")));
 			return;
 		}
 		final String name = cc.getName();
@@ -43,7 +43,7 @@ public class ARGTemporaryChannel_Leave extends ArgumentModule
 			if(newcreator!=null)
 			{
 				cc.setCreator(newcreator);
-    			newcreator.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.NewCreator")
+    			newcreator.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.NewCreator")
     					.replace("%channel%", cc.getName())));
 			} else 
 			{
@@ -52,7 +52,7 @@ public class ARGTemporaryChannel_Leave extends ArgumentModule
 			}
 			
 		}
-		player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.YouLeft")
+		player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Leave.YouLeft")
 				.replace("%channel%", name)));
 	}
 }

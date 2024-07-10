@@ -3,11 +3,11 @@ package main.java.me.avankziar.scc.bungee.listener;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ServerLocation;
-import main.java.me.avankziar.scc.objects.chat.Channel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.ServerLocation;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -16,12 +16,12 @@ import net.md_5.bungee.event.EventPriority;
 
 public class ChatListener implements Listener 
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	public static LinkedHashMap<String, LinkedHashMap<String, Long>> spamMap = new LinkedHashMap<>();
 	public static LinkedHashMap<String, LinkedHashMap<String, String>> spamMapII = new LinkedHashMap<>();
 	public static LinkedHashMap<String, ServerLocation> playerLocation = new LinkedHashMap<>();
 	
-	public ChatListener(SimpleChatChannels plugin)
+	public ChatListener(SCC plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -59,32 +59,32 @@ public class ChatListener implements Listener
 		 * Define which channel the players use.
 		 */
 		Channel usedChannel = null;
-		for(String entrySymbol : SimpleChatChannels.channels.keySet())
+		for(String entrySymbol : SCC.channels.keySet())
 		{
 			if(message.startsWith(entrySymbol))
 			{
-				usedChannel = SimpleChatChannels.channels.get(entrySymbol);
+				usedChannel = SCC.channels.get(entrySymbol);
 				break;
 			}
 		}
-		if(usedChannel == null && SimpleChatChannels.nullChannel != null)
+		if(usedChannel == null && SCC.nullChannel != null)
 		{
-			usedChannel = SimpleChatChannels.nullChannel;
+			usedChannel = SCC.nullChannel;
 		}
 		if(usedChannel == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.NoChannelIsNullChannel")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.NoChannelIsNullChannel")));
 			return;
 		}
 		/*
 		 * Trim the orginal message, and if the message is empty, so return;
 		 */
-		if(!usedChannel.getUniqueIdentifierName().equals(SimpleChatChannels.nullChannel.getUniqueIdentifierName())
+		if(!usedChannel.getUniqueIdentifierName().equals(SCC.nullChannel.getUniqueIdentifierName())
 				&& !usedChannel.getUniqueIdentifierName().equals("Private"))
 		{
 			if(message.length() <= usedChannel.getSymbol().length())
 			{
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
+				player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("ChatListener.StringTrim")));
 				return;
 			}
 			message = message.substring(usedChannel.getSymbol().length());

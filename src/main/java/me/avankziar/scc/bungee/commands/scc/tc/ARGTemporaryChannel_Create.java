@@ -2,19 +2,19 @@ package main.java.me.avankziar.scc.bungee.commands.scc.tc;
 
 import java.util.ArrayList;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGTemporaryChannel_Create extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGTemporaryChannel_Create(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGTemporaryChannel_Create(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -27,7 +27,7 @@ public class ARGTemporaryChannel_Create extends ArgumentModule
 		TemporaryChannel cc = TemporaryChannel.getCustomChannel(player);
 		if(cc != null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Create.AlreadyInAChannel")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Create.AlreadyInAChannel")
 					.replace("%channel%", cc.getName())));
 			return;
 		}
@@ -47,12 +47,12 @@ public class ARGTemporaryChannel_Create extends ArgumentModule
 		TemporaryChannel.addCustomChannel(cc);
 		if(password == null)
 		{
-			player.sendMessage(ChatApi.tctl(
+			player.sendMessage(ChatApiOld.tctl(
 					plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Create.ChannelCreateWithoutPassword")
 					.replace("%channel%", cc.getName())));
 		} else
 		{
-			player.sendMessage(ChatApi.tctl(
+			player.sendMessage(ChatApiOld.tctl(
 					plugin.getYamlHandler().getLang().getString("CmdScc.TemporaryChannel.Create.ChannelCreateWithPassword")
 					.replace("%channel%", cc.getName())
 					.replace("%password%", password)));

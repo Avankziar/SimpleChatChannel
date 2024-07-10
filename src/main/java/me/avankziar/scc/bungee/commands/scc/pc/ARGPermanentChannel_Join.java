@@ -1,20 +1,20 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
-import main.java.me.avankziar.scc.objects.chat.Channel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Join extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Join(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Join(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -37,24 +37,24 @@ public class ARGPermanentChannel_Join extends ArgumentModule
 		PermanentChannel cc = PermanentChannel.getChannelFromName(name);
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(
+			player.sendMessage(ChatApiOld.tctl(
 					plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.UnknownChannel")
 					.replace("%name%", name)));
 			return;
 		}
 		if(cc.getBanned().contains(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.Banned")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.Banned")));
 			return;
 		}
 		if(cc.getMembers().contains(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.AlreadyInTheChannel")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.AlreadyInTheChannel")));
 			return;
 		}
 		if(password == null && cc.getPassword() != null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.ChannelHasPassword")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.ChannelHasPassword")));
 			return;
 		} else
 		{
@@ -62,7 +62,7 @@ public class ARGPermanentChannel_Join extends ArgumentModule
 					&& password != null
 					&& !cc.getPassword().equals(password))
 			{
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.PasswordIncorrect")));
+				player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.PasswordIncorrect")));
 				return;
 			}
 		}
@@ -70,7 +70,7 @@ public class ARGPermanentChannel_Join extends ArgumentModule
 		plugin.getUtility().updatePermanentChannels(cc);
 		
 		Channel c = plugin.getChannel("Permanent");
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Join.ChannelJoined")
 				.replace("%channel%", cc.getNameColor()+cc.getName())
 				.replace("%symbol%", (c != null) ? c.getSymbol() : ""+cc.getSymbolExtra())));
@@ -82,7 +82,7 @@ public class ARGPermanentChannel_Join extends ArgumentModule
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.sendMessage(ChatApi.tctl(msg));
+				members.sendMessage(ChatApiOld.tctl(msg));
 			}
 		}
 	}

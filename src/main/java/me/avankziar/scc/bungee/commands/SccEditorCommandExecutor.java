@@ -1,18 +1,18 @@
 package main.java.me.avankziar.scc.bungee.commands;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.CommandConstructor;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.bungee.SCC;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 public class SccEditorCommandExecutor extends Command
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public SccEditorCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public SccEditorCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		super(cc.getName(), null);
 		this.plugin = plugin;
@@ -26,7 +26,7 @@ public class SccEditorCommandExecutor extends Command
     		ProxiedPlayer player = (ProxiedPlayer) sender;
         	if(!player.hasPermission(cc.getPermission()))
     		{
-    			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
+    			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
     			return;
     		}
         	if(args.length == 0)
@@ -34,11 +34,11 @@ public class SccEditorCommandExecutor extends Command
         		if(plugin.editorplayers.contains(player.getName()))
         		{
         			plugin.editorplayers.remove(player.getName());
-        			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+        			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
         		} else
         		{
         			plugin.editorplayers.add(player.getName());
-        			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+        			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
         		}
         		return;
         	} else if(args.length == 1)
@@ -48,11 +48,11 @@ public class SccEditorCommandExecutor extends Command
         			if(plugin.editorplayers.contains(player.getName()))
             		{
             			plugin.editorplayers.remove(player.getName());
-            			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
             		} else
             		{
             			plugin.editorplayers.add(player.getName());
-            			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
             		}
             		return;
         		} else if(args[0].equalsIgnoreCase("false"))
@@ -74,11 +74,11 @@ public class SccEditorCommandExecutor extends Command
         			if(plugin.editorplayers.contains(playername))
             		{
             			plugin.editorplayers.remove(playername);
-            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            			sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
             		} else
             		{
             			plugin.editorplayers.add(playername);
-            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            			sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
             		}
             		return;
         		} else if(args[0].equalsIgnoreCase("false"))
@@ -103,11 +103,11 @@ public class SccEditorCommandExecutor extends Command
         			if(plugin.editorplayers.contains(playername))
             		{
             			plugin.editorplayers.remove(playername);
-            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+            			sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Deactive")));
             		} else
             		{
             			plugin.editorplayers.add(playername);
-            			sender.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
+            			sender.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdEditor.Active")));
             		}
             		return;
         		} else if(args[0].equalsIgnoreCase("false"))

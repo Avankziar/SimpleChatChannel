@@ -9,24 +9,20 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.handlers.MatchApi;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.commands.tree.BaseConstructor;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.general.handlers.MatchApi;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.commands.tree.BaseConstructor;
-import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class SccCommandExecutor implements CommandExecutor
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public SccCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public SccCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		this.plugin = plugin;
 		SccCommandExecutor.cc = cc;
@@ -43,7 +39,7 @@ public class SccCommandExecutor implements CommandExecutor
 		{
 			if (!(sender instanceof Player)) 
 			{
-				SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+				SCC.logger.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
 				return false;
 			}
 			Player player = (Player) sender;
@@ -61,7 +57,7 @@ public class SccCommandExecutor implements CommandExecutor
 		{
 			if (!(sender instanceof Player)) 
 			{
-				SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+				SCC.logger.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
 				return false;
 			}
 			Player player = (Player) sender;
@@ -97,9 +93,9 @@ public class SccCommandExecutor implements CommandExecutor
 								}
 							} else
 							{
-								SimpleChatChannels.log.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
+								SCC.logger.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
 										.replace("%ac%", ac.getName()));
-								sender.sendMessage(ChatApi.tl(
+								sender.spigot().sendMessage(ChatApi.tctl(
 										"ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
 										.replace("%ac%", ac.getName())));
 								return false;
@@ -109,7 +105,7 @@ public class SccCommandExecutor implements CommandExecutor
 						{
 							if (!(sender instanceof Player)) 
 							{
-								SimpleChatChannels.log.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
+								SCC.logger.info("/%cmd% is only for Player!".replace("%cmd%", cc.getName()));
 								return false;
 							}
 							Player player = (Player) sender;
@@ -127,7 +123,7 @@ public class SccCommandExecutor implements CommandExecutor
 									}
 								} else
 								{
-									SimpleChatChannels.log.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
+									SCC.logger.info("ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
 											.replace("%ac%", ac.getName()));
 									player.spigot().sendMessage(ChatApi.tctl(
 											"ArgumentModule from ArgumentConstructor %ac% not found! ERROR!"
@@ -144,7 +140,7 @@ public class SccCommandExecutor implements CommandExecutor
 						
 					}/* else if(length > ac.maxArgsConstructor) 
 					{
-						player.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
+						player.spigot().sendMessage(ChatApi.tctl(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
 								ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
 						return false;
 					}*/ else
@@ -155,8 +151,9 @@ public class SccCommandExecutor implements CommandExecutor
 				}
 			}
 		}
-		sender.spigot().sendMessage(ChatApi.clickEvent(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
-				ClickEvent.Action.RUN_COMMAND, SimpleChatChannels.infoCommand));
+		sender.spigot().sendMessage(ChatApi.tctl(
+				ChatApi.click(plugin.getYamlHandler().getLang().getString("InputIsWrong"),
+				"RUN_COMMAND", SCC.infoCommand)));
 		return false;
 	}
 	
@@ -166,7 +163,7 @@ public class SccCommandExecutor implements CommandExecutor
 		int start = page*10;
 		int end = page*10+9;
 		int last = 0;
-		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("BaseInfo.Headline")));
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("BaseInfo.Headline")));
 		for(BaseConstructor bc : plugin.getHelpList())
 		{
 			if(count >= start && count <= end)
@@ -184,15 +181,15 @@ public class SccCommandExecutor implements CommandExecutor
 		{
 			lastpage = true;
 		}
-		pastNextPage(player, page, lastpage, SimpleChatChannels.infoCommand);
+		pastNextPage(player, page, lastpage, SCC.infoCommand);
 	}
 	
 	private void sendInfo(Player player, BaseConstructor bc)
 	{
-		player.spigot().sendMessage(ChatApi.apiChat(
+		player.spigot().sendMessage(ChatApi.tctl(ChatApi.clickHover(
 				bc.getHelpInfo(),
-				ClickEvent.Action.SUGGEST_COMMAND, bc.getSuggestion(),
-				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("GeneralHover")));
+				"SUGGEST_COMMAND", bc.getSuggestion(),
+				"SHOW_TEXT", plugin.getYamlHandler().getLang().getString("GeneralHover"))));
 	}
 	
 	public static void pastNextPage(Player player,
@@ -204,37 +201,31 @@ public class SccCommandExecutor implements CommandExecutor
 		}
 		int i = page+1;
 		int j = page-1;
-		TextComponent MSG = ChatApi.tctl("");
-		List<BaseComponent> pages = new ArrayList<BaseComponent>();
+		List<String> pages = new ArrayList<>();
 		if(page!=0)
 		{
-			TextComponent msg2 = ChatApi.tctl(
-					SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Past"));
+			String msg2 = SCC.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Past");
 			String cmd = cmdstring+" "+String.valueOf(j);
 			for(String o : objects)
 			{
 				cmd += " "+o;
 			}
-			msg2.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
-			pages.add(msg2);
+			pages.add(ChatApi.click(msg2, "SUGGEST_COMMAND", cmd));
 		}
 		if(!lastpage)
 		{
-			TextComponent msg1 = ChatApi.tctl(
-					SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Next"));
+			String msg1 = SCC.getPlugin().getYamlHandler().getLang().getString("BaseInfo.Next");
 			String cmd = cmdstring+" "+String.valueOf(i);
 			for(String o : objects)
 			{
 				cmd += " "+o;
 			}
-			msg1.setClickEvent( new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd));
 			if(pages.size()==1)
 			{
-				pages.add(ChatApi.tc(" | "));
+				pages.add(" | ");
 			}
-			pages.add(msg1);
+			pages.add(ChatApi.click(msg1, "SUGGEST_COMMAND", cmd));
 		}
-		MSG.setExtra(pages);	
-		player.spigot().sendMessage(MSG);
+		player.spigot().sendMessage(ChatApi.tctl(String.join("", pages)));
 	}
 }

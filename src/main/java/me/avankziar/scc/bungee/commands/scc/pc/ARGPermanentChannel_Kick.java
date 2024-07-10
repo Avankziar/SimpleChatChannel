@@ -1,21 +1,21 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Kick extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Kick(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Kick(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -30,37 +30,37 @@ public class ARGPermanentChannel_Kick extends ArgumentModule
 		PermanentChannel cc = PermanentChannel.getChannelFromName(channel);
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", channel)));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString())
 				&& !cc.getVice().contains(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotTheOwnerOrVice")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotTheOwnerOrVice")
 					.replace("%channel%", cc.getNameColor()+cc.getName())));
 			return;
 		}
-		ChatUser cuoffline = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,"`player_name` = ?", other);
+		ChatUser cuoffline = (ChatUser) plugin.getMysqlHandler().getData(MysqlType.CHATUSER,"`player_name` = ?", other);
 		if(cuoffline == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
 		String targetuuid = cuoffline.getUUID();
 		if(cc.getCreator().equals(targetuuid) && cc.getVice().contains(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Kick.ViceCannotKickCreator")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Kick.ViceCannotKickCreator")));
 			return;
 		}
 		if(!cc.getMembers().contains(targetuuid))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.NotAChannelMember")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.NotAChannelMember")));
 			return;
 		}
 		if(targetuuid.equals(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Kick.CannotSelfKick")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Kick.CannotSelfKick")));
 			return;
 		}
 		cc.removeMembers(targetuuid);
@@ -69,10 +69,10 @@ public class ARGPermanentChannel_Kick extends ArgumentModule
 		if(ProxyServer.getInstance().getPlayer(other) != null)
 		{
 			ProxiedPlayer target = ProxyServer.getInstance().getPlayer(other);
-			target.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Kick.YouWereKicked")
+			target.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Kick.YouWereKicked")
 					.replace("%channel%", cc.getNameColor()+cc.getName())));
 		}
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Kick.YouKicked")
 				.replace("%player%", other).replace("%channel%", cc.getNameColor()+cc.getName())));
 		
@@ -82,7 +82,7 @@ public class ARGPermanentChannel_Kick extends ArgumentModule
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.sendMessage(ChatApi.tctl(msg));
+				members.sendMessage(ChatApiOld.tctl(msg));
 			}
 		}
 	}

@@ -1,21 +1,19 @@
 package main.java.me.avankziar.scc.bungee.commands;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.CommandConstructor;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.bungee.SCC;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 public class ClickChatCommandExecutor extends Command
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public ClickChatCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public ClickChatCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		super(cc.getName(),null);
 		this.plugin = plugin;
@@ -35,7 +33,7 @@ public class ClickChatCommandExecutor extends Command
 			if(!player.hasPermission(cc.getPermission()))
 			{
 				///Du hast dafür keine Rechte!
-				player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
+				player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 				return;
 			}
 		}
@@ -54,8 +52,8 @@ public class ClickChatCommandExecutor extends Command
     		msg += args[i]+" "; 
     	}
     	///Klicke hier um die %number%.te Antwortmöglichkeit zu nehmen!
-		t.sendMessage(ChatApi.apiChat(msg, ClickEvent.Action.RUN_COMMAND, args[1],
-				HoverEvent.Action.SHOW_TEXT, plugin.getYamlHandler().getLang().getString("CmdClickChat.ClickAnswer")
+		t.sendMessage(ChatApiOld.clickHover(msg, "RUN_COMMAND", args[1],
+				"SHOW_TEXT", plugin.getYamlHandler().getLang().getString("CmdClickChat.ClickAnswer")
 				.replace("%number%", args[1])));
     	return;
 	}

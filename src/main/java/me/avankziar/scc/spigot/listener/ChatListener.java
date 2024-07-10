@@ -9,21 +9,21 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ServerLocation;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.ServerLocation;
+import main.java.me.avankziar.scc.spigot.SCC;
+import main.java.me.avankziar.scc.spigot.handler.ChatHandlerAdventure;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 
 public class ChatListener implements Listener
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	public static LinkedHashMap<String, LinkedHashMap<String, Long>> spamMap = new LinkedHashMap<>();
 	public static LinkedHashMap<String, LinkedHashMap<String, String>> spamMapII = new LinkedHashMap<>();
 	public static LinkedHashMap<String, ServerLocation> playerLocation = new LinkedHashMap<>();
 	
-	public ChatListener(SimpleChatChannels plugin)
+	public ChatListener(SCC plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -31,19 +31,23 @@ public class ChatListener implements Listener
 	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onChat(AsyncPlayerChatEvent event) throws InterruptedException, ExecutionException
 	{
-		if(PluginSettings.settings.isBungee())
+		/*if(PluginSettings.settings.isBungee())
 		{
 			return;
-		}
+		}*/
 		Player player = (Player) event.getPlayer();
 		if(plugin.editorplayers.contains(player.getName()))
 		{
 			return;
 		}
 		event.setCancelled(true);
+		if(PluginSettings.settings.isBungee())
+		{
+			return;
+		}
 		
 		String message = event.getMessage().trim();
-		ChatHandler ch = new ChatHandler(plugin);
+		ChatHandlerAdventure ch = new ChatHandlerAdventure(plugin);
 		/*
 		 * PrePreChecks
 		 */
@@ -56,17 +60,17 @@ public class ChatListener implements Listener
 		 * Define which channel the players use.
 		 */
 		Channel usedChannel = null;
-		for(String entrySymbol : SimpleChatChannels.channels.keySet())
+		for(String entrySymbol : SCC.channels.keySet())
 		{
 			if(message.startsWith(entrySymbol))
 			{
-				usedChannel = SimpleChatChannels.channels.get(entrySymbol);
+				usedChannel = SCC.channels.get(entrySymbol);
 				break;
 			}
 		}
-		if(usedChannel == null && SimpleChatChannels.nullChannel != null)
+		if(usedChannel == null && SCC.nullChannel != null)
 		{
-			usedChannel = SimpleChatChannels.nullChannel;
+			usedChannel = SCC.nullChannel;
 		}
 		if(usedChannel == null)
 		{
@@ -76,7 +80,7 @@ public class ChatListener implements Listener
 		/*
 		 * Trim the orginal message, and if the message is empty, so return;
 		 */
-		if(!usedChannel.getUniqueIdentifierName().equals(SimpleChatChannels.nullChannel.getUniqueIdentifierName())
+		if(!usedChannel.getUniqueIdentifierName().equals(SCC.nullChannel.getUniqueIdentifierName())
 				&& !usedChannel.getUniqueIdentifierName().equals("Private"))
 		{
 			if(message.length() <= usedChannel.getSymbol().length())

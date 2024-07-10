@@ -6,9 +6,8 @@ import java.util.Comparator;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.objects.chat.ChatTitle;
-import net.md_5.bungee.BungeeCord;
+import main.java.me.avankziar.scc.bungee.SCC;
+import main.java.me.avankziar.scc.general.objects.ChatTitle;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.chat.ChatTitle
@@ -17,11 +16,11 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	public ArrayList<String> getChatTitle()
 	{
 		ArrayList<String> list = new ArrayList<>();
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			list.add(ct.getUniqueIdentifierName());
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			list.add(ct.getUniqueIdentifierName());
 		}
@@ -31,20 +30,20 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	@Override
 	public ArrayList<String> getChatTitle(UUID uuid)
 	{
-		ProxiedPlayer player = BungeeCord.getInstance().getPlayer(uuid);
+		ProxiedPlayer player = SCC.getPlugin().getProxy().getPlayer(uuid);
 		if(player == null)
 		{
 			return null;
 		}
 		ArrayList<String> list = new ArrayList<>();
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(player.hasPermission(ct.getPermission()))
 			{
 				list.add(ct.getUniqueIdentifierName());
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(player.hasPermission(ct.getPermission()))
 			{
@@ -64,14 +63,14 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 		{
 			return false;
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(ct.getUniqueIdentifierName().equalsIgnoreCase(uniquechattitle))
 			{
 				return false;
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(ct.getUniqueIdentifierName().equalsIgnoreCase(uniquechattitle))
 			{
@@ -88,30 +87,30 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 				weight);
 		if(isPrefix)
 		{
-			SimpleChatChannels.chatTitlesPrefix.add(ct);
+			SCC.chatTitlesPrefix.add(ct);
 		} else
 		{
-			SimpleChatChannels.chatTitlesSuffix.add(ct);
+			SCC.chatTitlesSuffix.add(ct);
 		}
-		SimpleChatChannels.chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
-		Collections.reverse(SimpleChatChannels.chatTitlesPrefix);
-		SimpleChatChannels.chatTitlesSuffix.sort(Comparator.comparing(ChatTitle::getWeight));
-		Collections.reverse(SimpleChatChannels.chatTitlesSuffix);
-		SimpleChatChannels.log.log(Level.INFO, "Register "+uniquechattitle+" ChatTitle!");
+		SCC.chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
+		Collections.reverse(SCC.chatTitlesPrefix);
+		SCC.chatTitlesSuffix.sort(Comparator.comparing(ChatTitle::getWeight));
+		Collections.reverse(SCC.chatTitlesSuffix);
+		SCC.logger.log(Level.INFO, "Register "+uniquechattitle+" ChatTitle!");
 		return true;
 	}
 	
 	@Override
 	public Boolean isPrefix(String uniquechattitle)
 	{
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
 				return ct.isPrefix();
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
@@ -124,14 +123,14 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	@Override
 	public String getInChatName(String uniquechattitle)
 	{
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
 				return ct.getInChatName();
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
@@ -144,14 +143,14 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	@Override
 	public String getInChatColor(String uniquechattitle)
 	{
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
 				return ct.getInChatColorCode();
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
@@ -164,14 +163,14 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	@Override
 	public String getClickEvent(String uniquechattitle)
 	{
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
 				return ct.getClick();
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
@@ -184,14 +183,14 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	@Override
 	public String getHoverEvent(String uniquechattitle)
 	{
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
 				return ct.getHover();
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
@@ -204,14 +203,14 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	@Override
 	public String getPermission(String uniquechattitle)
 	{
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
 				return ct.getPermission();
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
@@ -224,14 +223,14 @@ public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.cha
 	@Override
 	public Integer getWeight(String uniquechattitle)
 	{
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+		for(ChatTitle ct : SCC.chatTitlesPrefix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{
 				return ct.getWeight();
 			}
 		}
-		for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+		for(ChatTitle ct : SCC.chatTitlesSuffix)
 		{
 			if(uniquechattitle.equalsIgnoreCase(ct.getUniqueIdentifierName()))
 			{

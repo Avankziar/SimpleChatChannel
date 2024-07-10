@@ -1,20 +1,20 @@
 package main.java.me.avankziar.scc.bungee.commands.scc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGOption_Channel extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGOption_Channel(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGOption_Channel(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -32,13 +32,13 @@ public class ARGOption_Channel extends ArgumentModule
 		if(cu.isOptionChannelMessage())
 		{
 			cu.setOptionChannelMessage(false);
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Option.Channel.Deactive")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Option.Channel.Deactive")));
 		} else
 		{
 			cu.setOptionChannelMessage(true);
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Option.Channel.Active")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Option.Channel.Active")));
 		}
-		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+		plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu,
 				"`player_uuid` = ?", cu.getUUID());
 	}
 }

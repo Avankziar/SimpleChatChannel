@@ -11,28 +11,24 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
-import main.java.me.avankziar.scc.objects.chat.UsedChannel;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.general.objects.IgnoreObject;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.UsedChannel;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 import main.java.me.avankziar.scc.spigot.objects.TemporaryChannel;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class JoinLeaveListener implements Listener
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public JoinLeaveListener(SimpleChatChannels plugin)
+	public JoinLeaveListener(SCC plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -42,7 +38,7 @@ public class JoinLeaveListener implements Listener
 	{
 		final Player player = event.getPlayer();
 		final String pn = player.getName();
-		final boolean firsttimejoin = !plugin.getMysqlHandler().exist(MysqlHandler.Type.CHATUSER,
+		final boolean firsttimejoin = !plugin.getMysqlHandler().exist(MysqlType.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString());
 		event.setJoinMessage("");
 		/*
@@ -54,8 +50,8 @@ public class JoinLeaveListener implements Listener
 			public void run()
 			{
 				ChatUser cu = plugin.getUtility().controlUsedChannels(player);
-				ArrayList<UsedChannel> usedChannelslist = ConvertHandler.convertListV(plugin.getMysqlHandler().getAllListAt(Type.USEDCHANNEL,
-						"`id`", false, "`player_uuid` = ?", player.getUniqueId().toString()));
+				ArrayList<UsedChannel> usedChannelslist = ConvertHandler.convertListV(plugin.getMysqlHandler().getFullList(MysqlType.USEDCHANNEL,
+						"`id` ASC", "`player_uuid` = ?", player.getUniqueId().toString()));
 				LinkedHashMap<String, UsedChannel> usedChannels = new LinkedHashMap<>();
 				for(UsedChannel uc : usedChannelslist)
 				{
@@ -68,12 +64,12 @@ public class JoinLeaveListener implements Listener
 				if(!cu.getName().equals(pn))
 				{
 					cu.setName(pn);
-					plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+					plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu,
 							"`player_uuid` = ?", cu.getUUID());
 					
 					
 					ArrayList<IgnoreObject> iolist = ConvertHandler.convertListII(
-							plugin.getMysqlHandler().getAllListAt(MysqlHandler.Type.IGNOREOBJECT, "`id`", true,
+							plugin.getMysqlHandler().getFullList(MysqlType.IGNOREOBJECT, "`id` DESC",
 									"`ignore_uuid` = ?", player.getUniqueId().toString()));
 					for(IgnoreObject io : iolist)
 					{
@@ -81,7 +77,7 @@ public class JoinLeaveListener implements Listener
 						{
 							IgnoreObject newio = io;
 							newio.setIgnoreName(pn);
-							plugin.getMysqlHandler().updateData(MysqlHandler.Type.IGNOREOBJECT, newio,
+							plugin.getMysqlHandler().updateData(MysqlType.IGNOREOBJECT, newio,
 									"`player_uuid` = ? AND `ignore_uuid` = ?",
 									io.getUUID(), io.getIgnoreUUID());
 						}
@@ -92,27 +88,27 @@ public class JoinLeaveListener implements Listener
 					return;
 				}
 				cu.setLastTimeJoined(System.currentTimeMillis());
-				plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu,
+				plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu,
 						"`player_uuid` = ?", cu.getUUID());
 				if(cu.isOptionChannelMessage())
 				{
 					player.spigot().sendMessage(ChatApi.tctl(plugin.getUtility().getActiveChannels(cu, usedChannelslist)));
 					if(firsttimejoin)
 					{
-						TextComponent tc = ChatApi.tctl(plugin.getYamlHandler().getLang().getString(
-								"JoinListener.Welcome").replace("%player%", pn));
+						String tc = plugin.getYamlHandler().getLang().getString(
+								"JoinListener.Welcome").replace("%player%", pn);
 						for(Player all : plugin.getServer().getOnlinePlayers())
 						{
-							all.spigot().sendMessage(tc);
+							all.spigot().sendMessage(ChatApi.tctl(tc));
 						}
 					}
 				}
 				
-				TextComponent msg = ChatApi.apiChat(
+				String msg = ChatApi.clickHover(
 						plugin.getYamlHandler().getLang().getString("JoinListener.Join").replace("%player%", pn), 
-						ClickEvent.Action.SUGGEST_COMMAND,
+						"SUGGEST_COMMAND",
 						plugin.getUtility().getPlayerMsgCommand(pn), 
-						HoverEvent.Action.SHOW_TEXT, 
+						"SHOW_TEXT", 
 						plugin.getUtility().getPlayerHover(pn));
 				for(Player all : plugin.getServer().getOnlinePlayers())
 				{
@@ -121,21 +117,21 @@ public class JoinLeaveListener implements Listener
 					{
 						if(allcu.isOptionJoinMessage())
 						{
-							all.spigot().sendMessage(msg);
+							all.spigot().sendMessage(ChatApi.tctl(msg));
 						}
 					}
 				}
-				int unreadedMails = plugin.getMysqlHandler().getCount(Type.MAIL, "`id`",
+				int unreadedMails = plugin.getMysqlHandler().getCount(MysqlType.MAIL,
 						"`reciver_uuid` = ? AND `readeddate` = ?", player.getUniqueId().toString(), 0);
 				if(unreadedMails > 0)
 				{
-					player.spigot().sendMessage(ChatApi.apiChat(
+					player.spigot().sendMessage(ChatApi.tctl(ChatApi.clickHover(
 							plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
 							.replace("%count%", String.valueOf(unreadedMails)),
-							ClickEvent.Action.RUN_COMMAND,
+							"RUN_COMMAND",
 							PluginSettings.settings.getCommands(KeyHandler.MAIL),
-							HoverEvent.Action.SHOW_TEXT,
-							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
+							"SHOW_TEXT",
+							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover"))));
 				}
 			}
 		}.runTaskAsynchronously(plugin);

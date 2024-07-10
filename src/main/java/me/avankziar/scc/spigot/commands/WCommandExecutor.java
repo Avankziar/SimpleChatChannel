@@ -10,19 +10,19 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
-import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
-import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.handler.ChatHandlerAdventure;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 
 public class WCommandExecutor implements CommandExecutor
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private static CommandConstructor cc;
 	
-	public WCommandExecutor(SimpleChatChannels plugin, CommandConstructor cc)
+	public WCommandExecutor(SCC plugin, CommandConstructor cc)
 	{
 		this.plugin = plugin;
 		WCommandExecutor.cc = cc;
@@ -33,7 +33,7 @@ public class WCommandExecutor implements CommandExecutor
 	{
 		if (sender instanceof Player) 
 		{
-			SimpleChatChannels.log.info("/%cmd% is only for Consol!".replace("%cmd%", cc.getName()));
+			SCC.logger.info("/%cmd% is only for Consol!".replace("%cmd%", cc.getName()));
 			return false;
 		}
 		if(args.length <= 1)
@@ -72,7 +72,7 @@ public class WCommandExecutor implements CommandExecutor
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-			        all.sendPluginMessage(SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+			        all.sendPluginMessage(SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
 					break;
 				}
 			}
@@ -84,7 +84,7 @@ public class WCommandExecutor implements CommandExecutor
 			{
 				return false;
 			}
-			ChatHandler ch = new ChatHandler(plugin);
+			ChatHandlerAdventure ch = new ChatHandlerAdventure(plugin);
 			ch.startPrivateConsoleChat(sender, other, message);
 			return true;
 		}		

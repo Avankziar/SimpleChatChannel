@@ -1,36 +1,29 @@
 package main.java.me.avankziar.scc.bungee.commands.scc;
 
-import java.util.ArrayList;
-
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class ARGDebug extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	//private SCC plugin;
 	
-	public ARGDebug(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGDebug(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
-		this.plugin = plugin;
+		//this.plugin = plugin;
 	}
 
 	@Override
 	public void run(CommandSender sender, String[] args)
 	{
-		TextComponent tc1 = ChatApi.tctl("&7[&2S&6CC&7] ");
-		TextComponent tc2 = ChatApi.apiChat("&aJa", 
+		/*TextComponent tc1 = ChatApiOld.tctl("&7[&2S&6CC&7] ");
+		TextComponent tc2 = ChatApiOld.apiChat("&aJa", 
 				ClickEvent.Action.SUGGEST_COMMAND, "/umfrage ja",
 				HoverEvent.Action.SHOW_TEXT, "&eKlicke hier");
-		TextComponent tc3 = ChatApi.tctl(" &d| ");
-		TextComponent tc4 = ChatApi.apiChat("&cNein", 
+		TextComponent tc3 = ChatApiOld.tctl(" &d| ");
+		TextComponent tc4 = ChatApiOld.apiChat("&cNein", 
 				ClickEvent.Action.SUGGEST_COMMAND, "/umfrage nein",
 				HoverEvent.Action.SHOW_TEXT, "&eKlicke hier");
 		ArrayList<BaseComponent> list = new ArrayList<>();
@@ -39,8 +32,10 @@ public class ARGDebug extends ArgumentModule
 		list.add(tc3);
 		list.add(tc4);
 		
-		String s = ChatApi.serialized(list);
-		TextComponent tc = ChatApi.deserialized(s);
+		String s = ChatApiOld.serialized(list);
+		TextComponent tc = ChatApiOld.deserialized(s);
 		sender.sendMessage(tc);
+		Component c = Component.text().build().asComponent();
+		sender.sendMessage(ChatApi.tctl(s));*/
 	}
 }

@@ -1,23 +1,22 @@
 package main.java.me.avankziar.scc.bungee.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.database.tables.TableI;
-import main.java.me.avankziar.scc.bungee.database.tables.TableII;
-import main.java.me.avankziar.scc.bungee.database.tables.TableIII;
-import main.java.me.avankziar.scc.bungee.database.tables.TableIV;
-import main.java.me.avankziar.scc.bungee.database.tables.TableV;
-import main.java.me.avankziar.scc.bungee.database.tables.TableVI;
+import main.java.me.avankziar.scc.bungee.SCC;
+import main.java.me.avankziar.scc.general.database.MysqlBaseHandler;
+import main.java.me.avankziar.scc.general.database.QueryType;
 
-public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV, TableVI
+public class MysqlHandler extends MysqlBaseHandler
 {
-	public enum Type
+	//FirstKey == ServerName, SecondKey = inserts etc.
+	public static LinkedHashMap<String, LinkedHashMap<QueryType, Integer>> serverPerformance = new LinkedHashMap<>();
+		
+	public MysqlHandler(SCC plugin)
+	{
+		super(plugin.getLogger(), plugin.getMysqlSetup());
+	}
+	
+	/*public enum Type
 	{
 		CHATUSER("sccPlayerData"), 
 		IGNOREOBJECT("sccIgnorelist"),
@@ -47,7 +46,7 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 	/*
 	 * Alle Mysql Reihen, welche durch den Betrieb aufkommen.
 	 */
-	public static long startRecordTime = System.currentTimeMillis();
+	/*public static long startRecordTime = System.currentTimeMillis();
 	public static int inserts = 0;
 	public static int updates = 0;
 	public static int deletes = 0;
@@ -428,5 +427,5 @@ public class MysqlHandler implements TableI, TableII, TableIII, TableIV, TableV,
 			return TableVI.super.getAllListAtVI(plugin, orderByColumn, desc, whereColumn, whereObject);
 		}
 		return null;
-	}
+	}*/
 }

@@ -3,8 +3,8 @@ package main.java.me.avankziar.scc.bungee.ifh;
 import java.util.UUID;
 
 import main.java.me.avankziar.ifh.general.chat.ChatEditor;
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.objects.ChatApi;
+import main.java.me.avankziar.scc.bungee.SCC;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatEditorProvider implements ChatEditor
@@ -12,17 +12,17 @@ public class ChatEditorProvider implements ChatEditor
 	@Override
 	public boolean addOnEditor(UUID uuid, boolean message)
 	{
-		ProxiedPlayer player = SimpleChatChannels.getPlugin().getProxy().getPlayer(uuid);
+		ProxiedPlayer player = SCC.getPlugin().getProxy().getPlayer(uuid);
 		if(player == null)
 		{
 			return false;
 		}
-		if(!SimpleChatChannels.getPlugin().editorplayers.contains(player.getName()))
+		if(!SCC.getPlugin().editorplayers.contains(player.getName()))
 		{
-			SimpleChatChannels.getPlugin().editorplayers.add(player.getName());
+			SCC.getPlugin().editorplayers.add(player.getName());
 			if(message)
 			{
-    			player.sendMessage(ChatApi.tctl(SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Active")));
+    			player.sendMessage(ChatApi.tctl(SCC.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Active")));
     			return true;
 			}
 		}
@@ -32,23 +32,23 @@ public class ChatEditorProvider implements ChatEditor
 	@Override
 	public String getProvider()
 	{
-		return SimpleChatChannels.pluginName;
+		return SCC.pluginName;
 	}
 
 	@Override
 	public boolean removeFromEditor(UUID uuid, boolean message)
 	{
-		ProxiedPlayer player = SimpleChatChannels.getPlugin().getProxy().getPlayer(uuid);
+		ProxiedPlayer player = SCC.getPlugin().getProxy().getPlayer(uuid);
 		if(player == null)
 		{
 			return false;
 		}
-		if(SimpleChatChannels.getPlugin().editorplayers.contains(player.getName()))
+		if(SCC.getPlugin().editorplayers.contains(player.getName()))
 		{
-			SimpleChatChannels.getPlugin().editorplayers.remove(player.getName());
+			SCC.getPlugin().editorplayers.remove(player.getName());
 			if(message)
 			{
-    			player.sendMessage(ChatApi.tctl(SimpleChatChannels.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Deactive")));
+    			player.sendMessage(ChatApi.tctl(SCC.getPlugin().getYamlHandler().getLang().getString("CmdEditor.Deactive")));
     			return true;
 			}
 		}

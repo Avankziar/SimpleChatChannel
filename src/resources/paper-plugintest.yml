@@ -1,0 +1,17 @@
+name: SimpleChatChannels
+version: '42'
+main: main.java.me.avankziar.scc.spigot.SCC
+description: Paper Test Plugin
+api-version: '1.21'
+bootstrapper: io.papermc.testplugin.TestPluginBootstrap
+loader: io.papermc.testplugin.TestPluginLoader
+dependencies:
+  bootstrap:
+    InterfaceHub:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    RootAdministration:
+      load: BEFORE
+      required: true
+      join-classpath: true

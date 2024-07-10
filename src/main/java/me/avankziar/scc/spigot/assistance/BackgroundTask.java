@@ -12,23 +12,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.objects.chat.ItemJson;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.general.objects.ItemJson;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 
 public class BackgroundTask 
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	private ArrayList<String> players;
 	
-	public BackgroundTask(SimpleChatChannels plugin) 
+	public BackgroundTask(SCC plugin) 
 	{
 		this.plugin = plugin;
 		players = new ArrayList<String>();
@@ -54,7 +54,7 @@ public class BackgroundTask
 		final int days = plugin.getYamlHandler().getConfig().getInt("CleanUp.DeleteReadedMailWhichIsOlderThanDays", 120);
 		final long d = (long)days*1000L*60*60*24;
 		final long lasttime = System.currentTimeMillis()-d;
-		plugin.getMysqlHandler().deleteData(Type.MAIL, "`readeddate` != ? AND `readeddate` < ?", 0, lasttime);
+		plugin.getMysqlHandler().deleteData(MysqlType.MAIL, "`readeddate` != ? AND `readeddate` < ?", 0, lasttime);
 	}
 	
 	public void unmuteTask()
@@ -67,7 +67,7 @@ public class BackgroundTask
 			{
 				for(Player player : plugin.getServer().getOnlinePlayers())
 				{
-					ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER, "`player_uuid` = ?",
+					ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlType.CHATUSER, "`player_uuid` = ?",
 							player.getUniqueId().toString());
 					if(cu == null)
 					{
@@ -79,7 +79,7 @@ public class BackgroundTask
 						if(mutetime < System.currentTimeMillis())
 						{
 							cu.setMuteTime(0L);
-							plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?",
+							plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu, "`player_uuid` = ?",
 									player.getUniqueId().toString());
 							ChatUser chu = ChatUserHandler.getChatUser(player.getUniqueId());
 							if(chu != null)
@@ -100,7 +100,7 @@ public class BackgroundTask
 		final long d = (long)days*1000L*60*60*24;
 		final long lasttime = System.currentTimeMillis()-d;
 		final ArrayList<ChatUser> users = ConvertHandler.convertListI(plugin.getMysqlHandler()
-				.getAllListAt(Type.CHATUSER, "`id`", false, "?", 1));
+				.getFullList(MysqlType.CHATUSER, "`id` ASC", "?", 1));
 		new BukkitRunnable()
 		{
 			int count = 0;
@@ -118,10 +118,10 @@ public class BackgroundTask
 				if(lasttime >= user.getLastTimeJoined())
 				{
 					final String uuid = user.getUUID();
-					plugin.getMysqlHandler().deleteData(Type.USEDCHANNEL, "`player_uuid` = ?", uuid);
-					plugin.getMysqlHandler().deleteData(Type.ITEMJSON, "`owner` = ?", uuid);
-					plugin.getMysqlHandler().deleteData(Type.IGNOREOBJECT, "`player_uuid` = ? OR `ignore_uuid` = ?", uuid, uuid);
-					plugin.getMysqlHandler().deleteData(Type.CHATUSER, "`player_uuid` = ?", uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.USEDCHANNEL, "`player_uuid` = ?", uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.ITEMJSON, "`owner` = ?", uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.IGNOREOBJECT, "`player_uuid` = ? OR `ignore_uuid` = ?", uuid, uuid);
+					plugin.getMysqlHandler().deleteData(MysqlType.CHATUSER, "`player_uuid` = ?", uuid);
 					deleted++;
 				}
 				count++;
@@ -182,7 +182,7 @@ public class BackgroundTask
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        player.sendPluginMessage(SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+        player.sendPluginMessage(SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
 	}
 	
 	private void runMysqlRowsCounts()
@@ -209,7 +209,7 @@ public class BackgroundTask
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-				        loneOne.sendPluginMessage(SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+				        loneOne.sendPluginMessage(SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
 				        MysqlHandler.resetsRows();
 				        break;
 					}
@@ -247,9 +247,15 @@ public class BackgroundTask
 							((i.getItemMeta().hasDisplayName()) ? i.getItemMeta().getDisplayName() : i.getType().toString())
 							: i.getType().toString();
 					ItemJson ij = new ItemJson(owner, itemname, itemDisplayName, jsonString, plugin.getUtility().toBase64itemStack(i));
-					plugin.getMysqlHandler().updateData(Type.ITEMJSON, ij, "`owner` = ? AND `itemname` = ?", owner, itemname);
+					if(plugin.getMysqlHandler().exist(MysqlType.ITEMJSON, "`owner` = ? AND `itemname` = ?", owner, itemname))
+					{
+						plugin.getMysqlHandler().updateData(MysqlType.ITEMJSON, ij, "`owner` = ? AND `itemname` = ?", owner, itemname);
+					} else
+					{
+						plugin.getMysqlHandler().create(MysqlType.ITEMJSON, ij);
+					}
 				}
 			}
-		}.runTaskTimerAsynchronously(plugin, 10L, 5*20L);
+		}.runTaskTimerAsynchronously(plugin, 10L, 7*20L);
 	}
 }

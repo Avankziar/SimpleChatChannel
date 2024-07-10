@@ -1,19 +1,19 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Rename extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Rename(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Rename(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -28,19 +28,19 @@ public class ARGPermanentChannel_Rename extends ArgumentModule
 		PermanentChannel cc = PermanentChannel.getChannelFromName(channel);
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", channel)));
 			return;
 		}
 		if(!cc.getCreator().equals(player.getUniqueId().toString()))
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotTheOwner")));
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotTheOwner")));
 			return;
 		}
 		PermanentChannel other = PermanentChannel.getChannelFromName(otherchannel);
 		if(other != null)
 		{
-			player.sendMessage(ChatApi.tctl(
+			player.sendMessage(ChatApiOld.tctl(
 					plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Rename.NameAlreadyExist")
 					.replace("%name%", other.getName())
 					.replace("%channel%", other.getNameColor()+other.getName())));
@@ -56,7 +56,7 @@ public class ARGPermanentChannel_Rename extends ArgumentModule
 		{
 			if(cc.getMembers().contains(members.getUniqueId().toString()))
 			{
-				members.sendMessage(ChatApi.tctl(msg));
+				members.sendMessage(ChatApiOld.tctl(msg));
 			}
 		}
 	}

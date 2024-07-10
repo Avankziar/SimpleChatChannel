@@ -6,21 +6,19 @@ import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.ItemJson;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.objects.ItemJson;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class ARGItem_Replacers extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGItem_Replacers(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGItem_Replacers(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -31,27 +29,25 @@ public class ARGItem_Replacers extends ArgumentModule
 	{
 		Player player = (Player) sender;
 		ArrayList<ItemJson> list = ConvertHandler.convertListIV(
-				plugin.getMysqlHandler().getAllListAt(Type.ITEMJSON, "`id`", false, 
+				plugin.getMysqlHandler().getFullList(MysqlType.ITEMJSON, "`id` ASC", 
 						"`owner` = ?",
 						player.getUniqueId().toString()));
 		if(list.isEmpty())
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdScc.Item.Replacers.ListEmpty")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Item.Replacers.ListEmpty")));
 			return;
 		}
-		ArrayList<BaseComponent> abc = new ArrayList<>();
+		ArrayList<String> abc = new ArrayList<>();
 		for(int i = 0; i < list.size(); i++)
 		{
 			ItemJson ij = list.get(i);
-			abc.add(ChatApi.apiChatItem("<"+ij.getItemName()+"&r>|"+ij.getItemDisplayName(), null, null, ij.getJsonString()));
+			abc.add(ChatApi.hover("<gray><"+ij.getItemName()+"<gray>><white>"+ij.getItemDisplayName(), ij.getJsonString()));
 			if(i < (list.size()-1))
 			{
-				abc.add(ChatApi.tctl(" "));
+				abc.add("<white>, ");
 			}
 		}
-		TextComponent tc = ChatApi.tc("");
-		tc.setExtra(abc);
-		player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdScc.Item.Replacers.Headline")));
-		player.spigot().sendMessage(tc);
+		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Item.Replacers.Headline")));
+		player.spigot().sendMessage(ChatApi.tctl(String.join("", abc)));
 	}
 }

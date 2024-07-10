@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import main.java.me.avankziar.ifh.general.chat.Chat;
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.objects.chat.Components;
-import net.md_5.bungee.BungeeCord;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.Components;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class ChatProvider implements Chat
@@ -46,15 +45,27 @@ public class ChatProvider implements Chat
 	}
 	
 	@Override
-	public TextComponent parseMessage(String rawMessage)
+	public net.md_5.bungee.api.chat.TextComponent parseMessage(String rawMessage)
 	{
-		return parseMessage(rawMessage, SimpleChatChannels.getPlugin().getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
+		return parseMessageToMD5Bungee(rawMessage);
 	}
 	
 	@Override
-	public TextComponent parseMessage(String rawMessage, String channel)
+	public net.md_5.bungee.api.chat.TextComponent parseMessage(String rawMessage, String channel)
 	{
-		SimpleChatChannels plugin = SimpleChatChannels.getPlugin();
+		return parseMessageToMD5Bungee(rawMessage, channel);
+	}
+	
+	@Override
+	public net.md_5.bungee.api.chat.TextComponent parseMessageToMD5Bungee(String rawMessage)
+	{
+		return parseMessage(rawMessage, SCC.getPlugin().getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
+	}
+	
+	@Override
+	public net.md_5.bungee.api.chat.TextComponent parseMessageToMD5Bungee(String rawMessage, String channel)
+	{
+		SCC plugin = SCC.getPlugin();
 		Channel usedChannel = plugin.getChannel(channel);
 		if(usedChannel == null)
 		{
@@ -62,10 +73,22 @@ public class ChatProvider implements Chat
 		}
 		ChatHandler ch = new ChatHandler(plugin);
 		Components components = ch.getComponent(Channel.ChatFormatPlaceholder.MESSAGE.getPlaceholder(),
-				rawMessage, BungeeCord.getInstance().getConsole(), null, new ArrayList<>(), new ArrayList<>(), usedChannel, null, null, null, null,
+				rawMessage, SCC.getPlugin().getProxy().getConsole(), null, new ArrayList<>(), new ArrayList<>(), usedChannel, null, null, null, null,
 				usedChannel.getInChatColorMessage());
-		TextComponent txc2 = ChatApi.tc("");
+		TextComponent txc2 = ChatApiOld.tc("");
 		txc2.setExtra(components.getComponentsWithMentions());
 		return txc2;
+	}
+	
+	@Override
+	public net.kyori.adventure.text.Component parseMessageToAdventure(String rawMessage)
+	{
+		return null;
+	}
+	
+	@Override
+	public net.kyori.adventure.text.Component parseMessageToAdventure(String rawMessage, String channel)
+	{
+		return null;
 	}
 }

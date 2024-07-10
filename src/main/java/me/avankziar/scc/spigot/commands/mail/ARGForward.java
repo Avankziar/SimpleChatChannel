@@ -6,24 +6,22 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.handlers.MatchApi;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.Mail;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.MatchApi;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.Mail;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 
 public class ARGForward extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGForward(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGForward(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -45,7 +43,7 @@ public class ARGForward extends ArgumentModule
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
-		Mail mail = (Mail) plugin.getMysqlHandler().getData(Type.MAIL, "`id` = ?", Integer.parseInt(idstring));
+		Mail mail = (Mail) plugin.getMysqlHandler().getData(MysqlType.MAIL, "`id` = ?", Integer.parseInt(idstring));
 		if(mail == null)
 		{
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Read.MailNotExist")));
@@ -65,18 +63,18 @@ public class ARGForward extends ArgumentModule
 		Mail fwd = new Mail(0, mail.getSenderUUID(), mail.getSender().toString(), other, args[2],
 				mail.getCarbonCopyUUIDs(), mail.getCarbonCopyNames(), mail.getSendedDate(), 0L,
 				"Fwd("+player.getName()+"):"+mail.getSubject(), mail.getRawText());
-		plugin.getMysqlHandler().create(Type.MAIL, fwd);
+		plugin.getMysqlHandler().create(MysqlType.MAIL, fwd);
 		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.Forward.Sended")
 				.replace("%player%", args[2])));
 		Player target = plugin.getServer().getPlayer(other);
 		if(target != null)
 		{
-			target.spigot().sendMessage(ChatApi.apiChat(
+			target.spigot().sendMessage(ChatApi.tctl(ChatApi.clickHover(
 					plugin.getYamlHandler().getLang().getString("CmdMail.Send.HasNewMail").replace("%player%", player.getName()),
-					ClickEvent.Action.RUN_COMMAND,
+					"RUN_COMMAND",
 					PluginSettings.settings.getCommands(KeyHandler.MAIL).trim(),
-					HoverEvent.Action.SHOW_TEXT,
-					plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
+					"SHOW_TEXT",
+					plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover"))));
 		}
 	}
 }

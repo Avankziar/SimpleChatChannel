@@ -1,24 +1,23 @@
 package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
 import main.java.me.avankziar.scc.bungee.objects.BypassPermission;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Delete extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Delete(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Delete(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -32,16 +31,16 @@ public class ARGPermanentChannel_Delete extends ArgumentModule
 		PermanentChannel cc = PermanentChannel.getChannelFromName(channel);
 		if(cc == null)
 		{
-			player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
+			player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.YouAreNotInAChannel")
 					.replace("%channel%", channel)));
 			return;
 		}
 		if(args.length == 3)
 		{
-			player.sendMessage(ChatApi.clickEvent(
+			player.sendMessage(ChatApiOld.click(
 					plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Delete.Confirm")
 					.replace("%channel%", cc.getNameColor()+cc.getName()),
-					ClickEvent.Action.SUGGEST_COMMAND,
+					"SUGGEST_COMMAND",
 					PluginSettings.settings.getCommands(KeyHandler.SCC_PC_DELETE)+cc.getName()+" confirm"));
 		} else if(args.length >= 4)
 		{
@@ -51,7 +50,7 @@ public class ARGPermanentChannel_Delete extends ArgumentModule
 				if(!cc.getCreator().equals(player.getUniqueId().toString()) 
 						&& !player.hasPermission(BypassPermission.PERMBYPASSPC))
 				{
-					player.sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
+					player.sendMessage(ChatApiOld.tctl(plugin.getYamlHandler().getLang().getString("NoPermission")));
 					return;
 				}
 				String msg = plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Delete.Deleted")
@@ -61,10 +60,10 @@ public class ARGPermanentChannel_Delete extends ArgumentModule
 				{
 					if(cc.getMembers().contains(members.getUniqueId().toString()))
 					{
-						members.sendMessage(ChatApi.tctl(msg));
+						members.sendMessage(ChatApiOld.tctl(msg));
 					}
 				}
-				plugin.getMysqlHandler().deleteData(MysqlHandler.Type.PERMANENTCHANNEL, "`id` = ?", cc.getId());
+				plugin.getMysqlHandler().deleteData(MysqlType.PERMANENTCHANNEL, "`id` = ?", cc.getId());
 				PermanentChannel.removeCustomChannel(cc);
 				cc = null;
 			}

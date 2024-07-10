@@ -3,24 +3,22 @@ package main.java.me.avankziar.scc.bungee.commands.scc.pc;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.PermanentChannel;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ARGPermanentChannel_Channels extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPermanentChannel_Channels(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPermanentChannel_Channels(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -37,18 +35,16 @@ public class ARGPermanentChannel_Channels extends ArgumentModule
 			String cmd = PluginSettings.settings.getCommands(KeyHandler.SCC_PC_INFO)+pc.getName();
 			if(i+1 == PermanentChannel.getPermanentChannel().size())
 			{
-				list.add(ChatApi.clickEvent(pc.getNameColor()+pc.getName(),
-						ClickEvent.Action.RUN_COMMAND, cmd));
+				list.add(ChatApiOld.click(pc.getNameColor()+pc.getName(),
+						"RUN_COMMAND", cmd));
 			} else
 			{
-				list.add(ChatApi.clickEvent(pc.getNameColor()+pc.getName()+", &r",
-						ClickEvent.Action.RUN_COMMAND, cmd));
+				list.add(ChatApiOld.click(pc.getNameColor()+pc.getName()+", &r",
+						"RUN_COMMAND", cmd));
 			}
 		}
-		player.sendMessage(ChatApi.tctl(
+		player.sendMessage(ChatApiOld.tctl(
 				plugin.getYamlHandler().getLang().getString("CmdScc.PermanentChannel.Channels.Headline")));
-		TextComponent msg = ChatApi.tc("");
-		msg.setExtra(list);
-		player.sendMessage(msg);
+		player.sendMessage(ChatApiOld.tctl(list));
 	}
 }

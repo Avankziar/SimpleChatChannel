@@ -8,23 +8,21 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.Mail;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.Mail;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
 
 public class ARGSend extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGSend(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGSend(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -124,26 +122,27 @@ public class ARGSend extends ArgumentModule
 			}
 			Mail mail = new Mail(0, senderuuid, sendername, u, s,
 					ccu, ccn, System.currentTimeMillis(), 0L, subject, rawText);
-			plugin.getMysqlHandler().create(Type.MAIL, mail);
+			plugin.getMysqlHandler().create(MysqlType.MAIL, mail);
 			if(isPlayer && !alreadySended)
 			{
 				alreadySended = true;
 				Player originPlayer = (Player) sender;
-				originPlayer.spigot().sendMessage(ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Send.Sended"),
-						HoverEvent.Action.SHOW_TEXT,
+				originPlayer.spigot().sendMessage(ChatApi.tctl(ChatApi.hover(
+						plugin.getYamlHandler().getLang().getString("CmdMail.Send.Sended"),
+						"SHOW_TEXT",
 						plugin.getYamlHandler().getLang().getString("CmdMail.Send.SendedHover")
 						.replace("%subject%", subject)
-						.replace("%cc%", (ccn.isEmpty() ? reciver : ccn))));
+						.replace("%cc%", (ccn.isEmpty() ? reciver : ccn)))));
 			}
 			Player player = plugin.getServer().getPlayer(u);
 			if(player != null)
 			{
-				player.spigot().sendMessage(ChatApi.apiChat(
+				player.spigot().sendMessage(ChatApi.tctl(ChatApi.clickHover(
 						plugin.getYamlHandler().getLang().getString("CmdMail.Send.HasNewMail"),
-						ClickEvent.Action.RUN_COMMAND,
+						"RUN_COMMAND",
 						PluginSettings.settings.getCommands(KeyHandler.MAIL).trim(),
-						HoverEvent.Action.SHOW_TEXT,
-						plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
+						"SHOW_TEXT",
+						plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover"))));
 			}
 		}
 	}

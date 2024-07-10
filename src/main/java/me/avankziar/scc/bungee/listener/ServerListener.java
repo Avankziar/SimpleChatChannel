@@ -12,30 +12,31 @@ import java.util.LinkedHashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
+import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.database.MysqlHandler;
-import main.java.me.avankziar.scc.bungee.database.MysqlHandler.QueryType;
 import main.java.me.avankziar.scc.bungee.handler.ChatHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ServerLocation;
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.objects.chat.ChatTitle;
-import net.md_5.bungee.BungeeCord;
+import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
+import main.java.me.avankziar.scc.general.database.QueryType;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.ChatTitle;
+import main.java.me.avankziar.scc.general.objects.ServerLocation;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.Title;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.event.EventHandler;
 
 public class ServerListener implements Listener
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ServerListener(SimpleChatChannels plugin)
+	public ServerListener(SCC plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -47,7 +48,7 @@ public class ServerListener implements Listener
 		{
             return;
         }
-        if (!event.getTag().equalsIgnoreCase(StaticValues.SCC_TOBUNGEE)) 
+        if (!event.getTag().equalsIgnoreCase(StaticValues.SCC_TOPROXY)) 
         {
             return;
         }
@@ -142,7 +143,7 @@ public class ServerListener implements Listener
 					useColor, useItemReplacer, useBookReplacer,
 					useRunCommandReplacer, useSuggestCommandReplacer, useWebsiteReplacer,
 					useEmojiReplacer, useMentionReplacer, usePositionReplacer);
-			SimpleChatChannels.log.log(Level.INFO, "Register "+c.getUniqueIdentifierName()+" Channel!");
+			SCC.logger.log(Level.INFO, "Register "+c.getUniqueIdentifierName()+" Channel!");
         	return;
         } else if(task.equals(StaticValues.SCC_REGISTERCHATTITLE))
         {
@@ -159,14 +160,14 @@ public class ServerListener implements Listener
 			{
 				return;
 			}
-			for(ChatTitle ct : SimpleChatChannels.chatTitlesPrefix)
+			for(ChatTitle ct : SCC.chatTitlesPrefix)
 			{
 				if(ct.getUniqueIdentifierName().equalsIgnoreCase(uniquechattitle))
 				{
 					return;
 				}
 			}
-			for(ChatTitle ct : SimpleChatChannels.chatTitlesSuffix)
+			for(ChatTitle ct : SCC.chatTitlesSuffix)
 			{
 				if(ct.getUniqueIdentifierName().equalsIgnoreCase(uniquechattitle))
 				{
@@ -183,16 +184,16 @@ public class ServerListener implements Listener
 					weight);
 			if(isPrefix)
 			{
-				SimpleChatChannels.chatTitlesPrefix.add(ct);
+				SCC.chatTitlesPrefix.add(ct);
 			} else
 			{
-				SimpleChatChannels.chatTitlesSuffix.add(ct);
+				SCC.chatTitlesSuffix.add(ct);
 			}
-			SimpleChatChannels.chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
-			Collections.reverse(SimpleChatChannels.chatTitlesPrefix);
-			SimpleChatChannels.chatTitlesSuffix.sort(Comparator.comparing(ChatTitle::getWeight));
-			Collections.reverse(SimpleChatChannels.chatTitlesSuffix);
-			SimpleChatChannels.log.log(Level.INFO, "Register "+uniquechattitle+" ChatTitle!");
+			SCC.chatTitlesPrefix.sort(Comparator.comparing(ChatTitle::getWeight));
+			Collections.reverse(SCC.chatTitlesPrefix);
+			SCC.chatTitlesSuffix.sort(Comparator.comparing(ChatTitle::getWeight));
+			Collections.reverse(SCC.chatTitlesSuffix);
+			SCC.logger.log(Level.INFO, "Register "+uniquechattitle+" ChatTitle!");
         	return;
         } else if(task.equals(StaticValues.SCC_TASK_LOCATIONUPDATE))
         {
@@ -249,7 +250,7 @@ public class ServerListener implements Listener
         	int reads = in.readInt();
         	if(MysqlHandler.serverPerformance.containsKey(server))
         	{
-        		LinkedHashMap<MysqlHandler.QueryType, Integer> map = MysqlHandler.serverPerformance.get(server);
+        		LinkedHashMap<QueryType, Integer> map = MysqlHandler.serverPerformance.get(server);
         		inserts += (map.containsKey(QueryType.INSERT)) ? map.get(QueryType.INSERT) : 0;
         		updates += (map.containsKey(QueryType.UPDATE)) ? map.get(QueryType.UPDATE) : 0;
         		deletes += (map.containsKey(QueryType.DELETE)) ? map.get(QueryType.DELETE) : 0;
@@ -286,14 +287,14 @@ public class ServerListener implements Listener
         		MysqlHandler.serverPerformance.replace(server, map);
         	} else
         	{
-        		LinkedHashMap<MysqlHandler.QueryType, Integer> map = new LinkedHashMap<>();
+        		LinkedHashMap<QueryType, Integer> map = new LinkedHashMap<>();
         		map.put(QueryType.INSERT, inserts);
         		map.put(QueryType.UPDATE, updates);
         		map.put(QueryType.DELETE, deletes);
         		map.put(QueryType.READ, reads);
         		MysqlHandler.serverPerformance.put(server, map);
         	}
-        } else if(task.equals(StaticValues.M2BS))
+        } else if(task.equals(StaticValues.M2PS))
         {
         	String uuid = in.readUTF();
         	boolean s = in.readBoolean();
@@ -303,7 +304,7 @@ public class ServerListener implements Listener
         	boolean hasPermission = in.readBoolean();
         	ArrayList<String> msg = getMessages(in);
         	send(uuid, s, sound, p, hasPermission, permission, msg);
-        } else if(task.equals(StaticValues.M2BM))
+        } else if(task.equals(StaticValues.M2PM))
         {
         	ArrayList<String> uuids = getUUIDs(in);
         	boolean s = in.readBoolean();
@@ -316,7 +317,7 @@ public class ServerListener implements Listener
         	{
         		send(uuid, s, sound, p, hasPermission, permission, msg);
         	}
-        } else if(task.equals(StaticValues.M2BA))
+        } else if(task.equals(StaticValues.M2PA))
         {
         	boolean s = in.readBoolean();
         	String sound = in.readUTF();
@@ -408,7 +409,7 @@ public class ServerListener implements Listener
         	boolean p = in.readBoolean();
         	String permission = in.readUTF();
         	boolean hasPermission = in.readBoolean();
-        	for(ProxiedPlayer pp : BungeeCord.getInstance().getPlayers())
+        	for(ProxiedPlayer pp : SCC.getPlugin().getProxy().getPlayers())
         	{
         		sendTitle(pp.getUniqueId().toString(), title, subtitle, fadeIn, stay, fadeOut, s, sound, p, permission, hasPermission);
         	}
@@ -443,7 +444,7 @@ public class ServerListener implements Listener
         	boolean p = in.readBoolean();
         	String permission = in.readUTF();
         	boolean hasPermission = in.readBoolean();
-        	for(ProxiedPlayer pp : BungeeCord.getInstance().getPlayers())
+        	for(ProxiedPlayer pp : SCC.getPlugin().getProxy().getPlayers())
         	{
         		sendActionBar(pp.getUniqueId().toString(), actionbarmessage, s, sound, p, permission, hasPermission);
         	}
@@ -467,7 +468,15 @@ public class ServerListener implements Listener
     	ArrayList<TextComponent> list = new ArrayList<>();
     	for(int i = 0; i < lenght; i++)
     	{
-    		list.add(ChatApi.deserialized(in.readUTF()));
+    		BaseComponent[] bc = ComponentSerializer.parse(in.readUTF());
+    		ArrayList<BaseComponent> l = new ArrayList<>();
+    		for(BaseComponent b : bc)
+    		{
+    			l.add(b);
+    		}
+    		TextComponent tc = new TextComponent("");
+    		tc.setExtra(l);
+    		list.add(tc);
     	}
     	return list;
 	}
@@ -526,7 +535,7 @@ public class ServerListener implements Listener
 		}
 		for(String m : msg)
 		{
-			player.sendMessage(ChatApi.tctl(m));
+			player.sendMessage(ChatApiOld.tctl(m));
 		}
 	}
 	
@@ -590,9 +599,9 @@ public class ServerListener implements Listener
 		{
 			return;
 		}
-		Title t = BungeeCord.getInstance().createTitle();
-		t.title(ChatApi.tctl(title));
-		t.subTitle(ChatApi.tctl(subtitle));
+		Title t = SCC.getPlugin().getProxy().createTitle();
+		t.title(ChatApiOld.tctl(title));
+		t.subTitle(ChatApiOld.tctl(subtitle));
 		t.fadeIn(fadeIn);
 		t.stay(stay);
 		t.fadeOut(fadeOut);
@@ -647,18 +656,18 @@ public class ServerListener implements Listener
 			{
 				if(player.hasPermission(permission))
 				{
-					player.sendMessage(ChatMessageType.ACTION_BAR, ChatApi.tctl(actionbar));
+					player.sendMessage(ChatMessageType.ACTION_BAR, ChatApiOld.tctl(actionbar));
 				}
 			} else
 			{
 				if(!player.hasPermission(permission))
 				{
-					player.sendMessage(ChatMessageType.ACTION_BAR, ChatApi.tctl(actionbar));
+					player.sendMessage(ChatMessageType.ACTION_BAR, ChatApiOld.tctl(actionbar));
 				}
 			}
 		} else
 		{
-			player.sendMessage(ChatMessageType.ACTION_BAR, ChatApi.tctl(actionbar));
+			player.sendMessage(ChatMessageType.ACTION_BAR, ChatApiOld.tctl(actionbar));
 		}		
 	}
 	

@@ -10,15 +10,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
-import main.java.me.avankziar.scc.spigot.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 public class TABCompletion implements TabCompleter
 {	
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public TABCompletion(SimpleChatChannels plugin)
+	public TABCompletion(SCC plugin)
 	{
 		this.plugin = plugin;
 	}

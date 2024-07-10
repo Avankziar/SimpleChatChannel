@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.guihandling.events.BottomGuiClickEvent;
 import main.java.me.avankziar.scc.spigot.guihandling.events.UpperGuiClickEvent;
 
@@ -80,7 +80,7 @@ public class GuiPreListener implements Listener
 			return;
 		}
 		ItemStack i = event.getCurrentItem().clone();
-		SimpleChatChannels plugin = SimpleChatChannels.getPlugin();
+		SCC plugin = SCC.getPlugin();
 		NamespacedKey npluginName = new NamespacedKey(plugin, GUIApi.PLUGINNAME);
 		NamespacedKey ninventoryIdentifier = new NamespacedKey(plugin, GUIApi.INVENTORYIDENTIFIER);
 		NamespacedKey nclickEventCancel = new NamespacedKey(plugin, GUIApi.CLICKEVENTCANCEL);

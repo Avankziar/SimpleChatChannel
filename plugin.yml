@@ -1,8 +1,0 @@
-name: SimpleChatChannels
-main: main.java.me.avankziar.scc.spigot.SimpleChatChannels
-version: 42
-author: Avankziar
-api-version: 1.19
-description: A Chat Plugin
-softdepend: [InterfaceHub]
-website: https://www.spigotmc.org/resources/simple-chat-channels.35220/

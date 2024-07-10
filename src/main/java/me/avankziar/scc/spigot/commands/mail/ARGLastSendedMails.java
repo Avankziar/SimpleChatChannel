@@ -7,30 +7,26 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.handlers.ConvertHandler;
-import main.java.me.avankziar.scc.handlers.MatchApi;
-import main.java.me.avankziar.scc.handlers.TimeHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.KeyHandler;
-import main.java.me.avankziar.scc.objects.Mail;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
+import main.java.me.avankziar.scc.general.handlers.MatchApi;
+import main.java.me.avankziar.scc.general.handlers.TimeHandler;
+import main.java.me.avankziar.scc.general.objects.KeyHandler;
+import main.java.me.avankziar.scc.general.objects.Mail;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
 import main.java.me.avankziar.scc.spigot.commands.SccCommandExecutor;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.BypassPermission;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class ARGLastSendedMails extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGLastSendedMails(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGLastSendedMails(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -70,7 +66,7 @@ public class ARGLastSendedMails extends ArgumentModule
 		}
 		int start = page*10;
 		int amount = 10;
-		int totalcount = plugin.getMysqlHandler().getCount(Type.MAIL, "`id`", "`sender_uuid` = ?", other);
+		int totalcount = plugin.getMysqlHandler().getCount(MysqlType.MAIL, "`sender_uuid` = ?", other);
 		boolean last = false;
 		if((start+amount) > totalcount)
 		{
@@ -87,25 +83,25 @@ public class ARGLastSendedMails extends ArgumentModule
 			return;
 		}
 		ArrayList<Mail> mails = ConvertHandler.convertListVI(plugin.getMysqlHandler().getList(
-				Type.MAIL, "`id`", true, start, amount, "`sender_uuid` = ?", other));
-		ArrayList<ArrayList<BaseComponent>> list = new ArrayList<>();
+				MysqlType.MAIL, "`id` DESC", start, amount, "`sender_uuid` = ?", other));
+		ArrayList<String> list = new ArrayList<>();
 		for(Mail mail : mails)
 		{
-			ArrayList<BaseComponent> sublist = new ArrayList<>();
-			TextComponent tcRead = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Click"),
-					ClickEvent.Action.RUN_COMMAND,
+			ArrayList<String> sublist = new ArrayList<>();
+			String tcRead = ChatApi.clickHover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Click"),
+					"RUN_COMMAND",
 					PluginSettings.settings.getCommands(KeyHandler.MAIL_READ)+mail.getId(),
-					HoverEvent.Action.SHOW_TEXT,
+					"SHOW_TEXT",
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Read.Hover"));
-			TextComponent tcForward = ChatApi.apiChat(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Click"),
-					ClickEvent.Action.SUGGEST_COMMAND,
+			String tcForward = ChatApi.clickHover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Click"),
+					"SUGGEST_COMMAND",
 					PluginSettings.settings.getCommands(KeyHandler.MAIL_FORWARD)+mail.getId()+" ",
-					HoverEvent.Action.SHOW_TEXT,
+					"SHOW_TEXT",
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Forward.Hover"));
-			TextComponent tc = ChatApi.hoverEvent(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.TextII")
+			String tc = ChatApi.hover(plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.TextII")
 					.replace("%reciver%", mail.getReciver())
-					.replace("%subject%", mail.getSubject())
-					, HoverEvent.Action.SHOW_TEXT,
+					.replace("%subject%", mail.getSubject()),
+					"SHOW_TEXT",
 					plugin.getYamlHandler().getLang().getString("CmdMail.Base.Subject.Hover")
 					.replace("%sendeddate%", TimeHandler.getDateTime(mail.getSendedDate()))
 					.replace("%readeddate%", mail.getReadedDate() == 0 ? "/" : TimeHandler.getDateTime(mail.getReadedDate()))
@@ -113,16 +109,14 @@ public class ARGLastSendedMails extends ArgumentModule
 			sublist.add(tcRead);
 			sublist.add(tcForward);
 			sublist.add(tc);
-			list.add(sublist);
+			list.add(String.join("", sublist));
 		}
 		player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdMail.LastSendedMails.Headline")
 				.replace("%page%", String.valueOf(page))
 				.replace("%player%", othern)));
-		for(ArrayList<BaseComponent> sub : list)
+		for(String sub : list)
 		{
-			TextComponent tc = ChatApi.tc("");
-			tc.setExtra(sub);
-			player.spigot().sendMessage(tc);
+			player.spigot().sendMessage(ChatApi.tctl(sub));
 		}
 		SccCommandExecutor.pastNextPage(player, page, last, PluginSettings.settings.getCommands(KeyHandler.MAIL_LASTRECEIVEDMAILS));
 	}

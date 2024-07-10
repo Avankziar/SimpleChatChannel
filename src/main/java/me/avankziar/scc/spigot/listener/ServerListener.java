@@ -9,15 +9,15 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
+import main.java.me.avankziar.scc.spigot.handler.ChatHandlerAdventure;
 
-public class ServerListener  implements PluginMessageListener
+public class ServerListener implements PluginMessageListener
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ServerListener(SimpleChatChannels plugin)
+	public ServerListener(SCC plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -47,7 +47,7 @@ public class ServerListener  implements PluginMessageListener
             		{
             			return;
             		}
-                	new ChatHandler(plugin).sendMentionPing(mention, sound);
+                	new ChatHandlerAdventure(plugin).sendMentionPing(mention, sound);
             	} else if(task.equals(StaticValues.SCC_TASK_ARG))
             	{
             		String uuids = in.readUTF();

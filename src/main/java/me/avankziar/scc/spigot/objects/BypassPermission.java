@@ -1,8 +1,7 @@
 package main.java.me.avankziar.scc.spigot.objects;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 public class BypassPermission
 {
@@ -39,9 +38,9 @@ public class BypassPermission
 	
 	public static String PERMBYPASSWORDFILTER = "";
 	
-	public static void init(SimpleChatChannels plugin)
+	public static void init(SCC plugin)
 	{
-		YamlConfiguration yml = plugin.getYamlHandler().getCommands();
+		YamlDocument yml = plugin.getYamlHandler().getCommands();
 		String bp = "Bypass.";
 		String normal = "scc.channel.";
 		String by = "scc.bypass.";

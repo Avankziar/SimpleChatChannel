@@ -3,18 +3,18 @@ package main.java.me.avankziar.scc.spigot.commands.scc;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.ChatUser;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.ChatUser;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
 
 public class ARGUnmute extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGUnmute(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGUnmute(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -25,7 +25,7 @@ public class ARGUnmute extends ArgumentModule
 	{
 		Player player = (Player) sender;
 		String target = args[1];
-		ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlHandler.Type.CHATUSER,
+		ChatUser cu = (ChatUser) plugin.getMysqlHandler().getData(MysqlType.CHATUSER,
 				"`player_name` = ?", target);
 		if(cu == null)
 		{
@@ -39,7 +39,7 @@ public class ARGUnmute extends ArgumentModule
 			return;
 		}
 		cu.setMuteTime(0);
-		plugin.getMysqlHandler().updateData(MysqlHandler.Type.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
+		plugin.getMysqlHandler().updateData(MysqlType.CHATUSER, cu, "`player_uuid` = ?", cu.getUUID());
 		if(t != null)
 		{
 			t.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Mute.YouHaveBeenUnmute")));

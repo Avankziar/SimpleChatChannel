@@ -7,20 +7,20 @@ import java.io.IOException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.StaticValues;
-import main.java.me.avankziar.scc.objects.chat.Channel;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.objects.Channel;
+import main.java.me.avankziar.scc.general.objects.StaticValues;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.handler.ChatHandler;
+import main.java.me.avankziar.scc.spigot.handler.ChatHandlerAdventure;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 
 public class ARGBroadcast extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGBroadcast(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGBroadcast(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -54,19 +54,19 @@ public class ARGBroadcast extends ArgumentModule
 	        {
 	        	if(player != null)
 	        	{
-	        		player.sendPluginMessage(SimpleChatChannels.getPlugin(), StaticValues.SCC_TOBUNGEE, stream.toByteArray());
+	        		player.sendPluginMessage(SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
 	        		break;
 	        	}
 	        }
 			return;
 		}
-		Channel usedChannel = SimpleChatChannels.channels.get(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
+		Channel usedChannel = SCC.channels.get(plugin.getYamlHandler().getConfig().getString("BroadCast.UsingChannel"));
 		if(usedChannel == null)
 		{
 			sender.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.UsedChannelForBroadCastDontExist")));
 			return;
 		}
-		ChatHandler ch = new ChatHandler(plugin);
+		ChatHandlerAdventure ch = new ChatHandlerAdventure(plugin);
 		ch.sendBroadCast(sender, usedChannel, message, null);
 	}
 }

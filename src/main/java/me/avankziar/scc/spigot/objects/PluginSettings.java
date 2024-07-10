@@ -1,11 +1,12 @@
 package main.java.me.avankziar.scc.spigot.objects;
 
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.database.YamlHandlerOld;
+import main.java.me.avankziar.scc.general.database.YamlHandler;
+import main.java.me.avankziar.scc.spigot.SCC;
 
 
 public class PluginSettings
@@ -28,9 +29,9 @@ public class PluginSettings
 		setDebug(debug);
 	}
 	
-	public static void initSettings(SimpleChatChannels plugin)
+	public static void initSettings(SCC plugin) throws SQLException
 	{
-		YamlHandlerOld yh = plugin.getYamlHandler();
+		YamlHandler yh = plugin.getYamlHandler();
 		boolean bungee = plugin.getYamlHandler().getConfig().getBoolean("IsBungeeActive", false);
 		boolean mysql = false;
 		if(plugin.getMysqlSetup().getConnection() != null)
@@ -47,9 +48,9 @@ public class PluginSettings
 	{
 		if(PluginSettings.settings != null && PluginSettings.settings.isDebug())
 		{
-			if(SimpleChatChannels.getPlugin() != null)
+			if(SCC.getPlugin() != null)
 			{
-				SimpleChatChannels.getPlugin().getLogger().info(s);
+				SCC.getPlugin().getLogger().info(s);
 			}
 		}
 	}

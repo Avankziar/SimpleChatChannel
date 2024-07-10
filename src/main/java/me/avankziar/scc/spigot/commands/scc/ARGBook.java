@@ -8,20 +8,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.ItemJson;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.ItemJson;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler.Type;
 import main.java.me.avankziar.scc.spigot.objects.BypassPermission;
 
 public class ARGBook extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGBook(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGBook(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -41,17 +41,17 @@ public class ARGBook extends ArgumentModule
 				owner = uuid.toString();
 			}
 		}
-		ItemJson ij = (ItemJson) plugin.getMysqlHandler().getData(Type.ITEMJSON, "`owner` = ? AND `itemname` = ?",
+		ItemJson ij = (ItemJson) plugin.getMysqlHandler().getData(MysqlType.ITEMJSON, "`owner` = ? AND `itemname` = ?",
 				owner, bookname);
 		if(ij == null)
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdScc.Book.IsNotABook")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Book.IsNotABook")));
 			return;
 		}
 		ItemStack is = plugin.getUtility().fromBase64itemStack(ij.getBase64Data());
 		if(is == null || is.getType() != Material.WRITTEN_BOOK)
 		{
-			player.sendMessage(ChatApi.tl(plugin.getYamlHandler().getLang().getString("CmdScc.Book.IsNotABook")));
+			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Book.IsNotABook")));
 			return;
 		}
 		player.openBook(is);

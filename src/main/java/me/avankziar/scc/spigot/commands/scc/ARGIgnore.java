@@ -5,19 +5,19 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.objects.IgnoreObject;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.objects.chat.IgnoreObject;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
-import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
 
 public class ARGIgnore extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGIgnore(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGIgnore(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
@@ -34,19 +34,19 @@ public class ARGIgnore extends ArgumentModule
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("PlayerNotExist")));
 			return;
 		}
-		IgnoreObject io = (IgnoreObject) plugin.getMysqlHandler().getData(MysqlHandler.Type.IGNOREOBJECT,
+		IgnoreObject io = (IgnoreObject) plugin.getMysqlHandler().getData(MysqlType.IGNOREOBJECT,
 				"`player_uuid` = ? AND `ignore_uuid` = ?",
 				player.getUniqueId().toString(), uuid.toString());
 		if(io != null)
 		{
-			plugin.getMysqlHandler().deleteData(MysqlHandler.Type.IGNOREOBJECT,
+			plugin.getMysqlHandler().deleteData(MysqlType.IGNOREOBJECT,
 					"`player_uuid` = ? AND `ignore_uuid` = ?",
 					player.getUniqueId().toString(), uuid.toString());
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Deactive")
 					.replace("%player%", t)));
 		} else
 		{
-			plugin.getMysqlHandler().create(MysqlHandler.Type.IGNOREOBJECT,
+			plugin.getMysqlHandler().create(MysqlType.IGNOREOBJECT,
 					new IgnoreObject(player.getUniqueId().toString(), uuid.toString(), t));
 			player.spigot().sendMessage(ChatApi.tctl(plugin.getYamlHandler().getLang().getString("CmdScc.Ignore.Active")
 					.replace("%player%", t)));

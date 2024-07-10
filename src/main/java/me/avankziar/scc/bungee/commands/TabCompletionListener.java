@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import main.java.me.avankziar.scc.bungee.SimpleChatChannels;
-import main.java.me.avankziar.scc.bungee.commands.tree.ArgumentConstructor;
-import main.java.me.avankziar.scc.bungee.commands.tree.CommandConstructor;
+import main.java.me.avankziar.scc.bungee.SCC;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.TabCompleteEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -15,9 +15,9 @@ import net.md_5.bungee.event.EventHandler;
 
 public class TabCompletionListener implements Listener
 {	
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public TabCompletionListener(SimpleChatChannels plugin)
+	public TabCompletionListener(SCC plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -83,18 +83,18 @@ public class TabCompletionListener implements Listener
 		for(int i = 0; i <= length; i++)
 		{
 			//ACHTUNG! Ausnahmefall msg & re !!
-			if((cmd.equalsIgnoreCase(SimpleChatChannels.baseCommandIVName)
-					|| cmd.equalsIgnoreCase(SimpleChatChannels.baseCommandVName)) && length == 0)
+			if((cmd.equalsIgnoreCase(SCC.baseCommandIVName)
+					|| cmd.equalsIgnoreCase(SCC.baseCommandVName)) && length == 0)
 			{
-				if(cmd.equalsIgnoreCase(SimpleChatChannels.baseCommandVName)
-						&& SimpleChatChannels.rePlayers.containsKey(player.getUniqueId().toString()))
+				if(cmd.equalsIgnoreCase(SCC.baseCommandVName)
+						&& SCC.rePlayers.containsKey(player.getUniqueId().toString()))
 				{
 					event.getSuggestions().clear();
-					event.getSuggestions().addAll(SimpleChatChannels.rePlayers.get(player.getUniqueId().toString()));
+					event.getSuggestions().addAll(SCC.rePlayers.get(player.getUniqueId().toString()));
 				} else
 				{
 					event.getSuggestions().clear();
-					event.getSuggestions().addAll(getReturnTabList(SimpleChatChannels.onlinePlayers, args[length]));
+					event.getSuggestions().addAll(getReturnTabList(SCC.onlinePlayers, args[length]));
 					return;
 				}
 			}

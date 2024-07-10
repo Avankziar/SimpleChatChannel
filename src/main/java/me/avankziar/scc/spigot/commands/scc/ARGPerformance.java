@@ -2,18 +2,18 @@ package main.java.me.avankziar.scc.spigot.commands.scc;
 
 import org.bukkit.command.CommandSender;
 
-import main.java.me.avankziar.scc.handlers.TimeHandler;
-import main.java.me.avankziar.scc.objects.ChatApi;
-import main.java.me.avankziar.scc.spigot.SimpleChatChannels;
-import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
+import main.java.me.avankziar.scc.general.handlers.TimeHandler;
+import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.commands.tree.ArgumentModule;
 import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
 
 public class ARGPerformance extends ArgumentModule
 {
-	private SimpleChatChannels plugin;
+	private SCC plugin;
 	
-	public ARGPerformance(SimpleChatChannels plugin, ArgumentConstructor argumentConstructor)
+	public ARGPerformance(SCC plugin, ArgumentConstructor argumentConstructor)
 	{
 		super(argumentConstructor);
 		this.plugin = plugin;
