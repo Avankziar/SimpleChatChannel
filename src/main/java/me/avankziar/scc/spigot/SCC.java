@@ -198,7 +198,6 @@ public class SCC extends JavaPlugin
 		yamlHandler = new YamlHandler(YamlManager.Type.VELO, pluginName, logger, plugin.getDataFolder().toPath(),
         		(plugin.getAdministration() == null ? null : plugin.getAdministration().getLanguage()));
         setYamlManager(yamlHandler.getYamlManager());
-		setYamlManager(yamlHandler.getYamlManager());
 		utility = new Utility(plugin);
 		
 		String path = plugin.getYamlHandler().getConfig().getString("IFHAdministrationPath");
