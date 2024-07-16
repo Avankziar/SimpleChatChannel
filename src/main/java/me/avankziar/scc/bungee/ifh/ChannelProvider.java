@@ -11,7 +11,7 @@ import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.general.objects.Channel;
 import main.java.me.avankziar.scc.general.objects.UsedChannel;
 
-public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.Channel
+public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 {	
 	@Override
 	public ArrayList<String> getChannels()

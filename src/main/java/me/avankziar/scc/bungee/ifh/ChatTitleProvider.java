@@ -10,7 +10,7 @@ import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.general.objects.ChatTitle;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.chat.ChatTitle
+public class ChatTitleProvider implements me.avankziar.ifh.general.chat.ChatTitle
 {
 	@Override
 	public ArrayList<String> getChatTitle()

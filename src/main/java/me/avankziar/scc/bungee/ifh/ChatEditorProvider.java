@@ -2,9 +2,9 @@ package main.java.me.avankziar.scc.bungee.ifh;
 
 import java.util.UUID;
 
-import main.java.me.avankziar.ifh.general.chat.ChatEditor;
 import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import me.avankziar.ifh.general.chat.ChatEditor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class ChatEditorProvider implements ChatEditor

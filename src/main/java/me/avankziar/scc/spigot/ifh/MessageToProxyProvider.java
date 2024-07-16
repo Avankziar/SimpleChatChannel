@@ -10,10 +10,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee;
-import main.java.me.avankziar.ifh.spigot.tovelocity.chatlike.MessageToVelocity;
 import main.java.me.avankziar.scc.general.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SCC;
+import me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee;
+import me.avankziar.ifh.spigot.tovelocity.chatlike.MessageToVelocity;
 
 public class MessageToProxyProvider implements MessageToBungee, MessageToVelocity
 {

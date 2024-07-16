@@ -3,12 +3,12 @@ package main.java.me.avankziar.scc.velocity.ifh;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import main.java.me.avankziar.ifh.general.chat.Chat;
 import main.java.me.avankziar.scc.general.assistance.ChatApi;
 import main.java.me.avankziar.scc.general.objects.Channel;
 import main.java.me.avankziar.scc.general.objects.ComponentsVelo;
 import main.java.me.avankziar.scc.velocity.SCC;
 import main.java.me.avankziar.scc.velocity.handler.ChatHandler;
+import me.avankziar.ifh.general.chat.Chat;
 
 public class ChatProvider implements Chat
 {

@@ -26,8 +26,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import main.java.me.avankziar.ifh.general.interfaces.PlayerTimes;
-import main.java.me.avankziar.ifh.spigot.administration.Administration;
 import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.general.commands.tree.BaseConstructor;
 import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
@@ -126,6 +124,8 @@ import main.java.me.avankziar.scc.spigot.metrics.Metrics;
 import main.java.me.avankziar.scc.spigot.objects.BypassPermission;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 import main.java.me.avankziar.scc.spigot.objects.TemporaryChannel;
+import me.avankziar.ifh.general.interfaces.PlayerTimes;
+import me.avankziar.ifh.spigot.administration.Administration;
 
 public class SCC extends JavaPlugin
 {
@@ -925,7 +925,7 @@ public class SCC extends JavaPlugin
 		{
         	ChatProvider c = new ChatProvider();
         	plugin.getServer().getServicesManager().register(
-        			main.java.me.avankziar.ifh.general.chat.Chat.class,
+        			me.avankziar.ifh.general.chat.Chat.class,
              		c,
              		this,
              		ServicePriority.Normal);
@@ -933,7 +933,7 @@ public class SCC extends JavaPlugin
             
             ChannelProvider ch = new ChannelProvider();
         	plugin.getServer().getServicesManager().register(
-        			main.java.me.avankziar.ifh.general.chat.Channel.class,
+        			me.avankziar.ifh.general.chat.Channel.class,
              		ch,
              		this,
              		ServicePriority.Normal);
@@ -941,7 +941,7 @@ public class SCC extends JavaPlugin
             
             ChatTitleProvider ct = new ChatTitleProvider();
         	plugin.getServer().getServicesManager().register(
-        			main.java.me.avankziar.ifh.general.chat.ChatTitle.class,
+        			me.avankziar.ifh.general.chat.ChatTitle.class,
              		ct,
              		this,
              		ServicePriority.Normal);
@@ -949,7 +949,7 @@ public class SCC extends JavaPlugin
             
         	ChatEditorProvider ce = new ChatEditorProvider();
         	plugin.getServer().getServicesManager().register(
-        			main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
+        			me.avankziar.ifh.general.chat.ChatEditor.class,
              		ce,
              		this,
              		ServicePriority.Normal);
@@ -957,7 +957,7 @@ public class SCC extends JavaPlugin
             
         	MessageToProxyProvider mtb = new MessageToProxyProvider();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee.class,
+            		me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee.class,
             		mtb,
             		this,
                     ServicePriority.Normal);
@@ -965,7 +965,7 @@ public class SCC extends JavaPlugin
             
             BaseComponentToBungeeProvider bctb = new BaseComponentToBungeeProvider();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee.class,
+            		me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee.class,
             		bctb,
             		this,
                     ServicePriority.Normal);
@@ -973,7 +973,7 @@ public class SCC extends JavaPlugin
             
             TitleMessageToBungeeProvider tmtb = new TitleMessageToBungeeProvider();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee.class,
+            		me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee.class,
             		tmtb,
             		this,
                     ServicePriority.Normal);
@@ -981,7 +981,7 @@ public class SCC extends JavaPlugin
             
             ActionBarMessageToBungeeProvider abmtb = new ActionBarMessageToBungeeProvider();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.ifh.spigot.tobungee.displaychatlike.ActionBarMessageToBungee.class,
+            		me.avankziar.ifh.spigot.tobungee.displaychatlike.ActionBarMessageToBungee.class,
             		abmtb,
             		this,
                     ServicePriority.Normal);
@@ -989,7 +989,7 @@ public class SCC extends JavaPlugin
             
             MessageToProxyProvider mtv = new MessageToProxyProvider();
             plugin.getServer().getServicesManager().register(
-            		main.java.me.avankziar.ifh.spigot.tovelocity.chatlike.MessageToVelocity.class,
+            		me.avankziar.ifh.spigot.tovelocity.chatlike.MessageToVelocity.class,
             		mtv,
             		this,
                     ServicePriority.Normal);
@@ -1021,7 +1021,7 @@ public class SCC extends JavaPlugin
 			    }
 				try
 				{
-					RegisteredServiceProvider<main.java.me.avankziar.ifh.general.interfaces.PlayerTimes> rsp = 
+					RegisteredServiceProvider<me.avankziar.ifh.general.interfaces.PlayerTimes> rsp = 
 	                         getServer().getServicesManager().getRegistration(PlayerTimes.class);
 				    if (rsp == null) 
 				    {
@@ -1052,7 +1052,7 @@ public class SCC extends JavaPlugin
 	    }
 		try
 	    {
-	    	RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
+	    	RegisteredServiceProvider<me.avankziar.ifh.spigot.administration.Administration> rsp = 
                      getServer().getServicesManager().getRegistration(Administration.class);
 		    if (rsp == null) 
 		    {

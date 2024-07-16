@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import com.velocitypowered.api.proxy.Player;
 
-import main.java.me.avankziar.ifh.general.chat.ChatEditor;
 import main.java.me.avankziar.scc.general.assistance.ChatApi;
 import main.java.me.avankziar.scc.velocity.SCC;
+import me.avankziar.ifh.general.chat.ChatEditor;
 
 public class ChatEditorProvider implements ChatEditor
 {

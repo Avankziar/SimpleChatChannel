@@ -28,11 +28,6 @@ import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import main.java.me.avankziar.ifh.general.interfaces.PlayerTimes;
-import main.java.me.avankziar.ifh.velocity.IFH;
-import main.java.me.avankziar.ifh.velocity.administration.Administration;
-import main.java.me.avankziar.ifh.velocity.plugin.RegisteredServiceProvider;
-import main.java.me.avankziar.ifh.velocity.plugin.ServicePriority;
 import main.java.me.avankziar.scc.general.commands.tree.ArgumentConstructor;
 import main.java.me.avankziar.scc.general.commands.tree.BaseConstructor;
 import main.java.me.avankziar.scc.general.commands.tree.CommandConstructor;
@@ -118,6 +113,11 @@ import main.java.me.avankziar.scc.velocity.metric.Metrics;
 import main.java.me.avankziar.scc.velocity.objects.BypassPermission;
 import main.java.me.avankziar.scc.velocity.objects.PluginSettings;
 import main.java.me.avankziar.scc.velocity.objects.chat.TemporaryChannel;
+import me.avankziar.ifh.general.interfaces.PlayerTimes;
+import me.avankziar.ifh.velocity.IFH;
+import me.avankziar.ifh.velocity.administration.Administration;
+import me.avankziar.ifh.velocity.plugin.RegisteredServiceProvider;
+import me.avankziar.ifh.velocity.plugin.ServicePriority;
 
 @Plugin(
 		id = "simplechatchannels", 
@@ -860,12 +860,12 @@ public class SCC
         	logger.info(pluginName + " dont find InterfaceHub!");
             return;
         }
-        main.java.me.avankziar.ifh.velocity.IFH ifh = IFH.getPlugin();
+        me.avankziar.ifh.velocity.IFH ifh = IFH.getPlugin();
         try
         {
     		ChatProvider cp = new ChatProvider();
             ifh.getServicesManager().register(
-             		main.java.me.avankziar.ifh.general.chat.Chat.class,
+             		me.avankziar.ifh.general.chat.Chat.class,
              		cp, plugin.get(), ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
     		
@@ -874,7 +874,7 @@ public class SCC
         {
     		ChannelProvider chp = new ChannelProvider();
             ifh.getServicesManager().register(
-             		main.java.me.avankziar.ifh.general.chat.Channel.class,
+             		me.avankziar.ifh.general.chat.Channel.class,
              		chp, plugin.get(), ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> Channel.class is provided!");
     		
@@ -883,7 +883,7 @@ public class SCC
         {
     		ChatTitleProvider ctp = new ChatTitleProvider();
             ifh.getServicesManager().register(
-             		main.java.me.avankziar.ifh.general.chat.ChatTitle.class,
+             		me.avankziar.ifh.general.chat.ChatTitle.class,
              		ctp, plugin.get(), ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> ChatTitle.class is provided!");
     		
@@ -892,7 +892,7 @@ public class SCC
         {
         	ChatEditorProvider ce = new ChatEditorProvider();
             ifh.getServicesManager().register(
-            		main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
+            		me.avankziar.ifh.general.chat.ChatEditor.class,
             		ce, plugin.get(), ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
         } catch(NoClassDefFoundError e) {}    
@@ -906,7 +906,7 @@ public class SCC
         	logger.info(pluginName + " dont find InterfaceHub!");
             return;
         }
-        main.java.me.avankziar.ifh.velocity.IFH ifh = IFH.getPlugin();
+        me.avankziar.ifh.velocity.IFH ifh = IFH.getPlugin();
         plugin.getServer().getScheduler().buildTask(plugin, (task) ->
 		{
 			try
@@ -947,7 +947,7 @@ public class SCC
         	logger.info(pluginName + " dont find InterfaceHub!");
             return;
         }
-        main.java.me.avankziar.ifh.velocity.IFH ifh = IFH.getPlugin();
+        me.avankziar.ifh.velocity.IFH ifh = IFH.getPlugin();
         RegisteredServiceProvider<Administration> rsp = ifh
         		.getServicesManager()
         		.getRegistration(Administration.class);

@@ -11,11 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import main.java.me.avankziar.ifh.bungee.IFH;
-import main.java.me.avankziar.ifh.bungee.administration.Administration;
-import main.java.me.avankziar.ifh.bungee.plugin.RegisteredServiceProvider;
-import main.java.me.avankziar.ifh.bungee.plugin.ServicePriority;
-import main.java.me.avankziar.ifh.general.interfaces.PlayerTimes;
 import main.java.me.avankziar.scc.bungee.assistance.BackgroundTask;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.commands.ClickChatCommandExecutor;
@@ -108,6 +103,11 @@ import main.java.me.avankziar.scc.general.objects.ChatUser;
 import main.java.me.avankziar.scc.general.objects.KeyHandler;
 import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import main.java.me.avankziar.scc.general.objects.StaticValues;
+import me.avankziar.ifh.bungee.IFH;
+import me.avankziar.ifh.bungee.administration.Administration;
+import me.avankziar.ifh.bungee.plugin.RegisteredServiceProvider;
+import me.avankziar.ifh.bungee.plugin.ServicePriority;
+import me.avankziar.ifh.general.interfaces.PlayerTimes;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
@@ -851,12 +851,12 @@ public class SCC extends Plugin
         {
             return;
         }
-        main.java.me.avankziar.ifh.bungee.IFH ifh = (IFH) ifhp;
+        me.avankziar.ifh.bungee.IFH ifh = (IFH) ifhp;
         try
         {
     		ChatProvider cp = new ChatProvider();
             ifh.getServicesManager().register(
-             		main.java.me.avankziar.ifh.general.chat.Chat.class,
+             		me.avankziar.ifh.general.chat.Chat.class,
              		cp, plugin, ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
     		
@@ -865,7 +865,7 @@ public class SCC extends Plugin
         {
     		ChannelProvider chp = new ChannelProvider();
             ifh.getServicesManager().register(
-             		main.java.me.avankziar.ifh.general.chat.Channel.class,
+             		me.avankziar.ifh.general.chat.Channel.class,
              		chp, plugin, ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> Channel.class is provided!");
     		
@@ -874,7 +874,7 @@ public class SCC extends Plugin
         {
     		ChatTitleProvider ctp = new ChatTitleProvider();
             ifh.getServicesManager().register(
-             		main.java.me.avankziar.ifh.general.chat.ChatTitle.class,
+             		me.avankziar.ifh.general.chat.ChatTitle.class,
              		ctp, plugin, ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> ChatTitle.class is provided!");
     		
@@ -883,7 +883,7 @@ public class SCC extends Plugin
         {
         	ChatEditorProvider ce = new ChatEditorProvider();
             ifh.getServicesManager().register(
-            		main.java.me.avankziar.ifh.general.chat.ChatEditor.class,
+            		me.avankziar.ifh.general.chat.ChatEditor.class,
             		ce, plugin, ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
         } catch(NoClassDefFoundError e) {}    

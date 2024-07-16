@@ -12,7 +12,7 @@ import com.velocitypowered.api.proxy.Player;
 import main.java.me.avankziar.scc.general.objects.ChatTitle;
 import main.java.me.avankziar.scc.velocity.SCC;
 
-public class ChatTitleProvider implements main.java.me.avankziar.ifh.general.chat.ChatTitle
+public class ChatTitleProvider implements me.avankziar.ifh.general.chat.ChatTitle
 {
 	@Override
 	public ArrayList<String> getChatTitle()

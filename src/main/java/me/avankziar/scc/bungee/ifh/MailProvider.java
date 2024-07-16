@@ -3,8 +3,8 @@ package main.java.me.avankziar.scc.bungee.ifh;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import main.java.me.avankziar.ifh.general.interfaces.Mail;
 import main.java.me.avankziar.scc.bungee.SCC;
+import me.avankziar.ifh.general.interfaces.Mail;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class MailProvider implements Mail

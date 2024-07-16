@@ -11,7 +11,7 @@ import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.handler.ChatHandlerAdventure;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class ChatProvider implements main.java.me.avankziar.ifh.general.chat.Chat
+public class ChatProvider implements me.avankziar.ifh.general.chat.Chat
 {
 	@Override
 	public boolean supportRolePlayNames()

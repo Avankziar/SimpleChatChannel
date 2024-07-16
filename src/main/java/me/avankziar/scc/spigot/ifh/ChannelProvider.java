@@ -18,7 +18,7 @@ import main.java.me.avankziar.scc.general.objects.UsedChannel;
 import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
 
-public class ChannelProvider implements main.java.me.avankziar.ifh.general.chat.Channel
+public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 {	
 	@Override
 	public ArrayList<String> getChannels()

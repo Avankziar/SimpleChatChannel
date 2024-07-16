@@ -7,10 +7,10 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-import main.java.me.avankziar.ifh.general.chat.ChatEditor;
 import main.java.me.avankziar.scc.general.assistance.ChatApi;
 import main.java.me.avankziar.scc.general.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SCC;
+import me.avankziar.ifh.general.chat.ChatEditor;
 
 public class ChatEditorProvider implements ChatEditor
 {
