@@ -14,6 +14,7 @@ Future =========================================================================
   Ausgabe im Chat für den Versender der Nachricht könnte sein: Spieler ist offline, die Nachricht wird für Empfänger (%player%) gespeichert. 
   Abrufen könnte man über /msg read, Meldung via Bungee bis Spieler Nachricht abgerufen hat, 
   nach Abruf automatisch löschen aus der DB oder (feature Request II) /msg save zum Speichern der Nachrichten oder /msg delete zum Löschen selbiger.
+- CommandSpy hinzufügen
 
 Build 42-3-0
 - Spigot 1.21 support
