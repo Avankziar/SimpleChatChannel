@@ -198,7 +198,7 @@ public class SCC
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) 
     {
-    	logger = Logger.getLogger("SimpleChatChannels");
+    	logger = Logger.getLogger("SCC");
     	PluginDescription pd = server.getPluginManager().getPlugin(pluginName.toLowerCase()).get().getDescription();
         List<String> dependencies = new ArrayList<>();
         pd.getDependencies().stream().allMatch(x -> dependencies.add(x.toString()));
@@ -950,8 +950,8 @@ public class SCC
         me.avankziar.ifh.velocity.IFH ifh = IFH.getPlugin();
         RegisteredServiceProvider<Administration> rsp = ifh
         		.getServicesManager()
-        		.getRegistration(Administration.class);
-        if (rsp == null) 
+        		.getRegistration(me.avankziar.ifh.velocity.administration.Administration.class);
+        if(rsp == null) 
         {
             return;
         }
