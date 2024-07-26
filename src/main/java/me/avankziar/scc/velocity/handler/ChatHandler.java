@@ -38,7 +38,6 @@ import main.java.me.avankziar.scc.velocity.objects.BypassPermission;
 import main.java.me.avankziar.scc.velocity.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.velocity.objects.PluginSettings;
 import main.java.me.avankziar.scc.velocity.objects.chat.TemporaryChannel;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class ChatHandler
 {
@@ -1155,7 +1154,9 @@ public class ChatHandler
 			canColor = true;
 		}
 		//Strip of all none allow tags
-		String message = MiniMessage.miniMessage().stripTags(ChatApi.oldBukkitFormatShort(msg), canColor ? ChatApi.ALLOW_ONLY_COLOR : ChatApi.ALL);
+		String message = (!canColor 
+				? ChatApi.all.stripTags(ChatApi.oldBukkitFormatShort(msg)) 
+				: ChatApi.colorOnlyStrip.stripTags(ChatApi.oldBukkitFormatShort(msg)));
 		message = ChatApi.oldBukkitFormatShort(channelColor+message);
 		ComponentsVelo components = new ComponentsVelo();
 		String[] function = message.split(" "); //TODO split("\s+") um alle Leerzeichen rauszuholen

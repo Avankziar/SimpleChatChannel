@@ -32,7 +32,6 @@ import main.java.me.avankziar.scc.spigot.objects.BypassPermission;
 import main.java.me.avankziar.scc.spigot.objects.ChatUserHandler;
 import main.java.me.avankziar.scc.spigot.objects.PluginSettings;
 import main.java.me.avankziar.scc.spigot.objects.TemporaryChannel;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class ChatHandlerAdventure
 {
@@ -1119,7 +1118,9 @@ public class ChatHandlerAdventure
 			canColor = true;
 		}
 		//Strip of all none allow tags
-		String message = MiniMessage.miniMessage().stripTags(ChatApi.oldBukkitFormatShort(msg), canColor ? ChatApi.ALLOW_ONLY_COLOR : ChatApi.ALL);
+		String message = (!canColor 
+				? ChatApi.all.stripTags(ChatApi.oldBukkitFormatShort(msg)) 
+				: ChatApi.colorOnlyStrip.stripTags(ChatApi.oldBukkitFormatShort(msg)));
 		message = ChatApi.oldBukkitFormatShort(channelColor+message);
 		ComponentsVelo components = new ComponentsVelo();
 		String[] function = message.split(" ");

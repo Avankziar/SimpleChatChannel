@@ -12,43 +12,55 @@ public class ChatApi
 {
 	private static final Pattern po = Pattern.compile("(?<!\\\\)(&#[a-fA-F0-9]{6})");
 	private static final Pattern pt = Pattern.compile("(?<!\\\\)(&[a-fA-F0-9k-oK-OrR]{1})");
-	public static final TagResolver ALL = TagResolver.builder()
-		      .resolvers(
-		    		  StandardTags.hoverEvent(),
-		    		  StandardTags.clickEvent(),
-		    		  StandardTags.color(),
-		    		  StandardTags.keybind(),
-		    		  StandardTags.translatable(),
-		    		  StandardTags.translatableFallback(),
-		    		  StandardTags.insertion(),
-		    		  StandardTags.font(),
-		    		  StandardTags.decorations(),
-		    		  StandardTags.gradient(),
-		    		  StandardTags.reset(),
-		    		  StandardTags.newline(),
-		    		  StandardTags.transition(),
-		    		  StandardTags.selector(),
-		    		  StandardTags.score(),
-		    		  StandardTags.nbt()
-		      ).build();
-	public static final TagResolver ALLOW_ONLY_COLOR = TagResolver.builder()
-		      .resolvers(
-		    		  StandardTags.hoverEvent(),
-		    		  StandardTags.clickEvent(),
-		    		  StandardTags.keybind(),
-		    		  StandardTags.translatable(),
-		    		  StandardTags.translatableFallback(),
-		    		  StandardTags.insertion(),
-		    		  StandardTags.font(),
-		    		  StandardTags.decorations(),
-		    		  StandardTags.gradient(),
-		    		  StandardTags.reset(),
-		    		  StandardTags.newline(),
-		    		  StandardTags.transition(),
-		    		  StandardTags.selector(),
-		    		  StandardTags.score(),
-		    		  StandardTags.nbt()
-		      ).build();
+	public static final TagResolver[] ALLOW_ONLY_COLOR = new TagResolver[] {
+			StandardTags.hoverEvent(),
+			StandardTags.clickEvent(),
+	  		StandardTags.keybind(),
+	  		StandardTags.translatable(),
+	  		StandardTags.translatableFallback(),
+	  		StandardTags.insertion(),
+	  		StandardTags.font(),
+	  		StandardTags.decorations(),
+	  		StandardTags.gradient(),
+	  		StandardTags.reset(),
+	  		StandardTags.newline(),
+	  		StandardTags.transition(),
+	  		StandardTags.selector(),
+	  		StandardTags.score(),
+	  		StandardTags.nbt()};
+	public static final TagResolver[] ALL = new TagResolver[] {
+			StandardTags.hoverEvent(),
+			StandardTags.clickEvent(),
+  		  	StandardTags.color(),
+	  		StandardTags.keybind(),
+	  		StandardTags.translatable(),
+	  		StandardTags.translatableFallback(),
+	  		StandardTags.insertion(),
+	  		StandardTags.font(),
+	  		StandardTags.decorations(),
+	  		StandardTags.gradient(),
+	  		StandardTags.reset(),
+	  		StandardTags.newline(),
+	  		StandardTags.transition(),
+	  		StandardTags.selector(),
+	  		StandardTags.score(),
+	  		StandardTags.nbt()};
+	
+	public static MiniMessage color = MiniMessage.builder()
+			 .tags(TagResolver.builder()
+			   .resolver(StandardTags.color())
+			   .build())
+			 .build();
+	public static MiniMessage colorOnlyStrip = MiniMessage.builder()
+			 .tags(TagResolver.builder()
+			   .resolvers(ALLOW_ONLY_COLOR)
+			   .build())
+			 .build();
+	public static MiniMessage all = MiniMessage.builder()
+			 .tags(TagResolver.builder()
+					 .resolvers(ALL)
+					 .build())
+			 .build();
 	
 	public static Component text(String s)
 	{
@@ -63,11 +75,11 @@ public class ChatApi
 		} else if(po.matcher(s).find() || pt.matcher(s).find())
 		{
 			//Old Bukkit pattern
-			return MiniMessage.miniMessage().deserialize(oldBukkitFormat(s), ALL);
+			return all.deserialize(oldBukkitFormat(s));
 		} else
 		{
 			//new kyori adventure pattern
-			return MiniMessage.miniMessage().deserialize(s, ALL);
+			return all.deserialize(s);
 		}
 	}
 	
