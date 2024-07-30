@@ -940,7 +940,7 @@ public class YamlManager
 				"/scc tc ", "/scc tc ",
 				"<red>/scc tc <white>| Zwischenbefehl",
 				"<red>/scc tc <white>| Intermediate command");
-		basePermission = "scc.cmd.scc.temporarychannel.";
+		basePermission = "scc.cmd.scc.temporarychannel";
 		argumentInput(path+"tc_ban", "ban", basePermission,
 				"/scc tc ban <playername> ", "/scc tc ban ",
 				"<red>/scc tc ban <Spielername> <white>| Bannt einen Spieler von einem temporären Channel.",
