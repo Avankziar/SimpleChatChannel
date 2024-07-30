@@ -2226,6 +2226,9 @@ public class YamlManager
 		channelsKeys.put("private.UseEmojiReplacer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				false}));
+		channelsKeys.put("private.UseMentionReplacer"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("private.UsePositionReplacer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				false}));
