@@ -141,7 +141,7 @@ public class Utility
 			}
 		}
 		if(cu.isOptionSpy()) {ac += plugin.getYamlHandler().getLang().getString("Join.Spy")+comma;}
-		return ac.substring(0, ac.length()-2);
+		return ac.length() > 0 ? ac.substring(0, ac.length()-2) : ac;
 	}
 	
 	public boolean containsBadWords(Player player, String message)
