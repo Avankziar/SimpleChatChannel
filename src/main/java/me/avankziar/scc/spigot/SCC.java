@@ -3,7 +3,6 @@ package main.java.me.avankziar.scc.spigot;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -195,7 +194,7 @@ public class SCC extends JavaPlugin
 		
 		setupIFHAdministration();
 		
-		yamlHandler = new YamlHandler(YamlManager.Type.VELO, pluginName, logger, plugin.getDataFolder().toPath(),
+		yamlHandler = new YamlHandler(YamlManager.Type.SPIGOT, pluginName, logger, plugin.getDataFolder().toPath(),
         		(plugin.getAdministration() == null ? null : plugin.getAdministration().getLanguage()));
         setYamlManager(yamlHandler.getYamlManager());
 		utility = new Utility(plugin);
@@ -214,13 +213,7 @@ public class SCC extends JavaPlugin
 			Bukkit.getPluginManager().getPlugin("SimpleChatChannels").getPluginLoader().disablePlugin(this);
 			return;
 		}
-		try
-		{
-			PluginSettings.initSettings(plugin);
-		} catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		PluginSettings.initSettings(plugin);
 		BaseConstructor.init(yamlHandler);
 		setupPlayers();
 		setupChannels();

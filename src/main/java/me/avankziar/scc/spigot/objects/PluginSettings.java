@@ -29,14 +29,20 @@ public class PluginSettings
 		setDebug(debug);
 	}
 	
-	public static void initSettings(SCC plugin) throws SQLException
+	public static void initSettings(SCC plugin)
 	{
 		YamlHandler yh = plugin.getYamlHandler();
 		boolean bungee = plugin.getYamlHandler().getConfig().getBoolean("IsBungeeActive", false);
 		boolean mysql = false;
-		if(plugin.getMysqlSetup().getConnection() != null)
+		try
 		{
-			mysql = true;
+			if(plugin.getMysqlSetup().getConnection() != null)
+			{
+				mysql = true;
+			}
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
 		}
 		String server = yh.getConfig().getString("Server");
 		boolean debug = yh.getConfig().getBoolean("Use.DebuggingMode", false);
