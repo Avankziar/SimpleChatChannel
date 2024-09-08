@@ -14,7 +14,6 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import main.java.me.avankziar.scc.bungee.assistance.BackgroundTask;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.commands.ClickChatCommandExecutor;
-import main.java.me.avankziar.scc.bungee.commands.MailCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.MessageCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.RCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.ReCommandExecutor;
@@ -22,11 +21,6 @@ import main.java.me.avankziar.scc.bungee.commands.SccCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.SccEditorCommandExecutor;
 import main.java.me.avankziar.scc.bungee.commands.TabCompletionListener;
 import main.java.me.avankziar.scc.bungee.commands.WCommandExecutor;
-import main.java.me.avankziar.scc.bungee.commands.mail.ARGForward;
-import main.java.me.avankziar.scc.bungee.commands.mail.ARGLastReceivedMails;
-import main.java.me.avankziar.scc.bungee.commands.mail.ARGLastSendedMails;
-import main.java.me.avankziar.scc.bungee.commands.mail.ARGRead;
-import main.java.me.avankziar.scc.bungee.commands.mail.ARGSend;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBook;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcast;
 import main.java.me.avankziar.scc.bungee.commands.scc.ARGBroadcastServer;
@@ -501,37 +495,6 @@ public class SCC extends Plugin
 		new ARGTemporaryChannel_Kick(plugin, tc_kick);
 		new ARGTemporaryChannel_Leave(plugin, tc_leave);
 		new ARGTemporaryChannel_Unban(plugin, tc_unban);
-		
-		if(plugin.getYamlHandler().getConfig().getBoolean("Use.Mail", true))
-		{
-			//INFO:Mail
-			ArgumentConstructor mail_forward = new ArgumentConstructor(baseCommandVIII+"_forward", 0, 2, 2, true, null);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL_FORWARD, mail_forward.getCommandString());
-			ArgumentConstructor mail_lastreceivedmails = new ArgumentConstructor(baseCommandVIII+"_lastreceivedmails", 0, 0, 2, false, null);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTRECEIVEDMAILS, mail_lastreceivedmails.getCommandString());
-			ArgumentConstructor mail_lastsendedmails = new ArgumentConstructor(baseCommandVIII+"_lastsendedmails", 0, 0, 2, false, null);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL_LASTSENDEDMAILS, mail_lastsendedmails.getCommandString());
-			ArgumentConstructor mail_read = new ArgumentConstructor(baseCommandVIII+"_read", 0, 1, 1, false, null);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL_READ, mail_read.getCommandString());
-			ArgumentConstructor mail_send = new ArgumentConstructor(baseCommandVIII+"_send", 0, 3, 999, true, null);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL_SEND, mail_send.getCommandString());
-			
-			
-			CommandConstructor mail = new CommandConstructor(baseCommandVIII, true,
-					mail_forward, mail_read, mail_send, mail_lastreceivedmails, mail_lastsendedmails);
-			PluginSettings.settings.addCommands(KeyHandler.MAIL, mail.getCommandString());
-			
-			pm.registerCommand(plugin, new MailCommandExecutor(plugin, mail));
-			
-			addingHelps(mail,
-							mail_forward, mail_lastreceivedmails, mail_lastsendedmails, mail_read, mail_send);
-			
-			new ARGForward(plugin, mail_forward);
-			new ARGLastReceivedMails(plugin, mail_lastreceivedmails);
-			new ARGLastSendedMails(plugin, mail_lastsendedmails);
-			new ARGRead(plugin, mail_read);
-			new ARGSend(plugin, mail_send);
-		}
 	}
 	
 	public void ListenerSetup()

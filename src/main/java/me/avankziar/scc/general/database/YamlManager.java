@@ -530,24 +530,6 @@ public class YamlManager
 				"Wenn true, dann wird in der Console alle Nachrichte angezeigt, welche im Chat gesendet werden.",
 				"",
 				"If so, all messages sent in the chat are displayed in the console."});
-		if(type == Type.SPIGOT || type == Type.BUNGEE)
-		{
-			configKeys.put("Use.Mail"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					true}));
-			configKeys.put("Mail.UseChannelForMessageParser"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"Global"}));
-			configKeys.put("Mail.ConsoleReplacerInSendedMails"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"Console"}));
-			configKeys.put("Mail.CCSeperator"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"@"}));
-			configKeys.put("Mail.SubjectMessageSeperator"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"<>"}));
-		}
 		addConfig("PrivateChannel.UseDynamicColor",
 				new Object[] {
 				true},
@@ -981,28 +963,6 @@ public class YamlManager
 				"/mail [page]", "/mail ",
 				"<red>/mail [Seitenzahl] <white>| Zeigt alle ungelesenen Mails mit Klick- und Hovernachrichten.",
 				"<red>/mail [pagen] <white>| Shows all unread mails with click and hover events.");
-		path = "mail_";
-		basePermission = "scc.cmd.mail";
-		argumentInput(path+"lastreceivedmails", "lastreceivedmails", basePermission,
-				"/mail lastreceivedmails [page] [playername] ", "/mail lastreceivedmails",
-				"<red>/mail lastreceivedmails [Seitenzahl] [Spielername] <white>| Zeigt die letzten empfangen Mails an.",
-				"<red>/mail lastreceivedmails [page] [playername] <white>| Show the last received mails.");
-		argumentInput(path+"lastsendedmails", "lastsendedmails", basePermission,
-				"/mail lastsendedmails [page] [playername] ", "/mail lastsendedmails",
-				"<red>/mail lastsendedmails [Seitenzahl] [Spielername] <white>| Zeigt die letzten gesendeten Mails.",
-				"<red>/mail lastsendedmails [page] [playername] <white>| Show the last sended mails.");
-		argumentInput(path+"forward", "forward", basePermission,
-				"/mail forward <id> ", "/mail forward ",
-				"<red>/mail forward <id> <Spielername> <white>| Leitet die Mail an den Spieler weiter.",
-				"<red>/mail forward <id> <playername> <white>| Forwards the mail to the player.");
-		argumentInput(path+"read", "read", basePermission,
-				"/mail read <id> ", "/mail read ",
-				"<red>/mail read <id> <white>| Liest die Mail.",
-				"<red>/mail read <id> <white>| Read the mail.");
-		argumentInput(path+"send", "send", basePermission,
-				"/mail send <receiver, multiple seperate with @> <subject...> <seperator> <message...> ", "/mail send ",
-				"<red>/mail send <Empfänger, mehrere getrennt mit @> <Betreff...> <Trennzeichen> <Nachricht...> <white>| Schreibt eine Mail.",
-				"<red>/mail send <receiver, multiple seperate with @> <subject...> <seperator> <message...> <white>| Write a mail.");
 		/*argumentInput(path+"", "", basePermission,
 				"/scc ", "/scc ",
 				"<red>/scc <white>| ",
@@ -1084,9 +1044,6 @@ public class YamlManager
 		commandsKeys.put(path+"BookOther"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				by+"bookother"}));
-		commandsKeys.put(path+"Mail.ReadOther"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				by+"mail.readother"}));
 		commandsKeys.put(path+"WordFilter"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				by+"wordfilter"}));
@@ -1350,159 +1307,6 @@ public class YamlManager
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"<yellow>Der ChatEditor ist deaktiviert. <green>Du kannst nun am normalen Chat teilnehmen.",
 						"<yellow>The ChatEditor is deactive. <green>You can now participate in the normal chat."}));
-		
-		/*
-		 * Mail
-		 */
-		languageKeys.put("CmdMail.Base.NoUnreadMail", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Du hast keine ungelesenen Mails!",
-						"<red>You have no unread mails!"}));
-		languageKeys.put("CmdMail.Base.Read.Click", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<gray>[<aqua>Read<gray>]",
-						"<gray>[<aqua>Read<gray>]"}));
-		languageKeys.put("CmdMail.Base.Read.Hover", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Klick hier, um die Mail zu lesen.",
-						"<yellow>Click here to read the mail."}));
-		languageKeys.put("CmdMail.Base.SendPlus.Click", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<gray>[<red>Reply<gray>]",
-						"<gray>[<red>Reply<gray>]"}));
-		languageKeys.put("CmdMail.Base.SendPlus.Hover", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Klick hier, um eine Antwort an alle (Verfasser sowie CC) zu schreiben.",
-						"<yellow>Click here to write a reply to all (authors as well as CC)."}));
-		languageKeys.put("CmdMail.Base.SendMinus.Click", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<gray>[<red>Reply<dark_red>All<gray>]",
-						"<gray>[<red>Reply<dark_red>All<gray>]"}));
-		languageKeys.put("CmdMail.Base.SendMinus.Hover", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Klick hier, um eine Antwort nur an Verfasser zu schreiben.",
-						"<yellow>Click here to write a reply to author only."}));
-		languageKeys.put("CmdMail.Base.Forward.Click", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<gray>[<light_purple>Fwd<gray>]",
-						"<gray>[<light_purple>Fwd<gray>]"}));
-		languageKeys.put("CmdMail.Base.Forward.Hover", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Klick hier, um die Mail weiterzuleiten.",
-						"<yellow>Click here to forward the mail."}));
-		languageKeys.put("CmdMail.Base.Subject.Text", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						" <gold>{<white>%sender%<gold>} <light_purple>>> <reset>%subject%",
-						" <gold>{<white>%sender%<gold>} <light_purple>>> <reset>%subject%"}));
-		languageKeys.put("CmdMail.Base.Subject.TextII", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						" <gold>{<yellow>%reciver%<gold>} <light_purple><< <reset>%subject%",
-						" <gold>{<yellow>%reciver%<gold>} <light_purple><< <reset>%subject%"}));
-		languageKeys.put("CmdMail.Base.Subject.Hover", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Gesendet am <white>%sendeddate%~!~<light_purple>Gelesen am <white>%readeddate%~!~<red>CC: <white>%cc%",
-						"<yellow>Sended on the <white>%sendeddate%~!~<red>CC: <white>%cc%"}));
-		languageKeys.put("CmdMail.Base.Headline", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>===== <aqua>%mailscount% <white>Ungelesene Nachrichten<yellow>=====",
-						"<yellow>===== <aqua>%mailscount% <white>Unreaded messages<yellow>====="}));
-		//Forward
-		languageKeys.put("CmdMail.Forward.CCHasAlreadyTheMail", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Der Spieler hat diese Mail schon bekommen!",
-						"<red>The player has already received this mail!"}));
-		languageKeys.put("CmdMail.Forward.Sended", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<gray>[<aqua>Mail<gray>] <yellow>Du hast dem Spieler <white>%player% <yellow>eine Mail weitergeleitet!",
-						"<gray>[<aqua>Mail<gray>] <yellow>You have forwarded <white>%player% <yellow>your mail to the player!"}));
-		
-		languageKeys.put("CmdMail.Send.HasNewMail", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<gray>[<aqua>Mail<gray>] <yellow>Der Spieler <white>%player% <yellow>hat dir eine Mail weitergeleitet!",
-						"<gray>[<aqua>Mail<gray>] <yellow>The <white>%player% <yellow>has forwarded you a mail!"}));
-		//LastMails
-		languageKeys.put("CmdMail.LastReceivedMails.Headline", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>=====<red>Seite %page% <white>der letzten empfangenen Mails von <aqua>%player%<yellow>=====",
-						"<yellow>=====<red>Seite %page% <white>the last received mails von <aqua>%player%<yellow>====="}));
-		languageKeys.put("CmdMail.LastReceivedMails.NoMail", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Du hast keine Mails!",
-						"<red>You have no mails!"}));
-		languageKeys.put("CmdMail.LastSendedMails.Headline", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>=====<red>Seite %page% <white>der letzten gesendeten Mails von <aqua>%player%<yellow>=====",
-						"<yellow>=====<red>Seite %page% <white>the last sended mails von <aqua>%player%<yellow>====="}));
-		languageKeys.put("CmdMail.LastSendedMails.NoMail", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Du hast keine Mails!",
-						"<red>You have no mails!"}));
-		//Read
-		languageKeys.put("CmdMail.Read.MailNotExist", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Diese Mail existiert nicht!",
-						"<red>This mail does not exist!"}));
-		languageKeys.put("CmdMail.Read.CannotReadOthersMails", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Du darfst diese Mail nicht lesen, da sie nicht an dich adressiert ist!",
-						"<red>You must not read this mail, it is not addressed to you!"}));
-		languageKeys.put("CmdMail.Read.NoChannelIsNullChannel",
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Deine Mail kann nicht verarbeitet werden, da der Channel, welcher für das Verarbeiten der Mailnachricht zustandig ist, nicht existiert!",
-						"<red>Your mail cannot be processed, because the channel which is used for processing the mail message does not exist!"}));
-		languageKeys.put("CmdMail.Read.Headline", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>==========<gray>[<red>Mail <white>%id%<gray>]<yellow>==========",
-						"<yellow>==========<gray>[<red>Mail <white>%id%<gray>]<yellow>=========="}));
-		languageKeys.put("CmdMail.Read.Sender", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Von: <white>%sender%",
-						"<red>From: <white>%sender%"}));
-		languageKeys.put("CmdMail.Read.Reciver", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>An: <white>%reciver%",
-						"<red>To: <white>%reciver%"}));
-		languageKeys.put("CmdMail.Read.CC", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>CC: <gray>[<white>%cc%<gray>]",
-						"<red>CC: <gray>[<white>%cc%<gray>]"}));
-		languageKeys.put("CmdMail.Read.Date", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Gesendet am: <reset>%sendeddate% | <red>Gelesen am: <reset>%readeddate%",
-						"<red>Sended: <reset>%sendeddate% &| <green>Readed: <reset>%readeddate%"}));
-		languageKeys.put("CmdMail.Read.Subject", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Betreff: <reset>%subject%",
-						"<red>Subject: <reset>%subject%"}));
-		languageKeys.put("CmdMail.Read.Bottomline", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>==========<gray>[<red>Mail Ende<gray>]<yellow>==========",
-						"<yellow>==========<gray>[<red>Mail End<gray>]<yellow>=========="}));
-		//Send
-		languageKeys.put("CmdMail.Send.PlayerNotExist", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Einer der angegebenen Empfänger existiert nicht!",
-						"<red>One of the specified recipients does not exist!"}));
-		languageKeys.put("CmdMail.Send.OneWordMinimum", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<red>Bitte gib mindestens 1 Wort als Nachricht an!",
-						"<red>Please enter at least 1 word as message!"}));
-		languageKeys.put("CmdMail.Send.Sended", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Du hast eine Mail geschrieben.!",
-						"<yellow>You have written an mail!"}));
-		languageKeys.put("CmdMail.Send.SendedHover", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Betreff: <reset>%subject%~!~<red>CC: <reset>%cc%",
-						"<yellow>Subject: <reset>%subject%~!~<red>CC: <reset>%cc%"}));
-		languageKeys.put("CmdMail.Send.HasNewMail", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<gray>[<aqua>Mail<gray>] <yellow>Du hast eine neue Mail!",
-						"<gray>[<aqua>Mail<gray>] <yellow>You have a new mail!"}));
-		languageKeys.put("CmdMail.Send.Hover", 
-				new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
-						"<yellow>Klick auf die Nachricht um all deine neuen Mails zu sehen!",
-						"<yellow>Click on the message to see all your new mails!"}));
 		
 		/*
 		 * Scc

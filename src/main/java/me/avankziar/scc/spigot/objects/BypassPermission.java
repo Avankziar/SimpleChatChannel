@@ -34,8 +34,6 @@ public class BypassPermission
 	
 	public static String CUSTOM_ITEMREPLACERSTORAGE = "";
 	
-	public static String MAIL_READOTHER = "";
-	
 	public static String PERMBYPASSWORDFILTER = "";
 	
 	public static void init(SCC plugin)
@@ -70,8 +68,6 @@ public class BypassPermission
 		PERMBYPASSBOOK = yml.getString(bp+"BookOther", by+"bookother");
 		
 		PERMBYPASSPC = yml.getString(bp+"PermanentChannel", by+"permanentchannel");
-		
-		MAIL_READOTHER = yml.getString(bp+"Mail.ReadOther", by+"mail.readother");
 		
 		PERMBYPASSWORDFILTER = yml.getString(bp+"WordFilter", by+"wordfilter");
 		
