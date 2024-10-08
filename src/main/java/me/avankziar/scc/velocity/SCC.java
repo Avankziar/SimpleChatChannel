@@ -125,7 +125,8 @@ import me.avankziar.ifh.velocity.plugin.ServicePriority;
 		version = "42-3-0",
 		url = "https://www.spigotmc.org/resources/simple-chat-channels.35220/",
 		dependencies = {
-				@Dependency(id = "interfacehub", optional = false)
+				@Dependency(id = "interfacehub", optional = false),
+				@Dependency(id = "rootadministration", optional = true)
 		},
 		description = "A Chat Plugin",
 		authors = {"Avankziar"}

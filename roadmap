@@ -16,6 +16,9 @@ Future =========================================================================
   nach Abruf automatisch löschen aus der DB oder (feature Request II) /msg save zum Speichern der Nachrichten oder /msg delete zum Löschen selbiger.
 - CommandSpy hinzufügen
 
+Build 42-4-1
+- Velocity RootAdministration Softdepend
+
 Build 42-4-0
 - Spigot 1.21.1 Support
 - Alles rund um Mails (Befehle, Permission, Nachrichten etc.) entfernt.
