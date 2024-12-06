@@ -15,6 +15,12 @@ Future =========================================================================
   Abrufen könnte man über /msg read, Meldung via Bungee bis Spieler Nachricht abgerufen hat, 
   nach Abruf automatisch löschen aus der DB oder (feature Request II) /msg save zum Speichern der Nachrichten oder /msg delete zum Löschen selbiger.
 - CommandSpy hinzufügen
+- Moin Avan,
+  wäre es umsetzbar das man einen Cooldown auf Chatnachrichten bekommt, um zum Beispiel Server regeln im Handelschat durchzusetzen?
+  Beispiel: Regel sagt nur alle 10 Minuten eine Nachricht erlaubt. Du schreibst eine Nachricht und erhälst dann eine 10 Minuten Sperre für den Channel.
+  
+Build 42-4-2
+- Config Wert hinzugefügt, damit der Upload der Json von ItemStack der Spieler im BackgroundTask deaktiviert werden kann.
 
 Build 42-4-1
 - Velocity RootAdministration Softdepend

@@ -34,7 +34,10 @@ public class BackgroundTask
 		players = new ArrayList<String>();
 		runTask();
 		runBungeeLocationTask();
-		runItemStackTask();
+		if(plugin.getYamlHandler().getConfig().getBoolean("Upload.ItemStack", true))
+		{
+			runItemStackTask();
+		}
 		if(PluginSettings.settings.isBungee())
 		{
 			runMysqlRowsCounts();

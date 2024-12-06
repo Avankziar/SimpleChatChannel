@@ -623,12 +623,17 @@ public class YamlManager
 				"Löscht einen Spieler nach x Tagen ohne Aktivität.",
 				"",
 				"Deletes a player after x days without activity."});
-		if(type == Type.SPIGOT || type == Type.BUNGEE)
+		if(type == Type.SPIGOT)
 		{
-			configKeys.put("CleanUp.DeleteReadedMailWhichIsOlderThanDays"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					365}));
-		}		
+			addConfig("Upload.ItemStack",
+					new Object[] {
+					true},
+					new Object[] {
+					"",
+					"Aktiviert oder deaktiviert den BackgroundTask für den Upload des sich aktuell in der Hand befindeten Items der Spieler als Json.",
+					"",
+					"Activates or deactivates the background task for uploading the item currently in the players hand as a json."});
+		}
 		configKeys.put("ChatReplacer.Command.RunCommandStart"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"cmd|/"}));
@@ -715,8 +720,7 @@ public class YamlManager
 				6}));
 		configKeys.put("GuiList"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"CHANNELS", "DUMMY"}));
-		
+				"CHANNELS", "DUMMY"}));		
 	}
 	
 	//INFO:Commands
