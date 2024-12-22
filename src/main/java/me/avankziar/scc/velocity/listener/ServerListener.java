@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,6 +30,8 @@ import main.java.me.avankziar.scc.general.objects.StaticValues;
 import main.java.me.avankziar.scc.velocity.SCC;
 import main.java.me.avankziar.scc.velocity.database.MysqlHandler;
 import main.java.me.avankziar.scc.velocity.handler.ChatHandler;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 
 public class ServerListener
 {
@@ -590,18 +593,14 @@ public class ServerListener
 		{
 			return;
 		}
-		Optional<Player> player = plugin.getServer().getPlayer(u);
-		if(player.isEmpty())
+		Optional<Player> oplayer = plugin.getServer().getPlayer(u);
+		if(oplayer.isEmpty())
 		{
 			return;
 		}
-		//FIXME SendTitle
-		/*Title t = BungeeCord.getInstance().createTitle();
-		t.title(ChatApi.tctl(title));
-		t.subTitle(ChatApi.tctl(subtitle));
-		t.fadeIn(fadeIn);
-		t.stay(stay);
-		t.fadeOut(fadeOut);
+		Player player = oplayer.get();
+		final Title.Times times = Title.Times.times(Duration.ofMillis(50*fadeIn), Duration.ofMillis(50*stay), Duration.ofMillis(50*fadeOut));
+		final Title t = Title.title(Component.text("Hello!"), Component.empty(), times);
 		if(p)
 		{
 			if(hasPermission)
@@ -612,7 +611,7 @@ public class ServerListener
 					{
 						sendsound(player, uuid, sound);
 					}
-					player.sendTitle(t);
+					player.showTitle(t); 
 				}
 			} else
 			{
@@ -622,13 +621,13 @@ public class ServerListener
 					{
 						sendsound(player, uuid, sound);
 					}
-					player.sendTitle(t);
+					player.showTitle(t); 
 				}
 			}
 		} else
 		{
-			player.sendTitle(t);
-		}*/	
+			player.showTitle(t); 
+		}
 	}
 	
 	private void sendActionBar(String uuid, String actionbar, boolean s, String sound, boolean p, String permission, boolean hasPermission)

@@ -108,7 +108,7 @@ import main.java.me.avankziar.scc.spigot.ifh.ChatEditorProvider;
 import main.java.me.avankziar.scc.spigot.ifh.ChatProvider;
 import main.java.me.avankziar.scc.spigot.ifh.ChatTitleProvider;
 import main.java.me.avankziar.scc.spigot.ifh.MessageToProxyProvider;
-import main.java.me.avankziar.scc.spigot.ifh.TitleMessageToBungeeProvider;
+import main.java.me.avankziar.scc.spigot.ifh.TitleMessageToProxyProvider;
 import main.java.me.avankziar.scc.spigot.listener.ChatListener;
 import main.java.me.avankziar.scc.spigot.listener.JoinLeaveListener;
 import main.java.me.avankziar.scc.spigot.listener.LocationUpdateListener;
@@ -925,7 +925,7 @@ public class SCC extends JavaPlugin
                     ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> BaseComponentToBungee.class is provided!");
             
-            TitleMessageToBungeeProvider tmtb = new TitleMessageToBungeeProvider();
+            TitleMessageToProxyProvider tmtb = new TitleMessageToProxyProvider();
             plugin.getServer().getServicesManager().register(
             		me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee.class,
             		tmtb,
@@ -948,6 +948,14 @@ public class SCC extends JavaPlugin
             		this,
                     ServicePriority.Normal);
             logger.info(pluginName + " detected InterfaceHub >>> MessageToVelocity.class is provided!");
+            
+            TitleMessageToProxyProvider tmtv = new TitleMessageToProxyProvider();
+            plugin.getServer().getServicesManager().register(
+            		me.avankziar.ifh.spigot.tovelocity.displaychatlike.TitleMessageToVelocity.class,
+            		tmtv,
+            		this,
+                    ServicePriority.Normal);
+            logger.info(pluginName + " detected InterfaceHub >>> TitleMessageToVelocity.class is provided!");
         }
 	}
 	

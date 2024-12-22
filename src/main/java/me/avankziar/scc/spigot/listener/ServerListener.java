@@ -5,6 +5,8 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -68,10 +70,10 @@ public class ServerListener implements PluginMessageListener
             	{
             		String uuids = in.readUTF();
             		String s = in.readUTF();
-            		Sound sound;
+            		Sound sound = null;
             		try
             		{
-            			sound = Sound.valueOf(s);
+            			sound = Registry.SOUNDS.get(NamespacedKey.minecraft(s));
             		} catch(Exception e)
             		{
             			sound = Sound.ENTITY_WANDERING_TRADER_REAPPEARED;

@@ -166,7 +166,7 @@ public class MessageToProxyProvider implements MessageToBungee, MessageToVelocit
 			String...message) throws IOException
 	{
 		out.writeBoolean(s);
-		out.writeUTF(sound.toString());
+		out.writeUTF(sound.getKey().getKey());
 		out.writeBoolean(p);
 		out.writeUTF(permission);
 		out.writeBoolean(hasPermission);

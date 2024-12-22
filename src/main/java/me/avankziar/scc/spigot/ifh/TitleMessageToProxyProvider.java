@@ -13,8 +13,9 @@ import org.bukkit.entity.Player;
 import main.java.me.avankziar.scc.general.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SCC;
 import me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee;
+import me.avankziar.ifh.spigot.tovelocity.displaychatlike.TitleMessageToVelocity;
 
-public class TitleMessageToBungeeProvider implements TitleMessageToBungee
+public class TitleMessageToProxyProvider implements TitleMessageToBungee, TitleMessageToVelocity
 {
 	private int fadeIn = 1;
 	private int stay = 20;

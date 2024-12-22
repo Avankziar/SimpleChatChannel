@@ -19,9 +19,15 @@ Future =========================================================================
   wäre es umsetzbar das man einen Cooldown auf Chatnachrichten bekommt, um zum Beispiel Server regeln im Handelschat durchzusetzen?
   Beispiel: Regel sagt nur alle 10 Minuten eine Nachricht erlaubt. Du schreibst eine Nachricht und erhälst dann eine 10 Minuten Sperre für den Channel.
   
+42-5-0
+- Spigot 1.21.4 support
+- Api muss mindestens 1.21.3 sein!
+- Velocity 3.4.0 support
+- TabCompletion Velocity AIOOBE Fix
+- IFH spigot.tovelocity.displaychatlike.TitleMessageToVelocity wird nun bereitgestellt.
+  
 Build 42-4-2
 - Config Wert hinzugefügt, damit der Upload der Json von ItemStack der Spieler im BackgroundTask deaktiviert werden kann.
-- TabCompletion Velocity AIOOBE Fix
 
 Build 42-4-1
 - Velocity RootAdministration Softdepend
