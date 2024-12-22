@@ -21,6 +21,7 @@ Future =========================================================================
   
 Build 42-4-2
 - Config Wert hinzugefügt, damit der Upload der Json von ItemStack der Spieler im BackgroundTask deaktiviert werden kann.
+- TabCompletion Velocity AIOOBE Fix
 
 Build 42-4-1
 - Velocity RootAdministration Softdepend

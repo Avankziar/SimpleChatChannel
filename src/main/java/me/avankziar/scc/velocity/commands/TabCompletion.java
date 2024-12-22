@@ -85,7 +85,7 @@ public class TabCompletion
 					reList.addAll(SCC.rePlayers.get(player.getUniqueId().toString()));
 				} else
 				{
-					return getReturnTabList(SCC.onlinePlayers, args[length]);
+					return List.of();//getReturnTabList(SCC.onlinePlayers, args[length]);
 				}
 			}
 			return listIfArgumentIsEmpty(aclist, player);
