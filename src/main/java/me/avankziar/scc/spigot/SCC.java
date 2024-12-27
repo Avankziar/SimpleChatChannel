@@ -219,10 +219,7 @@ public class SCC extends JavaPlugin
 		ListenerSetup();		
 		BypassPermission.init(plugin);
 		setupBstats();
-		if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing", true))
-		{
-			setupIFHProviding();
-		}
+		setupIFHProviding();
 		setupIFHConsumer();
 	}
 	
@@ -877,85 +874,116 @@ public class SCC extends JavaPlugin
 	{      
         if (plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
 		{
-        	ChatProvider c = new ChatProvider();
-        	plugin.getServer().getServicesManager().register(
-        			me.avankziar.ifh.general.chat.Chat.class,
-             		c,
-             		this,
-             		ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
+        	if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.ChatProvider", true))
+    		{
+        		ChatProvider c = new ChatProvider();
+            	plugin.getServer().getServicesManager().register(
+            			me.avankziar.ifh.general.chat.Chat.class,
+                 		c,
+                 		this,
+                 		ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> Chat.class is provided!");
+    		}
+        	
+        	if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.Channel", true))
+    		{
+        		ChannelProvider ch = new ChannelProvider();
+            	plugin.getServer().getServicesManager().register(
+            			me.avankziar.ifh.general.chat.Channel.class,
+                 		ch,
+                 		this,
+                 		ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> Channel.class is provided!");
+    		}
             
-            ChannelProvider ch = new ChannelProvider();
-        	plugin.getServer().getServicesManager().register(
-        			me.avankziar.ifh.general.chat.Channel.class,
-             		ch,
-             		this,
-             		ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> Channel.class is provided!");
+        	if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.ChatTitle", true))
+    		{
+        		ChatTitleProvider ct = new ChatTitleProvider();
+            	plugin.getServer().getServicesManager().register(
+            			me.avankziar.ifh.general.chat.ChatTitle.class,
+                 		ct,
+                 		this,
+                 		ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> ChatTitle.class is provided!");
+    		}
             
-            ChatTitleProvider ct = new ChatTitleProvider();
-        	plugin.getServer().getServicesManager().register(
-        			me.avankziar.ifh.general.chat.ChatTitle.class,
-             		ct,
-             		this,
-             		ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> ChatTitle.class is provided!");
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.ChatEditor", true))
+    		{
+            	ChatEditorProvider ce = new ChatEditorProvider();
+            	plugin.getServer().getServicesManager().register(
+            			me.avankziar.ifh.general.chat.ChatEditor.class,
+                 		ce,
+                 		this,
+                 		ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
+    		}
+        	
             
-        	ChatEditorProvider ce = new ChatEditorProvider();
-        	plugin.getServer().getServicesManager().register(
-        			me.avankziar.ifh.general.chat.ChatEditor.class,
-             		ce,
-             		this,
-             		ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> ChatEditor.class is provided!");
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.MessageToBungee", false))
+    		{
+            	MessageToProxyProvider mtb = new MessageToProxyProvider();
+                plugin.getServer().getServicesManager().register(
+                		me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee.class,
+                		mtb,
+                		this,
+                        ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> MessageToBungee.class is provided!");
+    		}
             
-        	MessageToProxyProvider mtb = new MessageToProxyProvider();
-            plugin.getServer().getServicesManager().register(
-            		me.avankziar.ifh.spigot.tobungee.chatlike.MessageToBungee.class,
-            		mtb,
-            		this,
-                    ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> MessageToBungee.class is provided!");
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.BaseComponentToBungee", false))
+    		{
+            	BaseComponentToBungeeProvider bctb = new BaseComponentToBungeeProvider();
+                plugin.getServer().getServicesManager().register(
+                		me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee.class,
+                		bctb,
+                		this,
+                        ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> BaseComponentToBungee.class is provided!");
+    		}
             
-            BaseComponentToBungeeProvider bctb = new BaseComponentToBungeeProvider();
-            plugin.getServer().getServicesManager().register(
-            		me.avankziar.ifh.spigot.tobungee.chatlike.BaseComponentToBungee.class,
-            		bctb,
-            		this,
-                    ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> BaseComponentToBungee.class is provided!");
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.TitleMessageToBungee", false))
+    		{
+            	TitleMessageToProxyProvider tmtb = new TitleMessageToProxyProvider();
+                plugin.getServer().getServicesManager().register(
+                		me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee.class,
+                		tmtb,
+                		this,
+                        ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> TitleMessageToBungee.class is provided!");
+    		}            
             
-            TitleMessageToProxyProvider tmtb = new TitleMessageToProxyProvider();
-            plugin.getServer().getServicesManager().register(
-            		me.avankziar.ifh.spigot.tobungee.displaychatlike.TitleMessageToBungee.class,
-            		tmtb,
-            		this,
-                    ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> TitleMessageToBungee.class is provided!");
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.Channel", false))
+    		{
+            	ActionBarMessageToBungeeProvider abmtb = new ActionBarMessageToBungeeProvider();
+                plugin.getServer().getServicesManager().register(
+                		me.avankziar.ifh.spigot.tobungee.displaychatlike.ActionBarMessageToBungee.class,
+                		abmtb,
+                		this,
+                        ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> ActionBarMessageToBungee.class is provided!!");
+    		}            
             
-            ActionBarMessageToBungeeProvider abmtb = new ActionBarMessageToBungeeProvider();
-            plugin.getServer().getServicesManager().register(
-            		me.avankziar.ifh.spigot.tobungee.displaychatlike.ActionBarMessageToBungee.class,
-            		abmtb,
-            		this,
-                    ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> ActionBarMessageToBungee.class is provided!!");
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.MessageToVelocity", true))
+    		{
+            	MessageToProxyProvider mtv = new MessageToProxyProvider();
+                plugin.getServer().getServicesManager().register(
+                		me.avankziar.ifh.spigot.tovelocity.chatlike.MessageToVelocity.class,
+                		mtv,
+                		this,
+                        ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> MessageToVelocity.class is provided!");
+    		}
             
-            MessageToProxyProvider mtv = new MessageToProxyProvider();
-            plugin.getServer().getServicesManager().register(
-            		me.avankziar.ifh.spigot.tovelocity.chatlike.MessageToVelocity.class,
-            		mtv,
-            		this,
-                    ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> MessageToVelocity.class is provided!");
-            
-            TitleMessageToProxyProvider tmtv = new TitleMessageToProxyProvider();
-            plugin.getServer().getServicesManager().register(
-            		me.avankziar.ifh.spigot.tovelocity.displaychatlike.TitleMessageToVelocity.class,
-            		tmtv,
-            		this,
-                    ServicePriority.Normal);
-            logger.info(pluginName + " detected InterfaceHub >>> TitleMessageToVelocity.class is provided!");
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.TitleMessageToVelocity", true))
+    		{
+            	TitleMessageToProxyProvider tmtv = new TitleMessageToProxyProvider();
+                plugin.getServer().getServicesManager().register(
+                		me.avankziar.ifh.spigot.tovelocity.displaychatlike.TitleMessageToVelocity.class,
+                		tmtv,
+                		this,
+                        ServicePriority.Normal);
+                logger.info(pluginName + " detected InterfaceHub >>> TitleMessageToVelocity.class is provided!");
+    		}
         }
 	}
 	

@@ -18,7 +18,11 @@ Future =========================================================================
 - Moin Avan,
   wäre es umsetzbar das man einen Cooldown auf Chatnachrichten bekommt, um zum Beispiel Server regeln im Handelschat durchzusetzen?
   Beispiel: Regel sagt nur alle 10 Minuten eine Nachricht erlaubt. Du schreibst eine Nachricht und erhälst dann eine 10 Minuten Sperre für den Channel.
-  
+
+42-5-1
+- IFH Providing wurde in der Config aufgeteilt, dass seperat entschieden werden kann welche an oder welche aus sind.
+  Für alle die BungeeCord oder Velocity benutzten: Falls ihr das Benutzten wollt, stellt das auf true, was ihr nutzt (Bungeecord oder Velocity)
+
 42-5-0
 - Spigot 1.21.4 support
 - Api muss mindestens 1.21.3 sein!

@@ -519,9 +519,42 @@ public class YamlManager
 				"Das Passwort des Users, womit er Zugang zu Mysql bekommt.",
 				"",
 				"The user's password, with which he gets access to Mysql."});
-		configKeys.put("Enable.InterfaceHub.Providing"
-				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				true}));
+		if(type == Type.SPIGOT)
+		{
+			configKeys.put("Enable.InterfaceHub.Providing.ChatProvider"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+			configKeys.put("Enable.InterfaceHub.Providing.Chat"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+			configKeys.put("Enable.InterfaceHub.Providing.Channel"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+			configKeys.put("Enable.InterfaceHub.Providing.ChatTitle"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+			configKeys.put("Enable.InterfaceHub.Providing.ChatEditor"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+			configKeys.put("Enable.InterfaceHub.Providing.MessageToBungee"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					false}));
+			configKeys.put("Enable.InterfaceHub.Providing.BaseComponentToBungee"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					false}));
+			configKeys.put("Enable.InterfaceHub.Providing.TitleMessageToBungee"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					false}));
+			configKeys.put("Enable.InterfaceHub.Providing.ActionBarMessageToBungee"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					false}));
+			configKeys.put("Enable.InterfaceHub.Providing.MessageToVelocity"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+			configKeys.put("Enable.InterfaceHub.Providing.TitleMessageToVelocity"
+					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+					true}));
+		}
 		addConfig("Logging",
 				new Object[] {
 				true},
