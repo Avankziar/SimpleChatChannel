@@ -952,7 +952,7 @@ public class SCC extends JavaPlugin
                 logger.info(pluginName + " detected InterfaceHub >>> TitleMessageToBungee.class is provided!");
     		}            
             
-            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.Channel", false))
+            if(yamlHandler.getConfig().getBoolean("Enable.InterfaceHub.Providing.ActionBarMessageToBungee", false))
     		{
             	ActionBarMessageToBungeeProvider abmtb = new ActionBarMessageToBungeeProvider();
                 plugin.getServer().getServicesManager().register(
