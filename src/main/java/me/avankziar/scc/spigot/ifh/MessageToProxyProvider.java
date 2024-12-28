@@ -193,10 +193,13 @@ public class MessageToProxyProvider implements MessageToBungee, MessageToVelocit
 	
 	private void sendPluginMessage(ByteArrayOutputStream stream)
 	{
+		SCC.logger.info("Start sendPluginMessage");
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
+			SCC.logger.info("Found Player");
 			if(player != null)
 			{
+				SCC.logger.info("Found Player != null : send");
 				player.sendPluginMessage(
 		        		SCC.getPlugin(), StaticValues.SCC_TOPROXY, stream.toByteArray());
 				break;
