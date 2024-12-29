@@ -544,7 +544,6 @@ public class SCC
     	EventManager em = server.getEventManager();
     	em.register(plugin, new ChatListener(plugin));
     	em.register(plugin, new JoinLeaveListener(plugin));
-    	//em.register(plugin, new ServerListener(plugin));
     }
     
     public ArrayList<BaseConstructor> getHelpList()
