@@ -20,7 +20,7 @@ Future =========================================================================
   Beispiel: Regel sagt nur alle 10 Minuten eine Nachricht erlaubt. Du schreibst eine Nachricht und erhälst dann eine 10 Minuten Sperre für den Channel.
 
 42-5-2
-- MessageToVelocity Interface Backend Handling fix on Velocity
+- MessageToVelocity Interface Backend Handling fix auf Velocity
 
 42-5-1
 - IFH Providing wurde in der Config aufgeteilt, dass seperat entschieden werden kann welche an oder welche aus sind.
