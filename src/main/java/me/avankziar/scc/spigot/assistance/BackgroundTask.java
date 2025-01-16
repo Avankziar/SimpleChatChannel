@@ -17,6 +17,7 @@ import main.java.me.avankziar.scc.general.database.MysqlType;
 import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.general.objects.ChatUser;
 import main.java.me.avankziar.scc.general.objects.ItemJson;
+import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import main.java.me.avankziar.scc.general.objects.StaticValues;
 import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.database.MysqlHandler;
@@ -34,6 +35,7 @@ public class BackgroundTask
 		players = new ArrayList<String>();
 		runTask();
 		runBungeeLocationTask();
+		initPermanentChannels();
 		if(plugin.getYamlHandler().getConfig().getBoolean("Upload.ItemStack", true))
 		{
 			runItemStackTask();
@@ -47,17 +49,26 @@ public class BackgroundTask
 			if(plugin.getYamlHandler().getConfig().getBoolean("CleanUp.RunAutomaticByRestart", true))
 			{
 				runTaskCleanUp();
-				runTaskCleanUpMails();
 			}
 		}
 	}
 	
-	private void runTaskCleanUpMails()
+	public void initPermanentChannels()
 	{
-		final int days = plugin.getYamlHandler().getConfig().getInt("CleanUp.DeleteReadedMailWhichIsOlderThanDays", 120);
-		final long d = (long)days*1000L*60*60*24;
-		final long lasttime = System.currentTimeMillis()-d;
-		plugin.getMysqlHandler().deleteData(MysqlType.MAIL, "`readeddate` != ? AND `readeddate` < ?", 0, lasttime);
+		int lastid = plugin.getMysqlHandler().lastID(MysqlType.PERMANENTCHANNEL);
+		if(lastid == 0)
+		{
+			return;
+		}
+		for(int i = 1; i <= lastid; i++)
+		{
+			if(plugin.getMysqlHandler().exist(MysqlType.PERMANENTCHANNEL, "`id` = ?", i))
+			{
+				PermanentChannel pc = (PermanentChannel) plugin.getMysqlHandler().getData(MysqlType.PERMANENTCHANNEL,
+						"`id` = ?", i);
+				PermanentChannel.addCustomChannel(pc);
+			}
+		}
 	}
 	
 	public void unmuteTask()
