@@ -30,21 +30,12 @@ public class BackgroundTask
 		if(plugin.getYamlHandler().getConfig().getBoolean("CleanUp.RunAutomaticByRestart", true))
 		{
 			runTaskCleanUp();
-			runTaskCleanUpMails();
 		}
 	}
 	
 	public ArrayList<String> getPlayers()
 	{
 		return players;
-	}
-	
-	private void runTaskCleanUpMails()
-	{
-		final int days = plugin.getYamlHandler().getConfig().getInt("CleanUp.DeleteReadedMailWhichIsOlderThanDays", 120);
-		final long d = (long)days*1000L*60*60*24;
-		final long lasttime = System.currentTimeMillis()-d;
-		plugin.getMysqlHandler().deleteData(MysqlType.MAIL, "`readeddate` != ? AND `readeddate` < ?", 0, lasttime);
 	}
 	
 	private void runTaskCleanUp()
@@ -75,7 +66,7 @@ public class BackgroundTask
 				deleted.addAndGet(1);
 			}
 			count.addAndGet(1);
-		}).delay(1L, TimeUnit.MILLISECONDS).repeat(15L, TimeUnit.MILLISECONDS).schedule();
+		}).delay(1L, TimeUnit.SECONDS).schedule();
 	}
 	
 	private void runTask()
@@ -89,7 +80,7 @@ public class BackgroundTask
 					players.add(player.getUsername());
 				}
 			}
-		}).delay(1L, TimeUnit.MILLISECONDS).repeat(15L, TimeUnit.MILLISECONDS).schedule();
+		}).delay(1L, TimeUnit.SECONDS).repeat(10L, TimeUnit.SECONDS).schedule();
 	}
 	
 	public void unmuteTask()
@@ -121,7 +112,7 @@ public class BackgroundTask
 					}
 				}
 			}
-		}).delay(1L, TimeUnit.MILLISECONDS).repeat(15L, TimeUnit.MILLISECONDS).schedule();
+		}).delay(1L, TimeUnit.SECONDS).repeat(10L, TimeUnit.SECONDS).schedule();
 	}
 	
 	public void initPermanentChannels()
