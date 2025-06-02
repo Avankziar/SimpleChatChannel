@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import main.java.me.avankziar.scc.general.database.MysqlBaseHandler;
@@ -22,6 +23,10 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 	private boolean optionChannelMessage;
 	private long lastTimeJoined;
 	private boolean optionJoinMessage;
+	private String mentionSound;
+	private String mentionSoundCategory;
+	private String userWritingLanguage;
+	private ArrayList<String> userReadingLanguages;
 	
 	public ChatUser() 
 	{
@@ -33,7 +38,9 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 			long muteTime,
 			boolean optionSpy, boolean optionChannelMessage,
 			long lastTimeJoined,
-			boolean optionJoinMessage, ServerLocation serverLocation)
+			boolean optionJoinMessage, ServerLocation serverLocation,
+			String mentionSound, String mentionSoundCategory,
+			String userWritingLanguage, ArrayList<String> userReadingLanguages)
 	{
 		super(serverLocation);
 		setUUID(uuid);
@@ -45,6 +52,10 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 		setOptionChannelMessage(optionChannelMessage);
 		setLastTimeJoined(lastTimeJoined);
 		setOptionJoinMessage(optionJoinMessage);
+		setMentionSound(mentionSound);
+		setMentionSoundCategory(mentionSoundCategory);
+		setUserWritingLanguage(userWritingLanguage);
+		setUserReadingLanguages(userReadingLanguages);
 	}
 
 	public String getUUID()
@@ -137,6 +148,46 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 		this.optionJoinMessage = optionJoinMessage;
 	}
 	
+	public String getMentionSound()
+	{
+		return mentionSound;
+	}
+
+	public void setMentionSound(String mentionSound)
+	{
+		this.mentionSound = mentionSound;
+	}
+
+	public String getMentionSoundCategory()
+	{
+		return mentionSoundCategory;
+	}
+
+	public void setMentionSoundCategory(String mentionSoundCategory)
+	{
+		this.mentionSoundCategory = mentionSoundCategory;
+	}
+
+	public String getUserWritingLanguage()
+	{
+		return userWritingLanguage;
+	}
+
+	public void setUserWritingLanguage(String userWritingLanguage)
+	{
+		this.userWritingLanguage = userWritingLanguage;
+	}
+
+	public ArrayList<String> getUserReadingLanguages()
+	{
+		return userReadingLanguages;
+	}
+
+	public void setUserReadingLanguages(ArrayList<String> userReadingLanguages)
+	{
+		this.userReadingLanguages = userReadingLanguages;
+	}
+
 	@Override
 	public boolean create(Connection conn, String tablename)
 	{
@@ -144,8 +195,9 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 		{
 			String sql = "INSERT INTO `" + tablename
 					+ "`(`player_uuid`, `player_name`, `roleplay_name`, `roleplayrenamecooldown`, `mutetime`,"
-					+ " `spy`, `channelmessage`, `lasttimejoined`, `joinmessage`, `serverlocation`) " 
-					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ " `spy`, `channelmessage`, `lasttimejoined`, `joinmessage`, `serverlocation`, `mention_sound`, `mention_sound_category`,"
+					+ " `user_writing_language`, `user_reading_languages`) " 
+					+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, getUUID());
 	        ps.setString(2, getName());
@@ -157,6 +209,10 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 	        ps.setLong(8, getLastTimeJoined());
 	        ps.setBoolean(9, isOptionJoinMessage());
 	        ps.setString(10, serialized());
+	        ps.setString(11, getMentionSound());
+	        ps.setString(12, getMentionSoundCategory());
+	        ps.setString(13, getUserWritingLanguage());
+	        ps.setString(14, String.join(";", getUserReadingLanguages()));
 	        
 	        int i = ps.executeUpdate();
 	        MysqlBaseHandler.addRows(QueryType.INSERT, i);
@@ -175,7 +231,8 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 		{
 			String sql = "UPDATE `" + tablename
 					+ "` SET `player_uuid` = ?, `player_name` = ?, `roleplay_name` = ?, `roleplayrenamecooldown` = ?, `mutetime` = ?," 
-					+ " `spy` = ?, `channelmessage` = ?, `lasttimejoined` = ?, `joinmessage` = ?, `serverlocation` = ?" 
+					+ " `spy` = ?, `channelmessage` = ?, `lasttimejoined` = ?, `joinmessage` = ?, `serverlocation` = ?,"
+					+ " `mention_sound` = ?, `mention_sound_category` = ?, `user_writing_language` = ?, `user_reading_languages` = ?" 
 					+ " WHERE "+whereColumn;
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, getUUID());
@@ -188,8 +245,12 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 	        ps.setLong(8, getLastTimeJoined());
 	        ps.setBoolean(9, isOptionJoinMessage());
 	        ps.setString(10, serialized());
+	        ps.setString(11, getMentionSound());
+	        ps.setString(12, getMentionSoundCategory());
+	        ps.setString(13, getUserWritingLanguage());
+	        ps.setString(14, String.join(";", getUserReadingLanguages()));
 	        
-			int i = 11;
+			int i = 15;
 			for(Object o : whereObject)
 			{
 				ps.setObject(i, o);
@@ -235,7 +296,11 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 	        			rs.getBoolean("channelmessage"),
 	        			rs.getLong("lasttimejoined"),
 	        			rs.getBoolean("joinmessage"),
-	        			ServerLocation.deserialized(rs.getString("serverlocation"))));
+	        			ServerLocation.deserialized(rs.getString("serverlocation")),
+	        			rs.getString("mention_sound"),
+	        			rs.getString("mention_sound_category"),
+	        			rs.getString("user_writing_language"),
+	        			(ArrayList<String>) Arrays.asList(rs.getString("user_reading_languages").split(";"))));
 			}
 			return al;
 		} catch (SQLException e)

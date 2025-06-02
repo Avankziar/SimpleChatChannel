@@ -30,21 +30,12 @@ public class BackgroundTask
 		if(plugin.getYamlHandler().getConfig().getBoolean("CleanUp.RunAutomaticByRestart", true))
 		{
 			runTaskCleanUp();
-			runTaskCleanUpMails();
 		}
 	}
 	
 	public ArrayList<String> getPlayers()
 	{
 		return players;
-	}
-	
-	private void runTaskCleanUpMails()
-	{
-		final int days = plugin.getYamlHandler().getConfig().getInt("CleanUp.DeleteReadedMailWhichIsOlderThanDays", 120);
-		final long d = (long)days*1000L*60*60*24;
-		final long lasttime = System.currentTimeMillis()-d;
-		plugin.getMysqlHandler().deleteData(MysqlType.MAIL, "`readeddate` != ? AND `readeddate` < ?", 0, lasttime);
 	}
 	
 	private void runTaskCleanUp()

@@ -7,7 +7,10 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -369,7 +372,7 @@ public class ChatHandlerAdventure
 				all.spigot().sendMessage(ChatApi.tctl(txc2));
 				if(all.hasPermission(BypassPermission.USE_SOUND))
 				{
-					sendMentionPing(all, usedChannel.getMentionSound());
+					sendMentionPing(all, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 				}
 			} else
 			{
@@ -1579,6 +1582,13 @@ public class ChatHandlerAdventure
 		String txc2 = String.join("", components.getComponentsWithMentions());
 		logging(txc2, usedChannel);
 		ArrayList<String> sendedPlayer = new ArrayList<>();
+		String writingLanguage = plugin.getYamlManager().getLanguageType().toString();
+		ChatUser pcu = ChatUserHandler.getChatUser(player.getUniqueId());
+		boolean useLanguageSeperationPerChannel = plugin.getYamlHandler().getConfig().getBoolean("UseLanguageSeparationPerChannel", false);
+		if(pcu != null)
+		{
+			writingLanguage = pcu.getUserWritingLanguage();
+		}
 		for(Player toMessage : plugin.getServer().getOnlinePlayers())
 		{
 			/*
@@ -1631,12 +1641,23 @@ public class ChatHandlerAdventure
 					continue;
 				}
 			}
+			if(useLanguageSeperationPerChannel)
+			{
+				if(usedChannel.isUseLanguageSeparationPerChannel())
+				{
+					ChatUser ocu = ChatUserHandler.getChatUser(toMessage.getUniqueId());
+					if(!ocu.getUserReadingLanguages().contains(writingLanguage))
+					{
+						continue;
+					}
+				}
+			}
 			if(components.isMention(toMessage.getName()))
 			{
 				toMessage.spigot().sendMessage(ChatApi.tctl(txc2));
 				if(toMessage.hasPermission(BypassPermission.USE_SOUND))
 				{
-					sendMentionPing(toMessage, usedChannel.getMentionSound());
+					sendMentionPing(toMessage, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 				}
 			} else
 			{
@@ -1702,7 +1723,7 @@ public class ChatHandlerAdventure
 		if(plugin.getYamlHandler().getConfig().getBoolean("MsgSoundUsage") &&
 				other.hasPermission(BypassPermission.USE_SOUND))
 		{
-			sendMentionPing(other, usedChannel.getMentionSound());
+			sendMentionPing(other, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 		}
 		sendedPlayer.add(other.getUniqueId().toString());
 		if(isIgnored)
@@ -1729,7 +1750,7 @@ public class ChatHandlerAdventure
 		if(plugin.getYamlHandler().getConfig().getBoolean("MsgSoundUsage") &&
 				other.hasPermission(BypassPermission.USE_SOUND))
 		{
-			sendMentionPing(other, usedChannel.getMentionSound());
+			sendMentionPing(other, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 		}
 	}
 	
@@ -1758,10 +1779,39 @@ public class ChatHandlerAdventure
 		}
 	}
 	
-	public void sendMentionPing(Player player, String sound)
+	public void sendMentionPing(Player player, boolean usePlayerChoosenMentionSound, String s, String sc)
 	{
+		String so = null;
+		String soc = null;
+		if(usePlayerChoosenMentionSound)
+		{
+			ChatUser cu = ChatUserHandler.getChatUser(player.getUniqueId());
+			so = cu.getMentionSound();
+			soc = cu.getMentionSoundCategory();
+		} else
+		{
+			so = s;
+			soc = sc;
+		}
+		Sound sound = null;
+		try
+		{
+			sound = Registry.SOUNDS.get(NamespacedKey.minecraft(so));
+		} catch(Exception e)
+		{
+			sound = Sound.ENTITY_WANDERING_TRADER_REAPPEARED;
+		}
+		SoundCategory soundcategory = null;
+ 		try
+ 		{
+ 			soundcategory = SoundCategory.valueOf(soc);
+ 		} catch(Exception e)
+ 		{
+ 			soundcategory = SoundCategory.NEUTRAL;
+ 		}
 		player.playSound(player.getLocation(),
-				Sound.valueOf(sound), 
+				sound, 
+				soundcategory,
 				3.0F,
 				0.5F);
 	}

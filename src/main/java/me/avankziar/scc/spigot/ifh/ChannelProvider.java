@@ -65,10 +65,11 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 			String uniqueChannelName, String symbol, String inChatName, String inChatColorMessage,
 			String permission, String joinPart, String chatFormat,
 			boolean useSpecificServer, boolean useSpecificWorld, int useBlockRadius, 
+			boolean useLanguageSeparationPerChannel,
 			long minimumTimeBetweenMessages, long minimumTimeBetweenSameMessage, double percentOfSimiliarityOrLess,
 			String timeColor, String playernameCustomColor,
 			String seperatorBetweenPrefix, String seperatorBetweenSuffix,
-			String mentionSound,
+			boolean usePlayerChoosenMentionSound, String mentionSound, String mentionSoundCategory,
 			boolean useColor, boolean useItemReplacer, boolean useBookReplacer,
 			boolean useRunCommandReplacer, boolean useSuggestCommandReplacer, boolean useWebsiteReplacer,
 			boolean useEmojiReplacer, boolean useMentionReplacer, boolean usePositionReplacer,
@@ -103,6 +104,7 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 				useSpecificServer,
 				useSpecificWorld,
 				useBlockRadius,
+				useLanguageSeparationPerChannel,
 				minimumTimeBetweenMessages,
 				minimumTimeBetweenSameMessage,
 				percentOfSimiliarityOrLess,
@@ -111,7 +113,9 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 				"&r",
 				seperatorBetweenPrefix,
 				seperatorBetweenSuffix,
+				usePlayerChoosenMentionSound,
 				mentionSound,
+				mentionSoundCategory,
 				serverReplacerMap, serverCommandMap, serverHoverMap,
 				worldReplacerMap, worldCommandMap, worldHoverMap,
 				useColor, useItemReplacer, useBookReplacer,
@@ -121,8 +125,10 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 		{
 			send(uniqueChannelName, symbol, inChatName, inChatColorMessage, permission, joinPart, chatFormat,
 					useSpecificServer, useSpecificWorld, useBlockRadius,
+					useLanguageSeparationPerChannel,
 					minimumTimeBetweenMessages, minimumTimeBetweenSameMessage, percentOfSimiliarityOrLess,
-					timeColor, playernameCustomColor, seperatorBetweenPrefix, seperatorBetweenSuffix, mentionSound,
+					timeColor, playernameCustomColor, seperatorBetweenPrefix, seperatorBetweenSuffix, 
+					usePlayerChoosenMentionSound, mentionSound, mentionSoundCategory,
 					useColor, useItemReplacer, useBookReplacer, useRunCommandReplacer, useSuggestCommandReplacer,
 					useWebsiteReplacer, useEmojiReplacer, useMentionReplacer, usePositionReplacer);
 		}
@@ -134,8 +140,9 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 	public boolean registerChannel(
 			String uniqueChannelName, String symbol, String inChatName, String inChatColorMessage,
 			String permission, String joinPart, String chatFormat,
+			boolean useLanguageSeparationPerChannel,
 			String timeColor, String playernameCustomColor,
-			String mentionSound,
+			boolean usePlayerChoosenMentionSound, String mentionSound, String mentionSoundCategory,
 			boolean useColor, boolean useItemReplacer, boolean useBookReplacer,
 			boolean useRunCommandReplacer, boolean useSuggestCommandReplacer, boolean useWebsiteReplacer,
 			boolean useEmojiReplacer, boolean useMentionReplacer, boolean usePositionReplacer,
@@ -143,9 +150,9 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 	{
 		return registerChannel(uniqueChannelName, symbol, inChatName, inChatColorMessage,
 				permission, joinPart, chatFormat,
-				false, false, 0, 500L, 1000L, 75.0, 
+				false, false, 0, useLanguageSeparationPerChannel, 500L, 1000L, 75.0, 
 				timeColor, playernameCustomColor,
-				"", "", mentionSound, 
+				"", "", usePlayerChoosenMentionSound, mentionSound, mentionSoundCategory,
 				useColor, useItemReplacer, useBookReplacer, 
 				useRunCommandReplacer, useSuggestCommandReplacer,
 				useWebsiteReplacer, useEmojiReplacer,
@@ -402,10 +409,11 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 	private void send(String uniqueChannelName, String symbol, String inChatName, String inChatColorMessage,
 			String permission, String joinPart, String chatFormat,
 			boolean useSpecificServer, boolean useSpecificWorld, int useBlockRadius, 
+			boolean useLanguageSeparationPerChannel,
 			long minimumTimeBetweenMessages, long minimumTimeBetweenSameMessage, double percentOfSimiliarityOrLess,
 			String timeColor, String playernameCustomColor,
 			String seperatorBetweenPrefix, String seperatorBetweenSuffix,
-			String mentionSound,
+			boolean usePlayerChoosenMentionSound, String mentionSound, String mentionSoundCategory,
 			boolean useColor, boolean useItemReplacer, boolean useBookReplacer,
 			boolean useRunCommandReplacer, boolean useSuggestCommandReplacer, boolean useWebsiteReplacer,
 			boolean useEmojiReplacer, boolean useMentionReplacer, boolean usePositionReplacer)
@@ -424,6 +432,7 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 			out.writeBoolean(useSpecificServer);
 			out.writeBoolean(useSpecificWorld);
 			out.writeInt(useBlockRadius);
+			out.writeBoolean(useLanguageSeparationPerChannel);
 			out.writeLong(minimumTimeBetweenMessages);
 			out.writeLong(minimumTimeBetweenSameMessage);
 			out.writeDouble(percentOfSimiliarityOrLess);
@@ -431,7 +440,9 @@ public class ChannelProvider implements me.avankziar.ifh.general.chat.Channel
 			out.writeUTF(playernameCustomColor);
 			out.writeUTF(seperatorBetweenPrefix);
 			out.writeUTF(seperatorBetweenSuffix);
+			out.writeBoolean(usePlayerChoosenMentionSound);
 			out.writeUTF(mentionSound);
+			out.writeUTF(mentionSoundCategory);
 			out.writeBoolean(useColor);
 			out.writeBoolean(useItemReplacer);
 			out.writeBoolean(useBookReplacer);

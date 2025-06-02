@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
@@ -38,7 +39,9 @@ public class ServerListener implements PluginMessageListener
             	if(task.equals(StaticValues.SCC_TASK_PINGAPLAYER))
             	{
             		String uuids = in.readUTF();
+            		boolean usePlayerChoosenMentionSound = in.readBoolean();
             		String sound = in.readUTF();
+            		String soundcat = in.readUTF();
             		UUID uuid = UUID.fromString(uuids);
             		if(uuid == null)
             		{
@@ -49,7 +52,7 @@ public class ServerListener implements PluginMessageListener
             		{
             			return;
             		}
-                	new ChatHandlerAdventure(plugin).sendMentionPing(mention, sound);
+                	new ChatHandlerAdventure(plugin).sendMentionPing(mention, usePlayerChoosenMentionSound, sound, soundcat);
             	} else if(task.equals(StaticValues.SCC_TASK_ARG))
             	{
             		String uuids = in.readUTF();
@@ -90,6 +93,39 @@ public class ServerListener implements PluginMessageListener
             		}
             		target.playSound(target.getLocation(), sound, 3.0F, 0.5F);
             	}
+            	 else if(task.equals(StaticValues.SENDSOUNDANDCATEGORY))
+             	{
+             		String uuids = in.readUTF();
+             		String s = in.readUTF();
+             		Sound sound = null;
+             		try
+             		{
+             			sound = Registry.SOUNDS.get(NamespacedKey.minecraft(s));
+             		} catch(Exception e)
+             		{
+             			sound = Sound.ENTITY_WANDERING_TRADER_REAPPEARED;
+             		}
+             		String sc = in.readUTF();
+             		SoundCategory soundcategory = null;
+             		try
+             		{
+             			soundcategory = SoundCategory.valueOf(sc);
+             		} catch(Exception e)
+             		{
+             			soundcategory = SoundCategory.NEUTRAL;
+             		}
+             		UUID uuid = UUID.fromString(uuids);
+             		if(uuid == null)
+             		{
+             			return;
+             		}
+             		Player target = plugin.getServer().getPlayer(uuid);
+             		if(target == null)
+             		{
+             			return;
+             		}
+             		target.playSound(target.getLocation(), sound, soundcategory, 3.0F, 0.5F);
+             	}
             } catch (IOException e) 
             {
     			e.printStackTrace();

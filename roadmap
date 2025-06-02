@@ -3,10 +3,9 @@ Future =========================================================================
 - Befehl einführen um gespeicherte Texte in bestimmte Channels zu posten.
 - IFH für scceditor einpfegen.
 - /msgrp einfügen. & im ChatHandler bei ROLEPLAYNAME den SuggestCommand ändern.
-- Sound beim Mention pm etc. individuell einstellbar machen.
 - Neue Replacer fürs ChatFormat machen, was den Zugang zu den chattitle Farben gewährt.
 - Neuer Replacer bei den Chattitle => %luckperm_playerparentgroupprefix%
-- From dc: Ability do disable the global chat channel without the plugin cancelling the ChatEvent so that we can use different plugins for global chat OR Integration for DiscordSRV :)
+x From dc: Ability do disable the global chat channel without the plugin cancelling the ChatEvent so that we can use different plugins for global chat OR Integration for DiscordSRV :)
 - OPEN_URL macht genau das nicht mehr, warum?
 - Silent Login und Silent Logout, befehle etc.
 - Wenn spieler afk oder offline sind, /msg nachricht werden als Simpel mail gespeichert.
@@ -15,10 +14,28 @@ Future =========================================================================
   Abrufen könnte man über /msg read, Meldung via Bungee bis Spieler Nachricht abgerufen hat, 
   nach Abruf automatisch löschen aus der DB oder (feature Request II) /msg save zum Speichern der Nachrichten oder /msg delete zum Löschen selbiger.
 - CommandSpy hinzufügen
-- Moin Avan,
-  wäre es umsetzbar das man einen Cooldown auf Chatnachrichten bekommt, um zum Beispiel Server regeln im Handelschat durchzusetzen?
-  Beispiel: Regel sagt nur alle 10 Minuten eine Nachricht erlaubt. Du schreibst eine Nachricht und erhälst dann eine 10 Minuten Sperre für den Channel.
+- NurRidwan/BSE(Twerion):
+  Channels so umbauen, dass man Spieler anhand Sprachen trennen kann. Dabei sollen Channels configurieren können ob man diese Trennung haben möchte oder nicht.
+  Spieler sollen per Befehl die Sprache eingeben, die sie schreiben und die eventuell mehreren Sprachen, die sie lesen möchten.
+  Wenn ein Spieler nun etwas schreibt, werden nur die Spieler das lesen, die diese Sprache zum lesen ausgewählt haben. Privat nachrichten bleiben unverändert.
+  API per InterfaceHub um Spieler dediziert Sprachen einstellen zu lassen, welche sie schreiben und Lesen.
 
+45-6-0
+- Letzte Reste (Datenbank etc) von Mail nun entfernt.
+- Alle Channels haben nun neu Einstellungsmöglichkeiten in der channels.yml:
+  - UsePlayerChoosenMentionSound => Lässt die Spieler gewählten Sounds nutzten, und nicht der vorher eingestellete ChannelSound.
+  - MentionSoundCategory => Lässt nun für den Channel MentionSound auch die SoundCategory wählen.
+  - UseLanguageSeparationPerChannel => Lässt nun Channels per Sprache teilen, sodas Spieler nur das Sehen, was sie als Sprache ausgewählt haben.
+    Die StandartSprache des Spielers wird anhand des MineCraft Client Sprache gesetzt. Per Befehl änderbar.
+    Privat, Permanent und Temporäre Channels sind davon exkludiert.
+- Alle Channels sollten bei "MentionSound" nun die neuen Soundschreibweise nutzten. Bspw. "entity.wandering_trader.reappeared"
+- MySQL Table Änderungen:
+  - ALTER TABLE `sccplayerdata` 
+  ADD `mention_sound` TEXT NOT NULL DEFAULT 'entity.wandering_trader.reappeared' AFTER `serverlocation`, 
+  ADD `mention_sound_category` TEXT NOT NULL DEFAULT 'NEUTRAL' AFTER `mention_sound`
+  ADD `user_writing_language` TEXT NOT NULL DEFAULT 'ENG' AFTER `mention_sound`
+  ADD `user_reading_languages` TEXT NOT NULL DEFAULT 'ENG' AFTER `mention_sound`;
+- /scc sound <sound> <soundcategory>, hinzugefügt.
 45-5-4
 - Backgroundtask slow down.
 

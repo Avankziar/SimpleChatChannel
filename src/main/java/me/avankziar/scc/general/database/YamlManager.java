@@ -563,6 +563,22 @@ public class YamlManager
 				"Wenn true, dann wird in der Console alle Nachrichte angezeigt, welche im Chat gesendet werden.",
 				"",
 				"If so, all messages sent in the chat are displayed in the console."});
+		addConfig("UseLanguageSeparationPerChannel",
+				new Object[] {
+				false},
+				new Object[] {
+				"",
+				"Wenn true, dann sehen Spieler nur die Nachrichten von Spieler, welche in einer Sprache schreiben, die die Spieler lesen möchten.",
+				"Dies ist die Globale Einstellung. Es muss noch dediziert per Channel an oder ausgestellt werden.",
+				"Private, Permanent und Temporäre Channels sind davon exkludiert!",
+				"Dabei werden die Spielerstandart Lese- und Schreibsprachen anhand des MinecraftClient abgenommen.",
+				"Dies ist per Befehl aber änderbar.",
+				"",
+				"If true, players only see messages from players who write in a language that the players want to read.",
+				"This is the global setting. It still needs to be turned on or off specifically per channel.",
+				"Private, permanent and temporary channels are excluded!",
+				"The player's standard reading and writing languages ​​are tested using the Minecraft client.",
+				"However, this can be changed via command.",});
 		addConfig("PrivateChannel.UseDynamicColor",
 				new Object[] {
 				true},
@@ -732,7 +748,10 @@ public class YamlManager
 				"<dark_red>"}));
 		configKeys.put("ChatReplacer.Mention.SoundEnum"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"ENTITY_WANDERING_TRADER_REAPPEARED"}));
+				"entity.wandering_trader.reappeared"}));
+		configKeys.put("ChatReplacer.Mention.SoundCategory"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"NEUTRAL"}));
 		configKeys.put("ChatReplacer.Position.Replacer"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"<pos>"}));
@@ -996,10 +1015,10 @@ public class YamlManager
 				"/scc tc leave ", "/scc tc leave ",
 				"<red>/scc tc leave <white>| Verlässt einen temporären Channel.",
 				"<red>/scc tc leave <white>| Leaves a temporary channel.");
-		commandsInput("mail", "mail", "scc.cmd.mail.mail", 
-				"/mail [page]", "/mail ",
-				"<red>/mail [Seitenzahl] <white>| Zeigt alle ungelesenen Mails mit Klick- und Hovernachrichten.",
-				"<red>/mail [pagen] <white>| Shows all unread mails with click and hover events.");
+		argumentInput(path+"sound", "sound", basePermission,
+				"/scc sound <sound> <soundcategory> ", "/scc sound ",
+				"<red>/scc sound <Sound> <Soundkategorie> <white>| Setzt den Erwähnungssound und Soundkagtegorie.",
+				"<red>/scc sound <sound> <soundcategory> <white>| Sets the mention sound and sound category.");
 		/*argumentInput(path+"", "", basePermission,
 				"/scc ", "/scc ",
 				"<red>/scc <white>| ",
@@ -1473,6 +1492,10 @@ public class YamlManager
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
 						"<yellow>Du siehst nun nur noch die Chatnachrichten, wozu du auch berechtigt bist.",
 						"<yellow>You will now only see the chat messages that you are authorized to see."}));
+		languageKeys.put("CmdScc.Option.Sound.Set"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
+						"<yellow>Du hast deine Erwähnungssound auf %sound% und %soundcat% gesetzt.",
+						"<yellow>You have set your mention sounds to %sound% and %soundcat%."}));
 		//ItemReplacer
 		languageKeys.put("CmdScc.Item.InvTitle"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER, ISO639_2B.ENG}, new Object[] {
@@ -2034,9 +2057,15 @@ public class YamlManager
 		channelsKeys.put("private.SeperatorBetweenSuffix"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				" "}));
+		channelsKeys.put("private.UsePlayerChoosenMentionSound"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
 		channelsKeys.put("private.MentionSound"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"ENTITY_WANDERING_TRADER_REAPPEARED"}));
+				"entity.wandering_trader.reappeared"}));
+		channelsKeys.put("private.MentionSoundCategory"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"NEUTRAL"}));
 		channelsKeys.put("private.ServerConverter"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"proxy;<dark_green>BungeeCord;/warp spawn;<yellow>Der Proxy ist der Verwalter aller Spigotserver.",
@@ -2122,9 +2151,15 @@ public class YamlManager
 		channelsKeys.put("permanent.SeperatorBetweenSuffix"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				" "}));
+		channelsKeys.put("permanent.UsePlayerChoosenMentionSound"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("permanent.MentionSound"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"ENTITY_WANDERING_TRADER_REAPPEARED"}));
+				"entity.wandering_trader.reappeared"}));
+		channelsKeys.put("permanent.MentionSoundCategory"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"NEUTRAL"}));
 		channelsKeys.put("permanent.ServerConverter"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"proxy;<dark_green>BungeeCord;/warp spawn;<yellow>Der Proxy ist der Verwalter aller Spigotserver.",
@@ -2213,9 +2248,15 @@ public class YamlManager
 		channelsKeys.put("temporary.SeperatorBetweenSuffix"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				" "}));
+		channelsKeys.put("temporary.UsePlayerChoosenMentionSound"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("temporary.MentionSound"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"ENTITY_WANDERING_TRADER_REAPPEARED"}));
+				"entity.wandering_trader.reappeared"}));
+		channelsKeys.put("temporary.MentionSoundCategory"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"NEUTRAL"}));
 		channelsKeys.put("temporary.ServerConverter"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"proxy;<dark_green>BungeeCord;/warp spawn;<yellow>Der Proxy ist der Verwalter aller Spigotserver.",
@@ -2300,6 +2341,9 @@ public class YamlManager
 		channelsKeys.put("global.UseBlockRadius"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				0}));
+		channelsKeys.put("global.UseLanguageSeparationPerChannel"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("global.MinimumTimeBetweenMessages"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				500}));
@@ -2324,9 +2368,15 @@ public class YamlManager
 		channelsKeys.put("global.SeperatorBetweenSuffix"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				" "}));
+		channelsKeys.put("global.UsePlayerChoosenMentionSound"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				false}));
 		channelsKeys.put("global.MentionSound"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-				"ENTITY_WANDERING_TRADER_REAPPEARED"}));
+				"entity.wandering_trader.reappeared"}));
+		channelsKeys.put("global.MentionSoundCategory"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"NEUTRAL"}));
 		channelsKeys.put("global.ServerConverter"
 				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
 				"proxy;<dark_green>BungeeCord;/warp spawn;<yellow>Der Proxy ist der Verwalter aller Spigotserver.",

@@ -83,6 +83,7 @@ public class ServerListener implements Listener
 			boolean useSpecificServer = in.readBoolean();
 			boolean useSpecificWorld = in.readBoolean();
 			int useBlockRadius = in.readInt(); 
+			boolean useLanguageSeparationPerChannel = in.readBoolean();
 			long minimumTimeBetweenMessages = in.readLong();
 			long minimumTimeBetweenSameMessage = in.readLong();
 			double percentOfSimiliarityOrLess = in.readDouble();
@@ -90,7 +91,9 @@ public class ServerListener implements Listener
 			String playernameCustomColor = in.readUTF();
 			String seperatorBetweenPrefix = in.readUTF();
 			String seperatorBetweenSuffix = in.readUTF();
+			boolean usePlayerChoosenMentionSound = in.readBoolean();
 			String mentionSound = in.readUTF();
+			String mentionSoundCategory = in.readUTF();
 			boolean useColor = in.readBoolean();
 			boolean useItemReplacer = in.readBoolean();
 			boolean useBookReplacer = in.readBoolean();
@@ -129,6 +132,7 @@ public class ServerListener implements Listener
 					useSpecificServer,
 					useSpecificWorld,
 					useBlockRadius,
+					useLanguageSeparationPerChannel,
 					minimumTimeBetweenMessages,
 					minimumTimeBetweenSameMessage,
 					percentOfSimiliarityOrLess,
@@ -137,7 +141,9 @@ public class ServerListener implements Listener
 					"&r",
 					seperatorBetweenPrefix,
 					seperatorBetweenSuffix,
+					usePlayerChoosenMentionSound,
 					mentionSound,
+					mentionSoundCategory,
 					serverReplacerMap, serverCommandMap, serverHoverMap,
 					worldReplacerMap, worldCommandMap, worldHoverMap,
 					useColor, useItemReplacer, useBookReplacer,

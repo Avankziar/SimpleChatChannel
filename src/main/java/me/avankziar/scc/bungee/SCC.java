@@ -703,6 +703,7 @@ public class SCC extends Plugin
 					cha.getBoolean(key+".UseSpecificServer", false),
 					cha.getBoolean(key+".UseSpecificsWorld", false),
 					cha.getInt(key+".UseBlockRadius", 0),
+					cha.getBoolean(key+".UseLanguageSeparationPerChannel", false),
 					cha.getLong(key+".MinimumTimeBetweenMessages", 500L),
 					cha.getLong(key+".MinimumTimeBetweenSameMessages", 1000L),
 					cha.getDouble(key+".PercentOfSimiliarityOrLess", 75.0),
@@ -711,7 +712,9 @@ public class SCC extends Plugin
 					cha.getString(key+".OtherPlayernameCustomColor", "&r"),
 					cha.getString(key+".SeperatorBetweenPrefix", ""),
 					cha.getString(key+".SeperatorBetweenSuffix", ""),
+					cha.getBoolean(key+".UsePlayerChoosenMentionSound", false),
 					cha.getString(key+".MentionSound", "ENTITY_WANDERING_TRADER_REAPPEARED"),
+					cha.getString(key+".MentionSoundCategory", ""),
 					serverReplacerMap, serverCommandMap, serverHoverMap,
 					worldReplacerMap, worldCommandMap, worldHoverMap,
 					cha.getBoolean(key+".UseColor", false),
@@ -726,6 +729,7 @@ public class SCC extends Plugin
 			if(key.equalsIgnoreCase("permanent") || key.equalsIgnoreCase("temporary")
 					|| key.equalsIgnoreCase("private"))
 			{
+				c.setUseLanguageSeparationPerChannel(false);
 				if(key.equalsIgnoreCase("permanent"))
 				{
 					c.setUniqueIdentifierName("Permanent");

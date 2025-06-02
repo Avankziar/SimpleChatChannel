@@ -65,6 +65,7 @@ import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption_Channel;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption_Join;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGOption_Spy;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGPerformance;
+import main.java.me.avankziar.scc.spigot.commands.scc.ARGSound;
 import main.java.me.avankziar.scc.spigot.commands.scc.ARGUnmute;
 import main.java.me.avankziar.scc.spigot.commands.scc.pc.ARGPermanentChannel;
 import main.java.me.avankziar.scc.spigot.commands.scc.pc.ARGPermanentChannel_Ban;
@@ -379,6 +380,8 @@ public class SCC extends JavaPlugin
 				pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite, pc_join,
 				pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice);
 		
+		ArgumentConstructor sound = new ArgumentConstructor(baseCommandI+"_sound", 0, 2, 2, false, null);
+		
 		ArgumentConstructor tc_ban = new ArgumentConstructor(baseCommandI+"_tc_ban", 1, 2, 2, false, playerMap);
 		ArgumentConstructor tc_changepassword = new ArgumentConstructor(baseCommandI+"_tc_changepassword", 1, 2, 2, false, null);
 		ArgumentConstructor tc_create = new ArgumentConstructor(baseCommandI+"_tc_create", 1, 2, 3, false, null);
@@ -399,7 +402,7 @@ public class SCC extends JavaPlugin
 				ignore, ignorelist, 
 				item,
 				mute, option, performance, unmute, updateplayer,
-				pc, tc);
+				pc, tc, sound);
 		
 		CommandConstructor clch = new CommandConstructor(baseCommandII, true); 
 		
@@ -450,9 +453,12 @@ public class SCC extends JavaPlugin
 				pc, pc_ban, pc_changepassword, pc_channels, pc_chatcolor, pc_create, pc_delete, pc_info, pc_inherit, pc_invite,
 					pc_join, pc_kick, pc_leave, pc_namecolor, pc_player, pc_rename, pc_symbol, pc_unban, pc_vice,
 				tc_ban, tc_changepassword, tc_create, tc_info, tc_invite, tc_join, tc_kick, tc_leave, tc_unban,
+				sound,
 			clch, scceditor, 
 			msg, re, r, w);
 				
+		
+		
 		//All Commands which are deactivated, if scc is active on bungeecord
 		if(!PluginSettings.settings.isBungee())
 		{
@@ -509,6 +515,7 @@ public class SCC extends JavaPlugin
 		new ARGItem(plugin, item);
 		new ARGItem_Rename(plugin, item_rename);
 		new ARGItem_Replacers(plugin, item_replacers);
+		new ARGSound(plugin, sound);
 	}
 	
 	public void ListenerSetup()
@@ -765,6 +772,7 @@ public class SCC extends JavaPlugin
 					cha.getBoolean(key+".UseSpecificServer", false),
 					cha.getBoolean(key+".UseSpecificsWorld", false),
 					cha.getInt(key+".UseBlockRadius", 0),
+					cha.getBoolean(key+".UseLanguageSeparationPerChannel", false),
 					cha.getLong(key+".MinimumTimeBetweenMessages", 500L),
 					cha.getLong(key+".MinimumTimeBetweenSameMessages", 1000L),
 					cha.getDouble(key+".PercentOfSimiliarityOrLess", 75.0),
@@ -773,7 +781,9 @@ public class SCC extends JavaPlugin
 					cha.getString(key+".OtherPlayernameCustomColor", "&r"),
 					cha.getString(key+".SeperatorBetweenPrefix", ""),
 					cha.getString(key+".SeperatorBetweenSuffix", ""),
+					cha.getBoolean(key+".UsePlayerChoosenMentionSound", false),
 					cha.getString(key+".MentionSound", "ENTITY_WANDERING_TRADER_REAPPEARED"),
+					cha.getString(key+".MentionSoundCategory", "NEUTRAL"),
 					serverReplacerMap, serverCommandMap, serverHoverMap,
 					worldReplacerMap, worldCommandMap, serverHoverMap,
 					cha.getBoolean(key+".UseColor", false),
@@ -788,6 +798,7 @@ public class SCC extends JavaPlugin
 			if(key.equalsIgnoreCase("permanent") || key.equalsIgnoreCase("temporary")
 					|| key.equalsIgnoreCase("private"))
 			{
+				c.setUseLanguageSeparationPerChannel(false);
 				if(key.equalsIgnoreCase("permanent"))
 				{
 					c.setUniqueIdentifierName("Permanent");

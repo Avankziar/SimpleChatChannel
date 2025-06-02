@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,8 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.database.Language;
+import main.java.me.avankziar.scc.general.database.Language.ISO639_2B;
 import main.java.me.avankziar.scc.general.database.MysqlType;
 import main.java.me.avankziar.scc.general.objects.Channel;
 import main.java.me.avankziar.scc.general.objects.ChatUser;
@@ -163,9 +166,12 @@ public class Utility
 	
 	public ChatUser controlUsedChannels(Player player)
 	{
+		ISO639_2B language = Language.convertLocale(player.getLocale());
 		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getName(),
 				"", 0L, 0L, false, true, System.currentTimeMillis(), plugin.getYamlHandler().getConfig().getBoolean("JoinMessageDefaultValue"),
-				new ServerLocation(PluginSettings.settings.getServer(), "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
+				new ServerLocation(PluginSettings.settings.getServer(), "default", 0.0, 0.0, 0.0, 0.0F, 0.0F),
+				"entity.wandering_trader.reappeared", "NEUTRAL",
+				language.toString(), (ArrayList<String>) Arrays.asList(language.toString()));
 		if(!plugin.getMysqlHandler().exist(MysqlType.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString()))
 		{

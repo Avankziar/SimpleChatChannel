@@ -123,6 +123,11 @@ public class Channel
 	 */
 	private int blockRadius;
 	/**
+	 * If true, players only see messages from players who write in a language that the players want to read.
+	 * There is also a global config boolean, which must be also true, to activate this.
+	 */
+	private boolean useLanguageSeparationPerChannel;
+	/**
 	 * Define, how much time must go by, before the player can send a message in the same channel.
 	 */
 	private long timeBetweenMessages;
@@ -145,7 +150,11 @@ public class Channel
 	
 	private String seperatorBetweenSuffix;
 	
+	private boolean usePlayerChoosenMentionSound;
+	
 	private String mentionSound;
+	
+	private String mentionSoundCategory;
 	
 	private LinkedHashMap<String, String> serverReplacerMap;
 	
@@ -181,9 +190,11 @@ public class Channel
 			String inChatName, String inChatColorMessage, String permission, String joinPart, String chatFormat,
 			ArrayList<String> includedServer, ArrayList<String> excludedServer,
 			boolean specificServer, boolean specificWorld, int blockRadius,
+			boolean useLanguageSeparationPerChannel,
 			long timeBetweenMessages, long timeBetweenSameMessages, double percentOfSimilarity,
 			String timeColor, String playernameCustomColor, String otherplayernameCustomColor,
-			String seperatorBetweenPrefix, String seperatorBetweenSuffix, String mentionSound,
+			String seperatorBetweenPrefix, String seperatorBetweenSuffix,
+			boolean usePlayerChoosenMentionSound, String mentionSound, String mentionSoundCategory,
 			LinkedHashMap<String, String> serverReplacerMap, LinkedHashMap<String, String> serverCommandMap,
 			LinkedHashMap<String, String> serverHoverMap, LinkedHashMap<String, String> worldReplacerMap, 
 			LinkedHashMap<String, String> worldCommandMap, LinkedHashMap<String, String> worldHoverMap,
@@ -204,6 +215,7 @@ public class Channel
 		setSpecificServer(specificServer);
 		setSpecificWorld(specificWorld);
 		setBlockRadius(blockRadius);
+		setUseLanguageSeparationPerChannel(useLanguageSeparationPerChannel);
 		setTimeBetweenMessages(timeBetweenMessages);
 		setTimeBetweenSameMessages(timeBetweenSameMessages);
 		setPercentOfSimilarity(percentOfSimilarity);
@@ -372,6 +384,16 @@ public class Channel
 		this.blockRadius = blockRadius;
 	}
 
+	public boolean isUseLanguageSeparationPerChannel()
+	{
+		return useLanguageSeparationPerChannel;
+	}
+
+	public void setUseLanguageSeparationPerChannel(boolean useLanguageSeparationPerChannel)
+	{
+		this.useLanguageSeparationPerChannel = useLanguageSeparationPerChannel;
+	}
+
 	public long getTimeBetweenMessages()
 	{
 		return timeBetweenMessages;
@@ -452,6 +474,16 @@ public class Channel
 		this.seperatorBetweenSuffix = seperatorBetweenSuffix;
 	}
 
+	public boolean isUsePlayerChoosenMentionSound()
+	{
+		return usePlayerChoosenMentionSound;
+	}
+
+	public void setUsePlayerChoosenMentionSound(boolean usePlayerChoosenMentionSound)
+	{
+		this.usePlayerChoosenMentionSound = usePlayerChoosenMentionSound;
+	}
+
 	public String getMentionSound()
 	{
 		return mentionSound;
@@ -460,6 +492,16 @@ public class Channel
 	public void setMentionSound(String mentionSound)
 	{
 		this.mentionSound = mentionSound;
+	}
+
+	public String getMentionSoundCategory()
+	{
+		return mentionSoundCategory;
+	}
+
+	public void setMentionSoundCategory(String mentionSoundCategory)
+	{
+		this.mentionSoundCategory = mentionSoundCategory;
 	}
 
 	public LinkedHashMap<String, String> getServerReplacerMap()

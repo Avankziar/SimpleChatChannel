@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,9 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 
 import main.java.me.avankziar.scc.general.assistance.ChatApi;
+import main.java.me.avankziar.scc.general.database.Language;
 import main.java.me.avankziar.scc.general.database.MysqlType;
+import main.java.me.avankziar.scc.general.database.Language.ISO639_2B;
 import main.java.me.avankziar.scc.general.objects.Channel;
 import main.java.me.avankziar.scc.general.objects.ChatUser;
 import main.java.me.avankziar.scc.general.objects.IgnoreObject;
@@ -175,9 +178,12 @@ public class Utility
 	
 	public ChatUser controlUsedChannels(Player player)
 	{
+		ISO639_2B language = Language.convertLocale(player.getPlayerSettings().getLocale().toString());
 		ChatUser cu = new ChatUser(player.getUniqueId().toString(), player.getUsername(),
 				"", 0L, 0L, false, true, System.currentTimeMillis(), plugin.getYamlHandler().getConfig().getBoolean("JoinMessageDefaultValue"),
-				new ServerLocation("", "default", 0.0, 0.0, 0.0, 0.0F, 0.0F));
+				new ServerLocation("", "default", 0.0, 0.0, 0.0, 0.0F, 0.0F), 
+				"entity.wandering_trader.reappeared", "NEUTRAL",
+				language.toString(), (ArrayList<String>) Arrays.asList(language.toString()));
 		if(!plugin.getMysqlHandler().exist(MysqlType.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString()))
 		{

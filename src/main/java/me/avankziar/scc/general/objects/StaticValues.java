@@ -19,6 +19,7 @@ public class StaticValues
 	public final static String ABM2BA = "actionbarmessagetobungeeall";
 	
 	public final static String SENDSOUND = "sendsound";
+	public final static String SENDSOUNDANDCATEGORY = "sendsoundandcategory";
 	
 	public final static String SCC_TOPROXY = "scc:simplechatproxy";
 	public final static String SCC_TOSPIGOT = "scc:simplechatspigot";

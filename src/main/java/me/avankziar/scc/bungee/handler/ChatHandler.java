@@ -389,7 +389,7 @@ public class ChatHandler
 				all.sendMessage(txc2);
 				if(all.hasPermission(BypassPermission.USE_SOUND))
 				{
-					sendMentionPing(all, usedChannel.getMentionSound());
+					sendMentionPing(all, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 				}
 			} else
 			{
@@ -1707,6 +1707,13 @@ public class ChatHandler
 		txc2.setExtra(components.getComponentsWithMentions());
 		logging(txc2, usedChannel);
 		ArrayList<String> sendedPlayer = new ArrayList<>();
+		String writingLanguage = plugin.getYamlManager().getLanguageType().toString();
+		ChatUser pcu = ChatUserHandler.getChatUser(player.getUniqueId());
+		boolean useLanguageSeperationPerChannel = plugin.getYamlHandler().getConfig().getBoolean("UseLanguageSeparationPerChannel", false);
+		if(pcu != null)
+		{
+			writingLanguage = pcu.getUserWritingLanguage();
+		}
 		for(ProxiedPlayer toMessage : plugin.getProxy().getPlayers())
 		{
 			/*
@@ -1777,12 +1784,23 @@ public class ChatHandler
 					continue;
 				}
 			}
+			if(useLanguageSeperationPerChannel)
+			{
+				if(usedChannel.isUseLanguageSeparationPerChannel())
+				{
+					ChatUser ocu = ChatUserHandler.getChatUser(toMessage.getUniqueId());
+					if(!ocu.getUserReadingLanguages().contains(writingLanguage))
+					{
+						continue;
+					}
+				}
+			}
 			if(components.isMention(toMessage.getName()))
 			{
 				toMessage.sendMessage(txc2);
 				if(toMessage.hasPermission(BypassPermission.USE_SOUND))
 				{
-					sendMentionPing(toMessage, usedChannel.getMentionSound());
+					sendMentionPing(toMessage, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 				}
 			} else
 			{
@@ -1850,7 +1868,7 @@ public class ChatHandler
 		if(plugin.getYamlHandler().getConfig().getBoolean("MsgSoundUsage") &&
 				other.hasPermission(BypassPermission.USE_SOUND))
 		{
-			sendMentionPing(other, usedChannel.getMentionSound());
+			sendMentionPing(other, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 		}
 		sendedPlayer.add(other.getUniqueId().toString());
 		if(isIgnored)
@@ -1879,7 +1897,7 @@ public class ChatHandler
 		if(plugin.getYamlHandler().getConfig().getBoolean("MsgSoundUsage") &&
 				other.hasPermission(BypassPermission.USE_SOUND))
 		{
-			sendMentionPing(other, usedChannel.getMentionSound());
+			sendMentionPing(other, usedChannel.isUsePlayerChoosenMentionSound(), usedChannel.getMentionSound(), usedChannel.getMentionSoundCategory());
 		}
 		logging(txc1, usedChannel);
 	}
@@ -1909,7 +1927,7 @@ public class ChatHandler
 		}
 	}
 	
-	public void sendMentionPing(ProxiedPlayer player, String soundEnum)
+	public void sendMentionPing(ProxiedPlayer player, boolean usePlayerChoosenMentionSound, String mentionSound, String mentionSoundCategory)
 	{
 		if(player == null)
 		{
@@ -1924,13 +1942,21 @@ public class ChatHandler
         try {
         	out.writeUTF(StaticValues.SCC_TASK_PINGAPLAYER);
 			out.writeUTF(player.getUniqueId().toString());
-			if(soundEnum == null)
+			out.writeBoolean(usePlayerChoosenMentionSound);
+			if(mentionSound == null)
 			{
 				out.writeUTF(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Mention.SoundEnum"));
 			} else
 			{
-				out.writeUTF(soundEnum);
-			}			
+				out.writeUTF(mentionSound);
+			}
+			if(mentionSoundCategory == null)
+			{
+				out.writeUTF(plugin.getYamlHandler().getConfig().getString("ChatReplacer.Mention.SoundCategory"));
+			} else
+			{
+				out.writeUTF(mentionSoundCategory);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

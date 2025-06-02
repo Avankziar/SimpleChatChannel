@@ -16,7 +16,6 @@ import main.java.me.avankziar.scc.general.database.MysqlType;
 import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.general.objects.ChatUser;
 import main.java.me.avankziar.scc.general.objects.IgnoreObject;
-import main.java.me.avankziar.scc.general.objects.KeyHandler;
 import main.java.me.avankziar.scc.general.objects.UsedChannel;
 import main.java.me.avankziar.scc.spigot.SCC;
 import main.java.me.avankziar.scc.spigot.assistance.Utility;
@@ -120,18 +119,6 @@ public class JoinLeaveListener implements Listener
 							all.spigot().sendMessage(ChatApi.tctl(msg));
 						}
 					}
-				}
-				int unreadedMails = plugin.getMysqlHandler().getCount(MysqlType.MAIL,
-						"`reciver_uuid` = ? AND `readeddate` = ?", player.getUniqueId().toString(), 0);
-				if(unreadedMails > 0)
-				{
-					player.spigot().sendMessage(ChatApi.tctl(ChatApi.clickHover(
-							plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
-							.replace("%count%", String.valueOf(unreadedMails)),
-							"RUN_COMMAND",
-							PluginSettings.settings.getCommands(KeyHandler.MAIL),
-							"SHOW_TEXT",
-							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover"))));
 				}
 			}
 		}.runTaskAsynchronously(plugin);

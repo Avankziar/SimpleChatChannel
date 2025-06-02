@@ -3,7 +3,6 @@ package main.java.me.avankziar.scc.general.database;
 import main.java.me.avankziar.scc.general.objects.ChatUser;
 import main.java.me.avankziar.scc.general.objects.IgnoreObject;
 import main.java.me.avankziar.scc.general.objects.ItemJson;
-import main.java.me.avankziar.scc.general.objects.Mail;
 import main.java.me.avankziar.scc.general.objects.PermanentChannel;
 import main.java.me.avankziar.scc.general.objects.UsedChannel;
 
@@ -18,7 +17,11 @@ public enum MysqlType
     		+ " roleplayrenamecooldown BIGINT,"
     		+ " mutetime BIGINT,"
     		+ " spy boolean, channelmessage boolean, lasttimejoined BIGINT, joinmessage boolean,"
-    		+ " serverlocation MEDIUMTEXT);"),
+    		+ " serverlocation MEDIUMTEXT,"
+    		+ " mention_sound TEXT,"
+    		+ " mention_sound_category TEXT,"
+    		+ " user_writing_language TEXT,"
+    		+ " user_reading_languages TEXT);"),
 	IGNOREOBJECT("sccIgnorelist", new IgnoreObject(), "ALL",
 			"CREATE TABLE IF NOT EXISTS `%%tablename%%"
 			+ "` (id int AUTO_INCREMENT PRIMARY KEY, player_uuid char(36) NOT NULL, ignore_uuid char(36) NOT NULL,"
@@ -35,13 +38,7 @@ public enum MysqlType
 	USEDCHANNEL("sccPlayerUsedChannels", new UsedChannel(), "ALL",
 			"CREATE TABLE IF NOT EXISTS `%%tablename%%"
 			+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
-    		+ " uniqueidentifiername TEXT, player_uuid TEXT, used BOOLEAN);"),
-	MAIL("sccMails", new Mail(), "ALL",
-			"CREATE TABLE IF NOT EXISTS `%%tablename%%"
-			+ "` (id int AUTO_INCREMENT PRIMARY KEY,"
-    		+ " sender_uuid TEXT, sender_name TEXT, reciver_uuid TEXT, reciver_name TEXT,"
-    		+ " carboncopy_uuid MEDIUMTEXT, carboncopy_name MEDIUMTEXT,"
-    		+ " sendeddate BIGINT, readeddate BIGINT, subject TEXT, rawmessage MEDIUMTEXT);")
+    		+ " uniqueidentifiername TEXT, player_uuid TEXT, used BOOLEAN);")
 	;
 	
 	private MysqlType(String tableName, Object object, String usedOnServer, String setupQuery)

@@ -7,14 +7,12 @@ import java.util.concurrent.TimeUnit;
 import main.java.me.avankziar.scc.bungee.SCC;
 import main.java.me.avankziar.scc.bungee.assistance.Utility;
 import main.java.me.avankziar.scc.bungee.objects.ChatUserHandler;
-import main.java.me.avankziar.scc.bungee.objects.PluginSettings;
 import main.java.me.avankziar.scc.bungee.objects.chat.TemporaryChannel;
 import main.java.me.avankziar.scc.general.assistance.ChatApiOld;
 import main.java.me.avankziar.scc.general.database.MysqlType;
 import main.java.me.avankziar.scc.general.handlers.ConvertHandler;
 import main.java.me.avankziar.scc.general.objects.ChatUser;
 import main.java.me.avankziar.scc.general.objects.IgnoreObject;
-import main.java.me.avankziar.scc.general.objects.KeyHandler;
 import main.java.me.avankziar.scc.general.objects.UsedChannel;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -121,17 +119,6 @@ public class JoinLeaveListener implements Listener
 							all.sendMessage(msg);
 						}
 					}
-				}
-				int unreadedMails = plugin.getMysqlHandler().getCount(MysqlType.MAIL,
-						"`reciver_uuid` = ? AND `readeddate` = ?", player.getUniqueId().toString(), 0);
-				if(unreadedMails > 0)
-				{
-					player.sendMessage(ChatApiOld.clickHover(plugin.getYamlHandler().getLang().getString("JoinListener.HasNewMail")
-							.replace("%count%", String.valueOf(unreadedMails)),
-							"RUN_COMMAND",
-							PluginSettings.settings.getCommands(KeyHandler.MAIL).trim(),
-							"SHOW_TEXT",
-							plugin.getYamlHandler().getLang().getString("CmdMail.Send.Hover")));
 				}
 				//map.get(pn).cancel();
 				//map.remove(pn);
