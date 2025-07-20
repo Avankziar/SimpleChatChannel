@@ -181,7 +181,7 @@ public class Utility
 				"", 0L, 0L, false, true, System.currentTimeMillis(), plugin.getYamlHandler().getConfig().getBoolean("JoinMessageDefaultValue"),
 				new ServerLocation("", "default", 0.0, 0.0, 0.0, 0.0F, 0.0F), 
 				"entity.wandering_trader.reappeared", "NEUTRAL",
-				language.toString(), (ArrayList<String>) Arrays.asList(language.toString()));
+				language.toString(), new ArrayList<String>(Arrays.asList(language.toString())));
 		if(!plugin.getMysqlHandler().exist(MysqlType.CHATUSER,
 				"`player_uuid` = ?", player.getUniqueId().toString()))
 		{

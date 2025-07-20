@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Level;
 
 import main.java.me.avankziar.scc.general.database.MysqlBaseHandler;
@@ -26,7 +25,7 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 	private String mentionSound;
 	private String mentionSoundCategory;
 	private String userWritingLanguage;
-	private ArrayList<String> userReadingLanguages;
+	private ArrayList<String> userReadingLanguages = new ArrayList<>();
 	
 	public ChatUser() 
 	{
@@ -286,6 +285,11 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 			ArrayList<Object> al = new ArrayList<>();
 			while (rs.next()) 
 			{
+				ArrayList<String> url = new ArrayList<>();
+				for(String s : rs.getString("user_reading_languages").split(";"))
+				{
+					url.add(s);
+				}
 				al.add(new ChatUser(
 	        			rs.getString("player_uuid"),
 	        			rs.getString("player_name"),
@@ -300,7 +304,7 @@ public class ChatUser extends ServerLocation implements MysqlHandable
 	        			rs.getString("mention_sound"),
 	        			rs.getString("mention_sound_category"),
 	        			rs.getString("user_writing_language"),
-	        			(ArrayList<String>) Arrays.asList(rs.getString("user_reading_languages").split(";"))));
+	        			url));
 			}
 			return al;
 		} catch (SQLException e)
